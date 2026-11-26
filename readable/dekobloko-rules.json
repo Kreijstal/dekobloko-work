@@ -1573,9 +1573,9 @@
     {
       "symbol": "C:ld",
       "originalName": "ld",
-      "to": "RenderingSupport008",
-      "evidence": "Structural category: Software rendering, sprites, and fonts (high); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "ArgbSprite",
+      "evidence": "Software sprite with packed high-byte per-pixel alpha;subclass of the RGB pixel sprite,with no added fields. Both constructors delegate inherited pixel/full/trimmed geometry storage to the parent. Reviewed constructor assignments,all owned field/callee dependencies,and all class uses;alpha-aware kernels and their callers are source-reviewed in the pixel-blitter batch. Preserve finality,inheritance,all primitive domains,ARGB255/256 blend behavior,array aliases,allocation/evaluation/partial-write/exception order and all existing meaningful leaf names. Class and constructor naming only.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:le",
@@ -130877,65 +130877,65 @@
     {
       "symbol": "M:ck.a(III[I[IIIIIIIII)V",
       "originalName": "a",
-      "to": "performAction0260",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitAdditive",
+      "evidence": "Source-purpose review: Skip source RGB0,then saturating packed RGB addition to destination with original carry-mask expression and source/destination row skips. Original body SHA256 f18d4c0b141a7ede404b2e18c9017bec95841941339a5c8aa31366107c75da0a. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.a(III[I[IIIIIIIIII)V",
       "originalName": "a",
-      "to": "performAction0261",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitAdditiveIntensity",
+      "evidence": "Source-purpose review: Skip source RGB0;scale packed source RGB by supplied full-int intensity using original masks/unsigned shift,then saturating RGB addition to destination. Original body SHA256 dfa027fca7e614e21e9b0ee19ed499f370b9e65e2b39187df8ceed24f0713044. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.a(I[I[IIIIIIII)V",
       "originalName": "a",
-      "to": "performAction0262",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitMultiply",
+      "evidence": "Source-purpose review: Skip source RGB0 and destination RGB0;otherwise multiply each RGB pair with original component-specific unsigned shifts and write the recombined RGB. Original body SHA256 301dc2dfb2a04980822eb9966bfd0a8c28dde853a33e7e9c9cb1ccc6c51b164d. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.a([IIIIIIII)V",
       "originalName": "a",
-      "to": "performAction0263",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitHalfSize",
+      "evidence": "Source-purpose review: For each output pixel read a2x2source block;replace each zero source color with the original destination RGB,average four packed RGB values,and write the global software framebuffer. Preserve all repeated framebuffer reads and signed right shift. Original body SHA256 746c345bb9c9aa9f115b0188cf6da1ccd9c52763e7dacd2eab6ae6043cf37a5a. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.a([I[IIIIIII)V",
       "originalName": "a",
-      "to": "performAction0264",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitUnmasked",
+      "evidence": "Source-purpose review: Unconditional RGB array copy including zero;four-pixel unroll and tail with original end-index arithmetic and separate row skips. Original body SHA256 afdaa36151ba9d6ec811cb32bce8785f32b8aab0b89cb3eddf8ee772a3292c1f. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.a([I[IIIIIIII)V",
       "originalName": "a",
-      "to": "performAction0265",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitSilhouette",
+      "evidence": "Source-purpose review: For every nonzero source pixel write the supplied solid color;source0 leaves destination untouched. Preserve four-pixel unroll and tail. Original body SHA256 37f211dcd1e43b942ad76482af4d62d23dac04ae5593affb8dd8f3f47fc2f5f9. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.a([I[IIIIIIIII)V",
       "originalName": "a",
-      "to": "performAction0266",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitColorKeyAlpha",
+      "evidence": "Source-purpose review: Blend nonzero source RGB over destination with supplied alpha and256-minus-alpha using original packed masks and signed right shift;source0 skips destination. Original body SHA256 dce4141e5fddbb2792100aeb948ccd560c80834cb12804b077d5e0bc248fd28e. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.a([I[IIIIIIIIIII)V",
       "originalName": "a",
-      "to": "performAction0267",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitColorKeyScaled",
+      "evidence": "Source-purpose review: 16.16nearest-neighbor source sampling;copy nonzero RGB pixels,leave destination for source0. Preserve signed coordinate shifts,source stride and row reset/steps. Original body SHA256 fe57f2b791e479b01c94badab699b5af3aae5bf54cc14df4938d163a8fc414b7. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.a([I[IIIIIIIIIIII)V",
       "originalName": "a",
-      "to": "performAction0268",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitScaledIntensity",
+      "evidence": "Source-purpose review: 16.16nearest-neighbor source sampling;skip source0,scale packed source RGB by supplied full-int intensity and write directly without reading destination. Original body SHA256 0064a41e37f7510fd8bef1b1c63709fe57dbf592a2f31e14414ac32a142f33fc. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.b()V",
@@ -130968,30 +130968,30 @@
     {
       "symbol": "M:ck.b([I[IIIIIIII)V",
       "originalName": "b",
-      "to": "performAction0273",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitColorKey",
+      "evidence": "Source-purpose review: Copy nonzero source RGB and skip RGB0;four-pixel unroll and tail with independent source/destination row skips. Original body SHA256 83086c1d00f7e032f938fecb7a834e94b9a4da9e0b91fb4df22061737615f8fb. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.b([I[IIIIIIIII)V",
       "originalName": "b",
-      "to": "performAction0274",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitGrayTinted",
+      "evidence": "Source-purpose review: Skip source0;for grayscale RGB use supplied tint at level128,black below andwhite above with exact signed-shift arithmetic;non-grayscale source colors copy unchanged. Original body SHA256 0c188f0eb690efe3493bf9ea9ccebae722055438a84183c6fb3b7d2e62548513. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.b([I[IIIIIIIIIII)V",
       "originalName": "b",
-      "to": "performAction0275",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitGrayModulated",
+      "evidence": "Source-purpose review: Skip source0;copy nongrayscale colors unchanged;grayscale test uses original signed source>>8 comparison with source&65535,then modulate low-byte brightness by supplied color with original forced-low-bit+1. Original body SHA256 5eae23f8bcfd96f67d5a0748b69c8e60b83325b3284d9697da1765208c94b1c0. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.b([I[IIIIIIIIIIII)V",
       "originalName": "b",
-      "to": "performAction0276",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitColorKeyScaledAlpha",
+      "evidence": "Source-purpose review: 16.16nearest-neighbor source sampling;blend nonzero RGB over destination with supplied alpha and256-minus-alpha using original packed masks and signed right shift. Original body SHA256 091b3f80660141429be3deb119529da64aceca31ad6583956e1cb947448545de. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.c()Lck;",
@@ -131031,16 +131031,16 @@
     {
       "symbol": "M:ck.c([I[IIIIIIIII)V",
       "originalName": "c",
-      "to": "performAction0282",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitIntensity",
+      "evidence": "Source-purpose review: Skip source RGB0;scale packed source RGB by supplied intensity with unsigned shift and write directly without reading destination. Original body SHA256 1e9e02f28cbbd6537c68cf802c9386f51a9e4604e585aae78212863bc54331db. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.c([I[IIIIIIIIIIII)V",
       "originalName": "c",
-      "to": "performAction0283",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitScaledSilhouette",
+      "evidence": "Source-purpose review: 16.16nearest-neighbor source sampling;write supplied solid color for nonzero source RGB,and skip destination for source0. Original body SHA256 a35c14875bf7317531f82ee5829d0b288be3063922e26436b8cb1250f754595c. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ck.d()V",
@@ -136834,9 +136834,9 @@
     {
       "symbol": "M:ld.b(III[I[IIIIIIIIII)V",
       "originalName": "b",
-      "to": "performAction0936",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgbAdditive",
+      "evidence": "Source-purpose review: Skip full source0,derive intensity from supplied gain times source high-byte alpha with original signed shift and&255,scale RGB,then saturating packed addition to destination. Original body SHA256 70d8e2f443120f7e5a7bbe252680bb44215b20730c53366053322aeaf48747c6. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ld.c(II)V",
@@ -136862,16 +136862,16 @@
     {
       "symbol": "M:ld.c([I[IIIIIIII)V",
       "originalName": "c",
-      "to": "performAction0937",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgb",
+      "evidence": "Source-purpose review: Use source high-byte alpha;skip alpha0,blend remaining pixels with inverse256-minus-alpha and unsigned right shift. Preserve that alpha255still retains destination contribution under original denominator256. Original body SHA256 c528f63dbf1397bb1e314b30ecc78ee149b0f462730361598ec7a827a6a69efc. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ld.c([I[IIIIIIIIIII)V",
       "originalName": "c",
-      "to": "performAction0938",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgbScaled",
+      "evidence": "Source-purpose review: 16.16nearest-neighbor sampling and high-byte source-alpha blend;skip alpha0 and preserve original unsigned right shift/inverse256. Original body SHA256 f8e8fa110f90508937c8dbddec3bba2d8201534b84dce93cd5adbe175c672064. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ld.d(II)V",
@@ -136890,23 +136890,23 @@
     {
       "symbol": "M:ld.d([I[IIIIIIIII)V",
       "originalName": "d",
-      "to": "performAction0939",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgbAlpha",
+      "evidence": "Source-purpose review: Unconditionally read/write each destination;effective alpha=(sourceHighByte*suppliedAlpha)>>8,then packed RGB blend with inverse256 and unsigned result shift. Original body SHA256 c273a2163fdcfb07fc1b08ec7c491cfc7d347c9705a3f29537658de88146643f. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ld.d([I[IIIIIIIIIII)V",
       "originalName": "d",
-      "to": "performAction0940",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgbGrayModulated",
+      "evidence": "Source-purpose review: Skip source alpha0;mask RGB24bits,modulate grayscale low-byte brightness with supplied color using original grayscale test/masks/+1;nongrayRGB unchanged,then source-alpha blend with unsigned shift. Original body SHA256 d0797af45a1de02c23988c8d2d90744027d4829a29a2a98dc68115ab7798b089. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ld.d([I[IIIIIIIIIIII)V",
       "originalName": "d",
-      "to": "performAction0941",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgbScaledIntensity",
+      "evidence": "Source-purpose review: 16.16nearest-neighbor sampling;skip source alpha0,scale sampled RGB by supplied intensity,then blend into destination using original source alpha. Intensity changes RGB,not source alpha;unsigned shifts retained. Original body SHA256 4ce714237e96399917ee8385f2604f351fac7b64e25e55c68c714b9e721d2a46. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ld.e(II)V",
@@ -136925,16 +136925,16 @@
     {
       "symbol": "M:ld.e([I[IIIIIIIII)V",
       "originalName": "e",
-      "to": "performAction0942",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgbGrayTinted",
+      "evidence": "Source-purpose review: Use source alpha0skip;apply original piecewise tint to grayscale RGB only,retain nongrayscale RGB,then source-alpha blend over destination with unsigned right shift. Original body SHA256 fa1ddbcbdf8d6b458e7d4fd5fbfb63469ddd9d6d3181c9f1267e3a7471eb2767. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ld.e([I[IIIIIIIIIIII)V",
       "originalName": "e",
-      "to": "performAction0943",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgbScaledAlpha",
+      "evidence": "Source-purpose review: 16.16nearest-neighbor sampling;always read destination and write packed blend using(sourceAlpha*suppliedAlpha)>>8,including effective-alpha0. Preserve full integer domains and unsigned result shift. Original body SHA256 8e9acb5f5088aae3527a8cc40b69ca08ab21c92b9fd633afb8a10021e73c5daf. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ld.f(III)V",
@@ -136946,9 +136946,9 @@
     {
       "symbol": "M:ld.f([I[IIIIIIIII)V",
       "originalName": "f",
-      "to": "performAction0944",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "blitArgbIntensity",
+      "evidence": "Source-purpose review: Skip source alpha0;scale packed source RGB by supplied intensity,then blend that RGB over destination using the original source alpha. Intensity changes RGB,not source alpha. Preserve read/write order and unsigned shifts. Original body SHA256 f574398ef01841b0b4f6fd6c4250d9d350f7bc4a779de2f14ca93ed21c5d0135. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:le.a(BI)V",
@@ -194769,7 +194769,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "reproduce-dekobloko.mjs": "2a1c461995165406fd2fad26551c82dbc06aa441ae38cff980551230c1b2144b",
-      "dekobloko-reviewed-names.json": "ba5efe30b5580a257b6a870fc87cd690fab759a5b1bf3e4451aa11b75a5c5d55",
+      "dekobloko-reviewed-names.json": "f16e7f67d65c9cac88e0a374768773de5f12d456e96afde0570673921f451848",
       "dekobloko-provisional-names.json": "99a1f75e618d2dd63a8885728ecdfb70e4fa3bc7f1b3bd584951c5a27359cb30",
       "catalog-naming-coverage.mjs": "0a733b0a7e4a2779b01b5c15f1e7b027c0fdfed9012851e35f420d3bfcf6ce43",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2"

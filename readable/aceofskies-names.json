@@ -3287,6 +3287,97 @@
       "([I[B[IIIIIIII)V",
       "blitIndexedAlpha",
       "Source-purpose review: Blend nonzero indexed palette pixels over destination using the original supplied alpha and256-minus-alpha packed RGB expression with signed right shift;index0 leaves destination untouched. Original body SHA256 4d7a8320fd69c3474416ed827be0e3a6c48081ffe667607951c967b8b2e418f0. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only."
+    ],
+    [
+      "ll",
+      "a",
+      "(III[I[IIIIIIIII)V",
+      "blitAdditive",
+      "Source-purpose review: Skip source RGB0,then saturating packed RGB addition to destination with original carry-mask expression and source/destination row skips. Original body SHA256 2f83156db27066d39070fc96e2de2b075db98ad2c93b11283b5cf107c593628f. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ll",
+      "a",
+      "(III[I[IIIIIIIIII)V",
+      "blitAdditiveIntensity",
+      "Source-purpose review: Skip source RGB0;scale packed source RGB by supplied full-int intensity using original masks/unsigned shift,then saturating RGB addition to destination. Original body SHA256 4ca1fb48636e692ad59c44358e2de73962329802eea95b5d869ff62f0a2601ee. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ll",
+      "a",
+      "(I[I[IIIIIIII)V",
+      "blitMultiply",
+      "Source-purpose review: Skip source RGB0 and destination RGB0;otherwise multiply each RGB pair with original component-specific unsigned shifts and write the recombined RGB. Original body SHA256 4744a5f9f122658da903c75fb01c91c4d13c76319a7993844d8ef0fae8352fa3. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ll",
+      "a",
+      "([IIIIIIII)V",
+      "blitHalfSize",
+      "Source-purpose review: For each output pixel read a2x2source block;replace each zero source color with the original destination RGB,average four packed RGB values,and write the global software framebuffer. Preserve all repeated framebuffer reads and signed right shift. Original body SHA256 0830fd532e20fbc466e93ca71578735172d054cf8b0859067eca96c36372fe1a. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ll",
+      "a",
+      "([I[IIIIIII)V",
+      "blitUnmasked",
+      "Source-purpose review: Unconditional RGB array copy including zero;four-pixel unroll and tail with original end-index arithmetic and separate row skips. Original body SHA256 faaced96441a672674c9fa58e7e1298a58b0babc4877b2ddbfa6c4981f56aabe. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ll",
+      "a",
+      "([I[IIIIIIII)V",
+      "blitSilhouette",
+      "Source-purpose review: For every nonzero source pixel write the supplied solid color;source0 leaves destination untouched. Preserve four-pixel unroll and tail. Original body SHA256 8f67c92c43a59e4a16fdd113aa9675d4ed30f2569f4dba20e91230466d5eb494. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ll",
+      "a",
+      "([I[IIIIIIIII)V",
+      "blitGrayTinted",
+      "Source-purpose review: Skip source0;for grayscale RGB use supplied tint at level128,black below andwhite above with exact signed-shift arithmetic;non-grayscale source colors copy unchanged. Original body SHA256 b9ee85368b679e1e82c586cc359e13209915e95ce3049501943237ce3397c738. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ll",
+      "b",
+      "([I[IIIIIIII)V",
+      "blitColorKey",
+      "Source-purpose review: Copy nonzero source RGB and skip RGB0;four-pixel unroll and tail with independent source/destination row skips. Original body SHA256 900e8ad8d884e15123ee9c41937d469f0201ba29a938cde8c787c08e2e1d8c15. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ll",
+      "b",
+      "([I[IIIIIIIII)V",
+      "blitColorKeyAlpha",
+      "Source-purpose review: Blend nonzero source RGB over destination with supplied alpha and256-minus-alpha using original packed masks and signed right shift;source0 skips destination. Original body SHA256 2464efe705e5e406428f5c19e427736ced04b694b465597238a25450c156061e. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "rd",
+      "b",
+      "(III[I[IIIIIIIIII)V",
+      "blitArgbAdditive",
+      "Source-purpose review: Skip full source0,derive intensity from supplied gain times source high-byte alpha with original signed shift and&255,scale RGB,then saturating packed addition to destination. Original body SHA256 74648e9c32c7e3e4b2a64d76564674068a476edc52b4def6c166de76f38a828d. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "rd",
+      "c",
+      "([I[IIIIIIII)V",
+      "blitArgb",
+      "Source-purpose review: Use source high-byte alpha;skip alpha0,blend remaining pixels with inverse256-minus-alpha and unsigned right shift. Preserve that alpha255still retains destination contribution under original denominator256. Original body SHA256 aaae2b592f9df05b5353da191ac53b6752c1d6ef7f5b59f9b9c1763ac799acd6. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "rd",
+      "c",
+      "([I[IIIIIIIII)V",
+      "blitArgbGrayTinted",
+      "Source-purpose review: Use source alpha0skip;apply original piecewise tint to grayscale RGB only,retain nongrayscale RGB,then source-alpha blend over destination with unsigned right shift. Original body SHA256 784ed083f8026fc371ddf1ef79823e0677a6031b148f350767441634fd646a42. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "rd",
+      "d",
+      "([I[IIIIIIIII)V",
+      "blitArgbAlpha",
+      "Source-purpose review: Unconditionally read/write each destination;effective alpha=(sourceHighByte*suppliedAlpha)>>8,then packed RGB blend with inverse256 and unsigned result shift. Original body SHA256 f76a43d1a90a0823a324a0f65ce28e23e4dd8dd285a258b97907be40a4801790. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
     ]
   ],
   "fields": [

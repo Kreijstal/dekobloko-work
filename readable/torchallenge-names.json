@@ -2303,6 +2303,41 @@
       "([I[B[IIIIIIII)V",
       "blitIndexed",
       "Source-purpose review: Copy nonzero byte indices through the palette into the destination;index0 leaves destination untouched,including when a nonzero index selects RGB0. Preserve the four-pixel unroll,tail,source/destination offsets and row skips. Original body SHA256 7cfc82afa4257c33681de2809015031780098243424c072e87501204ed53dbae. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only."
+    ],
+    [
+      "ge",
+      "a",
+      "([I[B[IIIIIIIIII)V",
+      "blitPaletteTinted",
+      "Source-purpose review: For nonzero looked-up palette RGB,combine supplied intensity-scaled packed source RGB with a fixed supplied color weighted by256-minus-intensity. Skip palette RGB0;do not read destination. Preserve unsigned right shifts,all input domains and packed integer arithmetic. Original body SHA256 a4324e717e47419ee6939bc5fe6a7d0e6bc4266734ce6569817fdb19e4aed3e5. Naming only;preserve full JVM integer domains,byte signedness,parameter slots,array aliases,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ka",
+      "a",
+      "(I[I[IIIIIIII)V",
+      "blitMultiply",
+      "Source-purpose review: Skip source RGB0 and destination RGB0;otherwise multiply each RGB pair with original component-specific unsigned shifts and write the recombined RGB. Original body SHA256 301dc2dfb2a04980822eb9966bfd0a8c28dde853a33e7e9c9cb1ccc6c51b164d. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ka",
+      "a",
+      "([IIIIIIII)V",
+      "blitHalfSize",
+      "Source-purpose review: For each output pixel read a2x2source block;replace each zero source color with the original destination RGB,average four packed RGB values,and write the global software framebuffer. Preserve all repeated framebuffer reads and signed right shift. Original body SHA256 8a8dc63aa9f2fb0ee47b283da48c23399e585ef20f3c82f44659785b3400dfb3. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ka",
+      "a",
+      "([I[IIIIIII)V",
+      "blitUnmasked",
+      "Source-purpose review: Unconditional RGB array copy including zero;four-pixel unroll and tail with original end-index arithmetic and separate row skips. Original body SHA256 afdaa36151ba9d6ec811cb32bce8785f32b8aab0b89cb3eddf8ee772a3292c1f. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
+    ],
+    [
+      "ka",
+      "b",
+      "([I[IIIIIIII)V",
+      "blitSilhouette",
+      "Source-purpose review: For every nonzero source pixel write the supplied solid color;source0 leaves destination untouched. Preserve four-pixel unroll and tail. Original body SHA256 37f211dcd1e43b942ad76482af4d62d23dac04ae5593affb8dd8f3f47fc2f5f9. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order."
     ]
   ],
   "fields": [
