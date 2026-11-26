@@ -1648,6 +1648,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.a(F)V",
+      "originalName": "a",
+      "to": "setWetGain",
+      "evidence": "Source-purpose review: Synchronized retained wet gain setter,recomputes equal-power same/crosschannels via sqrt((1+/-width)*0.5);no rangeclamp orNaNnormalization. Original identity M:ge.a(F)V. Pinned original body SHA256 d502478fdf1a37fe03e66e98439b8ec06fc39857ea51b2e216754b799a71bf3a. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.a(I)V",
       "originalName": "a",
       "to": "skipFrames",
@@ -1673,6 +1680,13 @@
       "originalName": "c",
       "to": "nextChildStream",
       "evidence": "Continue enumeration of immediate child PCM streams using the original cursor/voice traversal or paired-stream state. Preserve next-link read order,sentinel/null tests,skipped voice states,all global/guard paths and exceptional behavior. Complete original-body SHA256 8e3206f68e80879d581c5df2e63d30570ceaacfa4de14fa89bafaf5b71237483. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.c(F)V",
+      "originalName": "c",
+      "to": "setStereoWidth",
+      "evidence": "Source-purpose review: Synchronized retained stereo width setter using same retainedwetgain/equalpower formulas;retainfloatdouble conversions/order. Original identity M:ge.c(F)V. Pinned original body SHA256 4dc042c471a04d35c507df05fda3df19d2127ab3dfe7f8de690dbc159acbef2a. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
       "confidence": "reviewed"
     },
     {
@@ -2495,10 +2509,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ni.f(I)V",
+      "originalName": "f",
+      "to": "fadeOutAndUnlink",
+      "evidence": "Source-purpose review: Synchronized fadeout/unlink immediatefor0;otherwise signedmaxgain clamp,MININTtarget andoriginalinteger slope division;zerochannelsfastunlink. Preserve negative/overflow/division domains. Original identity M:ni.f(I)V. Pinned original body SHA256 b4022b7b68607ec9c3b2248a5424df2c3d2973163f16c97e3c95c60ac781d4a5. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ni.g()V",
       "originalName": "g",
       "to": "recomputeGains",
       "evidence": "Copy target volume into current mono gain,then evaluate and store left and right panning gains through the two exact original static helpers in their retained order. Complete original-body SHA256 3916916b03a4380f42e477d33b499f99a199bb53e9d0ec0fba32bdb7a4191287. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ni.j()Z",
+      "originalName": "j",
+      "to": "finishOrContinueVolumeRamp",
+      "evidence": "Source-purpose review: Finish/restart volume+stereo ramp:MININTfadeouttargetzero,matchinggainsrefreshorunlink,trueonlyfadeoutcompletion;otherwise scheduleunitsteps/minimumdistance. Original identity M:ni.j()Z. Pinned original body SHA256 1b34dd0994aad617b7a00a71292e950d2f2f7d3da6186a62d35c9e7d47d5373c. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
       "confidence": "reviewed"
     },
     {
@@ -3547,7 +3575,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-dungeonassault-rules.mjs": "8eb15e13a50fdc4451ed6ef68e53e6f3481c4d7f58d0976003f9ed284e2452de",
-      "dungeonassault-names.json": "300be11ea24c91731b030c8a084fff4f77d41443db3e5daa7d7e9b0fd7608248",
+      "dungeonassault-names.json": "98b3b2579cf8a198226a651d40c970bc4172e4471175123098f0d3e81c7cf1a6",
       "reproduce-dungeonassault.mjs": "91cc0426bf614cfc9a70de2a232ea4543d6576e41cf2fec5dad4cf428a0fd8c4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

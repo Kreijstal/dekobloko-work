@@ -1550,6 +1550,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.a(III)V",
+      "originalName": "a",
+      "to": "drawAdditive",
+      "evidence": "Source-purpose review: Clipped additive ARGB wrapper;fully readhelper36 multiplies alpha by supplied scalar before RGB contribution then saturating-adds destination. Preserve &255 alpha reduction and sourcezero handling. Original identity M:ep.a(III)V. Pinned original body SHA256 b866ad8ff1f743fc74d8239e39b7ca3c90d419c9f6c1d983c92222f726cf1b36. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(IIII)V",
+      "originalName": "b",
+      "to": "drawScaled",
+      "evidence": "Source-purpose review: Trim-aware nearest16.16 scaled ARGB wrapper;fully readhelper35 blends original sample alpha,skipszeroalpha;all cursor/clip/overflow domains retained. Original identity M:ep.b(IIII)V. Pinned original body SHA256 6e854b99447004b7cddc88cc3bb3c878cecd8b81111626b998a43b4ba9245e4b. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(IIIIII)V",
+      "originalName": "b",
+      "to": "rotateNearest",
+      "evidence": "Source-purpose review: Complete604-line ARGB rotation body read in ca9aae/a20768/4e3981 windows1..200,201..400,401..604. Nearest one-pixel sampling via >>12,allzero/sign step branches,original per-pixel alpha blend with256complement. Alpha-zero path still reads/writes destination inthiskernel;preserve this and all bounds/division/overflow order. Original identity M:ep.b(IIIIII)V. Pinned original body SHA256 291602a4b60578a62888387d2d4af8de111fcffc59548a2fb696c2fe079ddfb9. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.c(II)V",
+      "originalName": "c",
+      "to": "drawHalfSize",
+      "evidence": "Source-purpose review: Half-size ARGB samples four2x2 pixels,alpha-weighted normalizedRGB,averagealpha>>2,thenblend;retain sample traversal and allzeroalpha branch. Original identity M:ep.c(II)V. Pinned original body SHA256 8eeaf3f284e05337165e2a63238ab2f045705beb3b1948934686e0cad7ee3ace. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.e(II)V",
+      "originalName": "e",
+      "to": "drawQuarterSize",
+      "evidence": "Source-purpose review: Quarter-size ARGB 4x4 blocks sum alpha and alpha-weighted RGB,normalizeRGB by totalalpha,blend using meanalpha>>4,skip allzeroalpha;retain16-int temporary allocation. Original identity M:ep.e(II)V. Pinned original body SHA256 b60e75f22683a5d8aa21ae0877d6cc10a251336988b2e92c0ad0ed965b6b7227. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fc.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2509,6 +2544,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nj.h()Z",
+      "originalName": "h",
+      "to": "finishVolumeRamp",
+      "evidence": "Source-purpose review: Volume-ramp completion/restart counterpart with MININT fade target and guard0 unlink;all synchronizedcallercontracts and gains/steps unchanged. Original identity M:nj.h()Z. Pinned original body SHA256 5ceece01aee453bc0543887d4c06437518e638e6798bbb66de00f50876293fd5. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.h(I)V",
+      "originalName": "h",
+      "to": "fadeOutAndRemove",
+      "evidence": "Source-purpose review: Synchronized fade withzero-duration setter/unlink,channelssilent immediateunlink,otherwise MININT target andinteger slopes. Wrong guard0 alternatives in unlink helper remain unchanged. Original identity M:nj.h(I)V. Pinned original body SHA256 22f3b9471e12529117da9fed3d8f8719c550de715cb06965a72e6be3ed1ad88d. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nj.i()V",
       "originalName": "i",
       "to": "recomputeGains",
@@ -2646,6 +2695,55 @@
       "originalName": "a",
       "to": "createAccountErrorResult",
       "evidence": "Complete source declaration/body, five-field DTO instance contract, boolean constructor and all account-result panel instance methods reviewed, with exact account-created success label. Success int<6 clears unrelated String before allocation. Error allocates false and writes status/message before int!=-1 null return. Suggestion allocates and aliases array before int!=0 String cleanup. Poller throws for idle before true-guard null return and consumes ready only after guard. UI byte>=-102 clears related form reference after result processing/message-panel allocation and before button handling; retain callback order, handled flag,248 transition, secondary action, all guard paths and exception wrapping. Identifier edits only; retain caller array/object identity, defaults, original guard domains, all operators/branches and failure behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.a(IIII)V",
+      "originalName": "a",
+      "to": "drawVerticalLine",
+      "evidence": "Source-purpose review: Vertical flatcolour clippedrun incrementsdestinationbyrasterstride. Original identity M:ph.a(IIII)V. Pinned original body SHA256 9c001d31cef535a5e337856a96ee36190c353617b1e7492b13be6c4663fce7a5. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawLine",
+      "evidence": "Source-purpose review: All-octant line withhorizontal/verticaldelegates,16.16fixedslope andoriginalrounding/clip;preserveoverflowinclusiveends. Original identity M:ph.a(IIIII)V. Pinned original body SHA256 69a8d14a19d0aaf1b41bcc2bbe1f6584d016c62a95386850034a9ceb49de2e21. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.b(IIII)V",
+      "originalName": "b",
+      "to": "drawHorizontalLine",
+      "evidence": "Source-purpose review: Horizontal flatcolour clippedrun,contiguousdestination offsets. Original identity M:ph.b(IIII)V. Pinned original body SHA256 6c5a4334cec305b4d9971968017fdcf54091e1661a97cf3f1239dca96366c5c6. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.b(IIIII)V",
+      "originalName": "b",
+      "to": "drawVerticalLineAlpha",
+      "evidence": "Source-purpose review: Vertical counterpart samealpha arithmetic,indicesadvancerasterstride. Original identity M:ph.b(IIIII)V. Pinned original body SHA256 946c6629889f3c860f3b9e89ac401e3c780152f48dc291d51c3fddfdf2000199. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.d(IIII)V",
+      "originalName": "d",
+      "to": "fillCircle",
+      "evidence": "Source-purpose review: Midpoint-style filledcircle scanlines withzeroradiusdelegate,negative-radiusnegation,asymmetricendpointloops andoriginalfullintoverflow. Original identity M:ph.d(IIII)V. Pinned original body SHA256 0a1aaab0ba630088177bdef2bb3e024398f803558c3cfac445b6e2e6ff137b0a. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.f(IIIII)V",
+      "originalName": "f",
+      "to": "drawHorizontalLineAlpha",
+      "evidence": "Source-purpose review: Horizontal clipped RGB/destinationalpha blend using256complement,contiguousindices. Original identity M:ph.f(IIIII)V. Pinned original body SHA256 f0ad390b062d6b863b7e5943f0ac14e74791e3918b07280e7bd21513667c99e0. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.g(IIII)V",
+      "originalName": "g",
+      "to": "setClip",
+      "evidence": "Source-purpose review: Clamp clipstarts>=0/clipends<=rasterdimensions,setall4bounds theninvokeoriginalclipstatehelper;invertedrectanglesunchanged. Original identity M:ph.g(IIII)V. Pinned original body SHA256 9b21dce457eb43d7a564486640f631f32f5b5dbb73d0e4ea803ee15fcaab00fa. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
       "confidence": "reviewed"
     },
     {
@@ -2982,6 +3080,69 @@
       "originalName": "a",
       "to": "onScheduledEvent",
       "evidence": "Run the scheduled mixer listener callback and return the original next frame delay or negative unschedule result. Preserve the retained virtual dispatch and caller monitor. Concrete tracker callbacks first call their original state updater,conditionally return minus one,and otherwise compute ((sampleRate<<9)+(sampleRate<<7))/(tempo*scale) with original int overflow and division behavior. Original abstract declaration SHA256 22cc28f67734d06e2dbefb652d4a0acbae867f1e585cb6b041c60f90d65b3e0e. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.a(II)V",
+      "originalName": "a",
+      "to": "drawMultiply",
+      "evidence": "Source-purpose review: Multiply wrapper and direct kernel fully read:nonzero source/destination required;per-channel source*destination >>>8;not scalar intensity. Original identity M:t.a(II)V. Pinned original body SHA256 965cab707e2984581bee378f2741cac83e7d9db39c6ea37367d722c9d88215ab. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.a(III)V",
+      "originalName": "a",
+      "to": "drawAdditive",
+      "evidence": "Source-purpose review: Expanded override-family member reviewed alongside its complete selected family;preserve the inherited API contract and all original dispatch. Original identity M:t.a(III)V. Pinned original body SHA256 5404dea9400d2656b1e5c14639dd7fd2e09c3cb83644ac8d3974954159871469. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.a(Lt;Lt;IIIIII)V",
+      "originalName": "a",
+      "to": "copyRegion",
+      "evidence": "Source-purpose review: Rejects identical source/destination objects before clip;subtracttrim,clip both rectangles,then forward nonzero copyhelper. Preserve selfcopyexception and null/bounds order. Original identity M:t.a(Lt;Lt;IIIIII)V. Pinned original body SHA256 666e5268564b68a8d3179e1e86ee1eebf0b1399144c20c73172210a0c73525e2. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.b(III)V",
+      "originalName": "b",
+      "to": "drawSilhouette",
+      "evidence": "Source-purpose review: Silhouette wrapper and direct kernel fully read:nonzero source masks write one supplied constant colour;zero source preserves destination. Original identity M:t.b(III)V. Pinned original body SHA256 9ed553ec8badf31eeee4f462557d98ab81356887fd6414e05df4832250cc1ca6. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.b(IIII)V",
+      "originalName": "b",
+      "to": "drawScaled",
+      "evidence": "Source-purpose review: Trim-aware nearest scaled wrapper;fully read direct helper uses 16.16 source indices,skips zero source,advances original source steps/destination stride. Original identity M:t.b(IIII)V. Pinned original body SHA256 9c6896f494c59c59233922b977b8a278a38c57de82f7e10d1b67c84c275a935d. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.b(IIIIII)V",
+      "originalName": "b",
+      "to": "rotateNearest",
+      "evidence": "Source-purpose review: Complete595lineRGB rotation kernel read in3boundedwindows06c4e2/3574d0/ac9454. Nonzero scale,16bit angle,sin/cos,fixedpoint transformed bounds/clipping,inverse source steps,all sign/zero branches sample exactly one source pixel by >>12 index and skipzero. No interpolation/averaging;rotateNearest supported. Preserveall integer overflow/division/truncation/rounding andpixel/cursor ordering. Original identity M:t.b(IIIIII)V. Pinned original body SHA256 cc94f22490db6c4d64220aa5da5a311315866a1b8388e817dab6c2ef7aecfff7. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.c(II)V",
+      "originalName": "c",
+      "to": "drawHalfSize",
+      "evidence": "Source-purpose review: Half-size wrapper clips/crops and calls fully read 2x2 channel-average helper writing global raster;zero source substitutes current destination per sample. Retain masks,shifts and writes. Original identity M:t.c(II)V. Pinned original body SHA256 b8c623a357d8ac28e4b8e5e535484b549388c586bf57061adad2b58d1c43e20a. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.c(IIII)V",
+      "originalName": "c",
+      "to": "drawScaledAveraged",
+      "evidence": "Source-purpose review: Area-weighted downscale only when requested size<=full dimensions;trim-aware fixedpoint4fractional area,nonzeroRGB weighting,coverage thresholdhalfarea,blackresultforced1. Preserve zeroarea destination cursor quirk and larger-size exception. Original identity M:t.c(IIII)V. Pinned original body SHA256 981bbbc505d3228c5771e69de2394e3ddca7d8f5240a6743434fd7601298caa2. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.e(II)V",
+      "originalName": "e",
+      "to": "drawQuarterSize",
+      "evidence": "Source-purpose review: Quarter-size wrapper performs 4x4 channel averaging;zero source substitutes current destination;trim-aware clip/block arithmetic and masked sums retained. Original identity M:t.e(II)V. Pinned original body SHA256 58b079bce785237302755a9e86846bb85b7229315f46416c2b298c6d4d85ce0d. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
       "confidence": "reviewed"
     },
     {
@@ -3482,6 +3643,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wf.b(IIIIII)V",
+      "originalName": "b",
+      "to": "rotateNearest",
+      "evidence": "Source-purpose review: Expanded override-family member reviewed alongside its complete selected family;preserve the inherited API contract and all original dispatch. Original identity M:wf.b(IIIIII)V. Original abstract declaration and full override closure retained. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wi.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -3673,7 +3841,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "8da598367c03f04c9e534a68a3861682d35d37834f3f17cf0207e7991dc70176",
-      "torquing-names.json": "3c008d2e85d2e727b2cccc445055b0828180447083d614e2075b3683bdbed9e6",
+      "torquing-names.json": "257ec7a8f7dd46f7d1e513727e566aff2c7169691c6c548b4a73cd68f8f23069",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

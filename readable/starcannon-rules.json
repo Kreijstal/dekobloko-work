@@ -1326,6 +1326,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.h()Z",
+      "originalName": "h",
+      "to": "adjustRampOrStop",
+      "evidence": "Source-purpose review: Completion check derives gain targets,unlinks only when MININT fade completes,else recomputes unitstep ramp/minimumremainingduration. Preserve all int branches/guard4 unlink. Original identity M:fj.h()Z. Pinned original body SHA256 994ca834bf9bdf99ea84c8f7c19ef3edf73e14c7f41677dfea590fd839ef8540. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.h(I)V",
+      "originalName": "h",
+      "to": "fadeOutAndUnlink",
+      "evidence": "Source-purpose review: Synchronized fadeOutAndUnlink variant withoriginalduplicatednonzerochannel branches,signedmaxgain clamp,MININTtarget,divisionsteporder and immediatezero-duration delegate/unlink guard4. Original identity M:fj.h(I)V. Pinned original body SHA256 7d02a4ec9dfa26ac1c851caf28af4d5dadf41302f8389d03e2ec0da0203d2282. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1477,6 +1491,48 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8314e14121ce8c1c181c8f85b33da56b9f191e011804ca0c21bf5378e04409e0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(IIII[I[IIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitScaledAdditiveRows",
+      "evidence": "Source-purpose review: Nearest16.16scaledsampling,skipzeros,saturatingaddRGB into destination;retain negated width/height loop domains,strides/overflow. Original identity M:hl.a(IIII[I[IIIIIIIIIII)V. Pinned original body SHA256 c9e35ceee165fb7420d1a0df4bfe6a3f92dddc5f0100bfeb1748146c05100fb1. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(IIII[I[IIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitScaledAdditiveIntensityRows",
+      "evidence": "Source-purpose review: Same additive scaledkernel,RGBintensitymultiply before saturation;retainunsignedshifts/masks. Original identity M:hl.a(IIII[I[IIIIIIIIIIII)V. Pinned original body SHA256 cfad84b83217e5772f152ba82e9f28768a845293624eb841256c60c51802d278. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a([I[IIIIIIIII)V",
+      "originalName": "a",
+      "to": "copyNonzeroPixelsDimmed",
+      "evidence": "Source-purpose review: Pure nonzeroRGB dimcopy:unsigned final shift,sourcezero skips,no destinationcolour read;supports intensity wrapper semantics. Original identity M:hl.a([I[IIIIIIIII)V. Pinned original body SHA256 1e9e02f28cbbd6537c68cf802c9386f51a9e4604e585aae78212863bc54331db. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.b()V",
+      "originalName": "b",
+      "to": "rotateCounterclockwise",
+      "evidence": "Source-purpose review: Counterclockwise pixel order:old columns descending,rows ascending;swapstored/full dimensions and rotate trim withfullwidth-minus-oldtrimX-width. All array/allocation order retained. Original identity M:hl.b()V. Pinned original body SHA256 729c013c39463813085416d304f6280a3b56abc5c7c85fc6530a77795c1e66c8. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.b([I[IIIIIIII)V",
+      "originalName": "b",
+      "to": "copyNonzeroPixelsReversed",
+      "evidence": "Source-purpose review: Source cursor decrements while destination increments;nonzero source RGB copied,zero skips;unrolled and remainder loops retained. Original identity M:hl.b([I[IIIIIIII)V. Pinned original body SHA256 1dac872c50d5ca1a1c943dcc41550f363fe04af9e02edc06c6a7e93cfe0f2aeb. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.c(IIII)Z",
+      "originalName": "c",
+      "to": "isOpaqueAt",
+      "evidence": "Source-purpose review: Four args are sprite origin and testpoint;subtracttrim/origin,boundscheck,return sourcepixel!=0. Original identity M:hl.c(IIII)Z. Pinned original body SHA256 15096e7f1643076c2f40f6aeb63de838ad922526bdcbe911bf70fd81b1c764a6. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
       "confidence": "reviewed"
     },
     {
@@ -2749,7 +2805,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "7f1d78b2ac259134f0fa8b4756958a831c5010c4f94bd535eecc0a1fef4e8a02",
+      "starcannon-names.json": "e741be87d7fa1e1a142345719b0b302887c8032db292fc854994e0f8fd0de7a7",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
