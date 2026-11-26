@@ -388,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ci",
+      "originalName": "ci",
+      "to": "AwtRasterBuffer",
+      "evidence": "Abstract AWT raster buffer with exactly four instance fields:two dimension ints,int pixel array,and Image. Declares initialization/drawing operations implemented by ImageProducer and BufferedImage subclasses,and a final method installing its pixels/dimensions as the software raster target. Entire class source and instance/static member context reviewed;all616class-use spans inventoried and70representative contexts read. Preserve modifiers,implicit constructor/default state,all unrelated statics/field names,full primitive domains/guards/aliases/allocation/exception order and native/override bindings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:db",
       "originalName": "db",
       "to": "ClientException",
@@ -525,6 +532,13 @@
       "originalName": "mf",
       "to": "IsaacRandom",
       "evidence": "Result and state arrays seeded with the golden-ratio constant; ISAAC generator for packet opcodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:n",
+      "originalName": "n",
+      "to": "BufferedImageRasterBuffer",
+      "evidence": "AWT raster buffer backed by inherited int pixel storage through DataBufferInt/DirectColorModel/WritableRaster/BufferedImage,and drawn through Graphics.drawImage using retained Component observer. Complete class,public empty no-argument constructor,and both initialization/drawing bodies reviewed;exactly one own nonstatic Component field and four inherited dimension/pixel/image fields verified with bound platform APIs. Preserve finality/visibility,all method/field leaves except constructor class-name display,full primitive domains,guard paths,int overflow and pixel-array size,Lexicominos supplied premultiplication boolean,aliases,partial writes and allocation/call/exception order. Exactly one bound Class.forName string must follow this class rename;other literals unchanged. Deko already has provisional RenderingSupport013 alias,so its existing literal edit is refined rather than counted twice.",
       "confidence": "reviewed"
     },
     {
@@ -672,6 +686,13 @@
       "originalName": "vg",
       "to": "VorbisCodebook",
       "evidence": "Vorbis codebook: constructor consumes24bits without validating them,reads dimensions/entry count and ordered/sparse code lengths,builds a canonical Huffman tree,and reads quantized lookup vectors. Scalar bit traversal returns complemented tree leaf;vector decoding returns the retained vector row by alias;lookup1 uses the original integer-power helper. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vj",
+      "originalName": "vj",
+      "to": "ImageProducerRasterBuffer",
+      "evidence": "AWT ImageProducer/ImageObserver raster buffer with two private instance fields for ImageConsumer and ColorModel,plus inherited pixels/Image/two dimensions. Complete empty package-visible constructor and all nine nonconstructor instance bodies reviewed:consumer registration/removal/identity callbacks,always-true imageUpdate,empty resend callback,startProduction delegation,initialization,draw,and synchronized pixel publication. Platform setPixels/imageComplete/createImage/prepareImage/drawImage bindings and parent storage verified. All574type references inventoried and48representative contexts read. Preserve all unrelated static helpers,interface names,visibility/finality/monitors,full primitive domains,all game-specific guard/null/exception behavior,pixel/dimension aliases,and allocation/callback/partial-write order.",
       "confidence": "reviewed"
     },
     {
@@ -976,6 +997,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ah.a(Z)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ai.a([BI[BII)V",
       "originalName": "a",
       "to": "copyByteRange",
@@ -1102,6 +1130,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ba.a(B)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bb.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1179,10 +1214,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ce.b(I)V",
+      "originalName": "b",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 3 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cg.a(I)V",
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.c(I)V",
+      "originalName": "c",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(B)V",
+      "originalName": "a",
+      "to": "setAsRasterTarget",
+      "evidence": "Source-purpose review: Install this buffer pixel-array reference and its two dimensions through the already-reviewed static setRasterBuffer operation,which stores the global target/dimensions and resets clipping. All13owning class bodies,13callee bodies,and all135incoming contexts reviewed. Preserve every game-specific guard-dependent return,static cleanup/Canvas nulling,virtual reinitialization,self recursion,pixel-array null assignment,division exception and exact before/after call order;retain argument widths/domains and finality. No signature/body/field changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(IILjava/awt/Graphics;I)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Publish producer pixels where applicable and draw the retained AWT image through Graphics.drawImage using the original coordinates/observer. Entire26override families/78members,52concrete bodies and26abstract signatures reviewed with all46incoming contexts. Preserve all three member names consistently,visibility/finality,all original parameter permutations/primitive domains,guards,partial assignments,monitors,allocation/call/exception order and diagnostics. Lexicominos supplied premultiplication boolean and all per-game exceptional branches retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(Ljava/awt/Component;III)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Initialize inherited raster dimensions/pixels/AWT image with the original Component-backed BufferedImage or ImageProducer implementation. Entire26override families/78members,52concrete bodies and26abstract signatures reviewed with all46incoming contexts. Preserve all three member names consistently,visibility/finality,all original parameter permutations/primitive domains,guards,partial assignments,monitors,allocation/call/exception order and diagnostics. Lexicominos supplied premultiplication boolean and all per-game exceptional branches retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(I)V",
+      "originalName": "b",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 8 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -1193,6 +1270,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cl.o(I)V",
+      "originalName": "o",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cm.a(I)V",
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
@@ -1200,10 +1284,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cn.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 7 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:d.a(II)I",
       "originalName": "a",
       "to": "bitLength",
       "evidence": "Determine the integer bit width using unsigned shifts by16,8,4,2,1 and accumulated width. Preserve game-specific threshold/guard parameter positions,unused arithmetic,global side effects,early returns and exception wrappers for every input. Pre-rename body SHA256 5780c0e1d2df3e5dc72c8b5f89a88990e6d6c13494de50ecd4631c462ea273bf. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.a(B)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -1998,6 +2096,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fl.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fm.e(B)V",
       "originalName": "e",
       "to": "clearDeclaredStaticReferences",
@@ -2079,6 +2184,13 @@
       "originalName": "d",
       "to": "getSchedulingCost",
       "evidence": "Return the original PCM scheduler work-cost value:fixed container/leaf cost or state-dependent activity/effect cost as actually implemented. Retain original integer products,guards,shared/volatile reads and all special return values. Complete original-body SHA256 6f0e51fae88af5d49ca110334f2c79b1d4b778152ba5bb31672e7edf472e73be. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 6 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -2271,6 +2383,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hn.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 2 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hn.a(ZB)Led;",
       "originalName": "a",
       "to": "createAccountSuccessResult",
@@ -2327,6 +2446,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.p(I)V",
+      "originalName": "p",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 2 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:il.a(I)V",
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
@@ -2355,10 +2481,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ja.f(I)V",
+      "originalName": "f",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.a(I)V",
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 3 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -2436,6 +2576,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 10 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 08995a7a782e0da5d287fa5515fe30079f72577ab118cc9ba8086273e9b6f367.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.s(I)V",
+      "originalName": "s",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -2523,6 +2670,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lc.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ld.d(Z)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -2548,6 +2702,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(B)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -2684,6 +2845,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:n.a(IILjava/awt/Graphics;I)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Publish producer pixels where applicable and draw the retained AWT image through Graphics.drawImage using the original coordinates/observer. Entire26override families/78members,52concrete bodies and26abstract signatures reviewed with all46incoming contexts. Preserve all three member names consistently,visibility/finality,all original parameter permutations/primitive domains,guards,partial assignments,monitors,allocation/call/exception order and diagnostics. Lexicominos supplied premultiplication boolean and all per-game exceptional branches retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(Ljava/awt/Component;III)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Initialize inherited raster dimensions/pixels/AWT image with the original Component-backed BufferedImage or ImageProducer implementation. Entire26override families/78members,52concrete bodies and26abstract signatures reviewed with all46incoming contexts. Preserve all three member names consistently,visibility/finality,all original parameter permutations/primitive domains,guards,partial assignments,monitors,allocation/call/exception order and diagnostics. Lexicominos supplied premultiplication boolean and all per-game exceptional branches retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:na.a(B)I",
       "originalName": "a",
       "to": "pollRotation",
@@ -2765,6 +2940,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 5 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 2 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -3412,10 +3594,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rg.r(I)V",
+      "originalName": "r",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 2 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rh.a(I[Ljava/lang/String;)Led;",
       "originalName": "a",
       "to": "createAccountSuggestionsResult",
       "evidence": "Complete source declaration/body, five-field DTO instance contract, boolean constructor and all account-result panel instance methods reviewed, with exact account-created success label. Success byte105 tested before allocation. Error factory always allocates false, but false guard returns null before field writes. Suggestion allocates and aliases caller array before int<118 recursive call rh.a(17,null), preserving repeated allocations and StackOverflowError. Poller idle throw precedes byte>=-19 null guard and ready consumption. UI displays panel before wrong-int guard recursively invokes result processing with null; preserve NPE/wrapping, all state/call/write/allocation order, full guard arithmetic and default values. Identifier edits only; retain caller array/object identity, defaults, original guard domains, all operators/branches and failure behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 2 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -3762,6 +3958,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(B)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 5 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sk.b(Z)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -3958,6 +4161,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tf.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ti.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -3983,6 +4193,13 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.a(I)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -4039,6 +4256,13 @@
       "originalName": "j",
       "to": "discardDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(B)V",
+      "originalName": "a",
+      "to": "resetStaticState",
+      "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
       "confidence": "reviewed"
     },
     {
@@ -4301,6 +4525,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vj.a(IILjava/awt/Graphics;I)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Publish producer pixels where applicable and draw the retained AWT image through Graphics.drawImage using the original coordinates/observer. Entire26override families/78members,52concrete bodies and26abstract signatures reviewed with all46incoming contexts. Preserve all three member names consistently,visibility/finality,all original parameter permutations/primitive domains,guards,partial assignments,monitors,allocation/call/exception order and diagnostics. Lexicominos supplied premultiplication boolean and all per-game exceptional branches retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(Ljava/awt/Component;III)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Initialize inherited raster dimensions/pixels/AWT image with the original Component-backed BufferedImage or ImageProducer implementation. Entire26override families/78members,52concrete bodies and26abstract signatures reviewed with all46incoming contexts. Preserve all three member names consistently,visibility/finality,all original parameter permutations/primitive domains,guards,partial assignments,monitors,allocation/call/exception order and diagnostics. Lexicominos supplied premultiplication boolean and all per-game exceptional branches retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.c(I)V",
+      "originalName": "c",
+      "to": "publishPixelsToConsumer",
+      "evidence": "Source-purpose review: Publish retained pixel storage/dimensions/color model through ImageConsumer.setPixels and the original conditional imageComplete(2) behavior. Entire class instance contract and all52publisher call sites reviewed. Retain private/final/synchronized modifiers,consumer re-reads,guard-dependent returns/static resets/reinitialization/callbacks,and all call/write/exception order. DrPhlogiston parameter is actual pixel y coordinate and DungeonAssault parameter is actual x coordinate;do not replace with0 or treat as dummy guard. No body/signature/field/primitive-domain changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4394,7 +4639,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 1
+    "expectedEdits": 2
   },
   "labels": {
     "policy": "lexical-targets",
@@ -4408,7 +4653,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "c653d1887f22edf31c042a5e8dabc750412925087e76e5f0f5b8b9be5f6413db",
+      "minerdisturbance-names.json": "31fbd9ed6e1a952239da17d5f60f61f906700bec8ba68f54b73dfef5aff11b7e",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
