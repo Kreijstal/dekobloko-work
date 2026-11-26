@@ -199,6 +199,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:d",
+      "originalName": "d",
+      "to": "ArgbSprite",
+      "evidence": "Complete original class, both constructors, all drawing wrappers and pixel kernels reviewed. Sprite subclass composites ARGB pixels with unsigned top-byte alpha; includes clipping/mirrored draws, global alpha, additive intensity, grayscale tint/ramp and coverage-weighted 2x2/4x4 reductions. Preserve unchanged arithmetic, allocation, read/write/skip order and full primitive domains.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:da",
       "originalName": "da",
       "to": "SocketArchiveRequestConnection",
@@ -231,6 +238,13 @@
       "originalName": "fc",
       "to": "IntrusiveNode",
       "evidence": "Long key plus two reciprocal links; base of buffers, streams and widgets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fd",
+      "originalName": "fd",
+      "to": "IndexedSpriteState",
+      "evidence": "Complete original abstract class and concrete indexed-sprite field consumers/constructors reviewed. Stores full dimensions, trimmed dimensions and offsets for a palette-indexed sprite; declares draw/drawAlpha implemented by IndexedSprite. Preserve unrelated request/font-loading statics, diagnostic string, sentinel division and partial cleanup order.",
       "confidence": "reviewed"
     },
     {
@@ -1911,6 +1925,13 @@
       "originalName": "b",
       "to": "isLinked",
       "evidence": "Returns whether field_e (the previous link) is non-null, which is how a node is known to be in a deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Source-purpose review: Clears account state before sentinel-guard division,then sprite/font text. Division can throw after firstclear;preserve byte-domain exception andpartial-write order.",
       "confidence": "reviewed"
     },
     {
@@ -3785,7 +3806,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "9b7739013bc1f56526463051ca785483047959ad5ac7f2daf036273686e67f1f",
+      "trackcontroller-names.json": "20d0ce3053108b48b90b86b446d963249df2be4ea4ef53622138b92638bd8886",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

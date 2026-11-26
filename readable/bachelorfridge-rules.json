@@ -1032,6 +1032,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:go",
+      "originalName": "go",
+      "to": "SpriteState",
+      "evidence": "Complete original class, concrete sprite constructors and rotation dispatch reviewed. Abstract DualLinkNode sprite state stores full dimensions, trim offsets and pixel extents; converts sprite center/destination to fixed-point before dispatching nearest rotation. Preserve mixed-in theme/invite/status-effect statics, guard-dependent writes/calls and all original execution order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gp",
       "originalName": "gp",
       "to": "DreamsAnimation",
@@ -5666,10 +5673,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:go.a(IBI)V",
+      "originalName": "a",
+      "to": "registerStatusEffectDefinition",
+      "evidence": "Source-purpose review: Stores new rs(statusId,iconIndex) in pna.field_zb[statusId],then conditionally clears invite text. rs constructor indexes55status name/description arrays,UI callers use icon index -1 as absence. Guard andarray/allocation evaluation unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawRotated",
+      "evidence": "Source-purpose review: Builds full sprite half-width/height center in16ths,adjusts destination low bits,dispatches abstract nearest rotation;nonmagicguard writes field_p=-3 beforedispatch. Dimensions confirmed in the original concrete sprite constructors.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:go.a(IIIIII)V",
       "originalName": "a",
       "to": "rotateNearest",
       "evidence": "Body is token-identical to the reviewed ArgbSprite method of the same name in other FunOrb games. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Source-purpose review: Clears widget theme and invite text;param<93 first invokes status-effect registration. Keep complete int domain,first call/clear/exception order,do not treat as a pure cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -12206,7 +12234,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "d8185ebcddd9f6cab3bc26c8d682f4ea52bef3c23e477da0f12d9849e811b067",
+      "bachelorfridge-names.json": "7856ff3a5e161b625fced1c00766c3019804e6c0e09f745c7d86aff76430f5d7",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

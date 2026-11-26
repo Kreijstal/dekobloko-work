@@ -129,6 +129,11 @@
       "kh",
       "AbstractAudioSample",
       "Abstract intrusive sound-data node retaining the original single int scheduling counter and empty package-visible constructor,shared by the sample reference in the PCM stream scheduler. Preserve default field state and inherited node semantics. Original constructor SHA256s 9265619237dc049c9efd5c01a5c74a7e99db1a67aa7ef3e2e396e54563e1bc57. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim."
+    ],
+    [
+      "mj",
+      "PalettedBitmapFont",
+      "Complete original class, constructors, both clipped glyph wrappers and both palette blitters reviewed. BitmapFont subclass stores byte-indexed glyph rasters and palette slots; draws nonzero indices through selected RGB palette, with optional explicit alpha, and dispatches alternate monochrome rendering via the boolean flag. Preserve allocation/replacement order, clipping, signed arithmetic shifts, row strides and zero-index skips."
     ]
   ],
   "methods": [
@@ -2350,6 +2355,20 @@
       "(IIIIIIZ)V",
       "drawGlyph",
       "Source-purpose review: Expanded override-family member reviewed alongside its complete selected family;preserve the inherited API contract and all original dispatch. Original identity M:mj.a(IIIIIIZ)V. Pinned original body SHA256 26ccd9baf3a674e009f82ffbea53913eb239c38f82211e45677f7cdebde177d1. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only."
+    ],
+    [
+      "mj",
+      "a",
+      "(I[I[B[IIIIIII)V",
+      "blitPaletteGlyph",
+      "Source-purpose review: Unrolled4pixels+remainder perrow;nonzero unsigned byte selects paletteRGB,zero skips destination;preserves row strides andsource accesses."
+    ],
+    [
+      "mj",
+      "a",
+      "(I[I[B[IIIIIIII)V",
+      "blitPaletteGlyphAlpha",
+      "Source-purpose review: Nonzero unsigned glyph index selects paletteRGB,blends with destination using provided alpha and256-alpha;zero only advancesdestination. Preserve signed >>8,not >>>8,andfull alpha inputdomain."
     ]
   ],
   "fields": [

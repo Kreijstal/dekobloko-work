@@ -479,6 +479,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mj",
+      "originalName": "mj",
+      "to": "PalettedBitmapFont",
+      "evidence": "Complete original class, constructors, both clipped glyph wrappers and both palette blitters reviewed. BitmapFont subclass stores byte-indexed glyph rasters and palette slots; draws nonzero indices through selected RGB palette, with optional explicit alpha, and dispatches alternate monochrome rendering via the boolean flag. Preserve allocation/replacement order, clipping, signed arithmetic shifts, row strides and zero-index skips.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ng",
       "originalName": "ng",
       "to": "IntrusiveDeque",
@@ -2215,6 +2222,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mj.a(I[I[B[IIIIIII)V",
+      "originalName": "a",
+      "to": "blitPaletteGlyph",
+      "evidence": "Source-purpose review: Unrolled4pixels+remainder perrow;nonzero unsigned byte selects paletteRGB,zero skips destination;preserves row strides andsource accesses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a(I[I[B[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitPaletteGlyphAlpha",
+      "evidence": "Source-purpose review: Nonzero unsigned glyph index selects paletteRGB,blends with destination using provided alpha and256-alpha;zero only advancesdestination. Preserve signed >>8,not >>>8,andfull alpha inputdomain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:n.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -3120,7 +3141,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "cac301db67ab8dcac9485b72e8af15a6856acabd08902bf21a00dd2f200d4570",
+      "lexicominos-names.json": "07633549de1fe4296707fcc1db3fc58d7bf6ddea82f884d6646a95cfd62f49dd",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
