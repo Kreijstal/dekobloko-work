@@ -2600,6 +2600,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:od.a([I[B[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitIndexed",
+      "evidence": "Source-purpose review: Copy nonzero byte indices through the palette into the destination;index0 leaves destination untouched,including when a nonzero index selects RGB0. Preserve the four-pixel unroll,tail,source/destination offsets and row skips. Original body SHA256 7cfc82afa4257c33681de2809015031780098243424c072e87501204ed53dbae. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:od.b([I[B[IIIIIIII)V",
+      "originalName": "b",
+      "to": "blitIndexedAlpha",
+      "evidence": "Source-purpose review: Blend nonzero indexed palette pixels over destination using the original supplied alpha and256-minus-alpha packed RGB expression with signed right shift;index0 leaves destination untouched. Original body SHA256 d798b9b8c1facd081112441f6fb3648865f3a3ad657dc4265b6b72e40c821e6f. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oi.c()V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -3295,7 +3309,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-solknight-rules.mjs": "d510dd3c5215d127be812bd794c1668890712739b676d0f83f2bf4b4a34f49d6",
-      "solknight-names.json": "7e517d8ce10b1cab305dd0c861312c07595ef0ada58376837654feb42aec13e1",
+      "solknight-names.json": "bf80fa2794a2bcb5a75f5ca61a085145582ec3793dc1ea04f90471629a06fa0e",
       "reproduce-solknight.mjs": "13b4e70cdbc3799ce0c256f7eb4afa61bbdd6dd18b17fd5cfda8475d81e10fc3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

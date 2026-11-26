@@ -1816,6 +1816,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ii.a([I[B[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitIndexed",
+      "evidence": "Source-purpose review: Copy nonzero byte indices through the palette into the destination;index0 leaves destination untouched,including when a nonzero index selects RGB0. Preserve the four-pixel unroll,tail,source/destination offsets and row skips. Original body SHA256 7cfc82afa4257c33681de2809015031780098243424c072e87501204ed53dbae. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.b([I[B[IIIIIIII)V",
+      "originalName": "b",
+      "to": "blitIndexedAlpha",
+      "evidence": "Source-purpose review: Blend nonzero indexed palette pixels over destination using the original supplied alpha and256-minus-alpha packed RGB expression with signed right shift;index0 leaves destination untouched. Original body SHA256 d798b9b8c1facd081112441f6fb3648865f3a3ad657dc4265b6b72e40c821e6f. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ij.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3610,7 +3624,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "3c153873eb43709c1492b36c79a4b6ea0f2a8b846d50c05ab4c5252bcee9cedc",
+      "transmogrify-names.json": "81f211eda0409283b79072034b76b0ed2e8e982f737e152154a67216efa2d5e0",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -17170,6 +17170,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wp.a([I[B[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitIndexed",
+      "evidence": "Source-purpose review: Copy nonzero byte indices through the palette into the destination;index0 leaves destination untouched,including when a nonzero index selects RGB0. Preserve the four-pixel unroll,tail,source/destination offsets and row skips. Original body SHA256 dc196b23c0f8393e6066e8259cc8448f2940ba3093a0b32353d4d71cdc421bf3. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.b([I[B[IIIIIIII)V",
+      "originalName": "b",
+      "to": "blitIndexedAlpha",
+      "evidence": "Source-purpose review: Blend nonzero indexed palette pixels over destination using the original supplied alpha and256-minus-alpha packed RGB expression with signed right shift;index0 leaves destination untouched. Original body SHA256 4d7a8320fd69c3474416ed827be0e3a6c48081ffe667607951c967b8b2e418f0. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wq.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -25551,7 +25565,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-aceofskies-rules.mjs": "f144b046334021de717312bcc4655ec2e74a95a9df7e13f2aeb66eacf195148a",
-      "aceofskies-names.json": "1274d9f1d76160c7d021bac14832ba7ccd5be76099b1efc42e3f91c7d5d282ba",
+      "aceofskies-names.json": "471d470742b857e92ba192b278648780838f5d0c3ff746c86303dcff654777fa",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "tests/test-aceofskies-core.mjs": "411552405573a5228962211d3e8ee1d080550c058b6e2505f5ccd939b2122427",
