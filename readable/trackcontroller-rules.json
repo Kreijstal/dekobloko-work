@@ -2572,10 +2572,87 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ll.a()V",
+      "originalName": "a",
+      "to": "clearRaster",
+      "evidence": "Source-purpose review: Clear width-times-height framebuffer entries to zero using the original eight-store unrolled loop and scalar tail, ignoring the clip rectangle; retain overflow and partial stores.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(III)V",
+      "originalName": "a",
+      "to": "setPixel",
+      "evidence": "Source-purpose review: Write one solid pixel only when X/Y lie inside the current clip rectangle; retain original comparisons, stride multiplication and indexing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ll.a(IIII)V",
       "originalName": "a",
       "to": "drawHorizontalLine",
       "evidence": "Source-purpose review: Horizontal flatcolour clippedrun,contiguousdestination offsets. Original identity M:ll.a(IIII)V. Pinned original body SHA256 322ab510e83ead7c41238cd8c68bb493821db1d5f7e0139ca0308c5287c872b5. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawRectangleShadow",
+      "evidence": "Source-purpose review: Draw four descending-opacity bottom and right shadow strokes using the existing 256-scale horizontal/vertical alpha helpers; retain coordinates, width, height-plus-one and call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(IIIIII)V",
+      "originalName": "a",
+      "to": "blurRectangle",
+      "evidence": "Source-purpose review: Run the in-place horizontal smoothing kernel followed by the vertical smoothing kernel on the supplied rectangle with separate X/Y radii. Retain full integer domains, scratch allocation, RGB sums, clamp/edge/division behavior and first-pass partial writes if the second pass fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(I[IIIII)V",
+      "originalName": "a",
+      "to": "darkenRowsHalf",
+      "evidence": "Source-purpose review: Halve masked RGB components in an array region using eight sequential in-place stores per unrolled iteration and scalar tail across the supplied negative-height row counter and stride adjustment. Preserve all argument domains and evaluation/store order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a([I)V",
+      "originalName": "a",
+      "to": "saveClip",
+      "evidence": "Source-purpose review: Store left, top, right and bottom clip values into slots0..3 of the supplied array in order; preserve partial writes and null/index failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a([III)V",
+      "originalName": "a",
+      "to": "setRasterBuffer",
+      "evidence": "Source-purpose review: Install framebuffer array, stride and height, then reset clip to the supplied dimensions using the existing clip setter; preserve argument order, shared aliases and mask reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "blurHorizontalInPlace",
+      "evidence": "Source-purpose review: Compute horizontal moving RGB sums directly into the framebuffer region, dividing by available edge sample counts and using the original 14-bit reciprocal in the interior. Preserve nonstandard clipping, edge sums/clamps, all scratch arguments, overflow and in-place read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a([IIIIIIIII)V",
+      "originalName": "a",
+      "to": "blurVerticalInPlace",
+      "evidence": "Source-purpose review: Compute vertical moving RGB sums using the three reusable channel arrays, with original allocation/clear order, edge sample divisors, 14-bit interior reciprocal, clamps and exact in-place scan order. Preserve all integer domains and failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.b()V",
+      "originalName": "b",
+      "to": "clearScanlineMask",
+      "evidence": "Source-purpose review: Null both per-row mask arrays. Their only external consumer is the bitmap glyph rasterizer, where they supply clip-relative horizontal row offsets and widths; preserve the two assignment order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.b(IIII)V",
+      "originalName": "b",
+      "to": "intersectClip",
+      "evidence": "Source-purpose review: Intersect each current clip boundary with the supplied rectangle using the original independent comparisons, then clear scanline masks; preserve invalid/reversed/full-int rectangles without normalization.",
       "confidence": "reviewed"
     },
     {
@@ -2586,10 +2663,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ll.b(IIIIII)V",
+      "originalName": "b",
+      "to": "fillRectangleVerticalGradient",
+      "evidence": "Source-purpose review: Fill a clipped rectangle with a top-to-bottom RGB interpolation using original 16-bit Y phase and 256-scale component weights. Preserve initial division-by-height, clipping adjustments, unsigned shift and iteration order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.b([I)V",
+      "originalName": "b",
+      "to": "restoreClip",
+      "evidence": "Source-purpose review: Read four clip boundaries from array slots0..3 into shared state, then clear row masks; preserve partial assignment before index/null exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.c()V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Null the framebuffer, both scanline masks and the three blur channel arrays in their original order without resetting primitive dimensions or clip values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.c(IIII)V",
+      "originalName": "c",
+      "to": "darkenRectangleHalf",
+      "evidence": "Source-purpose review: Clip a rectangle, compute framebuffer index/stride and delegate to the masked RGB-halving row kernel with the original negated height; preserve overflow and exception/partial-write behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.c(IIIII)V",
+      "originalName": "c",
+      "to": "fillRectangle",
+      "evidence": "Source-purpose review: Fill the clipped rectangular region with a solid color using original negative width/height loop counters and framebuffer stride; preserve primitive domains and stores.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.c(IIIIII)V",
+      "originalName": "c",
+      "to": "fillRectangleAlpha",
+      "evidence": "Source-purpose review: Blend a uniform color over a clipped rectangle with alpha and 256-minus-alpha using the original separate packed RGB arithmetic; retain full integer alpha domain, signed shifts and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.d()V",
+      "originalName": "d",
+      "to": "resetClip",
+      "evidence": "Source-purpose review: Set clip left/top to zero and right/bottom to framebuffer dimensions, then clear both scanline masks in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.d(IIII)V",
+      "originalName": "d",
+      "to": "grayscaleRectangle",
+      "evidence": "Source-purpose review: Replace each clipped framebuffer pixel with equal RGB channels computed by the exact original weighted expression (((pixel>>15 &510)+(pixel&255))/3+(pixel>>8&255))>>1. Preserve arithmetic and evaluation/store order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ll.d(IIIII)V",
       "originalName": "d",
       "to": "drawVerticalLineAlpha",
       "evidence": "Source-purpose review: Vertical counterpart samealpha arithmetic,indicesadvancerasterstride. Original identity M:ll.d(IIIII)V. Pinned original body SHA256 935a9d45ce901fdbcde41c3b66f9a554d32337a14b66e93ed3c239e6e52cce35. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.d(IIIIII)V",
+      "originalName": "d",
+      "to": "drawRoundedRectangleOutline",
+      "evidence": "Source-purpose review: Draw straight sides and eight symmetric rounded-corner boundary pixels, using direct stores when wholly inside clip and individually clipped stores otherwise. Preserve radius zero delegation, negative radius, MIN_VALUE, overflow, clip guards, corner/side order and partial writes.",
       "confidence": "reviewed"
     },
     {
@@ -2611,6 +2751,13 @@
       "originalName": "f",
       "to": "fillCircle",
       "evidence": "Source-purpose review: Midpoint-style filledcircle scanlines withzeroradiusdelegate,negative-radiusnegation,asymmetricendpointloops andoriginalfullintoverflow. Original identity M:ll.f(IIII)V. Pinned original body SHA256 7370966286450e85edaedaf44a210646a472e8122e1d3c71f3017b5626dc7b0f. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.f(IIIII)V",
+      "originalName": "f",
+      "to": "drawRectangleOutline",
+      "evidence": "Source-purpose review: Draw top,bottom,left and right solid edge strokes with the existing line helpers in original order, including degenerate/full-int dimensions and repeated corner writes.",
       "confidence": "reviewed"
     },
     {
@@ -3988,7 +4135,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "b7aab3a927b2f73a98f9d4288bb240fb78bbf724f322bd097c25a8deaf7bef3c",
+      "trackcontroller-names.json": "7fc87482eb5682f1dbe90c40227eaf2109b0da66cbbf89eeecdcafe980066953",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
