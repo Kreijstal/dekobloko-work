@@ -5893,6 +5893,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:a",
+      "originalName": "a",
+      "to": "NativeSoftwareRenderContext",
+      "evidence": "Native software renderer allocates context array,constructs this with renderer/two retained sizes,then activates selected context.Whole47line class,constructor and renderer creation/selection/disposal callers read.10original scratch-mesh allocations and native handle-field spelling and original reverse identities preserved. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:af",
       "originalName": "af",
       "to": "ByteStorage",
@@ -6107,6 +6114,13 @@
       "originalName": "dq",
       "to": "AccountRequestState",
       "evidence": "Complete instance contract reviewed: final Object subclass, no instance fields or declared constructor, one toString override that throws IllegalStateException (Orb Defence retains RuntimeException context), exactly three shared instances across five static fields. Full cached username-query contract was reviewed at888c; current7de query/file independently inverse-restores to identical original input. Those identities encode request lifecycle, not labels or unrelated static utility roles. All typed field declarations/initializations reviewed, no native owned/type-use declarations. Preserve default constructors, identity/null aliases, state transitions and every unrelated static method/field; same-spelling non-class literals explicitly pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:e",
+      "originalName": "e",
+      "to": "NativeResource",
+      "evidence": "Single Boolean disposal interface used by finalizers and disposer across11implementations.Whole interface and exact11override edges/native declarations/wrappers read.Boolean true queued drain,false immediate disposal,with raw native implementation unexecuted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -6978,6 +6992,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vk",
+      "originalName": "vk",
+      "to": "NativeResourceDisposer",
+      "evidence": "Synchronized shared native resource disposal queue and renderer reference count;queue while count positive,dispose immediately otherwise,drain when last renderer released.Whole class/static initializer,all methods and actual renderer lifecycle/finalizers read. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vp",
       "originalName": "vp",
       "to": "SoftwareRasterizer",
@@ -7038,6 +7059,13 @@
       "originalName": "wm",
       "to": "Pickup",
       "evidence": "FlightBody initialized with a pickup code and 400-tick life; session collects its upgrade or temporary weapon.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wn",
+      "originalName": "wn",
+      "to": "NativeResourceDisposalNode",
+      "evidence": "IntrusiveNode retaining exact NativeResource reference for deferred disposal queue.Whole class/empty constructor and queue allocation/drain read;identity/unlink semantics remain. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -11458,6 +11486,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:a.E(JZ)V",
+      "originalName": "E",
+      "to": "releaseNative",
+      "evidence": "Native context disposal entry invoked by interface implementation with retained handle and exact Boolean;purpose from Java callback/queue contract;native body not available. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.HA(JLha;II)V",
+      "originalName": "HA",
+      "to": "initializeNative",
+      "evidence": "Native initialization entry invoked after retained renderer and10scratch-mesh allocations;preserve long handle,renderer and two integer arguments;no asserted native allocation internals. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.M(J)V",
+      "originalName": "M",
+      "to": "activateNative",
+      "evidence": "Native context activation entry reached by renderer selected-context operation through exact long handle;retain native declaration and call order. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a()V",
+      "originalName": "a",
+      "to": "activateForCurrentThread",
+      "evidence": "Observe original Thread.currentThread call then activate retained native context;complete renderer selection caller proves context role.No Java thread-state write added. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.b()V",
+      "originalName": "b",
+      "to": "activateContext",
+      "evidence": "Delegate original context activation through native long-handle entry;preserve exact alias/descriptor and no new guard. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ac.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -11574,6 +11644,13 @@
       "originalName": "a",
       "to": "clearInts",
       "evidence": "Zero an int-array segment using the original eight sequential stores per unrolled iteration and scalar tail. Retain start/count arithmetic overflow,null/index exceptions and partial writes;do not substitute a library fill. Complete original-body SHA256 b3d53399488c4b1eb25cb619da620df3b5fedda0a1a29e454ee47e028fd4bdb6. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -12032,6 +12109,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:e.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ec.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -12452,6 +12536,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:h.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.K([I)V",
       "originalName": "K",
       "to": "getClip",
@@ -12823,6 +12914,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:i.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -12939,6 +13037,20 @@
       "originalName": "d",
       "to": "getFullWidth",
       "evidence": "Reviewed JavaSoftwareRenderSprite: a/b return the trimmed field_o/field_p while d/c add the left/right and top/bottom padding, and scaled draws divide the full size by the destination size. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -13551,6 +13663,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:n.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -13824,6 +13943,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ob.a(II[II)Lal;",
       "originalName": "a",
       "to": "getVorbisSampleByGroup",
@@ -13919,6 +14045,13 @@
       "originalName": "e",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ed8b08788d51b0f9354edb36a714dfd6460d2c80da735bb17d06bb510f126d3c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -15805,6 +15938,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vk.a(B)V",
+      "originalName": "a",
+      "to": "drainQueue",
+      "evidence": "Repeatedly remove queued node,invoke disposal true,then unlink;evaluate original byte-derived remainder only after queue empty.Preserve synchronized monitor,reentrancy,partial queue changes and throwing callback order. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vk.a(Le;I)V",
+      "originalName": "a",
+      "to": "disposeOrEnqueue",
+      "evidence": "Evaluate original guard remainder;return if disabled,enqueue exact resource in new node when renderer count positive,otherwise dispose false immediately.Preserve null handling,allocation/publication,monitor and callback failure behavior. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vk.a(Z)V",
+      "originalName": "a",
+      "to": "releaseRenderer",
+      "evidence": "On false decrement original count and drain only if exactly zero;true no-op.Preserve underflow/signed overflow,shared monitor and nested reentrant drain. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vk.b(Z)V",
+      "originalName": "b",
+      "to": "retainRenderer",
+      "evidence": "On false increment original renderer reference count;true no-op.Preserve monitor,full counter overflow and no extra validation. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vl.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -16124,6 +16285,20 @@
       "originalName": "d",
       "to": "unlinkSecondaryNode",
       "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:xa.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ya.w(Z)V",
+      "originalName": "w",
+      "to": "dispose",
+      "evidence": "NativeResource disposal callback in exact11member override family;true from queued drain,false from immediate path.All declarations and4Java wrappers read;7direct native callbacks retain native flags,Boolean descriptor and original reverse identities.No native runtime/JNI ABI equivalence asserted. Identifier-only:preserve native/abstract/public/private/final/synchronized flags,all descriptors through exact class substitution,override closure,field_nativeid spelling,guards/recursion,literals,aliases,allocation/monitor/clock/order,primitive domains and partial exceptions.No native implementation or runtime-equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -24466,7 +24641,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-aceofskies-rules.mjs": "f144b046334021de717312bcc4655ec2e74a95a9df7e13f2aeb66eacf195148a",
-      "aceofskies-names.json": "e31688d30aeb81320f42b4ced750207915873f3b55eaafaaa9c738c49dcd9a0c",
+      "aceofskies-names.json": "075843f1332055de83a2d87e648b1c18b68d8d833146cc1037a26cacf8cea958",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "tests/test-aceofskies-core.mjs": "411552405573a5228962211d3e8ee1d080550c058b6e2505f5ccd939b2122427",
