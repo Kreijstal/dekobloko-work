@@ -2112,6 +2112,188 @@
       "(B)V",
       "releaseStatics",
       "Source-purpose review: Clears account state before sentinel-guard division,then sprite/font text. Division can throw after firstclear;preserve byte-domain exception andpartial-write order."
+    ],
+    [
+      "d",
+      "a",
+      "(III)V",
+      "drawAdditiveWithIntensity",
+      "Source-purpose review: Draw clipped pixels through saturated additive blending, applying intensity and ARGB coverage as implemented; preserve factor256 dispatch and all integer overflow/masking. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 28ebf02e6b6b6f2078140f657ea30708413bb7422e7587a3aac26d974005fffe."
+    ],
+    [
+      "d",
+      "b",
+      "(II)V",
+      "drawQuarterSize",
+      "Source-purpose review: Reduce each4x4 source block to a clipped quarter-size pixel; preserve RGB destination substitution for zero samples versus ARGB weighted color/coverage averaging and original allocation/access order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 0f91d5ba84c212a5bcfb516476ddd668b683922616ab18b99adaa5f12c01ec85."
+    ],
+    [
+      "d",
+      "b",
+      "(III[I[IIIIIIIIII)V",
+      "blitAdditiveIntensityRows",
+      "Source-purpose review: Traverse strided rows, scale source intensity as implemented, and saturating-add RGB channels to destination; preserve alpha multiplication/masks, source-zero skips and overflow. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 70d8e2f443120f7e5a7bbe252680bb44215b20730c53366053322aeaf48747c6."
+    ],
+    [
+      "d",
+      "b",
+      "([I[IIIIIIIIIII)V",
+      "blitGrayscaleTintedRows",
+      "Source-purpose review: Tint only grayscale pixels with the supplied RGB multiplier and plus-one result; preserve non-grayscale passthrough, zero handling and ARGB composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 d0797af45a1de02c23988c8d2d90744027d4829a29a2a98dc68115ab7798b089."
+    ],
+    [
+      "d",
+      "c",
+      "(III)V",
+      "drawTinted",
+      "Source-purpose review: Tint grayscale source pixels by the supplied RGB color with the original plus-one adjustment, retaining non-grayscale pixels and original ARGB coverage. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 f9b2b921d9d0a988f8710c9b57636ef7eb47765c1375dbcbf610bafe7d279288."
+    ],
+    [
+      "d",
+      "c",
+      "([I[IIIIIIIII)V",
+      "blitAlphaRows",
+      "Source-purpose review: Traverse rows with explicit opacity blending, including the implemented ARGB coverage multiplication; preserve256-minus-alpha arithmetic, signed shifts and zero-pixel accesses. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 c273a2163fdcfb07fc1b08ec7c491cfc7d347c9705a3f29537658de88146643f."
+    ],
+    [
+      "d",
+      "d",
+      "(III)V",
+      "drawTransparentWithOpacity",
+      "Source-purpose review: Draw with explicit opacity and destination blending; preserve256-minus-opacity arithmetic, per-pixel ARGB alpha multiplication and all full-int behavior. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 479eda84634111920c39d032af476890b83e6a649d08e0929d39cbb51a160558."
+    ],
+    [
+      "d",
+      "d",
+      "([I[IIIIIIII)V",
+      "blitTransparentRows",
+      "Source-purpose review: Traverse strided rows for zero-transparent RGB copies or per-pixel ARGB blending; preserve unrolling, increments, skips and read/write order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 c528f63dbf1397bb1e314b30ecc78ee149b0f462730361598ec7a827a6a69efc."
+    ],
+    [
+      "d",
+      "d",
+      "([I[IIIIIIIII)V",
+      "blitColorRampRows",
+      "Source-purpose review: Map grayscale source channels through the128-centered color ramp while retaining other colors; preserve all alpha, zero, shift, channel and increment behavior. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 fa1ddbcbdf8d6b458e7d4fd5fbfb63469ddd9d6d3181c9f1267e3a7471eb2767."
+    ],
+    [
+      "d",
+      "e",
+      "(III)V",
+      "drawColorRamp",
+      "Source-purpose review: Recolor grayscale source pixels along the black-to-color-to-white ramp around128; preserve non-grayscale pixels, zero handling and ARGB alpha composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 3a088443102925e90b6f027a4e34c32567dd62a43ecd6f96945af6890b0d8e78."
+    ],
+    [
+      "d",
+      "e",
+      "([I[IIIIIIII)V",
+      "blitFlippedHorizontalRows",
+      "Source-purpose review: Traverse source pixels in decreasing column order and destination pixels forward, preserving row strides and zero/alpha transparency rules. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 2374b412e3df251df6afef98c3a97f9b9adb1a7ac1d781dab6b9d7fdfba8fcb4."
+    ],
+    [
+      "d",
+      "f",
+      "(II)V",
+      "drawFlippedVertical",
+      "Source-purpose review: Draw with vertically reflected destination rows, adjusting trim offset and retaining original source row order and clip calculations. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 cb1011ac0586413a831f3566f98fcb3cd1f557aac47e9a035c0b2d66381d1c1b."
+    ],
+    [
+      "d",
+      "g",
+      "(II)V",
+      "drawFlippedHorizontal",
+      "Source-purpose review: Draw with reversed source columns and horizontally reflected trim offset, preserving all clipping and row-stride updates. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 68ad3ea0a9259ad878f7e641f36a79bef0cf9ad9617dc5b7d2ea0b32cb5c2f55."
+    ],
+    [
+      "qj",
+      "a",
+      "(III)V",
+      "drawAdditiveWithIntensity",
+      "Source-purpose review: Draw clipped pixels through saturated additive blending, applying intensity and ARGB coverage as implemented; preserve factor256 dispatch and all integer overflow/masking. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 f8538bd6722c875bf67481c6f336fd2440d478e8db35f554824ba7aba8993e8e."
+    ],
+    [
+      "qj",
+      "b",
+      "(II)V",
+      "drawQuarterSize",
+      "Source-purpose review: Reduce each4x4 source block to a clipped quarter-size pixel; preserve RGB destination substitution for zero samples versus ARGB weighted color/coverage averaging and original allocation/access order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 d892254d0689f42b480e0f2b01ce11a6cd84ac715a990f9ab2e99432b3f12ddb."
+    ],
+    [
+      "qj",
+      "c",
+      "(III)V",
+      "drawTinted",
+      "Source-purpose review: Tint grayscale source pixels by the supplied RGB color with the original plus-one adjustment, retaining non-grayscale pixels and original ARGB coverage. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 614695204245c7235c08ee113313d379023ceef2de10545aabb5e5e1da0337d1."
+    ],
+    [
+      "qj",
+      "d",
+      "(III)V",
+      "drawTransparentWithOpacity",
+      "Source-purpose review: Draw with explicit opacity and destination blending; preserve256-minus-opacity arithmetic, per-pixel ARGB alpha multiplication and all full-int behavior. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 524f9960ef3fdf69b679588b3b5a053da4ca897b6f4110e3b105a9e16b635b44."
+    ],
+    [
+      "qj",
+      "e",
+      "(III)V",
+      "drawColorRamp",
+      "Source-purpose review: Recolor grayscale source pixels along the black-to-color-to-white ramp around128; preserve non-grayscale pixels, zero handling and ARGB alpha composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 4ae385f014982c34fad38c4e1e2cc114392ca9b255a90a3984e51ecd1af1d04f."
+    ],
+    [
+      "qj",
+      "f",
+      "(II)V",
+      "drawFlippedVertical",
+      "Source-purpose review: Draw with vertically reflected destination rows, adjusting trim offset and retaining original source row order and clip calculations. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 054522f453e08cdb9c907cbd8509884b3ea4ba29512eb41c411e2858e9a80a2c."
+    ],
+    [
+      "qj",
+      "g",
+      "(II)V",
+      "drawFlippedHorizontal",
+      "Source-purpose review: Draw with reversed source columns and horizontally reflected trim offset, preserving all clipping and row-stride updates. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 5f7071ccfaccc25ff98c259626836ea8e47acf4535c50837fc16410d0abde239."
+    ],
+    [
+      "qj",
+      "a",
+      "(III[I[IIIIIIIII)V",
+      "blitAdditiveRows",
+      "Source-purpose review: Saturating-add nonzero source RGB values into destination rows, preserving channel carry masks and source/destination evaluation order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 f18d4c0b141a7ede404b2e18c9017bec95841941339a5c8aa31366107c75da0a."
+    ],
+    [
+      "qj",
+      "a",
+      "(III[I[IIIIIIIIII)V",
+      "blitAdditiveIntensityRows",
+      "Source-purpose review: Traverse strided rows, scale source intensity as implemented, and saturating-add RGB channels to destination; preserve alpha multiplication/masks, source-zero skips and overflow. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 dfa027fca7e614e21e9b0ee19ed499f370b9e65e2b39187df8ceed24f0713044."
+    ],
+    [
+      "qj",
+      "a",
+      "([I[IIIIIIIIIII)V",
+      "blitGrayscaleTintedRows",
+      "Source-purpose review: Tint only grayscale pixels with the supplied RGB multiplier and plus-one result; preserve non-grayscale passthrough, zero handling and ARGB composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 5eae23f8bcfd96f67d5a0748b69c8e60b83325b3284d9697da1765208c94b1c0."
+    ],
+    [
+      "qj",
+      "b",
+      "([I[IIIIIIIII)V",
+      "blitAlphaRows",
+      "Source-purpose review: Traverse rows with explicit opacity blending, including the implemented ARGB coverage multiplication; preserve256-minus-alpha arithmetic, signed shifts and zero-pixel accesses. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 dce4141e5fddbb2792100aeb948ccd560c80834cb12804b077d5e0bc248fd28e."
+    ],
+    [
+      "qj",
+      "a",
+      "([I[IIIIIIIII)V",
+      "blitColorRampRows",
+      "Source-purpose review: Map grayscale source channels through the128-centered color ramp while retaining other colors; preserve all alpha, zero, shift, channel and increment behavior. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 0c188f0eb690efe3493bf9ea9ccebae722055438a84183c6fb3b7d2e62548513."
+    ],
+    [
+      "qj",
+      "b",
+      "([I[IIIIIIII)V",
+      "blitTransparentRows",
+      "Source-purpose review: Traverse strided rows for zero-transparent RGB copies or per-pixel ARGB blending; preserve unrolling, increments, skips and read/write order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 83086c1d00f7e032f938fecb7a834e94b9a4da9e0b91fb4df22061737615f8fb."
     ]
   ],
   "fields": [

@@ -1718,6 +1718,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:d.a(III)V",
+      "originalName": "a",
+      "to": "drawAdditiveWithIntensity",
+      "evidence": "Source-purpose review: Draw clipped pixels through saturated additive blending, applying intensity and ARGB coverage as implemented; preserve factor256 dispatch and all integer overflow/masking. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 28ebf02e6b6b6f2078140f657ea30708413bb7422e7587a3aac26d974005fffe.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.b(II)V",
+      "originalName": "b",
+      "to": "drawQuarterSize",
+      "evidence": "Source-purpose review: Reduce each4x4 source block to a clipped quarter-size pixel; preserve RGB destination substitution for zero samples versus ARGB weighted color/coverage averaging and original allocation/access order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 0f91d5ba84c212a5bcfb516476ddd668b683922616ab18b99adaa5f12c01ec85.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.b(III[I[IIIIIIIIII)V",
+      "originalName": "b",
+      "to": "blitAdditiveIntensityRows",
+      "evidence": "Source-purpose review: Traverse strided rows, scale source intensity as implemented, and saturating-add RGB channels to destination; preserve alpha multiplication/masks, source-zero skips and overflow. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 70d8e2f443120f7e5a7bbe252680bb44215b20730c53366053322aeaf48747c6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.b([I[IIIIIIIIIII)V",
+      "originalName": "b",
+      "to": "blitGrayscaleTintedRows",
+      "evidence": "Source-purpose review: Tint only grayscale pixels with the supplied RGB multiplier and plus-one result; preserve non-grayscale passthrough, zero handling and ARGB composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 d0797af45a1de02c23988c8d2d90744027d4829a29a2a98dc68115ab7798b089.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.c(III)V",
+      "originalName": "c",
+      "to": "drawTinted",
+      "evidence": "Source-purpose review: Tint grayscale source pixels by the supplied RGB color with the original plus-one adjustment, retaining non-grayscale pixels and original ARGB coverage. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 f9b2b921d9d0a988f8710c9b57636ef7eb47765c1375dbcbf610bafe7d279288.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.c([I[IIIIIIIII)V",
+      "originalName": "c",
+      "to": "blitAlphaRows",
+      "evidence": "Source-purpose review: Traverse rows with explicit opacity blending, including the implemented ARGB coverage multiplication; preserve256-minus-alpha arithmetic, signed shifts and zero-pixel accesses. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 c273a2163fdcfb07fc1b08ec7c491cfc7d347c9705a3f29537658de88146643f.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:d.d(II)V",
       "originalName": "d",
       "to": "drawHalfSize",
@@ -1725,10 +1767,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:d.d(III)V",
+      "originalName": "d",
+      "to": "drawTransparentWithOpacity",
+      "evidence": "Source-purpose review: Draw with explicit opacity and destination blending; preserve256-minus-opacity arithmetic, per-pixel ARGB alpha multiplication and all full-int behavior. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 479eda84634111920c39d032af476890b83e6a649d08e0929d39cbb51a160558.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.d([I[IIIIIIII)V",
+      "originalName": "d",
+      "to": "blitTransparentRows",
+      "evidence": "Source-purpose review: Traverse strided rows for zero-transparent RGB copies or per-pixel ARGB blending; preserve unrolling, increments, skips and read/write order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 c528f63dbf1397bb1e314b30ecc78ee149b0f462730361598ec7a827a6a69efc.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.d([I[IIIIIIIII)V",
+      "originalName": "d",
+      "to": "blitColorRampRows",
+      "evidence": "Source-purpose review: Map grayscale source channels through the128-centered color ramp while retaining other colors; preserve all alpha, zero, shift, channel and increment behavior. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 fa1ddbcbdf8d6b458e7d4fd5fbfb63469ddd9d6d3181c9f1267e3a7471eb2767.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:d.e(II)V",
       "originalName": "e",
       "to": "drawTransparent",
       "evidence": "Source-purpose review: Expanded override-family member reviewed alongside its complete selected family;preserve the inherited API contract and all original dispatch. Original identity M:d.e(II)V. Pinned original body SHA256 3a2d2bd1679a2bcaeb182d87661285fab23aca8a7389370565d8adf125c34919. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.e(III)V",
+      "originalName": "e",
+      "to": "drawColorRamp",
+      "evidence": "Source-purpose review: Recolor grayscale source pixels along the black-to-color-to-white ramp around128; preserve non-grayscale pixels, zero handling and ARGB alpha composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 3a088443102925e90b6f027a4e34c32567dd62a43ecd6f96945af6890b0d8e78.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.e([I[IIIIIIII)V",
+      "originalName": "e",
+      "to": "blitFlippedHorizontalRows",
+      "evidence": "Source-purpose review: Traverse source pixels in decreasing column order and destination pixels forward, preserving row strides and zero/alpha transparency rules. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 2374b412e3df251df6afef98c3a97f9b9adb1a7ac1d781dab6b9d7fdfba8fcb4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.f(II)V",
+      "originalName": "f",
+      "to": "drawFlippedVertical",
+      "evidence": "Source-purpose review: Draw with vertically reflected destination rows, adjusting trim offset and retaining original source row order and clip calculations. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 cb1011ac0586413a831f3566f98fcb3cd1f557aac47e9a035c0b2d66381d1c1b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.g(II)V",
+      "originalName": "g",
+      "to": "drawFlippedHorizontal",
+      "evidence": "Source-purpose review: Draw with reversed source columns and horizontally reflected trim offset, preserving all clipping and row-stride updates. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 68ad3ea0a9259ad878f7e641f36a79bef0cf9ad9617dc5b7d2ea0b32cb5c2f55.",
       "confidence": "reviewed"
     },
     {
@@ -3209,10 +3300,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.a(III)V",
+      "originalName": "a",
+      "to": "drawAdditiveWithIntensity",
+      "evidence": "Source-purpose review: Draw clipped pixels through saturated additive blending, applying intensity and ARGB coverage as implemented; preserve factor256 dispatch and all integer overflow/masking. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 f8538bd6722c875bf67481c6f336fd2440d478e8db35f554824ba7aba8993e8e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a(III[I[IIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitAdditiveRows",
+      "evidence": "Source-purpose review: Saturating-add nonzero source RGB values into destination rows, preserving channel carry masks and source/destination evaluation order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 f18d4c0b141a7ede404b2e18c9017bec95841941339a5c8aa31366107c75da0a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a(III[I[IIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitAdditiveIntensityRows",
+      "evidence": "Source-purpose review: Traverse strided rows, scale source intensity as implemented, and saturating-add RGB channels to destination; preserve alpha multiplication/masks, source-zero skips and overflow. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 dfa027fca7e614e21e9b0ee19ed499f370b9e65e2b39187df8ceed24f0713044.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a([I[IIIIIIII)V",
       "originalName": "a",
       "to": "copyNonzeroPixelsReversed",
       "evidence": "Source-purpose review: Source cursor decrements while destination increments;nonzero source RGB copied,zero skips;unrolled and remainder loops retained. Original identity M:qj.a([I[IIIIIIII)V. Pinned original body SHA256 1dac872c50d5ca1a1c943dcc41550f363fe04af9e02edc06c6a7e93cfe0f2aeb. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a([I[IIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitColorRampRows",
+      "evidence": "Source-purpose review: Map grayscale source channels through the128-centered color ramp while retaining other colors; preserve all alpha, zero, shift, channel and increment behavior. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 0c188f0eb690efe3493bf9ea9ccebae722055438a84183c6fb3b7d2e62548513.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a([I[IIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGrayscaleTintedRows",
+      "evidence": "Source-purpose review: Tint only grayscale pixels with the supplied RGB multiplier and plus-one result; preserve non-grayscale passthrough, zero handling and ARGB composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 5eae23f8bcfd96f67d5a0748b69c8e60b83325b3284d9697da1765208c94b1c0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.b(II)V",
+      "originalName": "b",
+      "to": "drawQuarterSize",
+      "evidence": "Source-purpose review: Reduce each4x4 source block to a clipped quarter-size pixel; preserve RGB destination substitution for zero samples versus ARGB weighted color/coverage averaging and original allocation/access order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 d892254d0689f42b480e0f2b01ce11a6cd84ac715a990f9ab2e99432b3f12ddb.",
       "confidence": "reviewed"
     },
     {
@@ -3223,10 +3356,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.b([I[IIIIIIII)V",
+      "originalName": "b",
+      "to": "blitTransparentRows",
+      "evidence": "Source-purpose review: Traverse strided rows for zero-transparent RGB copies or per-pixel ARGB blending; preserve unrolling, increments, skips and read/write order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 83086c1d00f7e032f938fecb7a834e94b9a4da9e0b91fb4df22061737615f8fb.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.b([I[IIIIIIIII)V",
+      "originalName": "b",
+      "to": "blitAlphaRows",
+      "evidence": "Source-purpose review: Traverse rows with explicit opacity blending, including the implemented ARGB coverage multiplication; preserve256-minus-alpha arithmetic, signed shifts and zero-pixel accesses. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 dce4141e5fddbb2792100aeb948ccd560c80834cb12804b077d5e0bc248fd28e.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.c(II)V",
       "originalName": "c",
       "to": "drawMultiply",
       "evidence": "Source-purpose review: Clipped multiply wrapper calls helper same shapeasreviewed perchannel source*destination>>8 and zero skip;allintdomains retained. Original identity M:qj.c(II)V. Pinned original body SHA256 524626bc35aead7c14bc656b1d4f2b0c08b66e1ef841b813ba0fe5749081e7cd. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.c(III)V",
+      "originalName": "c",
+      "to": "drawTinted",
+      "evidence": "Source-purpose review: Tint grayscale source pixels by the supplied RGB color with the original plus-one adjustment, retaining non-grayscale pixels and original ARGB coverage. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 614695204245c7235c08ee113313d379023ceef2de10545aabb5e5e1da0337d1.",
       "confidence": "reviewed"
     },
     {
@@ -3237,10 +3391,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.d(III)V",
+      "originalName": "d",
+      "to": "drawTransparentWithOpacity",
+      "evidence": "Source-purpose review: Draw with explicit opacity and destination blending; preserve256-minus-opacity arithmetic, per-pixel ARGB alpha multiplication and all full-int behavior. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 524f9960ef3fdf69b679588b3b5a053da4ca897b6f4110e3b105a9e16b635b44.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.e(II)V",
       "originalName": "e",
       "to": "drawTransparent",
       "evidence": "Source-purpose review: Clipped transparent wrapper uses nonzeroRGB forwardcopy;ARGB override uses alpha blend. Preserve classfamily matching and all originaldispatch. Original identity M:qj.e(II)V. Pinned original body SHA256 dd6cd0070dc2e9366b2a425bc7a7de6865e3ae5f0a6fc71f480cb27e3c3e0d40. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.e(III)V",
+      "originalName": "e",
+      "to": "drawColorRamp",
+      "evidence": "Source-purpose review: Recolor grayscale source pixels along the black-to-color-to-white ramp around128; preserve non-grayscale pixels, zero handling and ARGB alpha composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 4ae385f014982c34fad38c4e1e2cc114392ca9b255a90a3984e51ecd1af1d04f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.f(II)V",
+      "originalName": "f",
+      "to": "drawFlippedVertical",
+      "evidence": "Source-purpose review: Draw with vertically reflected destination rows, adjusting trim offset and retaining original source row order and clip calculations. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 054522f453e08cdb9c907cbd8509884b3ea4ba29512eb41c411e2858e9a80a2c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.g(II)V",
+      "originalName": "g",
+      "to": "drawFlippedHorizontal",
+      "evidence": "Source-purpose review: Draw with reversed source columns and horizontally reflected trim offset, preserving all clipping and row-stride updates. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 5f7071ccfaccc25ff98c259626836ea8e47acf4535c50837fc16410d0abde239.",
       "confidence": "reviewed"
     },
     {
@@ -3806,7 +3988,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "20d0ce3053108b48b90b86b446d963249df2be4ea4ef53622138b92638bd8886",
+      "trackcontroller-names.json": "b7aab3a927b2f73a98f9d4288bb240fb78bbf724f322bd097c25a8deaf7bef3c",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
