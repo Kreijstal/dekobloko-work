@@ -1338,7 +1338,7 @@ method("ga", "a", "(Lqq;B)I", "computePan", "Derives the voice's pan gain from i
 method("ga", "a", "(Lqq;I)I", "computeVolume", "Combines channel volume, expression, velocity and envelope into the voice's output volume.");
 method("ga", "a", "(B)V", "tickSequencer", "Steps the track events up to the next scheduled tick, wrapping loops.");
 method("tr", "c", "(III)V", "updateHoverFade", "Counts the hover fade timer up while the hovered star is unchanged and down otherwise.");
-method("hs", "a", "(Ljava/awt/Canvas;B)V", "attachInputListeners", "Registers the mouse, keyboard and optional extra input handler on the canvas.");
+method("hs", "a", "(Ljava/awt/Canvas;B)V", "detachInputListeners", "Remove original keyboard/focus,mouse/motion/focus and optional wheel listeners from supplied canvas. Complete concrete remove*Listener helpers and four incoming contexts read.Correct builder-owned attachInputListeners alias/evidence;preserve callback types,nullable wheel gate,byte-derived remainder after removals and exception order. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, all guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial mutations and call/exception order.");
 method("hs", "a", "(IIIII)Lln;", "createHexStar", "Creates a star at the hex grid cell of the given index, offsetting every second row.");
 method("hs", "b", "(Ll;I)V", "fillMissingResources", "Gives random resource values to every star whose four resource values are all zero.");
 method("al", "c", "(II[B[IIIIIIIILal;II)I", "mixStereoInterpolatedBackward", "Linearly interpolates samples into the stereo output at a fractional backward step.");
