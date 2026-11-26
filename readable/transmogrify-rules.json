@@ -248,6 +248,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ak",
+      "originalName": "ak",
+      "to": "SectorCacheStore",
+      "evidence": "Source-purpose review: Sector-chain archive store binds archive index,data file,index file and entry-length limit. Six-byte index records point into520-byte sectors;small keys use8-byte headers/512payload and large keys10-byte headers/510payload. All constructor/read/write/chain-writer/toString bodies and construction/call contexts reviewed. Preserve index-before-payload writes,shared scratch buffer,original512next-link test even for510payload,EOF/IOException and guard paths,int multiplication-before-longcast and exact partial effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bb",
       "originalName": "bb",
       "to": "PcmSampleStream",
@@ -262,6 +269,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cd",
+      "originalName": "cd",
+      "to": "DiskCacheWorker",
+      "evidence": "Source-purpose review: Runnable disk-cache worker owns ordinary queue/thread/stop/count state,starts a platform-service thread task,and services opcode2 writes/opcode3 reads outside the queue monitor. Source bodies,queue/stop/thread/counter/pending-field links and all bound incoming method contexts/construction sites reviewed. Keep run ABI,constructor visibility,nonvolatile fields,queue and IO order,ignored write bool,completion-on-error paths,all primitive domains/guards/partial effects and diagnostic wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ce",
       "originalName": "ce",
       "to": "GameKeyHandler",
@@ -273,6 +287,13 @@
       "originalName": "cj",
       "to": "RasterBuffer",
       "evidence": "Abstract int pixel buffer handed to the rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cl",
+      "originalName": "cl",
+      "to": "DiskArchiveRequest",
+      "evidence": "Source-purpose review: Archive-request subtype with operation int,aliased byte-array payload and sector-store reference. Worker factories and run/readNow paths bind the same key/store/opcode/payload/pending fields. Constructor/getter bodies and incoming contexts reviewed. Preserve empty package constructor,inherited pending/flags,original aliases,all guard-dependent sentinels/helper calls and error behavior.",
       "confidence": "reviewed"
     },
     {
@@ -542,6 +563,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pj",
+      "originalName": "pj",
+      "to": "NetworkArchiveRequest",
+      "evidence": "Source-purpose review: Network archive-request subtype owns signed-byte padding,int transfer counter and packet-buffer reference;construction sites populate composite archive/group key,padding and flags. Payload getter returns original buffer array when complete;progress uses original int arithmetic over buffer position and length minus signed padding. Preserve aliases,int overflow/division,all guards/sentinels,constructor visibility and full override-family bindings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qd",
       "originalName": "qd",
       "to": "GzipDecompressor",
@@ -574,6 +602,13 @@
       "originalName": "qj",
       "to": "IntrusiveDeque",
       "evidence": "Sentinel-based deque of IntrusiveNode with forward and backward traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rh",
+      "originalName": "rh",
+      "to": "ArchiveRequest",
+      "evidence": "Source-purpose review: Abstract shared request root owns three booleans including the volatile pending flag initialized true,and declares payload/progress operations implemented by both disk and network requests. Full root/child constructors,getters,abstract signatures/storage and complete override families reviewed. Preserve inheritance,visibility,volatile modifier,parameter widths,guard domains and all unrelated helpers.",
       "confidence": "reviewed"
     },
     {
@@ -1270,6 +1305,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.a(ZI[BI)Z",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Source-purpose review: Attempts private chain writer with overwrite selected,then a new chain on the original failure path under the data-file monitor. Preserve caller-dependent length checks,helper argument values,original bools and all guards/partial effects/exception order;do not claim atomic writes or true means a complete payload. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.a([BIZZI)Z",
+      "originalName": "a",
+      "to": "writeSectorChain",
+      "evidence": "Source-purpose review: Writes original index and sector-chain header/payload operations,reusing or allocating sectors according to the original boolean. Preserve all int/boolean roles including chunk-counter/scratch-index/helper/result parameters,512next-link condition with510large-key payload,EOF exit/result paths,index-before-payload partial effects,guards/recursion and exception order. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.b(II)[B",
+      "originalName": "b",
+      "to": "read",
+      "evidence": "Source-purpose review: Reads a sector-chain cache entry using its six-byte index record and validates key/chunk/archive/next-sector headers. Preserve original input-derived scratch indexes and byte mask,shared scratch array,small/large key formats,all bounds/guards/IO order,null/IOException paths and int multiplication before longcasts. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1480,6 +1536,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cd.a(ILak;B)Lcl;",
+      "originalName": "a",
+      "to": "requestRead",
+      "evidence": "Source-purpose review: Creates and enqueues a disk-read request on the ordinary caller path. Preserve original per-game opcode/flag parameters,allocation/field-store/enqueue order,sign-extended key,guards,null returns,helper/recursive calls and diagnostic exceptions;do not discard parameters that callers often pass as constants. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.a(ILcl;)V",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "Source-purpose review: Inserts request under the original queue monitor,increments pending count and notifies on the original paths. Preserve guards that return before insertion or after insertion before count/notify,all side effects and exception order. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.a(Lak;IZ)Lcl;",
+      "originalName": "a",
+      "to": "readNow",
+      "evidence": "Source-purpose review: Scans queued writes by key/store identity under the original queue monitor and returns the queued payload alias when present;otherwise reads backing store synchronously after monitor release. Preserve per-game opcode/flag parameters,null/guard/global-field paths,aliases,completion flags,IO/allocation and exception order. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.a(Lak;[BII)Lcl;",
+      "originalName": "a",
+      "to": "requestWrite",
+      "evidence": "Source-purpose review: Creates a disk-write request using original byte-array alias,key,store,opcode and flags,and enqueues it. Preserve input-derived opcode/flag fields,all guard domains and ordering,including exceptions after enqueue and early null returns during partial initialization. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.c(I)V",
+      "originalName": "c",
+      "to": "shutdown",
+      "evidence": "Source-purpose review: Sets the original stop flag,wakes the queue and joins the worker thread on the original paths. Preserve supplied stop boolean in FleaCircus/MonkeyPuzzle2,guards that skip joins or invoke helpers/run/recursion,monitor identity,interruption behavior and thread clearing order. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1519,6 +1610,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.e(I)[B",
+      "originalName": "e",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the original disk payload or network buffer array on the original ready path. Preserve pending/incomplete RuntimeException/null behavior,all aliases,guard-triggered mutations/recursion/helper calls and full parameter domains. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.f(I)I",
+      "originalName": "f",
+      "to": "getProgressPercent",
+      "evidence": "Source-purpose review: Reports original disk pending0/complete100 or network int progress using buffer position and length minus signed-byte padding. Preserve arithmetic order/overflow/division,nullable buffer behavior,guard-specific sentinels/mutations/recursion and parameter widths. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
       "confidence": "reviewed"
     },
     {
@@ -3384,6 +3489,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pj.e(I)[B",
+      "originalName": "e",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the original disk payload or network buffer array on the original ready path. Preserve pending/incomplete RuntimeException/null behavior,all aliases,guard-triggered mutations/recursion/helper calls and full parameter domains. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.f(I)I",
+      "originalName": "f",
+      "to": "getProgressPercent",
+      "evidence": "Source-purpose review: Reports original disk pending0/complete100 or network int progress using buffer position and length minus signed-byte padding. Preserve arithmetic order/overflow/division,nullable buffer behavior,guard-specific sentinels/mutations/recursion and parameter widths. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pj.g(I)V",
       "originalName": "g",
       "to": "clearStaticReferences",
@@ -3703,6 +3822,20 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 9 null writes to 7 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4de00fc5937a1f57cec27f168766daf42a42ed1c114ca012423b1ac4ae65ea60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.e(I)[B",
+      "originalName": "e",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the original disk payload or network buffer array on the original ready path. Preserve pending/incomplete RuntimeException/null behavior,all aliases,guard-triggered mutations/recursion/helper calls and full parameter domains. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.f(I)I",
+      "originalName": "f",
+      "to": "getProgressPercent",
+      "evidence": "Source-purpose review: Reports original disk pending0/complete100 or network int progress using buffer position and length minus signed-byte padding. Preserve arithmetic order/overflow/division,nullable buffer behavior,guard-specific sentinels/mutations/recursion and parameter widths. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
       "confidence": "reviewed"
     },
     {
@@ -4478,7 +4611,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "af840e20401d94f64a522b010c3321fbe2ec4d7b84096078928a6f20149b70dd",
+      "transmogrify-names.json": "2f88f841c546741c7d77468ec50193b7d38bdf2791dae4eda133f051c8fa66a2",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

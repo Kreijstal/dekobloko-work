@@ -109,6 +109,31 @@
       "jr",
       "PcmOutputWorker",
       "Source-purpose review: Runnable output worker with volatile two-slot PCM output array (existing AudioOutput/PcmPlayerService/AudioMixer names retained),two volatile running/stop flags,and retained system-task service. Package-visible constructor allocates two player slots and initializes both flags false;public final run services nonnull players through the already reviewed bound output serviceOutput method,sleeps via sleepMillis(10),and performs its original post-service helper call. All22run bodies,22constructors and22creation/task-registration contexts human read. Preserve run callback name,all field/method leaves,volatile declarations,flag placement,Exception/Throwable/finally routing,diagnostic wrappers,partial writes and call/allocation/exception order. Unrelated static helper bodies preserved without claiming their semantic review."
+    ],
+    [
+      "t",
+      "DiskCacheWorker",
+      "Source-purpose review: Runnable disk-cache worker owns ordinary queue/thread/stop/count state,starts a platform-service thread task,and services opcode2 writes/opcode3 reads outside the queue monitor. Source bodies,queue/stop/thread/counter/pending-field links and all bound incoming method contexts/construction sites reviewed. Keep run ABI,constructor visibility,nonvolatile fields,queue and IO order,ignored write bool,completion-on-error paths,all primitive domains/guards/partial effects and diagnostic wrapping."
+    ],
+    [
+      "nq",
+      "DiskArchiveRequest",
+      "Source-purpose review: Archive-request subtype with operation int,aliased byte-array payload and sector-store reference. Worker factories and run/readNow paths bind the same key/store/opcode/payload/pending fields. Constructor/getter bodies and incoming contexts reviewed. Preserve empty package constructor,inherited pending/flags,original aliases,all guard-dependent sentinels/helper calls and error behavior."
+    ],
+    [
+      "qh",
+      "SectorCacheStore",
+      "Source-purpose review: Sector-chain archive store binds archive index,data file,index file and entry-length limit. Six-byte index records point into520-byte sectors;small keys use8-byte headers/512payload and large keys10-byte headers/510payload. All constructor/read/write/chain-writer/toString bodies and construction/call contexts reviewed. Preserve index-before-payload writes,shared scratch buffer,original512next-link test even for510payload,EOF/IOException and guard paths,int multiplication-before-longcast and exact partial effects."
+    ],
+    [
+      "rk",
+      "ArchiveRequest",
+      "Source-purpose review: Abstract shared request root owns three booleans including the volatile pending flag initialized true,and declares payload/progress operations implemented by both disk and network requests. Full root/child constructors,getters,abstract signatures/storage and complete override families reviewed. Preserve inheritance,visibility,volatile modifier,parameter widths,guard domains and all unrelated helpers."
+    ],
+    [
+      "ia",
+      "NetworkArchiveRequest",
+      "Source-purpose review: Network archive-request subtype owns signed-byte padding,int transfer counter and packet-buffer reference;construction sites populate composite archive/group key,padding and flags. Payload getter returns original buffer array when complete;progress uses original int arithmetic over buffer position and length minus signed padding. Preserve aliases,int overflow/division,all guards/sentinels,constructor visibility and full override-family bindings."
     ]
   ],
   "methods": [
@@ -3709,6 +3734,104 @@
       "(ILjava/awt/Component;Z)V",
       "setCursorVisible",
       "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order."
+    ],
+    [
+      "t",
+      "a",
+      "(I)V",
+      "shutdown",
+      "Source-purpose review: Sets the original stop flag,wakes the queue and joins the worker thread on the original paths. Preserve supplied stop boolean in FleaCircus/MonkeyPuzzle2,guards that skip joins or invoke helpers/run/recursion,monitor identity,interruption behavior and thread clearing order. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "t",
+      "a",
+      "(IILqh;[B)Lnq;",
+      "requestWrite",
+      "Source-purpose review: Creates a disk-write request using original byte-array alias,key,store,opcode and flags,and enqueues it. Preserve input-derived opcode/flag fields,all guard domains and ordering,including exceptions after enqueue and early null returns during partial initialization. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "t",
+      "a",
+      "(Lnq;I)V",
+      "enqueue",
+      "Source-purpose review: Inserts request under the original queue monitor,increments pending count and notifies on the original paths. Preserve guards that return before insertion or after insertion before count/notify,all side effects and exception order. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "t",
+      "a",
+      "(Lqh;IB)Lnq;",
+      "requestRead",
+      "Source-purpose review: Creates and enqueues a disk-read request on the ordinary caller path. Preserve original per-game opcode/flag parameters,allocation/field-store/enqueue order,sign-extended key,guards,null returns,helper/recursive calls and diagnostic exceptions;do not discard parameters that callers often pass as constants. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "t",
+      "a",
+      "(ZLqh;I)Lnq;",
+      "readNow",
+      "Source-purpose review: Scans queued writes by key/store identity under the original queue monitor and returns the queued payload alias when present;otherwise reads backing store synchronously after monitor release. Preserve per-game opcode/flag parameters,null/guard/global-field paths,aliases,completion flags,IO/allocation and exception order. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "qh",
+      "a",
+      "(II)[B",
+      "read",
+      "Source-purpose review: Reads a sector-chain cache entry using its six-byte index record and validates key/chunk/archive/next-sector headers. Preserve original input-derived scratch indexes and byte mask,shared scratch array,small/large key formats,all bounds/guards/IO order,null/IOException paths and int multiplication before longcasts. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "qh",
+      "a",
+      "(II[BB)Z",
+      "write",
+      "Source-purpose review: Attempts private chain writer with overwrite selected,then a new chain on the original failure path under the data-file monitor. Preserve caller-dependent length checks,helper argument values,original bools and all guards/partial effects/exception order;do not claim atomic writes or true means a complete payload. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "qh",
+      "a",
+      "(Z[BIII)Z",
+      "writeSectorChain",
+      "Source-purpose review: Writes original index and sector-chain header/payload operations,reusing or allocating sectors according to the original boolean. Preserve all int/boolean roles including chunk-counter/scratch-index/helper/result parameters,512next-link condition with510large-key payload,EOF exit/result paths,index-before-payload partial effects,guards/recursion and exception order. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "nq",
+      "a",
+      "(B)[B",
+      "getData",
+      "Source-purpose review: Returns the original disk payload or network buffer array on the original ready path. Preserve pending/incomplete RuntimeException/null behavior,all aliases,guard-triggered mutations/recursion/helper calls and full parameter domains. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "rk",
+      "a",
+      "(B)[B",
+      "getData",
+      "Source-purpose review: Returns the original disk payload or network buffer array on the original ready path. Preserve pending/incomplete RuntimeException/null behavior,all aliases,guard-triggered mutations/recursion/helper calls and full parameter domains. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "ia",
+      "a",
+      "(B)[B",
+      "getData",
+      "Source-purpose review: Returns the original disk payload or network buffer array on the original ready path. Preserve pending/incomplete RuntimeException/null behavior,all aliases,guard-triggered mutations/recursion/helper calls and full parameter domains. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "nq",
+      "i",
+      "(I)I",
+      "getProgressPercent",
+      "Source-purpose review: Reports original disk pending0/complete100 or network int progress using buffer position and length minus signed-byte padding. Preserve arithmetic order/overflow/division,nullable buffer behavior,guard-specific sentinels/mutations/recursion and parameter widths. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "rk",
+      "i",
+      "(I)I",
+      "getProgressPercent",
+      "Source-purpose review: Reports original disk pending0/complete100 or network int progress using buffer position and length minus signed-byte padding. Preserve arithmetic order/overflow/division,nullable buffer behavior,guard-specific sentinels/mutations/recursion and parameter widths. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
+    ],
+    [
+      "ia",
+      "i",
+      "(I)I",
+      "getProgressPercent",
+      "Source-purpose review: Reports original disk pending0/complete100 or network int progress using buffer position and length minus signed-byte padding. Preserve arithmetic order/overflow/division,nullable buffer behavior,guard-specific sentinels/mutations/recursion and parameter widths. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values."
     ]
   ],
   "fields": [
