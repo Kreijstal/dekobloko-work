@@ -84,6 +84,11 @@
       "el",
       "ArgbSprite",
       "Complete original class, constructors, all drawing wrappers and pixel kernels reviewed. Sprite subclass composites ARGB pixels using unsigned top-byte alpha; includes fixed-point nearest rotation, clipped/scaled/mirrored draws, alpha/intensity/additive/tint/ramp operations, scanline masking and weighted reductions. Preserve zero-alpha reads/writes, clipping-restoration boundaries, integer rounding/overflow and helper order."
+    ],
+    [
+      "fi",
+      "PolygonScanlineState",
+      "Complete 269-line class and all seven owned method bodies reviewed. Owns packed four-int polygon edges and active scanline state; adds non-horizontal closed-polygon edges, sorts and initializes edges, and yields paired left/right/y spans to sprite masking. Preserve static shared state, sorting details, full index domains, fixed-point arithmetic, clip-dependent divisions, sentinels, allocation and partial-write order."
     ]
   ],
   "methods": [
@@ -2102,6 +2107,34 @@
       "([I[IIIIIIIIIII)V",
       "blitGrayscaleTintedRows",
       "Source-purpose review: Tint only grayscale pixels with the supplied RGB multiplier and plus-one result; preserve non-grayscale passthrough, zero handling and ARGB composition. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 5eae23f8bcfd96f67d5a0748b69c8e60b83325b3284d9697da1765208c94b1c0."
+    ],
+    [
+      "fi",
+      "b",
+      "(II)V",
+      "sortEdgesByStartY",
+      "Source-purpose review: Recursively partition four-int edge records by starting Y, preserving the exact pivot/record move sequence, recursion boundaries and all index-domain failures."
+    ],
+    [
+      "fi",
+      "a",
+      "(II)V",
+      "sortActiveEdgesByX",
+      "Source-purpose review: Order active fixed-point intersections by X using adjacent swaps of X,deltaX,endY while intentionally retaining slot1;preserve early exit and shrinking range."
+    ],
+    [
+      "fi",
+      "c",
+      "()V",
+      "resetEdges",
+      "Source-purpose review: Reset only the packed edge-count cursor to zero without clearing other state or allocating."
+    ],
+    [
+      "fi",
+      "a",
+      "([III)V",
+      "addPolygonEdges",
+      "Source-purpose review: Append the non-horizontal edges of a closed polygon from a flat coordinate slice,orienting endpoints by Y;preservecapacity calculation/copy/replacement,all increments,zero-length/negative/full-int behavior and partial writes."
     ]
   ],
   "fields": [

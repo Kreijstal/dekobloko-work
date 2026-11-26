@@ -486,6 +486,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fi",
+      "originalName": "fi",
+      "to": "PolygonScanlineState",
+      "evidence": "Complete 269-line class and all seven owned method bodies reviewed. Owns packed four-int polygon edges and active scanline state; adds non-horizontal closed-polygon edges, sorts and initializes edges, and yields paired left/right/y spans to sprite masking. Preserve static shared state, sorting details, full index domains, fixed-point arithmetic, clip-dependent divisions, sentinels, allocation and partial-write order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fj",
       "originalName": "fj",
       "to": "CrossfadingMidiPcmStream",
@@ -1823,10 +1830,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fi.a(II)V",
+      "originalName": "a",
+      "to": "sortActiveEdgesByX",
+      "evidence": "Source-purpose review: Order active fixed-point intersections by X using adjacent swaps of X,deltaX,endY while intentionally retaining slot1;preserve early exit and shrinking range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a([III)V",
+      "originalName": "a",
+      "to": "addPolygonEdges",
+      "evidence": "Source-purpose review: Append the non-horizontal edges of a closed polygon from a flat coordinate slice,orienting endpoints by Y;preservecapacity calculation/copy/replacement,all increments,zero-length/negative/full-int behavior and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fi.b()Z",
       "originalName": "b",
       "to": "nextScanlineSpan",
       "evidence": "Source-purpose review: Advance paired active edges and yield left/right/y span coordinates, updating fixed-point intersections and active-record ordering; preserve clipping, divisions, mutation and termination order. Preserve every original guard, allocation, literal, descriptor, modifier, exception boundary and full primitive domain. Original body SHA256 e40f25a57ef868061a19f8268daabc20c8dcc1aa3d66e6baa5f1b5d0fb7a71f5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.b(II)V",
+      "originalName": "b",
+      "to": "sortEdgesByStartY",
+      "evidence": "Source-purpose review: Recursively partition four-int edge records by starting Y, preserving the exact pivot/record move sequence, recursion boundaries and all index-domain failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.c()V",
+      "originalName": "c",
+      "to": "resetEdges",
+      "evidence": "Source-purpose review: Reset only the packed edge-count cursor to zero without clearing other state or allocating.",
       "confidence": "reviewed"
     },
     {
@@ -3981,7 +4016,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c042d4e7793d93c469822e85fad602baebb74bd01aac6bf321d09ca5452e99fc",
-      "torchallenge-names.json": "1d7ca698d7574318f7e02c1203e2968e27c9ddcd2627a6f2498b89143f86f472",
+      "torchallenge-names.json": "34ed4fad1c7802c1c3a8f04f41c3532c3c395c1832b04ec36e88641b59e0b176",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
