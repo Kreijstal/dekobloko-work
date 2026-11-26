@@ -2208,6 +2208,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sq",
+      "originalName": "sq",
+      "to": "PolygonScanlineRasterizer",
+      "evidence": "Complete original class, all owned methods, bound callers and horizontal raster helpers reviewed: static packed polygon-edge storage, edge sorting, fixed-point scanline span iteration and polygon filling. Preserve all source behavior, primitive domains, allocation, clipping, sentinel, exception and partial-write order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ss",
       "originalName": "ss",
       "to": "ModelMesh",
@@ -10860,10 +10867,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sq.a()V",
+      "originalName": "a",
+      "to": "initializeScanlineSpans",
+      "evidence": "Source-purpose review: Sort packed edges by starting Y, clip the initial scanline, convert endpoints to fixed-point intersections and slopes, and initialize the active-edge cursors. Preserve zero-edge return, shifts, signed division, clipping and mutation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(I)V",
+      "originalName": "a",
+      "to": "renderSpans",
+      "evidence": "Source-purpose review: Initialize and consume paired scanline spans through the solid horizontal-line helper. Preserve original zero-count sentinel behavior, clipping and shared-state mutations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(II)V",
+      "originalName": "a",
+      "to": "sortEdgesByStartY",
+      "evidence": "Source-purpose review: Recursively partition four-int endpoint records by starting Y. Preserve exact pivot, record moves, recursion boundaries, index domains and exception behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a([III)V",
+      "originalName": "a",
+      "to": "addPolygonEdges",
+      "evidence": "Source-purpose review: Append non-horizontal edges of a closed flat-coordinate polygon slice as four-int endpoint records oriented by starting Y. Preserve capacity growth, copies, full integer/index domains, count increments and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a([IIII)V",
+      "originalName": "a",
+      "to": "fillPolygonSlice",
+      "evidence": "Source-purpose review: Reset edges, append the supplied flat-coordinate slice, then fill its scanline spans in the given color. Preserve raw offsets/counts and reset/add/render order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.b()Z",
+      "originalName": "b",
+      "to": "nextScanlineSpan",
+      "evidence": "Source-purpose review: Advance active edges and scanlines, insert eligible edges, remove expired edges, sort intersections and yield the next paired left/right/Y span. Preserve sentinels, fixed-point arithmetic, bounds and state updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.b(II)V",
+      "originalName": "b",
+      "to": "sortActiveEdgesByX",
+      "evidence": "Source-purpose review: Order active fixed-point X intersections using adjacent swaps of X, delta-X and ending-Y while retaining the unused record slot. Preserve exact early exits and range updates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sq.c()V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.d()V",
+      "originalName": "d",
+      "to": "resetEdges",
+      "evidence": "Source-purpose review: Set only the packed edge-count cursor to zero without clearing the other shared scanline state or allocating.",
       "confidence": "reviewed"
     },
     {
@@ -12234,7 +12297,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "7856ff3a5e161b625fced1c00766c3019804e6c0e09f745c7d86aff76430f5d7",
+      "bachelorfridge-names.json": "55063586e65d19f1b2b8278a56afe21f7f8d60e6cffdeda0ec35a8a31f14fa7c",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

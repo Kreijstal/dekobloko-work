@@ -339,6 +339,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:k",
+      "originalName": "k",
+      "to": "PolygonScanlineRasterizer",
+      "evidence": "Complete original class, all owned methods, bound callers and horizontal raster helpers reviewed: static packed polygon-edge storage, edge sorting, fixed-point scanline span iteration and polygon filling. Preserve all source behavior, primitive domains, allocation, clipping, sentinel, exception and partial-write order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kg",
       "originalName": "kg",
       "to": "PacketBuffer",
@@ -1571,6 +1578,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:k.a(I)V",
+      "originalName": "a",
+      "to": "renderSpans",
+      "evidence": "Source-purpose review: Initialize and consume paired scanline spans through the solid horizontal-line helper. Preserve original zero-count sentinel behavior, clipping and shared-state mutations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.a(II)V",
+      "originalName": "a",
+      "to": "sortEdgesByStartY",
+      "evidence": "Source-purpose review: Recursively partition four-int endpoint records by starting Y. Preserve exact pivot, record moves, recursion boundaries, index domains and exception behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.a([III)V",
+      "originalName": "a",
+      "to": "addPolygonEdges",
+      "evidence": "Source-purpose review: Append non-horizontal edges of a closed flat-coordinate polygon slice as four-int endpoint records oriented by starting Y. Preserve capacity growth, copies, full integer/index domains, count increments and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.b()V",
+      "originalName": "b",
+      "to": "resetEdges",
+      "evidence": "Source-purpose review: Set only the packed edge-count cursor to zero without clearing the other shared scanline state or allocating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.b(II)V",
+      "originalName": "b",
+      "to": "sortActiveEdgesByX",
+      "evidence": "Source-purpose review: Order active fixed-point X intersections using adjacent swaps of X, delta-X and ending-Y while retaining the unused record slot. Preserve exact early exits and range updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.c()V",
+      "originalName": "c",
+      "to": "initializeScanlineSpans",
+      "evidence": "Source-purpose review: Sort packed edges by starting Y, clip the initial scanline, convert endpoints to fixed-point intersections and slopes, and initialize the active-edge cursors. Preserve zero-edge return, shifts, signed division, clipping and mutation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.d()Z",
+      "originalName": "d",
+      "to": "nextScanlineSpan",
+      "evidence": "Source-purpose review: Advance active edges and scanlines, insert eligible edges, remove expired edges, sort intersections and yield the next paired left/right/Y span. Preserve sentinels, fixed-point arithmetic, bounds and state updates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2707,7 +2763,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "9a7b0a86357b0914e7dee7d6cf1911be1f27d8ce5dcb4adbefe2abeb6566db13",
+      "confined-names.json": "02f4e989af0ddf5ba6942071e263184a1fd0769ac2d9a27a5e9c882d5f14f302",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

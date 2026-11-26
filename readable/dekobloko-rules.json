@@ -1937,9 +1937,9 @@
     {
       "symbol": "C:ok",
       "originalName": "ok",
-      "to": "MixedSupport092",
-      "evidence": "Structural category: Utility or mixed responsibility (low); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "PolygonScanlineRasterizer",
+      "evidence": "Complete original class, all owned methods, bound callers and horizontal raster helpers reviewed: static packed polygon-edge storage, edge sorting, fixed-point scanline span iteration and polygon filling. Preserve all source behavior, primitive domains, allocation, clipping, sentinel, exception and partial-write order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:ol",
@@ -139613,86 +139613,86 @@
     {
       "symbol": "M:ok.a()V",
       "originalName": "a",
-      "to": "performAction1185",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "initializeScanlineSpans",
+      "evidence": "Source-purpose review: Sort packed edges by starting Y, clip the initial scanline, convert endpoints to fixed-point intersections and slopes, and initialize the active-edge cursors. Preserve zero-edge return, shifts, signed division, clipping and mutation order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.a(I)V",
       "originalName": "a",
-      "to": "performAction1186",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "renderSpans",
+      "evidence": "Source-purpose review: Initialize and consume paired scanline spans through the solid horizontal-line helper. Preserve original zero-count sentinel behavior, clipping and shared-state mutations.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.a(II)V",
       "originalName": "a",
-      "to": "performAction1187",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "sortEdgesByStartY",
+      "evidence": "Source-purpose review: Recursively partition four-int endpoint records by starting Y. Preserve exact pivot, record moves, recursion boundaries, index domains and exception behavior.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.a(II[I[I)V",
       "originalName": "a",
-      "to": "performAction1188",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "renderSpansAlphaMasked",
+      "evidence": "Source-purpose review: Initialize and consume scanline spans, optionally clip each span to its per-row mask offset/width, then call the 256-scale alpha horizontal-line helper. Preserve mask indexes, clipping, integer arithmetic and partial writes.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.a([II)V",
       "originalName": "a",
-      "to": "performAction1189",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "fillPolygon",
+      "evidence": "Source-purpose review: Delegate the whole flat-coordinate array to the solid polygon slice fill, evaluating its length in original order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.a([III)V",
       "originalName": "a",
-      "to": "performAction1190",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "fillPolygonAlpha",
+      "evidence": "Source-purpose review: Delegate the whole flat-coordinate array to the alpha polygon slice fill with null row masks. The helper uses 256-minus-alpha RGB blending; preserve the full integer alpha domain.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.a([IIII)V",
       "originalName": "a",
-      "to": "performAction1191",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "fillPolygonSlice",
+      "evidence": "Source-purpose review: Reset edges, append the supplied flat-coordinate slice, then fill its scanline spans in the given color. Preserve raw offsets/counts and reset/add/render order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.a([IIIII[I[I)V",
       "originalName": "a",
-      "to": "performAction1192",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "fillPolygonSliceAlphaMasked",
+      "evidence": "Source-purpose review: Validate optional row-mask height against raster clip height before resetting edges, append the coordinate slice, then render alpha/masked spans. Preserve exact exception, allocation and state-mutation order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.b()Z",
       "originalName": "b",
-      "to": "computeBoolean1193",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "nextScanlineSpan",
+      "evidence": "Source-purpose review: Advance active edges and scanlines, insert eligible edges, remove expired edges, sort intersections and yield the next paired left/right/Y span. Preserve sentinels, fixed-point arithmetic, bounds and state updates.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.b(II)V",
       "originalName": "b",
-      "to": "performAction1194",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "sortActiveEdgesByX",
+      "evidence": "Source-purpose review: Order active fixed-point X intersections using adjacent swaps of X, delta-X and ending-Y while retaining the unused record slot. Preserve exact early exits and range updates.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.b([III)V",
       "originalName": "b",
-      "to": "performAction1195",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "addPolygonEdges",
+      "evidence": "Source-purpose review: Append non-horizontal edges of a closed flat-coordinate polygon slice as four-int endpoint records oriented by starting Y. Preserve capacity growth, copies, full integer/index domains, count increments and partial writes.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.c()V",
       "originalName": "c",
-      "to": "performAction1196",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "resetEdges",
+      "evidence": "Source-purpose review: Set only the packed edge-count cursor to zero without clearing the other shared scanline state or allocating.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ok.d()V",
@@ -194769,7 +194769,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "reproduce-dekobloko.mjs": "2a1c461995165406fd2fad26551c82dbc06aa441ae38cff980551230c1b2144b",
-      "dekobloko-reviewed-names.json": "33b389149fa4e513f03d3b606e9c28edbcec95b38a1cf6edc7f69fd7f632f28d",
+      "dekobloko-reviewed-names.json": "21c61a86a56e84dff304274622c27d90049a69e6f12fb7662c662c4f191511f0",
       "dekobloko-provisional-names.json": "99a1f75e618d2dd63a8885728ecdfb70e4fa3bc7f1b3bd584951c5a27359cb30",
       "catalog-naming-coverage.mjs": "0a733b0a7e4a2779b01b5c15f1e7b027c0fdfed9012851e35f420d3bfcf6ce43",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2"

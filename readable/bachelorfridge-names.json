@@ -54,6 +54,11 @@
       "go",
       "SpriteState",
       "Complete original class, concrete sprite constructors and rotation dispatch reviewed. Abstract DualLinkNode sprite state stores full dimensions, trim offsets and pixel extents; converts sprite center/destination to fixed-point before dispatching nearest rotation. Preserve mixed-in theme/invite/status-effect statics, guard-dependent writes/calls and all original execution order."
+    ],
+    [
+      "sq",
+      "PolygonScanlineRasterizer",
+      "Complete original class, all owned methods, bound callers and horizontal raster helpers reviewed: static packed polygon-edge storage, edge sorting, fixed-point scanline span iteration and polygon filling. Preserve all source behavior, primitive domains, allocation, clipping, sentinel, exception and partial-write order."
     ]
   ],
   "methods": [
@@ -1386,6 +1391,62 @@
       "(IIIII)V",
       "drawRotated",
       "Source-purpose review: Builds full sprite half-width/height center in16ths,adjusts destination low bits,dispatches abstract nearest rotation;nonmagicguard writes field_p=-3 beforedispatch. Dimensions confirmed in the original concrete sprite constructors."
+    ],
+    [
+      "sq",
+      "b",
+      "(II)V",
+      "sortActiveEdgesByX",
+      "Source-purpose review: Order active fixed-point X intersections using adjacent swaps of X, delta-X and ending-Y while retaining the unused record slot. Preserve exact early exits and range updates."
+    ],
+    [
+      "sq",
+      "a",
+      "([III)V",
+      "addPolygonEdges",
+      "Source-purpose review: Append non-horizontal edges of a closed flat-coordinate polygon slice as four-int endpoint records oriented by starting Y. Preserve capacity growth, copies, full integer/index domains, count increments and partial writes."
+    ],
+    [
+      "sq",
+      "a",
+      "(I)V",
+      "renderSpans",
+      "Source-purpose review: Initialize and consume paired scanline spans through the solid horizontal-line helper. Preserve original zero-count sentinel behavior, clipping and shared-state mutations."
+    ],
+    [
+      "sq",
+      "d",
+      "()V",
+      "resetEdges",
+      "Source-purpose review: Set only the packed edge-count cursor to zero without clearing the other shared scanline state or allocating."
+    ],
+    [
+      "sq",
+      "a",
+      "(II)V",
+      "sortEdgesByStartY",
+      "Source-purpose review: Recursively partition four-int endpoint records by starting Y. Preserve exact pivot, record moves, recursion boundaries, index domains and exception behavior."
+    ],
+    [
+      "sq",
+      "a",
+      "()V",
+      "initializeScanlineSpans",
+      "Source-purpose review: Sort packed edges by starting Y, clip the initial scanline, convert endpoints to fixed-point intersections and slopes, and initialize the active-edge cursors. Preserve zero-edge return, shifts, signed division, clipping and mutation order."
+    ],
+    [
+      "sq",
+      "a",
+      "([IIII)V",
+      "fillPolygonSlice",
+      "Source-purpose review: Reset edges, append the supplied flat-coordinate slice, then fill its scanline spans in the given color. Preserve raw offsets/counts and reset/add/render order."
+    ],
+    [
+      "sq",
+      "b",
+      "()Z",
+      "nextScanlineSpan",
+      "Source-purpose review: Advance active edges and scanlines, insert eligible edges, remove expired edges, sort intersections and yield the next paired left/right/Y span. Preserve sentinels, fixed-point arithmetic, bounds and state updates."
     ]
   ],
   "fields": [

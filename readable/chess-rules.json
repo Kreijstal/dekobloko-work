@@ -570,6 +570,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wa",
+      "originalName": "wa",
+      "to": "PolygonScanlineRasterizer",
+      "evidence": "Complete original class, all owned methods, bound callers and horizontal raster helpers reviewed: static packed polygon-edge storage, edge sorting, fixed-point scanline span iteration and polygon filling. Preserve all source behavior, primitive domains, allocation, clipping, sentinel, exception and partial-write order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:a.field_b:Z",
       "originalName": "field_b",
       "to": "focusLost",
@@ -3237,10 +3244,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wa.a()V",
+      "originalName": "a",
+      "to": "resetEdges",
+      "evidence": "Source-purpose review: Set only the packed edge-count cursor to zero without clearing the other shared scanline state or allocating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(I)V",
+      "originalName": "a",
+      "to": "renderSpans",
+      "evidence": "Source-purpose review: Initialize and consume paired scanline spans through the solid horizontal-line helper. Preserve original zero-count sentinel behavior, clipping and shared-state mutations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(II)V",
+      "originalName": "a",
+      "to": "sortActiveEdgesByX",
+      "evidence": "Source-purpose review: Order active fixed-point X intersections using adjacent swaps of X, delta-X and ending-Y while retaining the unused record slot. Preserve exact early exits and range updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(II[I[I)V",
+      "originalName": "a",
+      "to": "renderSpansAlphaMasked",
+      "evidence": "Source-purpose review: Initialize and consume scanline spans, optionally clip each span to its per-row mask offset/width, then call the 256-scale alpha horizontal-line helper. Preserve mask indexes, clipping, integer arithmetic and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a([II)V",
+      "originalName": "a",
+      "to": "fillPolygon",
+      "evidence": "Source-purpose review: Delegate the whole flat-coordinate array to the solid polygon slice fill, evaluating its length in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a([III)V",
+      "originalName": "a",
+      "to": "addPolygonEdges",
+      "evidence": "Source-purpose review: Append non-horizontal edges of a closed flat-coordinate polygon slice as four-int endpoint records oriented by starting Y. Preserve capacity growth, copies, full integer/index domains, count increments and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a([IIII)V",
+      "originalName": "a",
+      "to": "fillPolygonSlice",
+      "evidence": "Source-purpose review: Reset edges, append the supplied flat-coordinate slice, then fill its scanline spans in the given color. Preserve raw offsets/counts and reset/add/render order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a([IIIII[I[I)V",
+      "originalName": "a",
+      "to": "fillPolygonSliceAlphaMasked",
+      "evidence": "Source-purpose review: Validate optional row-mask height against raster clip height before resetting edges, append the coordinate slice, then render alpha/masked spans. Preserve exact exception, allocation and state-mutation order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wa.b()V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e8be3fce687a8d2f6a590e53bc42670fc84e2b29bedbb6c3f3b5d3464235d2ef.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.b(II)V",
+      "originalName": "b",
+      "to": "sortEdgesByStartY",
+      "evidence": "Source-purpose review: Recursively partition four-int endpoint records by starting Y. Preserve exact pivot, record moves, recursion boundaries, index domains and exception behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.b([III)V",
+      "originalName": "b",
+      "to": "fillPolygonAlpha",
+      "evidence": "Source-purpose review: Delegate the whole flat-coordinate array to the alpha polygon slice fill with null row masks. The helper uses 256-minus-alpha RGB blending; preserve the full integer alpha domain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.c()V",
+      "originalName": "c",
+      "to": "initializeScanlineSpans",
+      "evidence": "Source-purpose review: Sort packed edges by starting Y, clip the initial scanline, convert endpoints to fixed-point intersections and slopes, and initialize the active-edge cursors. Preserve zero-edge return, shifts, signed division, clipping and mutation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.d()Z",
+      "originalName": "d",
+      "to": "nextScanlineSpan",
+      "evidence": "Source-purpose review: Advance active edges and scanlines, insert eligible edges, remove expired edges, sort intersections and yield the next paired left/right/Y span. Preserve sentinels, fixed-point arithmetic, bounds and state updates.",
       "confidence": "reviewed"
     },
     {
@@ -3393,7 +3484,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-chess-rules.mjs": "96e89726e9752b6c32c9c36b36b5bed50f637c08bf0e2c3963477590a7927127",
-      "chess-names.json": "8f7e77b8b9ce16025421caef9c5e7ab785a29357527e6b46835a99c56c8175a9",
+      "chess-names.json": "fc4797d5bfdef3182498f565829bf8950efd573ffed4b3cc9823591035a39fa0",
       "reproduce-chess.mjs": "83586202a6788e331bbadf9d01041fd32d100e7110eccafcbf80b4a91364ad46",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
