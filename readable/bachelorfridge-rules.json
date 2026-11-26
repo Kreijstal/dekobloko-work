@@ -4378,10 +4378,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.a(IIIIII)V",
+      "originalName": "a",
+      "to": "blurRectangle",
+      "evidence": "Source-purpose review: Run the in-place horizontal smoothing kernel followed by the vertical smoothing kernel on the supplied rectangle with separate X/Y radii. Retain full integer domains, scratch allocation, RGB sums, clamp/edge/division behavior and first-pass partial writes if the second pass fails. Original body SHA256 a995654a8ee73f744a127b81bdb4f47b38805be08a3ad0870b6e1218bd781b45. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "fillRoundedRectangleAlpha",
+      "evidence": "Source-purpose review: Fill rounded-rectangle spans with256-scale uniform-color alpha blending;retain alpha256 and radius0 delegation,negative radii,clipping and all recurrence/store details. Original body SHA256 f5ebfa3d4b4385308897ee2850318ff533d9fd15494e4cb12ce0840240ffdaf2. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.a(IIIIIIII[II[IIIIIIII)V",
       "originalName": "a",
       "to": "addRadialGlowScanlines",
       "evidence": "Body is token-identical to the reviewed SoftwareRasterizer method of the same name in other FunOrb games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a(IIII[I)V",
+      "originalName": "a",
+      "to": "addRadialGlow",
+      "evidence": "Source-purpose review: Build4-bit fixed-point radial-glow rectangle bounds and squared-distance differences,then invoke the palette-additive scanline kernel. Original body SHA256 51298c88ffeded1a5a64ea554668649ed72d791cb7b4f0831b24b0a833b4841b. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a(I[IIIII)V",
+      "originalName": "a",
+      "to": "darkenRowsHalf",
+      "evidence": "Source-purpose review: Halve masked RGB components in an array region using eight sequential in-place stores per unrolled iteration and scalar tail across the supplied negative-height row counter and stride adjustment. Preserve all argument domains and evaluation/store order. Original body SHA256 4b74fb8e90ee80d881e8a8ac3c6e95af78e488487ead92a894df0a13c16f0ea1. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -4396,6 +4424,20 @@
       "originalName": "a",
       "to": "setTarget",
       "evidence": "Body is token-identical to the reviewed SoftwareRasterizer method of the same name in other FunOrb games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "blurHorizontalInPlace",
+      "evidence": "Source-purpose review: Compute horizontal moving RGB sums directly into the framebuffer region, dividing by available edge sample counts and using the original 14-bit reciprocal in the interior. Preserve nonstandard clipping, edge sums/clamps, all scratch arguments, overflow and in-place read/write order. Original body SHA256 36989b8dd787911e01427ba0872c9ef3ccda2aab85b0b401bde64e529793818e. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a([IIIIIIIII)V",
+      "originalName": "a",
+      "to": "blurVerticalInPlace",
+      "evidence": "Source-purpose review: Compute vertical moving RGB sums using the three reusable channel arrays, with original allocation/clear order, edge sample divisors, 14-bit interior reciprocal, clamps and exact in-place scan order. Preserve all integer domains and failures. Original body SHA256 305e15b17f31832a039753b1f753d9da5b267bc0c3edf58c8fd6bb303efab87f. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -4434,6 +4476,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.c()V",
+      "originalName": "c",
+      "to": "resetClip",
+      "evidence": "Source-purpose review: Set clip left/top to zero and right/bottom to framebuffer dimensions, then clear both scanline masks in original order. Original body SHA256 8699f6b6fc2002329f7970921ddbdda8ed7a75c346d672979a1f2792dbcf9c75. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.c(IIII)V",
       "originalName": "c",
       "to": "intersectClip",
@@ -4445,6 +4494,13 @@
       "originalName": "c",
       "to": "fillRectangle",
       "evidence": "Body is token-identical to the reviewed SoftwareRasterizer method of the same name in other FunOrb games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.c(IIIIII)V",
+      "originalName": "c",
+      "to": "drawRectangleBorder",
+      "evidence": "Source-purpose review: Draw nested inset rectangle outlines for the supplied border thickness in original loop/call order. Original body SHA256 4dc10bd134e965e406fd97f0210e3024d9051ca29f600f7c568c9f0b17a16652. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -4469,10 +4525,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.d(IIIIII)V",
+      "originalName": "d",
+      "to": "drawThickLine",
+      "evidence": "Source-purpose review: Construct four thickness-offset line endpoints and draw their quad as two flat triangles through TriangleRasterizer;retain zero-length return,16-bit divisions,clip-origin queries,clipping-flag updates and draw order. Original body SHA256 0eacfef68cf27733a16b7a679c433b29c6f61a80e13bac4edcdc224ab08fca14. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.e(IIII)V",
       "originalName": "e",
       "to": "drawHorizontalLine",
       "evidence": "Body is token-identical to the reviewed SoftwareRasterizer method of the same name in other FunOrb games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.e(IIIII)V",
+      "originalName": "e",
+      "to": "drawRectangleShadow",
+      "evidence": "Source-purpose review: Draw four descending-opacity bottom and right shadow strokes using the existing 256-scale horizontal/vertical alpha helpers; retain coordinates, width, height-plus-one and call order. Original body SHA256 726c9067a8a08eee397fdcbf02b3ecc54ac6f4b398960fd454a88a1c9a829aba. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -12297,7 +12367,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "55063586e65d19f1b2b8278a56afe21f7f8d60e6cffdeda0ec35a8a31f14fa7c",
+      "bachelorfridge-names.json": "1e73e4ce7b40fee65616f811706e1ce566a920d329ede9acc2f0416735ecbd14",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

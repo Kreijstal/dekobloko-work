@@ -149,6 +149,11 @@
       "nm",
       "PcmResampler",
       "Fourteen-tap polyphase signed-byte PCM resampler with original input/output rate integers and optional fixed-point coefficient table. Preserve equal-rate constructor early return,original normalization helper and division/store/allocation order,phase bounds,sinc threshold and exact window coefficients,Math sin/cos/floor evaluation and int casts. Original constructor SHA256s ad96bb2d85c0dc79250b7fa684228d4df931fc680c1df77ffbd50b4574054ab9. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim."
+    ],
+    [
+      "si",
+      "SoftwareRasterizer",
+      "Static software framebuffer rasterizer: all12 fields coherently mapped to pixels,stride,height,four clip boundaries,two row masks and three RGB blur sums; all owned operations covered by reviewed complete reference/alternative method bodies and bound field/call correspondences. Preserve class initialization,visibility,integer domains,clipping,shared state and every allocation/exception/partial-write order."
     ]
   ],
   "methods": [
@@ -2286,6 +2291,230 @@
       "(F)V",
       "setStereoWidth",
       "Source-purpose review: Synchronized retained stereo width setter using same retainedwetgain/equalpower formulas;retainfloatdouble conversions/order. Original identity M:gd.d(F)V. Pinned original body SHA256 5cce7f051e9fc44e0921e0dc892b436eb470fd4f7563ced2da811e8acc1033b1. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only."
+    ],
+    [
+      "si",
+      "a",
+      "()V",
+      "clearScanlineMask",
+      "Source-purpose review: Null both per-row mask arrays. Their only external consumer is the bitmap glyph rasterizer, where they supply clip-relative horizontal row offsets and widths; preserve the two assignment order. Original body SHA256 71fc14b6020b1197216111f5b0d9616afaa84029baddb06abdb9a6e7ce57f0d2. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "(IIII)V",
+      "drawHorizontalLine",
+      "Source-purpose review: Clip a solid horizontal pixel run against Y and X bounds,then write the uniform color in framebuffer order. Original body SHA256 5c3556c91b08395dc8c9516b108bb13cca20936c9315b4d4c700d0a8d1160bcb. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "(IIIII)V",
+      "drawRectangleOutline",
+      "Source-purpose review: Draw top,bottom,left and right solid edge strokes with the existing line helpers in original order, including degenerate/full-int dimensions and repeated corner writes. Original body SHA256 26d2ea3e2064c602547ff5d671d16483aaa340d744b7fd943ce4f96c79c759dc. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "(IIIIII)V",
+      "fillRectangleAlpha",
+      "Source-purpose review: Blend a uniform color over a clipped rectangle with alpha and 256-minus-alpha using the original separate packed RGB arithmetic; retain full integer alpha domain, signed shifts and partial writes. Original body SHA256 8cdcb76fe7a1accd3353daa8901484348fbc216705a38009dd57a2336b2af214. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "([I)V",
+      "restoreClip",
+      "Source-purpose review: Read four clip boundaries from array slots0..3 into shared state, then clear row masks; preserve partial assignment before index/null exceptions. Original body SHA256 41ffae650c24bcef668e41f4ae4a84c3bd41e0f3004d3444d7367b154d998b8c. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "([III)V",
+      "setRasterBuffer",
+      "Source-purpose review: Install framebuffer array, stride and height, then reset clip to the supplied dimensions using the existing clip setter; preserve argument order, shared aliases and mask reset. Original body SHA256 a6b914f8909c995e355584bdd2554c4a685c76f2c94706b5643245fff0b025ed. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "([IIIIIIII)V",
+      "blurHorizontalInPlace",
+      "Source-purpose review: Compute horizontal moving RGB sums directly into the framebuffer region, dividing by available edge sample counts and using the original 14-bit reciprocal in the interior. Preserve nonstandard clipping, edge sums/clamps, all scratch arguments, overflow and in-place read/write order. Original body SHA256 708b1ad73740b885386e4bbc9ef7f32b5d20deb1afa6f56d2e2c3f8121c375ad. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "([IIIIIIIII)V",
+      "blurVerticalInPlace",
+      "Source-purpose review: Compute vertical moving RGB sums using the three reusable channel arrays, with original allocation/clear order, edge sample divisors, 14-bit interior reciprocal, clamps and exact in-place scan order. Preserve all integer domains and failures. Original body SHA256 70daa171eeeb71f4c9210b81ef3a6e11a83b021f56b44a6b3893dd6939702e96. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "b",
+      "()V",
+      "clearStaticReferences",
+      "Source-purpose review: Null the framebuffer, both scanline masks and the three blur channel arrays in their original order without resetting primitive dimensions or clip values. Original body SHA256 434cca4192c7abf937ee8ea24aca3e77a6cdfc2c15068b61cdbd7f6aca26db0d. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "b",
+      "(III)V",
+      "setPixel",
+      "Source-purpose review: Write one solid pixel only when X/Y lie inside the current clip rectangle; retain original comparisons, stride multiplication and indexing. Original body SHA256 03368181899b33a2272a8e5886a44584755c3f376c2b06979e954bb6375729b2. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "b",
+      "(IIIII)V",
+      "drawRectangleShadow",
+      "Source-purpose review: Draw four descending-opacity bottom and right shadow strokes using the existing 256-scale horizontal/vertical alpha helpers; retain coordinates, width, height-plus-one and call order. Original body SHA256 9c718db6fb5d29f1a4f213e98826777ede8d7db859fe6bc8d63f7d65742fee2c. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "b",
+      "([I)V",
+      "saveClip",
+      "Source-purpose review: Store left, top, right and bottom clip values into slots0..3 of the supplied array in order; preserve partial writes and null/index failures. Original body SHA256 c1f1edbfbb84b136d4df9e51ae8232acea376993f38f966982dbabf91e0129c1. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "c",
+      "()V",
+      "resetClip",
+      "Source-purpose review: Set clip left/top to zero and right/bottom to framebuffer dimensions, then clear both scanline masks in original order. Original body SHA256 2e7e5e325141dc4831da3d80c0f0ae926950e78bb86b7fa80caf6e564e2a639e. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "c",
+      "(IIII)V",
+      "drawVerticalLine",
+      "Source-purpose review: Clip a solid vertical pixel run against X and Y bounds,then write the uniform color at stride intervals. Original body SHA256 fa811cfd331c8ad77750862593646242395d8000d257128c025c97ae8889aa28. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "c",
+      "(IIIII)V",
+      "fillRectangle",
+      "Source-purpose review: Fill the clipped rectangular region with a solid color using original negative width/height loop counters and framebuffer stride; preserve primitive domains and stores. Original body SHA256 2947aec15d020c50a25eb2cbe677562229ca3388af33e7ac5ee9169808d0fc65. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "c",
+      "(IIIIII)V",
+      "fillRectangleVerticalGradient",
+      "Source-purpose review: Fill a clipped rectangle with a top-to-bottom RGB interpolation using original 16-bit Y phase and 256-scale component weights. Preserve initial division-by-height, clipping adjustments, unsigned shift and iteration order. Original body SHA256 6f6149c980883851d62a0e0890ed78e62b4eca2f88611236c731531e1616becb. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "d",
+      "()V",
+      "clearRaster",
+      "Source-purpose review: Clear width-times-height framebuffer entries to zero using the original eight-store unrolled loop and scalar tail, ignoring the clip rectangle; retain overflow and partial stores. Original body SHA256 d6acd92ce6c747abc41d6125d12b2499088e57d5d5504f98a6f4ab8dc7ac989e. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "d",
+      "(IIII)V",
+      "setClip",
+      "Source-purpose review: Apply the original independent boundary clamps,set the clip rectangle,and clear the row masks. Original body SHA256 e4ff2b30b85906d5ffa5729dbd9e27168f38883a0f4a670a51a0f12360a79294. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "d",
+      "(IIIII)V",
+      "drawVerticalLineAlpha",
+      "Source-purpose review: Clip a vertical run and blend each RGB channel with alpha and256-minus-alpha at stride intervals. Original body SHA256 2fee2f1dab886e14dc36c8a4e1c76f7d456e6c30a64eac52e7012e7dbe5e2382. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "d",
+      "(IIIIII)V",
+      "blurRectangle",
+      "Source-purpose review: Run the in-place horizontal smoothing kernel followed by the vertical smoothing kernel on the supplied rectangle with separate X/Y radii. Retain full integer domains, scratch allocation, RGB sums, clamp/edge/division behavior and first-pass partial writes if the second pass fails. Original body SHA256 7392b8ea913cc208ef1c948f44207b641aa2d7ebf239cc160cb75b34e86f9908. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "e",
+      "(IIII)V",
+      "fillCircle",
+      "Source-purpose review: Fill clipped circular scanlines using the original two-phase squared-radius recurrence,negative-radius handling and zero-radius pixel delegation. Original body SHA256 40eb5fbd5f493ca161ae0a28cfda078094ef63aa6bffa617cd612a769d6ceca9. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "e",
+      "(IIIII)V",
+      "drawHorizontalLineAlpha",
+      "Source-purpose review: Clip a horizontal run and blend each RGB channel with alpha and256-minus-alpha using the original signed shifts. Original body SHA256 69d5a14f24ec40ba2add0c239c3836fd2df6955211f57c17395150e55684c3cf. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "f",
+      "(IIII)V",
+      "intersectClip",
+      "Source-purpose review: Intersect each current clip boundary with the supplied rectangle using the original independent comparisons, then clear scanline masks; preserve invalid/reversed/full-int rectangles without normalization. Original body SHA256 050217628994a4f9a4ebd22e6e113e96b34e0aec3e29c10aa0144d94e3ab15e1. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "g",
+      "(IIII)V",
+      "grayscaleRectangle",
+      "Source-purpose review: Replace each clipped framebuffer pixel with equal RGB channels computed by the exact original weighted expression (((pixel>>15 &510)+(pixel&255))/3+(pixel>>8&255))>>1. Preserve arithmetic and evaluation/store order. Original body SHA256 b08ee8096eacfe3bc0923d2d82cf78c9d7d2518428e3d5b3786ab493ed26324f. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "g",
+      "(IIIII)V",
+      "drawLine",
+      "Source-purpose review: Draw an endpoint-inclusive solid line using16-bit fixed-point major-axis stepping,Math.floor rounding and the original horizontal/vertical cases. Original body SHA256 545fe38b4e0d8bac53126b39c39b1f513a9cb93f298581a4459b59789b04f603. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "(IIIIIIII[II[IIIIIIII)V",
+      "addRadialGlowScanlines",
+      "Source-purpose review: Add palette-sampled radial glow across clipped scanlines using squared-distance finite differences and the original packed saturating RGB arithmetic. Original body SHA256 e024c9f37a23a399e57ae4168ebf3a94404518ab3c8a3c96b8fac3b825ef3524. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "(IIII[I)V",
+      "addRadialGlow",
+      "Source-purpose review: Build4-bit fixed-point radial-glow rectangle bounds and squared-distance differences,then invoke the palette-additive scanline kernel. Original body SHA256 5a5ff023477b0e690002273122bc8e034e7fc78f61b7823ed2fe49096db71364. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "b",
+      "(IIIIII)V",
+      "fillRoundedRectangle",
+      "Source-purpose review: Fill clipped rounded-rectangle spans using the original squared-radius recurrence,straight middle rows and radius0 delegation. Original body SHA256 ffd0f2f9086f7efe0684cc6a01cec9cb3dd875f80686bf587732ec7bed1e7a21. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "f",
+      "(IIIII)V",
+      "fillCircleAlpha",
+      "Source-purpose review: Fill clipped circular scanlines with256-scale per-channel alpha blending;retain alpha0/256 cases,negative radii,scanline recurrence and exact destination-read/store order. Original body SHA256 5ebcb81c944ef8b9af26f9a40ebd9203b8a1143b9c3d4f93ae3b91fb449461b6. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "e",
+      "(IIIIII)V",
+      "drawRectangleOutlineAlpha",
+      "Source-purpose review: Blend top/bottom rectangle edges,then inset left/right edges when height>=3 to retain the original corner write behavior. Original body SHA256 3343a56e81d9b86dd923a9311d871417e5e66b2e8f3bf3d2ef03c13c510443f6. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "b",
+      "(IIII)V",
+      "drawCircleOutline",
+      "Source-purpose review: Draw a solid midpoint-style circular boundary using direct eight-way symmetric stores when inside clip and individually clipped stores otherwise;retain radius0,negative-radius and all guards. Original body SHA256 ceab602e45c0374a2b7aacc764c9456866989dcf766b765885782047e77c743c. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
+    ],
+    [
+      "si",
+      "a",
+      "(III)V",
+      "addPixel",
+      "Source-purpose review: Add RGB to one clipped framebuffer pixel using the original packed saturating arithmetic. Original body SHA256 f39c99fa1dde4c51280d9fd396d285860df53fa633324b2b330d70714bf6ac08. Reviewed reference/alternative body,parameter slots,all shared field roles,callee/helper contracts and representative incoming contexts. Naming only;preserve full original JVM primitive domains,modifiers,operators/constants,strings,integer overflow,FP/casts,guards,aliases,allocation,partial writes and exceptions."
     ]
   ],
   "fields": [
