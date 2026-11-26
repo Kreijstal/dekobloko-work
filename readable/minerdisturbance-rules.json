@@ -388,10 +388,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ca",
+      "originalName": "ca",
+      "to": "NanoFrameTimer",
+      "evidence": "NanoFrameTimer source-purpose review: abstract timer contract or concrete System.nanoTime timestamps/sample buffer;all instance operations,typed factories and selected method callers reviewed;preserve existing behavior and full primitive parameter domains.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ci",
       "originalName": "ci",
       "to": "AwtRasterBuffer",
       "evidence": "Abstract AWT raster buffer with exactly four instance fields:two dimension ints,int pixel array,and Image. Declares initialization/drawing operations implemented by ImageProducer and BufferedImage subclasses,and a final method installing its pixels/dimensions as the software raster target. Entire class source and instance/static member context reviewed;all616class-use spans inventoried and70representative contexts read. Preserve modifiers,implicit constructor/default state,all unrelated statics/field names,full primitive domains/guards/aliases/allocation/exception order and native/override bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cn",
+      "originalName": "cn",
+      "to": "Bzip2State",
+      "evidence": "Source-purpose review:32owned instance fields hold Bzip2 byte/bit counters,buffers,selectors and6x258decode tables;all constructor operations,typed synchronized byte-array decoder entry,bit reader and singleton construction reviewed. Preserve exact per-game14array allocation order/dimensions and two explicit zero stores;multidimensional array allocation/partial effects unchanged. Decoder entry captures lock target then rereads global state field,sets source/target/offset/count/bit fields in original order,calls decoder,and nulls input/output only on normal return. Do not add finally cleanup,lock changes,caching,bounds/count clamps,or alter unused supplied int. Bit reader preserves signed int arithmetic/shift masking,byte&255,buffer-index/count overflow,read/update/exception order and all literals. No method/field leaf aliases changed.",
       "confidence": "reviewed"
     },
     {
@@ -441,6 +455,13 @@
       "originalName": "eh",
       "to": "SoftwareRasterizer",
       "evidence": "Global integer framebuffer with static width, height, clip bounds and software drawing primitives.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ek",
+      "originalName": "ek",
+      "to": "FrameTimer",
+      "evidence": "FrameTimer source-purpose review: abstract timer contract or concrete System.nanoTime timestamps/sample buffer;all instance operations,typed factories and selected method callers reviewed;preserve existing behavior and full primitive parameter domains.",
       "confidence": "reviewed"
     },
     {
@@ -546,6 +567,13 @@
       "originalName": "ld",
       "to": "CipherPacketBuffer",
       "evidence": "PacketBuffer subclass with an IsaacRandom opcode cipher and bit cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lk",
+      "originalName": "lk",
+      "to": "JavaScriptBridge",
+      "evidence": "JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve exact pre-call guards and post-eval no-op returns,all primitive domains,null arguments versus supplied arguments,return behavior and Throwable propagation.",
       "confidence": "reviewed"
     },
     {
@@ -1284,6 +1312,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ca.a(I)J",
+      "originalName": "a",
+      "to": "getDelayMillis",
+      "evidence": "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ca.a(IJ)I",
+      "originalName": "a",
+      "to": "advanceTicks",
+      "evidence": "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ca.a(Z)V",
+      "originalName": "a",
+      "to": "resetTiming",
+      "evidence": "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ca.b(Z)J",
+      "originalName": "b",
+      "to": "sampleElapsedNanos",
+      "evidence": "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cc.e(B)V",
       "originalName": "e",
       "to": "clearDeclaredStaticReferences",
@@ -2009,6 +2065,34 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(I)J",
+      "originalName": "a",
+      "to": "getDelayMillis",
+      "evidence": "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(IJ)I",
+      "originalName": "a",
+      "to": "advanceTicks",
+      "evidence": "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(JI)I",
+      "originalName": "a",
+      "to": "waitAndCountTicks",
+      "evidence": "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(Z)V",
+      "originalName": "a",
+      "to": "resetTiming",
+      "evidence": "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json.",
       "confidence": "reviewed"
     },
     {
@@ -2842,6 +2926,27 @@
       "originalName": "a",
       "to": "wrapClientException",
       "evidence": "Reuse the existing client exception and append space plus diagnostic context,or allocate the original wrapper for another Throwable,preserving null/identity/string concatenation and allocation/exception order. Complete original-body SHA256 ba7b6f89055d79270fa49d77e8e15cae2e7544be7eeb3841d17b72a13cc8323e. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(BLjava/lang/String;Ljava/applet/Applet;)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "callWithoutArguments",
+      "evidence": "Source-purpose review: JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve exact pre-call guards and post-eval no-op returns,all primitive domains,null arguments versus supplied arguments,return behavior and Throwable propagation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(Ljava/applet/Applet;Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "evaluate",
+      "evidence": "Source-purpose review: JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve exact pre-call guards and post-eval no-op returns,all primitive domains,null arguments versus supplied arguments,return behavior and Throwable propagation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(Ljava/lang/String;Ljava/applet/Applet;I[Ljava/lang/Object;)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "callWithArguments",
+      "evidence": "Source-purpose review: JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve exact pre-call guards and post-eval no-op returns,all primitive domains,null arguments versus supplied arguments,return behavior and Throwable propagation.",
       "confidence": "reviewed"
     },
     {
@@ -4623,6 +4728,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:va.a([BI[BII)I",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "Source-purpose review: Source-reviewed Bzip2 byte-array decode entry;exact earlier human body review source4 reused by game/symbol/source/body SHA;all incoming caller contexts human-read. Bzip2 byte-array decode entry uses shared state under captured lock,repeatedly reads original global state field,sets input/output/offset/remaining/bit counters in exact original order,calls block decoder,returns original requested-minus-remaining int,and clears input/output only on normal return. Preserve unused supplied int,full primitive domains,all casts,locks,partial effects,reference/exception order and literals. Container caller retains format1 dispatch,output allocation,unused return,all arguments including source offset9,and adjacent gzip branch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4961,7 +5073,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "b1265170c15d2b02792b67d871c6d55357b7ab6721dd7bb8ad725723db0ccb95",
+      "minerdisturbance-names.json": "71461e805879f5ad3229b6e50e05375fd11fd6a146b4684311e14923a4e64a69",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

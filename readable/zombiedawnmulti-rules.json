@@ -901,8 +901,8 @@
     {
       "symbol": "C:eb",
       "originalName": "eb",
-      "to": "PopupMenuBuilder",
-      "evidence": "Grab-bag of statics dominated by buildPopupMenu; also formatSignedNumber and isNameSeparator.",
+      "to": "Bzip2State",
+      "evidence": "Source-purpose review:32owned instance fields hold Bzip2 byte/bit counters,buffers,selectors and6x258decode tables;all constructor operations,typed synchronized byte-array decoder entry,bit reader and singleton construction reviewed. Preserve exact per-game14array allocation order/dimensions and two explicit zero stores;multidimensional array allocation/partial effects unchanged. Decoder entry captures lock target then rereads global state field,sets source/target/offset/count/bit fields in original order,calls decoder,and nulls input/output only on normal return. Do not add finally cleanup,lock changes,caching,bounds/count clamps,or alter unused supplied int. Bit reader preserves signed int arithmetic/shift masking,byte&255,buffer-index/count overflow,read/update/exception order and all literals. No method/field leaf aliases changed. Full443line original ZDM class also read:popup building is an unrelated static helper;keep its existing method leaf names/evidence/behavior. Rename class for its instantiated decoder state.",
       "confidence": "reviewed"
     },
     {
@@ -25738,7 +25738,7 @@
     "files": {
       "build-zombiedawnmulti-rules.mjs": "4924fbce24c3338426ad5edb8adf87fb811988b24cd44cdd35506c8d3e8f3500",
       "zombiedawnmulti-names.mjs": "2398103db92ab460b6746d14e340c76fb8f10fc7d5905e5d8eb64fe79d182f53",
-      "zombiedawnmulti-names.json": "a4d16f6a496380c3f85083c6d615f1b69f14072733b1366d4b1403b06f72eb07",
+      "zombiedawnmulti-names.json": "ff957579843cfa7d53f386bf7151c472d02eea83b3d14e1dbe58c83483b1c3bf",
       "reproduce-zombiedawnmulti.mjs": "230795648a86cb8802e140e35a24ea0832e98301dcf408f9e2bd4be81243fab0",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

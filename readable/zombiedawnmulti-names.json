@@ -192,8 +192,8 @@
     ],
     [
       "eb",
-      "PopupMenuBuilder",
-      "Grab-bag of statics dominated by buildPopupMenu; also formatSignedNumber and isNameSeparator."
+      "Bzip2State",
+      "Source-purpose review:32owned instance fields hold Bzip2 byte/bit counters,buffers,selectors and6x258decode tables;all constructor operations,typed synchronized byte-array decoder entry,bit reader and singleton construction reviewed. Preserve exact per-game14array allocation order/dimensions and two explicit zero stores;multidimensional array allocation/partial effects unchanged. Decoder entry captures lock target then rereads global state field,sets source/target/offset/count/bit fields in original order,calls decoder,and nulls input/output only on normal return. Do not add finally cleanup,lock changes,caching,bounds/count clamps,or alter unused supplied int. Bit reader preserves signed int arithmetic/shift masking,byte&255,buffer-index/count overflow,read/update/exception order and all literals. No method/field leaf aliases changed. Full443line original ZDM class also read:popup building is an unrelated static helper;keep its existing method leaf names/evidence/behavior. Rename class for its instantiated decoder state."
     ],
     [
       "ec",

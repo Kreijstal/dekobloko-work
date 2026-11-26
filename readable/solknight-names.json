@@ -134,6 +134,26 @@
       "ic",
       "NetworkArchiveRequest",
       "Source-purpose review: Network archive-request subtype owns signed-byte padding,int transfer counter and packet-buffer reference;construction sites populate composite archive/group key,padding and flags. Payload getter returns original buffer array when complete;progress uses original int arithmetic over buffer position and length minus signed padding. Preserve aliases,int overflow/division,all guards/sentinels,constructor visibility and full override-family bindings."
+    ],
+    [
+      "rj",
+      "FrameTimer",
+      "FrameTimer source-purpose review: abstract timer contract or concrete System.nanoTime timestamps/sample buffer;all instance operations,typed factories and selected method callers reviewed;preserve existing behavior and full primitive parameter domains."
+    ],
+    [
+      "dk",
+      "NanoFrameTimer",
+      "NanoFrameTimer source-purpose review: abstract timer contract or concrete System.nanoTime timestamps/sample buffer;all instance operations,typed factories and selected method callers reviewed;preserve existing behavior and full primitive parameter domains."
+    ],
+    [
+      "fd",
+      "JavaScriptBridge",
+      "JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve exact pre-call guards and post-eval no-op returns,all primitive domains,null arguments versus supplied arguments,return behavior and Throwable propagation."
+    ],
+    [
+      "hj",
+      "Bzip2State",
+      "Source-purpose review:32owned instance fields hold Bzip2 byte/bit counters,buffers,selectors and6x258decode tables;all constructor operations,typed synchronized byte-array decoder entry,bit reader and singleton construction reviewed. Preserve exact per-game14array allocation order/dimensions and two explicit zero stores;multidimensional array allocation/partial effects unchanged. Decoder entry captures lock target then rereads global state field,sets source/target/offset/count/bit fields in original order,calls decoder,and nulls input/output only on normal return. Do not add finally cleanup,lock changes,caching,bounds/count clamps,or alter unused supplied int. Bit reader preserves signed int arithmetic/shift masking,byte&255,buffer-index/count overflow,read/update/exception order and all literals. No method/field leaf aliases changed."
     ]
   ],
   "methods": [
@@ -3384,6 +3404,90 @@
       "(Z)V",
       "close",
       "Source-purpose review: BufferedRandomAccessFile source-purpose review: owned file/buffer fields,all constructor/instance operation bodies and incoming caller/construction contexts verified. Preserve full primitive domains,all guards,IO/copy/store/arithmetic/exception order and literals. Contracts catalog-buffered-file-access-1-method-contracts-34-not-applied.json."
+    ],
+    [
+      "rj",
+      "a",
+      "(I)J",
+      "getDelayMillis",
+      "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json."
+    ],
+    [
+      "rj",
+      "a",
+      "(IJ)I",
+      "waitAndCountTicks",
+      "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json."
+    ],
+    [
+      "rj",
+      "a",
+      "(JZ)I",
+      "advanceTicks",
+      "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json."
+    ],
+    [
+      "rj",
+      "c",
+      "(I)V",
+      "resetTiming",
+      "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json."
+    ],
+    [
+      "dk",
+      "a",
+      "(I)J",
+      "getDelayMillis",
+      "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json."
+    ],
+    [
+      "dk",
+      "a",
+      "(JZ)I",
+      "advanceTicks",
+      "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json."
+    ],
+    [
+      "dk",
+      "c",
+      "(I)V",
+      "resetTiming",
+      "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json."
+    ],
+    [
+      "dk",
+      "d",
+      "(I)J",
+      "sampleElapsedNanos",
+      "Source-purpose review: Frame timer source-purpose review: all selected-owner concrete bodies/abstract declarations,complete override families and incoming caller/construction contexts covered. Preserve full primitive domains,all original guards,global flags,recursive calls,arithmetic/sample/store/allocation/exception order and literals. Contracts catalog-frame-timers-1-method-contracts-12-not-applied.json."
+    ],
+    [
+      "fd",
+      "a",
+      "(ILjava/applet/Applet;Ljava/lang/String;)V",
+      "evaluate",
+      "Source-purpose review: JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve exact pre-call guards and post-eval no-op returns,all primitive domains,null arguments versus supplied arguments,return behavior and Throwable propagation."
+    ],
+    [
+      "fd",
+      "a",
+      "(ILjava/applet/Applet;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;",
+      "callWithArguments",
+      "Source-purpose review: JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve exact pre-call guards and post-eval no-op returns,all primitive domains,null arguments versus supplied arguments,return behavior and Throwable propagation."
+    ],
+    [
+      "fd",
+      "a",
+      "(Ljava/applet/Applet;Ljava/lang/String;B)Ljava/lang/Object;",
+      "callWithoutArguments",
+      "Source-purpose review: JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve exact pre-call guards and post-eval no-op returns,all primitive domains,null arguments versus supplied arguments,return behavior and Throwable propagation."
+    ],
+    [
+      "gi",
+      "a",
+      "([BI[BII)I",
+      "decompress",
+      "Source-purpose review: Source-reviewed Bzip2 byte-array decode entry;exact earlier human body review source4 reused by game/symbol/source/body SHA;all incoming caller contexts human-read. Bzip2 byte-array decode entry uses shared state under captured lock,repeatedly reads original global state field,sets input/output/offset/remaining/bit counters in exact original order,calls block decoder,returns original requested-minus-remaining int,and clears input/output only on normal return. Preserve unused supplied int,full primitive domains,all casts,locks,partial effects,reference/exception order and literals. Container caller retains format1 dispatch,output allocation,unused return,all arguments including source offset9,and adjacent gzip branch."
     ]
   ],
   "fields": [
