@@ -10188,10 +10188,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pca.b(Lbv;)B",
+      "originalName": "b",
+      "to": "readByte",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 readByte. {\"behavior\":\"Call the bound bit reader with width 8 and cast its result to a signed Java byte.\",\"preserve\":\"Preserve the same state argument, call and cast. No unsigned interpretation, masking, guards or changes to failure order.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pca.c(Lbv;)V",
       "originalName": "c",
       "to": "emitBlock",
       "evidence": "Body is token-identical to the reviewed Bzip2Decoder method of the same name in other FunOrb games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.d(Lbv;)V",
+      "originalName": "d",
+      "to": "decodeBlocks",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 decodeBlocks. {\"behavior\":\"Decode Bzip2 blocks using the state bit reader, used-symbol map, Huffman selectors/tables and move-to-front runs, build the inverse-BWT table, and invoke the output run writer. Continue only while the completed block is fully drained.\",\"preserve\":[\"Retain assignment of block-size multiplier 1 before testing the shared table for null; allocate multiplier * 100000 only when null and keep allocation failure/class initialization timing. Do not resize a non-null table.\",\"Keep the first byte == 23 early return, the remaining header/CRC byte consumption and the consumed randomization bit with its empty conditional. This source does not validate CRC or implement a new randomized-block repair.\",\"Preserve the three ordered original-pointer shifts/masks; 16-group and 256-symbol flag writes; 3-bit table count, 15-bit selector count, unary selector decoding and per-block new byte[6] allocation.\",\"Preserve byte casts in selector counters and move-to-front selectors, signed byte indexing, 5-bit starting lengths, bit-driven length adjustments, signed length minima/maxima and exact Huffman helper argument order.\",\"Keep 50-symbol selector group advancement, the existing length/code comparisons, Object-to-int[] casts, mask/shift arithmetic and full signed-int overflow behavior.\",\"Keep the 4096-entry move-to-front staging layout, 16-element block shifts, unrolled four-store updates, and rebuild only when the existing head comparison reaches zero.\",\"Keep run-symbol 0/1 accumulation from -1 with doubled integer weights, histogram updates and the ordered stores to the shared block array.\",\"Retain end-of-block cumulative-table construction, OR of the original index shifted by 8 into the shared array, pointer initialization and byte casts, then the exact run-writer call and fully-drained comparison.\",\"Do not change primitive types, method modifiers, any source operation, evaluation order, local aliases, array/state partial writes, null/index/cast/allocation exception behavior, or add guards, validation, CRC checks or repairs.\"]} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.e(Lbv;)B",
+      "originalName": "e",
+      "to": "readBit",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 readBit. {\"behavior\":\"Call the bound bit reader with width 1 and cast its result to byte.\",\"preserve\":\"Preserve the call and cast for the full supplied state domain, including null or malformed state; add no validation.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -13158,7 +13179,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "277a9792d9baf5eecd1176130d3a697d9ce842f81680df4dc7b1b97233e3e710",
+      "bachelorfridge-names.json": "668d15c1bde505eec00afc4fb9ab2854bdf80d209b08e1c65cfc3579dcc098e5",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

@@ -850,6 +850,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wf",
+      "originalName": "wf",
+      "to": "Bzip2Decompressor",
+      "evidence": "Whole source-purpose review: final static Bzip2 decompression utility; one private typed state singleton allocated at class initialization; synchronized byte-array entry, bit/byte readers, used-symbol map, canonical Huffman tables, move-to-front block decoding, inverse-BWT/run output and retained cleanup all individually read or linked to exact earlier human-read bodies. All incoming selected helper references lie inside exact reviewed bodies. Keep the state allocation and class-init behavior, shared table ownership, locks, source/output/index/count/cast domains, array aliasing, partial writes, evaluation/exception order and all literals. Rename identifiers only; add no format checks, repairs, CRC handling or guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wg",
       "originalName": "wg",
       "to": "AccountCreationResultPanel",
@@ -4630,10 +4637,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wf.a(ILck;)I",
+      "originalName": "a",
+      "to": "readBits",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 readBits. Exact earlier human-read state bit-reader contract reused by game, symbol, source SHA and body SHA; preserve the original signed-int shift masking, byte&255 input, pointer/count/store/exception ordering and supplied primitive domain. Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(Lck;)V",
+      "originalName": "a",
+      "to": "buildSymbolMap",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 buildSymbolMap. {\"behavior\":\"Reset the used-symbol count, scan 256 usage booleans and append each used index as a byte to the sequential symbol map.\",\"preserve\":\"Keep count reset before traversal, boolean read before map store, and count increment after the store. Preserve signed casts, null/index exceptions and partial writes; do not clear unused map entries.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wf.a([BI[BII)I",
       "originalName": "a",
       "to": "decompress",
       "evidence": "Source-purpose review: Source-reviewed Bzip2 byte-array decode entry;exact earlier human body review source4 reused by game/symbol/source/body SHA;all incoming caller contexts human-read. Bzip2 byte-array decode entry uses shared state under captured lock,repeatedly reads original global state field,sets input/output/offset/remaining/bit counters in exact original order,calls block decoder,returns original requested-minus-remaining int,and clears input/output only on normal return. Preserve unused supplied int,full primitive domains,all casts,locks,partial effects,reference/exception order and literals. Container caller retains format1 dispatch,output allocation,unused return,all arguments including source offset9,and adjacent gzip branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a([I[I[I[BIII)V",
+      "originalName": "a",
+      "to": "buildHuffmanDecodeTables",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 buildHuffmanDecodeTables. {\"behavior\":\"Build canonical Huffman permutation, cumulative bases and code limits from supplied byte code lengths and integer bounds.\",\"preserve\":\"Keep ascending length/symbol traversal, the 23-entry initialization loops, signed byte indexing, prefix sums, shifts and integer overflow. Preserve all supplied primitive domains and aliasing among the four arrays, exact store/read and exception order. No clamping, validation, array replacement or reordering.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.b(Lck;)B",
+      "originalName": "b",
+      "to": "readByte",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 readByte. {\"behavior\":\"Call the bound bit reader with width 8 and cast its result to a signed Java byte.\",\"preserve\":\"Preserve the same state argument, call and cast. No unsigned interpretation, masking, guards or changes to failure order.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.c(Lck;)V",
+      "originalName": "c",
+      "to": "writeDecodedRuns",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 writeDecodedRuns. {\"behavior\":\"Resume inverse-BWT traversal and expand repeated-byte runs into the supplied output array until output is exhausted or the block is drained, then save progress.\",\"preserve\":\"Keep initial state and global-table read order, local cached table aliases, signed byte comparisons/casts, arithmetic right shifts and (byte & 255) + 4 run count. Retain every output store before its pointer/count updates, every labelled continuation, the zero-output pending-run branches, the empty cumulative-count comparison, and the ordered trailing state/global writes. Preserve the full signed-int domain, overflow, null/index failures and partial effects; add no input repairs or new guards.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.d(Lck;)B",
+      "originalName": "d",
+      "to": "readBit",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 readBit. {\"behavior\":\"Call the bound bit reader with width 1 and cast its result to byte.\",\"preserve\":\"Preserve the call and cast for the full supplied state domain, including null or malformed state; add no validation.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.e(Lck;)V",
+      "originalName": "e",
+      "to": "decodeBlocks",
+      "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 decodeBlocks. {\"behavior\":\"Decode Bzip2 blocks using the state bit reader, used-symbol map, Huffman selectors/tables and move-to-front runs, build the inverse-BWT table, and invoke the output run writer. Continue only while the completed block is fully drained.\",\"preserve\":[\"Retain assignment of block-size multiplier 1 before testing the shared table for null; allocate multiplier * 100000 only when null and keep allocation failure/class initialization timing. Do not resize a non-null table.\",\"Keep the first byte == 23 early return, the remaining header/CRC byte consumption and the consumed randomization bit with its empty conditional. This source does not validate CRC or implement a new randomized-block repair.\",\"Preserve the three ordered original-pointer shifts/masks; 16-group and 256-symbol flag writes; 3-bit table count, 15-bit selector count, unary selector decoding and per-block new byte[6] allocation.\",\"Preserve byte casts in selector counters and move-to-front selectors, signed byte indexing, 5-bit starting lengths, bit-driven length adjustments, signed length minima/maxima and exact Huffman helper argument order.\",\"Keep 50-symbol selector group advancement, the existing length/code comparisons, Object-to-int[] casts, mask/shift arithmetic and full signed-int overflow behavior.\",\"Keep the 4096-entry move-to-front staging layout, 16-element block shifts, unrolled four-store updates, and rebuild only when the existing head comparison reaches zero.\",\"Keep run-symbol 0/1 accumulation from -1 with doubled integer weights, histogram updates and the ordered stores to the shared block array.\",\"Retain end-of-block cumulative-table construction, OR of the original index shifted by 8 into the shared array, pointer initialization and byte casts, then the exact run-writer call and fully-drained comparison.\",\"Do not change primitive types, method modifiers, any source operation, evaluation order, local aliases, array/state partial writes, null/index/cast/allocation exception behavior, or add guards, validation, CRC checks or repairs.\"]} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -4779,7 +4835,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "9611e70ce12de9ac3f5c2bfb341891cfeab6d69583f39e8ff5db728deb5f7269",
+      "hostilespawn_vengeance-names.json": "7badb83973c2c8a3640219bf56dfcca5b184784a99b420e2aabe1f599d033e3c",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
