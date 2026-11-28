@@ -389,6 +389,121 @@
       "no",
       "WidgetEventListener",
       "Common marker interface for the listener stored on a base UI widget. The widget checks narrower listener types before sending hover or focus events."
+    ],
+    [
+      "to",
+      "SingleChildWidgetContainer",
+      "Container that holds one widget and delegates drawing, layout, pointer input and focus to that child."
+    ],
+    [
+      "ab",
+      "DequeWidgetContainer",
+      "Container that stores child widgets in an intrusive deque and traverses them for drawing, input and keyboard focus."
+    ],
+    [
+      "vm",
+      "WidgetContainerMarker",
+      "Marker interface implemented by the single-child, deque and array widget containers."
+    ],
+    [
+      "hg",
+      "DraggableWidgetContainer",
+      "Wraps a widget for pointer-driven dragging and can restore its original position after release."
+    ],
+    [
+      "bc",
+      "LabeledWidgetContainer",
+      "Draws a text label beside a child widget using a bitmap font."
+    ],
+    [
+      "hi",
+      "AlphaWidgetContainer",
+      "Draws a widget through an opacity-controlled wrapper, with a direct draw at full opacity."
+    ],
+    [
+      "sh",
+      "DropTargetWidgetContainer",
+      "Tests pointer release inside its bounds and sends an accepted drag to a drop listener."
+    ],
+    [
+      "lt",
+      "ModalDialogHost",
+      "Stores the open dialogs, draws them in order, and gives input focus to the active dialog."
+    ],
+    [
+      "gm",
+      "ModalDialog",
+      "Base dialog container that centers its content and manages its open or closing opacity."
+    ],
+    [
+      "ih",
+      "WidgetDragListener",
+      "Receives notifications from draggable widgets as they move."
+    ],
+    [
+      "ma",
+      "WidgetDropListener",
+      "Receives accepted widget drops from a drop target."
+    ],
+    [
+      "rs",
+      "RegistrationAgreementPane",
+      "Displays the registration agreement with links and a continue button."
+    ],
+    [
+      "jn",
+      "DialogMessagePane",
+      "Draws a message and holds buttons for the enclosing dialog to handle."
+    ],
+    [
+      "tn",
+      "GuestPlayConfirmationForm",
+      "Displays the benefits of creating an account and offers guest play and account options."
+    ],
+    [
+      "rg",
+      "ResizableModalDialog",
+      "Displays a modal frame and animates changes to its centered width and height."
+    ],
+    [
+      "dg",
+      "ContentTransitionDialog",
+      "Replaces the dialog body by resizing the frame and changing the visible content."
+    ],
+    [
+      "ng",
+      "ProgressDialog",
+      "Displays a progress indicator and can switch the indicator to an error state."
+    ],
+    [
+      "oq",
+      "FullscreenStatusDialog",
+      "Displays a fullscreen status notice and a button to dismiss it."
+    ],
+    [
+      "oo",
+      "ProgressMessageDialog",
+      "Displays progress and result messages with buttons for user actions."
+    ],
+    [
+      "ad",
+      "StandardContentDialog",
+      "Uses the content transition dialog for an ordinary replaceable widget body."
+    ],
+    [
+      "ss",
+      "StripedProgressWidget",
+      "Displays the filled fraction using striped textures and two end caps, and animates the stripes while active."
+    ],
+    [
+      "lh",
+      "FullscreenNoticeType",
+      "Distinguishes the status messages selected by the fullscreen notice dialog."
+    ],
+    [
+      "k",
+      "MidiFileReader",
+      "Reads MIDI track chunks and tracks the cursor, tick and running status of each track."
     ]
   ],
   "methods": [
@@ -7111,6 +7226,685 @@
       "(ZIILea;I)V",
       "paintWidget",
       "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "to",
+      "a",
+      "(ILea;)Z",
+      "focusNextChild",
+      "Source-purpose review: The keyboard handler calls this for Tab with Shift released to move focus forward within the children."
+    ],
+    [
+      "to",
+      "a",
+      "(BLea;)Z",
+      "focusPreviousChild",
+      "Source-purpose review: The keyboard handler calls this for Tab with Shift held to move focus backward within the children."
+    ],
+    [
+      "to",
+      "i",
+      "(I)Lea;",
+      "getFocusedChild",
+      "Source-purpose review: Returns the child whose focus test succeeds, or null when none is focused."
+    ],
+    [
+      "to",
+      "a",
+      "(Ljava/lang/StringBuilder;Ljava/util/Hashtable;BI)V",
+      "appendChildDebugTree",
+      "Source-purpose review: Adds the child widget’s debug entry to the output using the shared visited-widget table and indentation."
+    ],
+    [
+      "to",
+      "a",
+      "(B)V",
+      "layoutChild",
+      "Source-purpose review: Called when the wrapper’s bounds change to refresh or compute the layout of its sole child."
+    ],
+    [
+      "ab",
+      "a",
+      "(ILea;)Z",
+      "focusNextChild",
+      "Source-purpose review: The keyboard handler calls this for Tab with Shift released to move focus forward within the children."
+    ],
+    [
+      "ab",
+      "b",
+      "(Lea;I)Z",
+      "focusPreviousChild",
+      "Source-purpose review: The keyboard handler calls this for Tab with Shift held to move focus backward within the children."
+    ],
+    [
+      "ab",
+      "a",
+      "(I)Lea;",
+      "getFocusedChild",
+      "Source-purpose review: Returns the child whose focus test succeeds, or null when none is focused."
+    ],
+    [
+      "ab",
+      "a",
+      "(BILjava/util/Hashtable;Ljava/lang/StringBuilder;)V",
+      "appendChildDebugTrees",
+      "Source-purpose review: Adds debug entries for the child widgets to the output using the shared visited-widget table and indentation."
+    ],
+    [
+      "ab",
+      "b",
+      "(Z)V",
+      "refreshChildLayouts",
+      "Source-purpose review: Visits the deque’s children and refreshes their layouts after the container’s bounds change."
+    ],
+    [
+      "ab",
+      "a",
+      "(Lea;I)V",
+      "addChild",
+      "Source-purpose review: Adds the supplied child widget to the container’s internal deque."
+    ],
+    [
+      "lt",
+      "i",
+      "(I)Lea;",
+      "getFocusedChild",
+      "Source-purpose review: Returns the child whose focus test succeeds, or null when none is focused."
+    ],
+    [
+      "hg",
+      "a",
+      "(B)V",
+      "layoutChild",
+      "Source-purpose review: Called when the wrapper’s bounds change to refresh or compute the layout of its sole child."
+    ],
+    [
+      "gm",
+      "a",
+      "(I)Lea;",
+      "getFocusedChild",
+      "Source-purpose review: Returns the child whose focus test succeeds, or null when none is focused."
+    ],
+    [
+      "lt",
+      "d",
+      "(B)Lgm;",
+      "getTopOpenDialog",
+      "Source-purpose review: Returns the first open dialog in the host’s display order, or null if none are open."
+    ],
+    [
+      "lt",
+      "a",
+      "(Lea;I)V",
+      "showDialog",
+      "Source-purpose review: Adds a dialog to the host, marks it open, and requests widget focus."
+    ],
+    [
+      "lt",
+      "e",
+      "(B)V",
+      "closeAllDialogs",
+      "Source-purpose review: Marks all dialogs closed and clears the host’s active child."
+    ],
+    [
+      "lt",
+      "f",
+      "(B)V",
+      "advanceDialogs",
+      "Source-purpose review: Advances each dialog’s opacity, unlinks finished closing dialogs, and selects the active child."
+    ],
+    [
+      "lt",
+      "j",
+      "(I)V",
+      "snapAndPruneDialogs",
+      "Source-purpose review: Moves each dialog immediately to its target opacity and unlinks finished closing dialogs."
+    ],
+    [
+      "gm",
+      "h",
+      "(I)Z",
+      "advanceDialogAnimation",
+      "Source-purpose review: Moves the dialog opacity toward its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "gm",
+      "i",
+      "(I)Z",
+      "snapDialogAnimation",
+      "Source-purpose review: Sets opacity directly to its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "gm",
+      "d",
+      "(B)I",
+      "getTargetAlpha",
+      "Source-purpose review: Returns full opacity for the top open dialog and zero otherwise."
+    ],
+    [
+      "gm",
+      "a",
+      "(IBI)V",
+      "setCenteredSize",
+      "Source-purpose review: Sets the dialog bounds from the requested width and height centered in the viewport."
+    ],
+    [
+      "ih",
+      "a",
+      "(Lhg;IIB)V",
+      "widgetDragged",
+      "Source-purpose review: Reports the dragged widget and the coordinate origin used during pointer movement."
+    ],
+    [
+      "ma",
+      "a",
+      "(Lhg;ILsh;)V",
+      "widgetDropped",
+      "Source-purpose review: Reports the draggable widget and the target that accepted it."
+    ],
+    [
+      "dg",
+      "h",
+      "(I)Z",
+      "advanceDialogAnimation",
+      "Source-purpose review: Moves the dialog opacity toward its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "jq",
+      "h",
+      "(I)Z",
+      "advanceDialogAnimation",
+      "Source-purpose review: Moves the dialog opacity toward its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "rg",
+      "h",
+      "(I)Z",
+      "advanceDialogAnimation",
+      "Source-purpose review: Moves the dialog opacity toward its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "dg",
+      "i",
+      "(I)Z",
+      "snapDialogAnimation",
+      "Source-purpose review: Sets opacity directly to its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "rg",
+      "i",
+      "(I)Z",
+      "snapDialogAnimation",
+      "Source-purpose review: Sets opacity directly to its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "rs",
+      "a",
+      "(B)Ljava/lang/String;",
+      "getAgreementLinkOpeningTag",
+      "Source-purpose review: Returns the opening formatting tags for the links in the registration agreement."
+    ],
+    [
+      "rs",
+      "e",
+      "(B)Ljava/lang/String;",
+      "getAgreementLinkClosingTag",
+      "Source-purpose review: Returns the closing formatting tags for the links in the registration agreement."
+    ],
+    [
+      "jn",
+      "a",
+      "(Lno;ILjava/lang/String;)Lmi;",
+      "addListenerButton",
+      "Source-purpose review: Creates a button with the supplied label and listener and adds it to the message pane."
+    ],
+    [
+      "jn",
+      "a",
+      "(IBLjava/lang/String;)V",
+      "addActionButton",
+      "Source-purpose review: Adds a button bound to this pane and stores the action code that will be passed to the dialog."
+    ],
+    [
+      "jn",
+      "a",
+      "(II)V",
+      "growActions",
+      "Source-purpose review: Expands the parallel arrays that hold action buttons and their action codes."
+    ],
+    [
+      "rg",
+      "a",
+      "(ZII)V",
+      "drawDialogBackground",
+      "Source-purpose review: Draws the background and frame of the dialog at the supplied origin."
+    ],
+    [
+      "rg",
+      "a",
+      "(IIII)V",
+      "resizeDialog",
+      "Source-purpose review: Sets the target width and height and starts or applies a centered resize."
+    ],
+    [
+      "rg",
+      "e",
+      "(B)V",
+      "finishResize",
+      "Source-purpose review: Applies the target dialog size and runs the resize completion callback."
+    ],
+    [
+      "rg",
+      "f",
+      "(B)V",
+      "resizeCompleted",
+      "Source-purpose review: Runs content updates after the resize reaches its target size."
+    ],
+    [
+      "dg",
+      "d",
+      "(Lea;I)V",
+      "replaceContent",
+      "Source-purpose review: Requests that the dialog switch to a different widget body and resize as required."
+    ],
+    [
+      "dg",
+      "c",
+      "(Lea;I)V",
+      "installContent",
+      "Source-purpose review: Unlinks the previous content, positions the replacement, and adds it to the dialog."
+    ],
+    [
+      "ng",
+      "a",
+      "(ZILjava/lang/String;F)V",
+      "setProgress",
+      "Source-purpose review: Updates the progress value, displayed text, and error styling."
+    ],
+    [
+      "ng",
+      "k",
+      "(I)V",
+      "freezeNormalProgressAnimation",
+      "Source-purpose review: Stops the ordinary progress indicator animation."
+    ],
+    [
+      "oq",
+      "a",
+      "(Ljava/lang/String;ILno;)Lmi;",
+      "createCloseButton",
+      "Source-purpose review: Builds the button that dismisses the fullscreen notice."
+    ],
+    [
+      "oq",
+      "g",
+      "(B)V",
+      "closeStatusNotice",
+      "Source-purpose review: Closes the fullscreen status notice."
+    ],
+    [
+      "oo",
+      "a",
+      "(BILjava/lang/String;)V",
+      "showResult",
+      "Source-purpose review: Shows a progress result and builds the buttons available for that result."
+    ],
+    [
+      "oo",
+      "l",
+      "(I)V",
+      "showConnectionFailure",
+      "Source-purpose review: Replaces the progress content with a connection failure message and a button."
+    ],
+    [
+      "oo",
+      "h",
+      "(B)V",
+      "closeDialog",
+      "Source-purpose review: Closes this message dialog and performs its configured close action."
+    ],
+    [
+      "jq",
+      "n",
+      "(I)V",
+      "showAccountCreationConnectionFailure",
+      "Source-purpose review: Creates a connection error result and passes it to the account creation result handler."
+    ],
+    [
+      "ng",
+      "a",
+      "(ZII)V",
+      "drawDialogBackground",
+      "Source-purpose review: Draws the background and frame of the dialog at the supplied origin."
+    ],
+    [
+      "gm",
+      "a",
+      "(ZII)V",
+      "drawDialogBackground",
+      "Source-purpose review: Draws the background and frame of the dialog at the supplied origin."
+    ],
+    [
+      "dg",
+      "e",
+      "(B)V",
+      "finishResize",
+      "Source-purpose review: Applies the target dialog size and runs the resize completion callback."
+    ],
+    [
+      "dg",
+      "f",
+      "(B)V",
+      "resizeCompleted",
+      "Source-purpose review: Runs content updates after the resize reaches its target size."
+    ],
+    [
+      "ad",
+      "d",
+      "(Lea;I)V",
+      "replaceContent",
+      "Source-purpose review: Requests that the dialog switch to a different widget body and resize as required."
+    ],
+    [
+      "ss",
+      "a",
+      "(IIB)V",
+      "setColours",
+      "Source-purpose review: Updates the two stripe colours and regenerates the widget textures."
+    ],
+    [
+      "ss",
+      "a",
+      "(I)V",
+      "refreshTextures",
+      "Source-purpose review: Regenerates the stripe textures for the current dimensions and colours."
+    ],
+    [
+      "ss",
+      "b",
+      "(III)Lll;",
+      "createStripeTexture",
+      "Source-purpose review: Creates the sprite used to tile a band of progress stripes with the supplied colours."
+    ],
+    [
+      "ss",
+      "b",
+      "(Z)Lll;",
+      "createCapMask",
+      "Source-purpose review: Creates the sprite mask for a rounded end of the progress bar."
+    ],
+    [
+      "ss",
+      "a",
+      "(IIILll;)V",
+      "drawStripeTexture",
+      "Source-purpose review: Draws a supplied stripe texture within the bounds and cap masks of the progress bar."
+    ],
+    [
+      "t",
+      "a",
+      "([B)V",
+      "decodeSetup",
+      "Source-purpose review: Reads the codec setup and initializes transform tables, codebooks, floors, residues, mappings and mode flags."
+    ],
+    [
+      "t",
+      "a",
+      "([BI)V",
+      "setBitStream",
+      "Source-purpose review: Sets the current Vorbis bitstream buffer and resets its byte and bit offsets."
+    ],
+    [
+      "t",
+      "b",
+      "([B)V",
+      "decodePacketContainer",
+      "Source-purpose review: Reads the sample metadata and length-prefixed encoded packets into the sample."
+    ],
+    [
+      "t",
+      "a",
+      "(I)[F",
+      "decodePacket",
+      "Source-purpose review: Decodes one audio packet using the mode, floor, residue and inverse transform, then overlap-adds the result."
+    ],
+    [
+      "t",
+      "a",
+      "()Lal;",
+      "decodeAllToPcm",
+      "Source-purpose review: Decodes all compressed packets and converts the sample values into PCM bytes."
+    ],
+    [
+      "t",
+      "a",
+      "([I)Lal;",
+      "decodeToPcm",
+      "Source-purpose review: Decodes packets into PCM bytes while consuming the optional remaining sample budget."
+    ],
+    [
+      "t",
+      "a",
+      "(Lgk;)Z",
+      "ensureSetup",
+      "Source-purpose review: Loads the archive’s shared Vorbis setup on first use and reports whether it is available."
+    ],
+    [
+      "t",
+      "a",
+      "(Lgk;II)Lt;",
+      "load",
+      "Source-purpose review: Loads the numbered archive entry and constructs the sample after checking codec setup."
+    ],
+    [
+      "t",
+      "a",
+      "(Lgk;Ljava/lang/String;Ljava/lang/String;)Lt;",
+      "loadByName",
+      "Source-purpose review: Loads the archive entry by group and file name and constructs the sample after checking codec setup."
+    ],
+    [
+      "fl",
+      "a",
+      "([FIZ)V",
+      "decodeResidue",
+      "Source-purpose review: Accumulates spectral residue vectors for each partition using the configured codebooks."
+    ],
+    [
+      "bj",
+      "a",
+      "()Lal;",
+      "toPcmSample",
+      "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second."
+    ],
+    [
+      "bj",
+      "b",
+      "()[B",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "bj",
+      "a",
+      "(Lgk;II)Lbj;",
+      "load",
+      "Source-purpose review: Reads and decodes the indexed sound effect from its archive."
+    ],
+    [
+      "bj",
+      "a",
+      "(Lgk;Ljava/lang/String;Ljava/lang/String;)Lbj;",
+      "loadByName",
+      "Source-purpose review: Reads and decodes a sound effect from its archive by group and file names."
+    ],
+    [
+      "th",
+      "a",
+      "(II)[I",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "th",
+      "a",
+      "(Lrb;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "th",
+      "a",
+      "(III)I",
+      "evaluateWaveform",
+      "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude."
+    ],
+    [
+      "wh",
+      "b",
+      "(Lrb;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "wh",
+      "a",
+      "()V",
+      "reset",
+      "Source-purpose review: Resets the envelope segment cursor and interpolation state."
+    ],
+    [
+      "wh",
+      "a",
+      "(I)I",
+      "step",
+      "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value."
+    ],
+    [
+      "ob",
+      "a",
+      "(Ljava/lang/String;B)Ljava/lang/String;",
+      "mapNativeLibraryFilename",
+      "Source-purpose review: Constructs the platform-specific file name for a native library from its base name."
+    ],
+    [
+      "k",
+      "a",
+      "()V",
+      "markTrackDone",
+      "Source-purpose review: Marks the current cursor as exhausted before saving the track’s position."
+    ],
+    [
+      "k",
+      "a",
+      "(I)V",
+      "seekTrack",
+      "Source-purpose review: Moves the input cursor to the saved position of the supplied track."
+    ],
+    [
+      "k",
+      "a",
+      "(II)I",
+      "decodeMessagePayload",
+      "Source-purpose review: Reads the data bytes for a MIDI message or processes a meta event, including tempo changes."
+    ],
+    [
+      "k",
+      "a",
+      "(J)V",
+      "reset",
+      "Source-purpose review: Restarts all MIDI tracks at the supplied time origin and reads each first delta."
+    ],
+    [
+      "k",
+      "a",
+      "([B)V",
+      "parse",
+      "Source-purpose review: Reads the MIDI division and track chunk offsets and initializes independent track state."
+    ],
+    [
+      "k",
+      "b",
+      "(I)I",
+      "readNextMessage",
+      "Source-purpose review: Handles MIDI running status and system-exclusive events before decoding the message payload."
+    ],
+    [
+      "k",
+      "c",
+      "(I)V",
+      "readDelta",
+      "Source-purpose review: Reads the variable-length delta and accumulates it in the supplied track’s tick counter."
+    ],
+    [
+      "k",
+      "d",
+      "()V",
+      "release",
+      "Source-purpose review: Releases the input buffer payload and the per-track state arrays."
+    ],
+    [
+      "k",
+      "d",
+      "(I)J",
+      "tickTime",
+      "Source-purpose review: Converts a MIDI tick to playback time using the current tempo and time origin."
+    ],
+    [
+      "k",
+      "e",
+      "()I",
+      "nextTrack",
+      "Source-purpose review: Finds the active track with the earliest pending tick."
+    ],
+    [
+      "k",
+      "e",
+      "(I)I",
+      "readMessage",
+      "Source-purpose review: Returns the next MIDI message or meta-event code from the current track position."
+    ],
+    [
+      "k",
+      "f",
+      "()I",
+      "trackCount",
+      "Source-purpose review: Returns the number of tracks in the parsed MIDI file."
+    ],
+    [
+      "k",
+      "f",
+      "(I)V",
+      "saveTrackPosition",
+      "Source-purpose review: Saves the current input cursor as the resume position for the supplied track."
+    ],
+    [
+      "k",
+      "g",
+      "()Z",
+      "isDone",
+      "Source-purpose review: Checks whether all track positions are exhausted."
+    ],
+    [
+      "ap",
+      "b",
+      "()V",
+      "buildPatchUsage",
+      "Source-purpose review: Scans MIDI channel messages to mark the instrument patches and notes used by the track."
+    ],
+    [
+      "ap",
+      "a",
+      "()V",
+      "releasePatchUsage",
+      "Source-purpose review: Discards the per-patch note usage table so it can be rebuilt on demand."
+    ],
+    [
+      "ap",
+      "a",
+      "(Lgk;Ljava/lang/String;Ljava/lang/String;)Lap;",
+      "load",
+      "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation."
     ]
   ],
   "fields": [
