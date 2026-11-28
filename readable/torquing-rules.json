@@ -542,6 +542,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eb",
+      "originalName": "eb",
+      "to": "IntrusiveNodeHashTable",
+      "evidence": "Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "TextureProvider",
@@ -1039,6 +1046,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mj",
+      "originalName": "mj",
+      "to": "WhirlpoolHasher",
+      "evidence": "Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ml",
       "originalName": "ml",
       "to": "GameKeyHandler",
@@ -1428,6 +1442,13 @@
       "originalName": "uo",
       "to": "VorbisFloor",
       "evidence": "Vorbis floor type1: constructor reads and requires16-bit type1,partition classes,subclass codebooks,multiplier and x coordinates. Owns shared x/y/active scratch and inverse-dB/range tables;decodes presence and scalar y values,unpacks predicted residuals,sorts linked points and applies the floor curve to the spectrum. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vb",
+      "originalName": "vb",
+      "to": "IntHashTable",
+      "evidence": "Maps integer name hashes to archive group or file positions with open addressing.",
       "confidence": "reviewed"
     },
     {
@@ -3118,6 +3139,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eb.a(JB)Lq;",
+      "originalName": "a",
+      "to": "findByKey",
+      "evidence": "Source-purpose review: Masks the long key to locate its bucket and walks the linked nodes until a matching key is found.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.a(ZJLq;)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Source-purpose review: Unlinks an already linked node, sets its long key, and inserts it beside the sentinel in the selected bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.b(B)Lq;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "Source-purpose review: Advances the iteration cursor through the current bucket and then scans later buckets for a node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.c(B)Lq;",
+      "originalName": "c",
+      "to": "first",
+      "evidence": "Source-purpose review: Resets the table iteration position and returns the first available node via the iterator advance operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ec.a(I)Z",
       "originalName": "a",
       "to": "isTextureSize64",
@@ -3514,6 +3563,13 @@
       "originalName": "e",
       "to": "readByte",
       "evidence": "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 readByte. {\"behavior\":\"Call the bound bit reader with width 8 and cast its result to a signed Java byte.\",\"preserve\":\"Preserve the same state argument, call and cast. No unsigned interpretation, masking, guards or changes to failure order.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.a(Z[B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes.",
       "confidence": "reviewed"
     },
     {
@@ -4238,10 +4294,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gl.a(III)Lnk;",
+      "originalName": "a",
+      "to": "loadGroupRequest",
+      "evidence": "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gl.a(IZ)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Returns the available packed group bytes and removes the finished request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gl.b(B)Lfd;",
+      "originalName": "b",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gl.b(I)V",
+      "originalName": "b",
+      "to": "pollBackgroundRequests",
+      "evidence": "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gl.c(B)V",
+      "originalName": "c",
+      "to": "pollGroupPrefetches",
+      "evidence": "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gl.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gl.d(I)V",
+      "originalName": "d",
+      "to": "prefetchAllGroups",
+      "evidence": "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue.",
       "confidence": "reviewed"
     },
     {
@@ -6079,6 +6177,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:l.a(I[B)[B",
+      "originalName": "a",
+      "to": "decompressArchiveContainer",
+      "evidence": "Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(B)I",
       "originalName": "a",
       "to": "getArchiveLoadPercent",
@@ -6646,6 +6751,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:me.a(IZ)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.b(B)Lfd;",
+      "originalName": "b",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mf.b(BI)C",
       "originalName": "b",
       "to": "decodeCp1252Byte",
@@ -6713,6 +6832,34 @@
       "originalName": "g",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a(B)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a(I[BI)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a([BJB)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.b(B)V",
+      "originalName": "b",
+      "to": "processBlock",
+      "evidence": "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state.",
       "confidence": "reviewed"
     },
     {
@@ -7280,6 +7427,13 @@
       "originalName": "e",
       "to": "checkWriteError",
       "evidence": "Source-purpose review: Checks and clears the saved background-write error, reporting it once as an IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(I[BII)[B",
+      "originalName": "a",
+      "to": "whirlpoolDigest",
+      "evidence": "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest.",
       "confidence": "reviewed"
     },
     {
@@ -10286,6 +10440,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vb.a(II)I",
+      "originalName": "a",
+      "to": "findIndex",
+      "evidence": "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.a(BLjava/awt/Component;)V",
       "originalName": "a",
       "to": "attach",
@@ -10601,6 +10762,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wf.a(BI[B)I",
+      "originalName": "a",
+      "to": "computeCrc32Prefix",
+      "evidence": "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wf.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -10848,7 +11016,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "b674df8f6fc057fcef43aaf3c7ed23d0ed0597554f2747a6ce7c641593b6a60c",
-      "torquing-names.json": "fb56eb4a0065789bfbe553ac96a63578a02cb76a444f9c42c2d96f6760593383",
+      "torquing-names.json": "08e96e4cd927e7dbdffd861097cd2ba1740fabeb784197e5d1084848b9f00cbf",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

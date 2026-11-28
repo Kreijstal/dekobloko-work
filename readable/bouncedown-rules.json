@@ -353,6 +353,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ce",
+      "originalName": "ce",
+      "to": "CachedArchiveSource",
+      "evidence": "Loads the archive index and coordinates local reads and network requests for its packed groups.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cg$1$CfrPartitionedBody",
       "originalName": "$CfrPartitionedBody",
       "to": "ClientTextLoader",
@@ -392,6 +399,13 @@
       "originalName": "cl",
       "to": "ConfirmedEmailAvailabilityValidator",
       "evidence": "Checks that the confirmation matches the email input, then obtains and caches the email availability result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:da",
+      "originalName": "da",
+      "to": "IntHashTable",
+      "evidence": "Maps integer name hashes to archive group or file positions with open addressing.",
       "confidence": "reviewed"
     },
     {
@@ -525,6 +539,13 @@
       "originalName": "fj",
       "to": "AppletShell",
       "evidence": "Applet/Runnable base with focus and window listeners and abstract client hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:g",
+      "originalName": "g",
+      "to": "ArchiveIndex",
+      "evidence": "Holds the decoded group and file table of contents for an archive.",
       "confidence": "reviewed"
     },
     {
@@ -962,6 +983,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pa",
+      "originalName": "pa",
+      "to": "WhirlpoolHasher",
+      "evidence": "Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pc",
       "originalName": "pc",
       "to": "BufferedSocket",
@@ -1130,6 +1158,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:td",
+      "originalName": "td",
+      "to": "ArchiveProvider",
+      "evidence": "Defines the index, packed group and progress interface for an archive source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:te",
       "originalName": "te",
       "to": "VorbisSample",
@@ -1239,6 +1274,13 @@
       "originalName": "uj",
       "to": "Bzip2State",
       "evidence": "Source-purpose review:32owned instance fields hold Bzip2 byte/bit counters,buffers,selectors and6x258decode tables;all constructor operations,typed synchronized byte-array decoder entry,bit reader and singleton construction reviewed. Preserve exact per-game14array allocation order/dimensions and two explicit zero stores;multidimensional array allocation/partial effects unchanged. Decoder entry captures lock target then rereads global state field,sets source/target/offset/count/bit fields in original order,calls decoder,and nulls input/output only on normal return. Do not add finally cleanup,lock changes,caching,bounds/count clamps,or alter unused supplied int. Bit reader preserves signed int arithmetic/shift masking,byte&255,buffer-index/count overflow,read/update/exception order and all literals. No method/field leaf aliases changed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uk",
+      "originalName": "uk",
+      "to": "IntrusiveNodeHashTable",
+      "evidence": "Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor.",
       "confidence": "reviewed"
     },
     {
@@ -2698,10 +2740,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ce.a(III)Lgj;",
+      "originalName": "a",
+      "to": "loadGroupRequest",
+      "evidence": "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(IZ)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Returns the available packed group bytes and removes the finished request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.b(B)V",
+      "originalName": "b",
+      "to": "prefetchAllGroups",
+      "evidence": "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.b(I)Lg;",
+      "originalName": "b",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 1e59c376cfe5a815dd486781da817a61134dcc01ee23791cd18ceb615682ea85.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.c(I)V",
+      "originalName": "c",
+      "to": "pollBackgroundRequests",
+      "evidence": "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.d(I)V",
+      "originalName": "d",
+      "to": "pollGroupPrefetches",
+      "evidence": "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests.",
       "confidence": "reviewed"
     },
     {
@@ -2905,6 +2989,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(II)I",
+      "originalName": "a",
+      "to": "findIndex",
+      "evidence": "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1.",
       "confidence": "reviewed"
     },
     {
@@ -3612,6 +3703,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 2775394d73f2eda156e69eac707a2bbd7cd23545524e5cbef30a440997c71fb7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.a(I[B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes.",
       "confidence": "reviewed"
     },
     {
@@ -4634,6 +4732,13 @@
       "originalName": "a",
       "to": "resolveDisplayText",
       "evidence": "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.a([BIII)[B",
+      "originalName": "a",
+      "to": "whirlpoolDigest",
+      "evidence": "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest.",
       "confidence": "reviewed"
     },
     {
@@ -6044,6 +6149,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.a([BIB)I",
+      "originalName": "a",
+      "to": "computeCrc32Prefix",
+      "evidence": "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nd.a(BIIILwd;)V",
       "originalName": "a",
       "to": "onWidgetActivated",
@@ -6520,10 +6632,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pa.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(J[BB)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a([BII)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pa.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 5 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 4e741175f7cc9f21bad22a7ef6ad9867df2cfea438a8c643fe990b3333eedb02.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.c(I)V",
+      "originalName": "c",
+      "to": "processBlock",
+      "evidence": "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state.",
       "confidence": "reviewed"
     },
     {
@@ -8081,6 +8221,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ta.a(I[B)[B",
+      "originalName": "a",
+      "to": "decompressArchiveContainer",
+      "evidence": "Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.a(B)Z",
       "originalName": "a",
       "to": "pollNetwork",
@@ -8148,6 +8295,20 @@
       "originalName": "a",
       "to": "getGroupRequestProgressPercent",
       "evidence": "Source-purpose review: Gets the progress of the pending request for an archive group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:td.a(IZ)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:td.b(I)Lg;",
+      "originalName": "b",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
       "confidence": "reviewed"
     },
     {
@@ -8862,6 +9023,34 @@
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.a(I)Lai;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Source-purpose review: Advances the iteration cursor through the current bucket and then scans later buckets for a node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.a(IJ)Lai;",
+      "originalName": "a",
+      "to": "findByKey",
+      "evidence": "Source-purpose review: Masks the long key to locate its bucket and walks the linked nodes until a matching key is found.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.a(JILai;)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Source-purpose review: Unlinks an already linked node, sets its long key, and inserts it beside the sentinel in the selected bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.b(I)Lai;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "Source-purpose review: Resets the table iteration position and returns the first available node via the iterator advance operation.",
       "confidence": "reviewed"
     },
     {
@@ -9693,7 +9882,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "038dc40742ef1de15853212ddde32d35416eb3f4fc0c89dea7c217d99994e1c0",
+      "bouncedown-names.json": "dd2ee1997272324f944353486b24a42ba439928696b7edf27392f925249dfd66",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -808,6 +808,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oe",
+      "originalName": "oe",
+      "to": "IntHashTable",
+      "evidence": "Maps integer name hashes to archive group or file positions with open addressing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:og",
       "originalName": "og",
       "to": "AccountCreationResultPanel",
@@ -2117,6 +2124,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.a(I[B)[B",
+      "originalName": "a",
+      "to": "decompressArchiveContainer",
+      "evidence": "Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(JJ)J",
       "originalName": "a",
       "to": "bitwiseAnd",
@@ -2583,6 +2597,34 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e8fc277926241c4b669e28290d6f30db29c9d35cb83d0a81359af869d9a10c72.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a([BII)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a([BJI)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.b(I)V",
+      "originalName": "b",
+      "to": "processBlock",
+      "evidence": "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state.",
       "confidence": "reviewed"
     },
     {
@@ -4322,10 +4364,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gd.a(B)V",
+      "originalName": "a",
+      "to": "pollGroupPrefetches",
+      "evidence": "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.a(I)Lpc;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.a(IBI)Ltk;",
+      "originalName": "a",
+      "to": "loadGroupRequest",
+      "evidence": "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.a(II)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Returns the available packed group bytes and removes the finished request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.b(I)V",
+      "originalName": "b",
+      "to": "prefetchAllGroups",
+      "evidence": "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gd.b(II)I",
       "originalName": "b",
       "to": "getGroupRequestProgressPercent",
       "evidence": "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. A final int other than -21770 clears an instance field before lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.b(Z)V",
+      "originalName": "b",
+      "to": "pollBackgroundRequests",
+      "evidence": "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests.",
       "confidence": "reviewed"
     },
     {
@@ -6947,6 +7031,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(II)I",
+      "originalName": "a",
+      "to": "findIndex",
+      "evidence": "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:of.a(ILjava/applet/Applet;)V",
       "originalName": "a",
       "to": "openSubscriptionPage",
@@ -7371,6 +7462,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a149fe11013bfda74aa04b9aa4b26fde4ab36b10d3362e2b503b9c327c65f5f3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pc.a(B[B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes.",
       "confidence": "reviewed"
     },
     {
@@ -7966,6 +8064,13 @@
       "originalName": "a",
       "to": "storeBytes",
       "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Extraction int guard22692 precedes input checks. Wrapper null/large-array cases precede arithmetic. Clone arithmetic executes after full copy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(I[BI)I",
+      "originalName": "a",
+      "to": "computeCrc32Prefix",
+      "evidence": "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine.",
       "confidence": "reviewed"
     },
     {
@@ -9684,6 +9789,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wi.a(I)Lpc;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.a(II)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wi.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -9770,7 +9889,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "8aafdfb385ddfd0eca70e6596d2d1ef43084d4594b0ddf79fb367dca96f181ac",
+      "trackcontroller-names.json": "a17cca98d8e1ec9f90e35e2b2c2b7b479a1c0710a89afc27fe43dbb320a74f9f",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

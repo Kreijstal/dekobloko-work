@@ -155,7 +155,11 @@
     ["rl","MouseInputHandler","Receives Java AWT mouse, pointer motion and focus events and updates the client pointer state."],
     ["wm","ArchiveNetworkClient","Owns pending and in-flight archive requests and defines connection lifecycle operations."],
     ["ob","SocketArchiveNetworkClient","Implements the archive request lifecycle over a buffered socket."],
-    ["hj","ArchiveSourceManager","Loads the master archive index and manages the cached providers created from its entries."]
+    ["hj","ArchiveSourceManager","Loads the master archive index and manages the cached providers created from its entries."],
+    ["da","CachedArchiveSource","Loads the archive index and coordinates local reads and network requests for its packed groups."],
+    ["qh","IntHashTable","Maps integer name hashes to archive group or file positions with open addressing."],
+    ["kl","IntrusiveNodeHashTable","Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."],
+    ["df","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."]
   ],
   "methods": [
     ["Chess","v","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e0ea65b249a209337d86c8869f9b25c29ecbe703ff53b413e4f869c68abc8c1d."],
@@ -1463,7 +1467,29 @@
     ["ob","c","(B)V","sendProtocolSetup","Source-purpose review: Writes the protocol setup message when the archive socket is attached."],
     ["hj","a","(Z)Z","loadMasterIndex","Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster."],
     ["hj","a","(BZILgd;Lgd;)Lda;","getOrCreateArchiveSource","Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores."],
-    ["hj","a","(I)V","pollArchiveSources","Source-purpose review: Polls active providers for pending work and advances their background operations."]
+    ["hj","a","(I)V","pollArchiveSources","Source-purpose review: Polls active providers for pending work and advances their background operations."],
+    ["ua","c","(II)[B","takeGroupData","Source-purpose review: Defines the corresponding archive provider operation."],
+    ["da","c","(II)[B","takeGroupData","Source-purpose review: Returns the available packed group bytes and removes the finished request."],
+    ["da","a","(IIB)Lab;","loadGroupRequest","Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it."],
+    ["ua","b","(I)Llj;","loadIndex","Source-purpose review: Defines the corresponding archive provider operation."],
+    ["da","b","(I)Llj;","loadIndex","Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests."],
+    ["da","d","(I)V","pollGroupPrefetches","Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests."],
+    ["da","c","(I)V","pollBackgroundRequests","Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests."],
+    ["da","a","(B)V","prefetchAllGroups","Source-purpose review: Enables prefetching across the archive and initializes the pending group queue."],
+    ["lj","a","([BB)V","decode","Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes."],
+    ["qh","a","(IB)I","findIndex","Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1."],
+    ["kl","a","(IJ)Lo;","findByKey","Source-purpose review: Masks the long key to locate its bucket and walks the linked nodes until a matching key is found."],
+    ["kl","a","(IJLo;)V","put","Source-purpose review: Unlinks an already linked node, sets its long key, and inserts it beside the sentinel in the selected bucket."],
+    ["kl","a","(Z)Lo;","first","Source-purpose review: Resets the table iteration position and returns the first available node via the iterator advance operation."],
+    ["kl","b","(B)Lo;","next","Source-purpose review: Advances the iteration cursor through the current bucket and then scans later buckets for a node."],
+    ["kl","a","(B)V","clearStaticReferences","Source-purpose review: Clears the class’s retained static references, preserving the existing guarded call."],
+    ["kh","a","(IIB[B)[B","whirlpoolDigest","Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest."],
+    ["df","a","(I)V","reset","Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words."],
+    ["df","a","(B[BJ)V","updateBits","Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block."],
+    ["df","a","(II[B)V","finishDigest","Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer."],
+    ["df","c","(I)V","processBlock","Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state."],
+    ["dj","a","([BI)[B","decompressArchiveContainer","Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip."],
+    ["ke","a","([BII)I","computeCrc32Prefix","Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."]
   ],
   "fields": [
     ["oe","field_g","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."],

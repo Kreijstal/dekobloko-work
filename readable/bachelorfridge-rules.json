@@ -703,6 +703,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cga",
+      "originalName": "cga",
+      "to": "ArchiveRequest",
+      "evidence": "Defines completed-data retrieval and progress reporting for disk and network archive requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ch",
       "originalName": "ch",
       "to": "BagpipeSpecial",
@@ -763,6 +770,13 @@
       "originalName": "cn",
       "to": "PlaceCreatureEffect",
       "evidence": "Effect that writes a new grid position into a creature and stores it on that tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cr",
+      "originalName": "cr",
+      "to": "IntHashTable",
+      "evidence": "Maps integer name hashes to archive group or file positions with open addressing.",
       "confidence": "reviewed"
     },
     {
@@ -1099,6 +1113,13 @@
       "originalName": "fna",
       "to": "ShuffleEvent",
       "evidence": "td subclass ShuffleSpecial builds this bca event in its a(op,int).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fp",
+      "originalName": "fp",
+      "to": "CachedArchiveSource",
+      "evidence": "Loads the archive index and coordinates local reads and network requests for its packed groups.",
       "confidence": "reviewed"
     },
     {
@@ -2765,6 +2786,13 @@
       "originalName": "tha",
       "to": "DreamsSpecial",
       "evidence": "SPECIAL_DREAMS is index 98 in the rf move-name table and td.a(op,int) maps id 98 to this td subclass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tja",
+      "originalName": "tja",
+      "to": "ArchiveProvider",
+      "evidence": "Defines the index, packed group and progress interface for an archive source.",
       "confidence": "reviewed"
     },
     {
@@ -5204,6 +5232,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cga.d(B)[B",
+      "originalName": "d",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cga.e(I)I",
+      "originalName": "e",
+      "to": "getProgressPercent",
+      "evidence": "Source-purpose review: Returns completion as a percentage, based on request state for disk reads and buffered length for network reads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ch.a(Lop;I)Lii;",
       "originalName": "a",
       "to": "createEvent",
@@ -5523,6 +5565,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cr.a(BI)I",
+      "originalName": "a",
+      "to": "findIndex",
+      "evidence": "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1.",
       "confidence": "reviewed"
     },
     {
@@ -6363,6 +6412,41 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(B)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "Source-purpose review: Signals the worker to stop, wakes its queue monitor, and joins the worker thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(IBLta;)Lse;",
+      "originalName": "a",
+      "to": "readNow",
+      "evidence": "Source-purpose review: Returns a completed disk read, reusing matching data from a pending queued write where available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(Lse;I)V",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "Source-purpose review: Links a disk operation into the queue and wakes the worker.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(Lta;BI)Lse;",
+      "originalName": "a",
+      "to": "requestRead",
+      "evidence": "Source-purpose review: Creates and queues a disk cache read operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(Lta;[BII)Lse;",
+      "originalName": "a",
+      "to": "requestWrite",
+      "evidence": "Source-purpose review: Creates and queues a disk cache write operation with the caller’s bytes.",
       "confidence": "reviewed"
     },
     {
@@ -7276,10 +7360,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fp.a(B)V",
+      "originalName": "a",
+      "to": "prefetchAllGroups",
+      "evidence": "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fp.a(BI)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Returns the available packed group bytes and removes the finished request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fp.a(II)I",
+      "originalName": "a",
+      "to": "getGroupRequestProgressPercent",
+      "evidence": "Source-purpose review: Returns the current completion percentage for the specified group request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fp.a(III)Lcga;",
+      "originalName": "a",
+      "to": "loadGroupRequest",
+      "evidence": "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fp.b(I)Lrf;",
+      "originalName": "b",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fp.c(I)V",
+      "originalName": "c",
+      "to": "pollBackgroundRequests",
+      "evidence": "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fp.d(I)V",
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fp.e(I)V",
+      "originalName": "e",
+      "to": "pollGroupPrefetches",
+      "evidence": "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests.",
       "confidence": "reviewed"
     },
     {
@@ -7689,10 +7822,192 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gj.a(BI)V",
+      "originalName": "a",
+      "to": "beginMoveOrder",
+      "evidence": "Source-purpose review: Checks the selected creature and move availability, creates a move order, and enters movement selection mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(BLad;)Z",
+      "originalName": "a",
+      "to": "canReturnCarriedFlag",
+      "evidence": "Source-purpose review: Checks whether flag mode is active and a flag carrier is adjacent to its own base.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(I)V",
+      "originalName": "a",
+      "to": "closeCreatureDetails",
+      "evidence": "Source-purpose review: Closes the current creature detail panel if it exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(III)I",
+      "originalName": "a",
+      "to": "getTerrainAt",
+      "evidence": "Source-purpose review: Returns terrain from the battle-state tile at the supplied indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(ILjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "queueTextNotice",
+      "evidence": "Source-purpose review: Enqueues a timed battle notice using the given message and text color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(ILkv;)V",
+      "originalName": "a",
+      "to": "queueSpriteNotice",
+      "evidence": "Source-purpose review: Enqueues a timed battle notice backed by the supplied sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(IZI)Lad;",
+      "originalName": "a",
+      "to": "getCreatureActorAtTile",
+      "evidence": "Source-purpose review: Reads the tile occupant and resolves it to its screen actor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(I[Lad;Z)V",
+      "originalName": "a",
+      "to": "placePlayerRoster",
+      "evidence": "Source-purpose review: Copies the player’s actors into roster slots and places available creatures at the player’s starting coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(I[Lrk;)V",
+      "originalName": "a",
+      "to": "createBattleControls",
+      "evidence": "Source-purpose review: Creates the move information and optional creature selection panels along with the end-turn and order buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(Lad;B)V",
+      "originalName": "a",
+      "to": "showCreatureDetails",
+      "evidence": "Source-purpose review: Creates or reuses the creature detail panel and shows it for the supplied actor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(Lad;ILad;IB)V",
+      "originalName": "a",
+      "to": "relocateCreature",
+      "evidence": "Source-purpose review: Clears the old tile occupant, assigns the new coordinates, and updates the relocated creature.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(Lad;Lad;Z)V",
+      "originalName": "a",
+      "to": "swapCreatureTiles",
+      "evidence": "Source-purpose review: Checks that each creature can traverse the other’s terrain, swaps tile positions, and updates both actors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(ZBLgm;I)V",
+      "originalName": "a",
+      "to": "setMoveOrderDirectionAndDistance",
+      "evidence": "Source-purpose review: Converts the signed displacement and selected axis to an order direction and a nonnegative movement distance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(ZLad;)V",
+      "originalName": "a",
+      "to": "selectCreature",
+      "evidence": "Source-purpose review: Selects an actor, centers the board on its tile, and positions its move information panel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.b(B)V",
+      "originalName": "b",
+      "to": "collectPendingBattleEvents",
+      "evidence": "Source-purpose review: Moves all pending battle state events into the screen’s processing queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.b(II)V",
+      "originalName": "b",
+      "to": "beginAttackOrder",
+      "evidence": "Source-purpose review: Checks the selected creature and move availability, creates an attack order, and enters attack selection mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.b(III)V",
+      "originalName": "b",
+      "to": "markTileWithRedEffect",
+      "evidence": "Source-purpose review: Marks the tile and attaches a red effect to its effect list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.b(Lad;Z)Lsfa;",
+      "originalName": "b",
+      "to": "findQueuedCreatureOrder",
+      "evidence": "Source-purpose review: Searches the current order array for the selected creature’s roster slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.b(Laga;I)Lad;",
+      "originalName": "b",
+      "to": "getCreatureActor",
+      "evidence": "Source-purpose review: Looks up a battle creature’s screen actor by player and roster slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.c(I)Z",
+      "originalName": "c",
+      "to": "hasPointerMovedPastClickThreshold",
+      "evidence": "Source-purpose review: Checks the squared displacement between the initial press and the current pointer coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.c(II)I",
+      "originalName": "c",
+      "to": "getTeamColor",
+      "evidence": "Source-purpose review: Maps the team index to the color used by battle markers, with a neutral default.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.h(B)Z",
+      "originalName": "h",
+      "to": "isCreatureDetailsOpen",
+      "evidence": "Source-purpose review: Reports whether the creature detail panel exists and is open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.i(I)Z",
+      "originalName": "i",
+      "to": "hasActiveTileEffects",
+      "evidence": "Source-purpose review: Scans board coordinates for any nonempty tile-effect chain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.j(I)V",
+      "originalName": "j",
+      "to": "resetTurnOrders",
+      "evidence": "Source-purpose review: Resets the order count and per-creature order state for the next round of turn selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.m(I)V",
+      "originalName": "m",
+      "to": "clearCreatureSelection",
+      "evidence": "Source-purpose review: Clears the selected actor, active order, and selection mode flags.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gj.p(I)V",
       "originalName": "p",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.s(I)V",
+      "originalName": "s",
+      "to": "updateTileEffects",
+      "evidence": "Source-purpose review: Advances effects at each board tile and replaces completed entries with the next effect.",
       "confidence": "reviewed"
     },
     {
@@ -9894,6 +10209,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jo.a(B)V",
+      "originalName": "a",
+      "to": "clampBoardOrigin",
+      "evidence": "Source-purpose review: Corrects the board origin against the four isometric edges using the board’s width and height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(BII)V",
+      "originalName": "a",
+      "to": "centerBoardOnTile",
+      "evidence": "Source-purpose review: Sets the board origin so the supplied tile is centered, then clamps the origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(BLad;)Laj;",
+      "originalName": "a",
+      "to": "getCreatureScreenPosition",
+      "evidence": "Source-purpose review: Projects the creature into the shared coordinate object and returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(I)V",
+      "originalName": "a",
+      "to": "rebuildCreatureDrawOrder",
+      "evidence": "Source-purpose review: Flattens the actor rosters and sorts them by isometric depth, placing downed actors slightly behind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(IBI)Laj;",
+      "originalName": "a",
+      "to": "getTileScreenPosition",
+      "evidence": "Source-purpose review: Projects a tile into the shared screen-coordinate object and returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(III)V",
+      "originalName": "a",
+      "to": "panBoardBy",
+      "evidence": "Source-purpose review: Moves the board origin by the supplied screen deltas and constrains it to the board bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawOwnedTerrainMarker",
+      "evidence": "Source-purpose review: Draws the tile marker in the owning player’s color when a tracked terrain tile has an owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(IIZB)V",
+      "originalName": "a",
+      "to": "setBoardOrigin",
+      "evidence": "Source-purpose review: Assigns the horizontal and vertical origin and optionally constrains it to the board bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(ILaj;Lad;)V",
+      "originalName": "a",
+      "to": "projectCreatureToScreen",
+      "evidence": "Source-purpose review: Projects a creature’s fixed-point tile position and animation offsets, then applies its vertical displacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(Laj;I)V",
+      "originalName": "a",
+      "to": "drawTiledBackground",
+      "evidence": "Source-purpose review: Repeats the background sprite at offsets determined by the current board origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(Laj;III)V",
+      "originalName": "a",
+      "to": "projectFixedPointToScreen",
+      "evidence": "Source-purpose review: Writes isometric screen coordinates for a fixed-point board position using the current origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(ZII)Laj;",
+      "originalName": "a",
+      "to": "getFixedPointScreenPosition",
+      "evidence": "Source-purpose review: Projects a fixed-point board position into the shared coordinate object and returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(ZLaj;I)V",
+      "originalName": "a",
+      "to": "drawTargetMarker",
+      "evidence": "Source-purpose review: Projects the current target tile and draws its indicator in green or red.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.b(III)Laj;",
+      "originalName": "b",
+      "to": "findTileAtScreenPoint",
+      "evidence": "Source-purpose review: Scans visible tile positions back to front, returning the first tile whose sprite contains the screen point.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.b(ILaj;)V",
+      "originalName": "b",
+      "to": "drawPulsingTileOutline",
+      "evidence": "Source-purpose review: Draws a tile overlay and animates the edge color around its diamond-shaped outline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.b(Laj;III)V",
+      "originalName": "b",
+      "to": "projectTileToScreen",
+      "evidence": "Source-purpose review: Writes the isometric screen position of a whole tile using the current board origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.c(III)V",
+      "originalName": "c",
+      "to": "setClampedBoardOrigin",
+      "evidence": "Source-purpose review: Assigns both screen offsets and constrains the resulting origin to the board bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jp.a()Ltda;",
       "originalName": "a",
       "to": "nextChildStream",
@@ -11319,6 +11753,13 @@
       "originalName": "g",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(I[BII)[B",
+      "originalName": "a",
+      "to": "whirlpoolDigest",
+      "evidence": "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest.",
       "confidence": "reviewed"
     },
     {
@@ -14850,6 +15291,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qfa.d(B)[B",
+      "originalName": "d",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qfa.e(I)I",
+      "originalName": "e",
+      "to": "getProgressPercent",
+      "evidence": "Source-purpose review: Returns completion as a percentage, based on request state for disk reads and buffered length for network reads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qfa.g(I)V",
       "originalName": "g",
       "to": "releaseStatics",
@@ -15260,6 +15715,13 @@
       "originalName": "h",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rf.a(I[B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes.",
       "confidence": "reviewed"
     },
     {
@@ -15858,6 +16320,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:se.d(B)[B",
+      "originalName": "d",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.e(I)I",
+      "originalName": "e",
+      "to": "getProgressPercent",
+      "evidence": "Source-purpose review: Returns completion as a percentage, based on request state for disk reads and buffered length for network reads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:se.f(I)V",
       "originalName": "f",
       "to": "releaseStatics",
@@ -16250,6 +16726,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ta.a(IB)[B",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "Source-purpose review: Reads the entry index and validates the stored sector headers while following the chain into a byte array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.a(IZII[B)Z",
+      "originalName": "a",
+      "to": "writeSectorChain",
+      "evidence": "Source-purpose review: Writes the index record and payload sectors, maintaining the archive, chunk, and next-sector headers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.a(I[BII)Z",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Source-purpose review: Validates the entry length and attempts to update the existing sector chain before allocating a new chain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:taa.c(B)Z",
       "originalName": "c",
       "to": "isFinished",
@@ -16303,6 +16800,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:td.a(I[B)[B",
+      "originalName": "a",
+      "to": "decompressArchiveContainer",
+      "evidence": "Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip.",
       "confidence": "reviewed"
     },
     {
@@ -16488,10 +16992,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tja.a(BI)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tja.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tja.a(II)I",
+      "originalName": "a",
+      "to": "getGroupRequestProgressPercent",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tja.b(I)Lrf;",
+      "originalName": "b",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
       "confidence": "reviewed"
     },
     {
@@ -17269,6 +17794,34 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ur.a(II[B)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ur.a(Z)V",
+      "originalName": "a",
+      "to": "processBlock",
+      "evidence": "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ur.a([BJI)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ur.b(Z)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words.",
       "confidence": "reviewed"
     },
     {
@@ -18350,6 +18903,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wc.a([BII)I",
+      "originalName": "a",
+      "to": "computeCrc32Prefix",
+      "evidence": "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wc.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -18940,7 +19500,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "1e45bdc5408b7e9b285a23d8c1d03d56bac5889f894981235ead15c6d90c286c",
+      "bachelorfridge-names.json": "1027fb2879100f3e1bc49339378a46e0fb9886e87b2d708f7d74a24dff4ce62a",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

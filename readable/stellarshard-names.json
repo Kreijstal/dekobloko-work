@@ -549,6 +549,36 @@
       "vh",
       "ArchiveSourceManager",
       "Loads the master archive index and manages the cached providers created from its entries."
+    ],
+    [
+      "wc",
+      "CachedArchiveSource",
+      "Loads the archive index and coordinates local reads and network requests for its packed groups."
+    ],
+    [
+      "lh",
+      "ArchiveIndex",
+      "Holds the decoded group and file table of contents for an archive."
+    ],
+    [
+      "vj",
+      "IntHashTable",
+      "Maps integer name hashes to archive group or file positions with open addressing."
+    ],
+    [
+      "wf",
+      "ArchiveProvider",
+      "Defines the index, packed group and progress interface for an archive source."
+    ],
+    [
+      "uh",
+      "IntrusiveNodeHashTable",
+      "Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."
+    ],
+    [
+      "we",
+      "WhirlpoolHasher",
+      "Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."
     ]
   ],
   "methods": [
@@ -8034,6 +8064,146 @@
       "(B)V",
       "pollArchiveSources",
       "Source-purpose review: Polls active providers for pending work and advances their background operations."
+    ],
+    [
+      "wf",
+      "a",
+      "(BI)[B",
+      "takeGroupData",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "wc",
+      "a",
+      "(BI)[B",
+      "takeGroupData",
+      "Source-purpose review: Returns the available packed group bytes and removes the finished request."
+    ],
+    [
+      "wc",
+      "a",
+      "(III)Lki;",
+      "loadGroupRequest",
+      "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it."
+    ],
+    [
+      "wf",
+      "a",
+      "(I)Llh;",
+      "loadIndex",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "wc",
+      "a",
+      "(I)Llh;",
+      "loadIndex",
+      "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests."
+    ],
+    [
+      "wc",
+      "c",
+      "(I)V",
+      "pollGroupPrefetches",
+      "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests."
+    ],
+    [
+      "wc",
+      "b",
+      "(Z)V",
+      "pollBackgroundRequests",
+      "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests."
+    ],
+    [
+      "wc",
+      "d",
+      "(I)V",
+      "prefetchAllGroups",
+      "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue."
+    ],
+    [
+      "lh",
+      "a",
+      "(I[B)V",
+      "decode",
+      "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes."
+    ],
+    [
+      "vj",
+      "a",
+      "(II)I",
+      "findIndex",
+      "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1."
+    ],
+    [
+      "uh",
+      "a",
+      "(JI)Lgg;",
+      "findByKey",
+      "Source-purpose review: Masks the long key to locate its bucket and walks the linked nodes until a matching key is found."
+    ],
+    [
+      "uh",
+      "a",
+      "(Lgg;JI)V",
+      "put",
+      "Source-purpose review: Unlinks an already linked node, sets its long key, and inserts it beside the sentinel in the selected bucket."
+    ],
+    [
+      "uh",
+      "a",
+      "(B)Lgg;",
+      "first",
+      "Source-purpose review: Resets the table iteration position and returns the first available node via the iterator advance operation."
+    ],
+    [
+      "uh",
+      "b",
+      "(B)Lgg;",
+      "next",
+      "Source-purpose review: Advances the iteration cursor through the current bucket and then scans later buckets for a node."
+    ],
+    [
+      "bc",
+      "a",
+      "(III[B)[B",
+      "whirlpoolDigest",
+      "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest."
+    ],
+    [
+      "we",
+      "a",
+      "(Z)V",
+      "reset",
+      "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words."
+    ],
+    [
+      "we",
+      "a",
+      "(JB[B)V",
+      "updateBits",
+      "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block."
+    ],
+    [
+      "we",
+      "a",
+      "([BII)V",
+      "finishDigest",
+      "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer."
+    ],
+    [
+      "we",
+      "a",
+      "(I)V",
+      "processBlock",
+      "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state."
+    ],
+    [
+      "bg",
+      "a",
+      "(I[BI)I",
+      "computeCrc32Prefix",
+      "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."
     ]
   ],
   "fields": [

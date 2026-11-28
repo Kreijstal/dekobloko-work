@@ -519,6 +519,11 @@
       "wg",
       "ArchiveSourceManager",
       "Loads the master archive index and manages the cached providers created from its entries."
+    ],
+    [
+      "oe",
+      "IntHashTable",
+      "Maps integer name hashes to archive group or file positions with open addressing."
     ]
   ],
   "methods": [
@@ -7906,6 +7911,118 @@
       "(B)V",
       "pollArchiveSources",
       "Source-purpose review: Polls active providers for pending work and advances their background operations."
+    ],
+    [
+      "wi",
+      "a",
+      "(II)[B",
+      "takeGroupData",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "gd",
+      "a",
+      "(II)[B",
+      "takeGroupData",
+      "Source-purpose review: Returns the available packed group bytes and removes the finished request."
+    ],
+    [
+      "gd",
+      "a",
+      "(IBI)Ltk;",
+      "loadGroupRequest",
+      "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it."
+    ],
+    [
+      "wi",
+      "a",
+      "(I)Lpc;",
+      "loadIndex",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "gd",
+      "a",
+      "(I)Lpc;",
+      "loadIndex",
+      "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests."
+    ],
+    [
+      "gd",
+      "a",
+      "(B)V",
+      "pollGroupPrefetches",
+      "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests."
+    ],
+    [
+      "gd",
+      "b",
+      "(Z)V",
+      "pollBackgroundRequests",
+      "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests."
+    ],
+    [
+      "gd",
+      "b",
+      "(I)V",
+      "prefetchAllGroups",
+      "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue."
+    ],
+    [
+      "pc",
+      "a",
+      "(B[B)V",
+      "decode",
+      "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes."
+    ],
+    [
+      "oe",
+      "a",
+      "(II)I",
+      "findIndex",
+      "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1."
+    ],
+    [
+      "bf",
+      "a",
+      "(I)V",
+      "reset",
+      "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words."
+    ],
+    [
+      "bf",
+      "a",
+      "([BJI)V",
+      "updateBits",
+      "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block."
+    ],
+    [
+      "bf",
+      "a",
+      "([BII)V",
+      "finishDigest",
+      "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer."
+    ],
+    [
+      "bf",
+      "b",
+      "(I)V",
+      "processBlock",
+      "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state."
+    ],
+    [
+      "al",
+      "a",
+      "(I[B)[B",
+      "decompressArchiveContainer",
+      "Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip."
+    ],
+    [
+      "ql",
+      "a",
+      "(I[BI)I",
+      "computeCrc32Prefix",
+      "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."
     ]
   ],
   "fields": [

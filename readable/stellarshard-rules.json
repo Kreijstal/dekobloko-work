@@ -759,6 +759,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lh",
+      "originalName": "lh",
+      "to": "ArchiveIndex",
+      "evidence": "Holds the decoded group and file table of contents for an archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lj",
       "originalName": "lj",
       "to": "DisplayNameSelectionPanel",
@@ -1186,6 +1193,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uh",
+      "originalName": "uh",
+      "to": "IntrusiveNodeHashTable",
+      "evidence": "Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ui",
       "originalName": "ui",
       "to": "ModalDialog",
@@ -1242,6 +1256,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vj",
+      "originalName": "vj",
+      "to": "IntHashTable",
+      "evidence": "Maps integer name hashes to archive group or file positions with open addressing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vk",
       "originalName": "vk",
       "to": "TextLayout",
@@ -1253,6 +1274,27 @@
       "originalName": "w",
       "to": "FieldValidator",
       "evidence": "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wc",
+      "originalName": "wc",
+      "to": "CachedArchiveSource",
+      "evidence": "Loads the archive index and coordinates local reads and network requests for its packed groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:we",
+      "originalName": "we",
+      "to": "WhirlpoolHasher",
+      "evidence": "Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wf",
+      "originalName": "wf",
+      "to": "ArchiveProvider",
+      "evidence": "Defines the index, packed group and progress interface for an archive source.",
       "confidence": "reviewed"
     },
     {
@@ -2180,6 +2222,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bc.a(III[B)[B",
+      "originalName": "a",
+      "to": "whirlpoolDigest",
+      "evidence": "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.a(Ljava/net/Proxy;I)Ljava/net/Socket;",
       "originalName": "a",
       "to": "openSocketThroughProxy",
@@ -2380,6 +2429,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1db23fce5b557905a53914a706a7b3332e95e92d02fb6faf970105dafddedc16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(I[BI)I",
+      "originalName": "a",
+      "to": "computeCrc32Prefix",
+      "evidence": "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine.",
       "confidence": "reviewed"
     },
     {
@@ -5687,6 +5743,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lh.a(I[B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:li.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -8753,6 +8816,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uh.a(B)Lgg;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "Source-purpose review: Resets the table iteration position and returns the first available node via the iterator advance operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.a(JI)Lgg;",
+      "originalName": "a",
+      "to": "findByKey",
+      "evidence": "Source-purpose review: Masks the long key to locate its bucket and walks the linked nodes until a matching key is found.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.a(Lgg;JI)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Source-purpose review: Unlinks an already linked node, sets its long key, and inserts it beside the sentinel in the selected bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.b(B)Lgg;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "Source-purpose review: Advances the iteration cursor through the current bucket and then scans later buckets for a node.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ui.a(B)Lrj;",
       "originalName": "a",
       "to": "getFocusedChild",
@@ -9033,6 +9124,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vj.a(II)I",
+      "originalName": "a",
+      "to": "findIndex",
+      "evidence": "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vk.a(B)V",
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
@@ -9138,10 +9236,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wc.a(BI)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Returns the available packed group bytes and removes the finished request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a(I)Llh;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wc.a(II)I",
       "originalName": "a",
       "to": "getGroupRequestProgressPercent",
       "evidence": "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. A nonzero first int sets an instance int after lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a(III)Lki;",
+      "originalName": "a",
+      "to": "loadGroupRequest",
+      "evidence": "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it.",
       "confidence": "reviewed"
     },
     {
@@ -9152,10 +9271,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wc.b(Z)V",
+      "originalName": "b",
+      "to": "pollBackgroundRequests",
+      "evidence": "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.c(I)V",
+      "originalName": "c",
+      "to": "pollGroupPrefetches",
+      "evidence": "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.d(I)V",
+      "originalName": "d",
+      "to": "prefetchAllGroups",
+      "evidence": "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(I)V",
+      "originalName": "a",
+      "to": "processBlock",
+      "evidence": "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(JB[B)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(Z)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a([BII)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:we.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 bd03868f77491baaf12944dc2254bb8753bed84782115cd5f9347f824b4553f8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(BI)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(I)Llh;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
       "confidence": "reviewed"
     },
     {
@@ -9315,7 +9497,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "2e994f4f3109cc2473c143937f6734e54706b6b9363a610515a1cbf819e79f36",
+      "stellarshard-names.json": "2a9c3dc67cbd9735b2e97485024dd2ce3a11208743bf938d84d4dba34f37a2a4",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

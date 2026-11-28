@@ -423,6 +423,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:e",
+      "originalName": "e",
+      "to": "ArchiveIndex",
+      "evidence": "Holds the decoded group and file table of contents for an archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ea",
       "originalName": "ea",
       "to": "BoundedRandomAccessFile",
@@ -469,6 +476,13 @@
       "originalName": "ek",
       "to": "MidiTrackReader",
       "evidence": "MIDI track event reader (same shared role as GeoBlox MidiTrackReader; matching member signatures here).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:el",
+      "originalName": "el",
+      "to": "IntHashTable",
+      "evidence": "Maps integer name hashes to archive group or file positions with open addressing.",
       "confidence": "reviewed"
     },
     {
@@ -532,6 +546,13 @@
       "originalName": "h",
       "to": "VorbisCodebook",
       "evidence": "Vorbis codebook decoder (same shared role as Escape Vector VorbisCodebook; matching member signatures here).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hf",
+      "originalName": "hf",
+      "to": "ArchiveProvider",
+      "evidence": "Defines the index, packed group and progress interface for an archive source.",
       "confidence": "reviewed"
     },
     {
@@ -686,6 +707,13 @@
       "originalName": "$CfrPartitionedBody",
       "to": "ClientTextLoader",
       "evidence": "Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kc",
+      "originalName": "kc",
+      "to": "WhirlpoolHasher",
+      "evidence": "Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool.",
       "confidence": "reviewed"
     },
     {
@@ -861,6 +889,13 @@
       "originalName": "ml",
       "to": "WidgetFocusListener",
       "evidence": "Receives notifications when an interactive widget gains or loses keyboard focus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:na",
+      "originalName": "na",
+      "to": "IntrusiveNodeHashTable",
+      "evidence": "Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor.",
       "confidence": "reviewed"
     },
     {
@@ -1197,6 +1232,13 @@
       "originalName": "uf",
       "to": "AgeValidator",
       "evidence": "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ug",
+      "originalName": "ug",
+      "to": "CachedArchiveSource",
+      "evidence": "Loads the archive index and coordinates local reads and network requests for its packed groups.",
       "confidence": "reviewed"
     },
     {
@@ -3223,6 +3265,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:e.a(Z[B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ea.a(BJ)V",
       "originalName": "a",
       "to": "seek",
@@ -3493,6 +3542,13 @@
       "originalName": "a",
       "to": "decodeCp1252Byte",
       "evidence": "Source-purpose review: Converts a byte to a character, using the CP1252 extension table for values 128 through 159 and 63 for undefined entries. Byte other than 26 clears field_b before masking the first argument and testing zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:el.a(II)I",
+      "originalName": "a",
+      "to": "findIndex",
+      "evidence": "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1.",
       "confidence": "reviewed"
     },
     {
@@ -3871,6 +3927,20 @@
       "originalName": "a",
       "to": "getGroupRequestProgressPercent",
       "evidence": "Source-purpose review: Gets the progress of the pending request for an archive group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(IZ)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(Z)Le;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
       "confidence": "reviewed"
     },
     {
@@ -4791,10 +4861,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kc.a(B)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 804f95756639a13248d31c0bb0121aee7f234e10ae9b6bf05d0b7ab66cde4a4e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.a(IZ[B)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.a(J[BI)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.b(B)V",
+      "originalName": "b",
+      "to": "processBlock",
+      "evidence": "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state.",
       "confidence": "reviewed"
     },
     {
@@ -5995,10 +6093,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:na.a(B)Lkd;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Source-purpose review: Advances the iteration cursor through the current bucket and then scans later buckets for a node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:na.a(JB)Lkd;",
+      "originalName": "a",
+      "to": "findByKey",
+      "evidence": "Source-purpose review: Masks the long key to locate its bucket and walks the linked nodes until a matching key is found.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:na.a(Lkd;BJ)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Source-purpose review: Unlinks an already linked node, sets its long key, and inserts it beside the sentinel in the selected bucket.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:na.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c85733fd822acabe426c3d2deed28133b7fc8a97d11c9e619501ea5a8515d94d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:na.c(B)Lkd;",
+      "originalName": "c",
+      "to": "first",
+      "evidence": "Source-purpose review: Resets the table iteration position and returns the first available node via the iterator advance operation.",
       "confidence": "reviewed"
     },
     {
@@ -6503,6 +6629,13 @@
       "originalName": "a",
       "to": "setCursorVisible",
       "evidence": "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(I[BI)I",
+      "originalName": "a",
+      "to": "computeCrc32Prefix",
+      "evidence": "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine.",
       "confidence": "reviewed"
     },
     {
@@ -7133,6 +7266,13 @@
       "originalName": "g",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 6e99951e7af60dc4d207792789e849aedfc93879ef6d40df3c325c79954a3001.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.a(I[B)[B",
+      "originalName": "a",
+      "to": "decompressArchiveContainer",
+      "evidence": "Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip.",
       "confidence": "reviewed"
     },
     {
@@ -7934,6 +8074,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:si.a(I[BII)[B",
+      "originalName": "a",
+      "to": "whirlpoolDigest",
+      "evidence": "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:si.c(B)I",
       "originalName": "c",
       "to": "getProgressPercent",
@@ -8473,6 +8620,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(BII)Lsi;",
+      "originalName": "a",
+      "to": "loadGroupRequest",
+      "evidence": "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ug.a(II)I",
       "originalName": "a",
       "to": "getGroupRequestProgressPercent",
@@ -8480,10 +8634,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(IZ)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Returns the available packed group bytes and removes the finished request.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ug.a(Lsh;IZ)Lwj;",
       "originalName": "a",
       "to": "loadMusicPatch",
       "evidence": "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(Z)Le;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.b(I)V",
+      "originalName": "b",
+      "to": "pollGroupPrefetches",
+      "evidence": "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.b(Z)V",
+      "originalName": "b",
+      "to": "pollBackgroundRequests",
+      "evidence": "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.c(I)V",
+      "originalName": "c",
+      "to": "prefetchAllGroups",
+      "evidence": "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue.",
       "confidence": "reviewed"
     },
     {
@@ -9385,7 +9574,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "9c7fcd72b03d4fc28958998736b3c62ad251869b593f18bd9d62dbc10e375d8c",
+      "lexicominos-names.json": "a652851df78f46fccd9ec85fd5c5ea957563f9d06414af47330c1cd6d86e91c0",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

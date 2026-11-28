@@ -459,6 +459,26 @@
       "kb",
       "ArchiveSourceManager",
       "Loads the master archive index and manages the cached providers created from its entries."
+    ],
+    [
+      "fp",
+      "CachedArchiveSource",
+      "Loads the archive index and coordinates local reads and network requests for its packed groups."
+    ],
+    [
+      "cr",
+      "IntHashTable",
+      "Maps integer name hashes to archive group or file positions with open addressing."
+    ],
+    [
+      "tja",
+      "ArchiveProvider",
+      "Defines the index, packed group and progress interface for an archive source."
+    ],
+    [
+      "cga",
+      "ArchiveRequest",
+      "Defines completed-data retrieval and progress reporting for disk and network archive requests."
     ]
   ],
   "methods": [
@@ -7930,6 +7950,538 @@
       "(B)V",
       "pollArchiveSources",
       "Source-purpose review: Polls active providers for pending work and advances their background operations."
+    ],
+    [
+      "tja",
+      "a",
+      "(BI)[B",
+      "takeGroupData",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "fp",
+      "a",
+      "(BI)[B",
+      "takeGroupData",
+      "Source-purpose review: Returns the available packed group bytes and removes the finished request."
+    ],
+    [
+      "fp",
+      "a",
+      "(III)Lcga;",
+      "loadGroupRequest",
+      "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it."
+    ],
+    [
+      "tja",
+      "b",
+      "(I)Lrf;",
+      "loadIndex",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "fp",
+      "b",
+      "(I)Lrf;",
+      "loadIndex",
+      "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests."
+    ],
+    [
+      "fp",
+      "e",
+      "(I)V",
+      "pollGroupPrefetches",
+      "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests."
+    ],
+    [
+      "fp",
+      "c",
+      "(I)V",
+      "pollBackgroundRequests",
+      "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests."
+    ],
+    [
+      "fp",
+      "a",
+      "(B)V",
+      "prefetchAllGroups",
+      "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue."
+    ],
+    [
+      "rf",
+      "a",
+      "(I[B)V",
+      "decode",
+      "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes."
+    ],
+    [
+      "cr",
+      "a",
+      "(BI)I",
+      "findIndex",
+      "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1."
+    ],
+    [
+      "tja",
+      "a",
+      "(II)I",
+      "getGroupRequestProgressPercent",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "fp",
+      "a",
+      "(II)I",
+      "getGroupRequestProgressPercent",
+      "Source-purpose review: Returns the current completion percentage for the specified group request."
+    ],
+    [
+      "ln",
+      "a",
+      "(I[BII)[B",
+      "whirlpoolDigest",
+      "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest."
+    ],
+    [
+      "ur",
+      "b",
+      "(Z)V",
+      "reset",
+      "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words."
+    ],
+    [
+      "ur",
+      "a",
+      "([BJI)V",
+      "updateBits",
+      "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block."
+    ],
+    [
+      "ur",
+      "a",
+      "(II[B)V",
+      "finishDigest",
+      "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer."
+    ],
+    [
+      "ur",
+      "a",
+      "(Z)V",
+      "processBlock",
+      "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state."
+    ],
+    [
+      "cga",
+      "d",
+      "(B)[B",
+      "getData",
+      "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks."
+    ],
+    [
+      "qfa",
+      "d",
+      "(B)[B",
+      "getData",
+      "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks."
+    ],
+    [
+      "se",
+      "d",
+      "(B)[B",
+      "getData",
+      "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks."
+    ],
+    [
+      "cga",
+      "e",
+      "(I)I",
+      "getProgressPercent",
+      "Source-purpose review: Returns completion as a percentage, based on request state for disk reads and buffered length for network reads."
+    ],
+    [
+      "qfa",
+      "e",
+      "(I)I",
+      "getProgressPercent",
+      "Source-purpose review: Returns completion as a percentage, based on request state for disk reads and buffered length for network reads."
+    ],
+    [
+      "se",
+      "e",
+      "(I)I",
+      "getProgressPercent",
+      "Source-purpose review: Returns completion as a percentage, based on request state for disk reads and buffered length for network reads."
+    ],
+    [
+      "ta",
+      "a",
+      "(IB)[B",
+      "read",
+      "Source-purpose review: Reads the entry index and validates the stored sector headers while following the chain into a byte array."
+    ],
+    [
+      "ta",
+      "a",
+      "(I[BII)Z",
+      "write",
+      "Source-purpose review: Validates the entry length and attempts to update the existing sector chain before allocating a new chain."
+    ],
+    [
+      "ta",
+      "a",
+      "(IZII[B)Z",
+      "writeSectorChain",
+      "Source-purpose review: Writes the index record and payload sectors, maintaining the archive, chunk, and next-sector headers."
+    ],
+    [
+      "ea",
+      "a",
+      "(IBLta;)Lse;",
+      "readNow",
+      "Source-purpose review: Returns a completed disk read, reusing matching data from a pending queued write where available."
+    ],
+    [
+      "ea",
+      "a",
+      "(Lta;BI)Lse;",
+      "requestRead",
+      "Source-purpose review: Creates and queues a disk cache read operation."
+    ],
+    [
+      "ea",
+      "a",
+      "(Lta;[BII)Lse;",
+      "requestWrite",
+      "Source-purpose review: Creates and queues a disk cache write operation with the caller’s bytes."
+    ],
+    [
+      "ea",
+      "a",
+      "(Lse;I)V",
+      "enqueue",
+      "Source-purpose review: Links a disk operation into the queue and wakes the worker."
+    ],
+    [
+      "ea",
+      "a",
+      "(B)V",
+      "shutdown",
+      "Source-purpose review: Signals the worker to stop, wakes its queue monitor, and joins the worker thread."
+    ],
+    [
+      "td",
+      "a",
+      "(I[B)[B",
+      "decompressArchiveContainer",
+      "Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip."
+    ],
+    [
+      "wc",
+      "a",
+      "([BII)I",
+      "computeCrc32Prefix",
+      "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."
+    ],
+    [
+      "gj",
+      "a",
+      "(Lad;B)V",
+      "showCreatureDetails",
+      "Source-purpose review: Creates or reuses the creature detail panel and shows it for the supplied actor."
+    ],
+    [
+      "gj",
+      "s",
+      "(I)V",
+      "updateTileEffects",
+      "Source-purpose review: Advances effects at each board tile and replaces completed entries with the next effect."
+    ],
+    [
+      "gj",
+      "m",
+      "(I)V",
+      "clearCreatureSelection",
+      "Source-purpose review: Clears the selected actor, active order, and selection mode flags."
+    ],
+    [
+      "gj",
+      "a",
+      "(III)I",
+      "getTerrainAt",
+      "Source-purpose review: Returns terrain from the battle-state tile at the supplied indices."
+    ],
+    [
+      "gj",
+      "a",
+      "(ZLad;)V",
+      "selectCreature",
+      "Source-purpose review: Selects an actor, centers the board on its tile, and positions its move information panel."
+    ],
+    [
+      "gj",
+      "a",
+      "(ILkv;)V",
+      "queueSpriteNotice",
+      "Source-purpose review: Enqueues a timed battle notice backed by the supplied sprite."
+    ],
+    [
+      "gj",
+      "b",
+      "(Laga;I)Lad;",
+      "getCreatureActor",
+      "Source-purpose review: Looks up a battle creature’s screen actor by player and roster slot."
+    ],
+    [
+      "gj",
+      "b",
+      "(III)V",
+      "markTileWithRedEffect",
+      "Source-purpose review: Marks the tile and attaches a red effect to its effect list."
+    ],
+    [
+      "gj",
+      "i",
+      "(I)Z",
+      "hasActiveTileEffects",
+      "Source-purpose review: Scans board coordinates for any nonempty tile-effect chain."
+    ],
+    [
+      "gj",
+      "a",
+      "(I[Lrk;)V",
+      "createBattleControls",
+      "Source-purpose review: Creates the move information and optional creature selection panels along with the end-turn and order buttons."
+    ],
+    [
+      "gj",
+      "a",
+      "(ZBLgm;I)V",
+      "setMoveOrderDirectionAndDistance",
+      "Source-purpose review: Converts the signed displacement and selected axis to an order direction and a nonnegative movement distance."
+    ],
+    [
+      "gj",
+      "b",
+      "(Lad;Z)Lsfa;",
+      "findQueuedCreatureOrder",
+      "Source-purpose review: Searches the current order array for the selected creature’s roster slot."
+    ],
+    [
+      "gj",
+      "a",
+      "(Lad;Lad;Z)V",
+      "swapCreatureTiles",
+      "Source-purpose review: Checks that each creature can traverse the other’s terrain, swaps tile positions, and updates both actors."
+    ],
+    [
+      "gj",
+      "b",
+      "(B)V",
+      "collectPendingBattleEvents",
+      "Source-purpose review: Moves all pending battle state events into the screen’s processing queue."
+    ],
+    [
+      "gj",
+      "a",
+      "(Lad;ILad;IB)V",
+      "relocateCreature",
+      "Source-purpose review: Clears the old tile occupant, assigns the new coordinates, and updates the relocated creature."
+    ],
+    [
+      "gj",
+      "a",
+      "(ILjava/lang/String;I)V",
+      "queueTextNotice",
+      "Source-purpose review: Enqueues a timed battle notice using the given message and text color."
+    ],
+    [
+      "gj",
+      "b",
+      "(II)V",
+      "beginAttackOrder",
+      "Source-purpose review: Checks the selected creature and move availability, creates an attack order, and enters attack selection mode."
+    ],
+    [
+      "gj",
+      "a",
+      "(BLad;)Z",
+      "canReturnCarriedFlag",
+      "Source-purpose review: Checks whether flag mode is active and a flag carrier is adjacent to its own base."
+    ],
+    [
+      "gj",
+      "a",
+      "(I[Lad;Z)V",
+      "placePlayerRoster",
+      "Source-purpose review: Copies the player’s actors into roster slots and places available creatures at the player’s starting coordinates."
+    ],
+    [
+      "gj",
+      "c",
+      "(I)Z",
+      "hasPointerMovedPastClickThreshold",
+      "Source-purpose review: Checks the squared displacement between the initial press and the current pointer coordinates."
+    ],
+    [
+      "gj",
+      "a",
+      "(I)V",
+      "closeCreatureDetails",
+      "Source-purpose review: Closes the current creature detail panel if it exists."
+    ],
+    [
+      "gj",
+      "h",
+      "(B)Z",
+      "isCreatureDetailsOpen",
+      "Source-purpose review: Reports whether the creature detail panel exists and is open."
+    ],
+    [
+      "gj",
+      "a",
+      "(IZI)Lad;",
+      "getCreatureActorAtTile",
+      "Source-purpose review: Reads the tile occupant and resolves it to its screen actor."
+    ],
+    [
+      "gj",
+      "a",
+      "(BI)V",
+      "beginMoveOrder",
+      "Source-purpose review: Checks the selected creature and move availability, creates a move order, and enters movement selection mode."
+    ],
+    [
+      "gj",
+      "j",
+      "(I)V",
+      "resetTurnOrders",
+      "Source-purpose review: Resets the order count and per-creature order state for the next round of turn selection."
+    ],
+    [
+      "gj",
+      "c",
+      "(II)I",
+      "getTeamColor",
+      "Source-purpose review: Maps the team index to the color used by battle markers, with a neutral default."
+    ],
+    [
+      "jo",
+      "b",
+      "(Laj;III)V",
+      "projectTileToScreen",
+      "Source-purpose review: Writes the isometric screen position of a whole tile using the current board origin."
+    ],
+    [
+      "jo",
+      "a",
+      "(ILaj;Lad;)V",
+      "projectCreatureToScreen",
+      "Source-purpose review: Projects a creature’s fixed-point tile position and animation offsets, then applies its vertical displacement."
+    ],
+    [
+      "jo",
+      "b",
+      "(ILaj;)V",
+      "drawPulsingTileOutline",
+      "Source-purpose review: Draws a tile overlay and animates the edge color around its diamond-shaped outline."
+    ],
+    [
+      "jo",
+      "a",
+      "(BLad;)Laj;",
+      "getCreatureScreenPosition",
+      "Source-purpose review: Projects the creature into the shared coordinate object and returns it."
+    ],
+    [
+      "jo",
+      "a",
+      "(IIIII)V",
+      "drawOwnedTerrainMarker",
+      "Source-purpose review: Draws the tile marker in the owning player’s color when a tracked terrain tile has an owner."
+    ],
+    [
+      "jo",
+      "a",
+      "(Laj;I)V",
+      "drawTiledBackground",
+      "Source-purpose review: Repeats the background sprite at offsets determined by the current board origin."
+    ],
+    [
+      "jo",
+      "a",
+      "(III)V",
+      "panBoardBy",
+      "Source-purpose review: Moves the board origin by the supplied screen deltas and constrains it to the board bounds."
+    ],
+    [
+      "jo",
+      "a",
+      "(I)V",
+      "rebuildCreatureDrawOrder",
+      "Source-purpose review: Flattens the actor rosters and sorts them by isometric depth, placing downed actors slightly behind."
+    ],
+    [
+      "jo",
+      "a",
+      "(ZLaj;I)V",
+      "drawTargetMarker",
+      "Source-purpose review: Projects the current target tile and draws its indicator in green or red."
+    ],
+    [
+      "jo",
+      "a",
+      "(ZII)Laj;",
+      "getFixedPointScreenPosition",
+      "Source-purpose review: Projects a fixed-point board position into the shared coordinate object and returns it."
+    ],
+    [
+      "jo",
+      "a",
+      "(Laj;III)V",
+      "projectFixedPointToScreen",
+      "Source-purpose review: Writes isometric screen coordinates for a fixed-point board position using the current origin."
+    ],
+    [
+      "jo",
+      "a",
+      "(IIZB)V",
+      "setBoardOrigin",
+      "Source-purpose review: Assigns the horizontal and vertical origin and optionally constrains it to the board bounds."
+    ],
+    [
+      "jo",
+      "c",
+      "(III)V",
+      "setClampedBoardOrigin",
+      "Source-purpose review: Assigns both screen offsets and constrains the resulting origin to the board bounds."
+    ],
+    [
+      "jo",
+      "a",
+      "(B)V",
+      "clampBoardOrigin",
+      "Source-purpose review: Corrects the board origin against the four isometric edges using the board’s width and height."
+    ],
+    [
+      "jo",
+      "b",
+      "(III)Laj;",
+      "findTileAtScreenPoint",
+      "Source-purpose review: Scans visible tile positions back to front, returning the first tile whose sprite contains the screen point."
+    ],
+    [
+      "jo",
+      "a",
+      "(IBI)Laj;",
+      "getTileScreenPosition",
+      "Source-purpose review: Projects a tile into the shared screen-coordinate object and returns it."
+    ],
+    [
+      "jo",
+      "a",
+      "(BII)V",
+      "centerBoardOnTile",
+      "Source-purpose review: Sets the board origin so the supplied tile is centered, then clamps the origin."
     ]
   ],
   "fields": [
