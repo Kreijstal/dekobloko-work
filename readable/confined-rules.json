@@ -255,6 +255,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bl",
+      "originalName": "bl",
+      "to": "PcmMixerListener",
+      "evidence": "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cd",
       "originalName": "cd",
       "to": "ImageProducerRasterBuffer",
@@ -1389,6 +1396,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:be.a(Lbi;II)V",
+      "originalName": "a",
+      "to": "playSample",
+      "evidence": "Source-purpose review: Creates a stream from the supplied PCM sample, playback rate and volume, then adds it to this mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.a(Lbl;)V",
+      "originalName": "a",
+      "to": "addListener",
+      "evidence": "Source-purpose review: Checks that the listener is detached, normalizes the mixer frame counter, takes ownership, calls the added hook, and inserts it by deadline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.a(Lgf;)V",
+      "originalName": "a",
+      "to": "addChildStream",
+      "evidence": "Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:be.a(Lrk;Lbl;)V",
       "originalName": "a",
       "to": "insertListenerByDeadline",
@@ -1407,6 +1435,20 @@
       "originalName": "b",
       "to": "skipFrames",
       "evidence": "Advance the original PCM stream state without producing its normal output buffer,including raw loop/ramp position,MIDI timing/voices,scheduled listener or container traversal and effect-specific behavior. Preserve every game-specific empty/guard/global branch,original arithmetic and mutation ordering. Complete original-body SHA256 3e107490f7a0964091f3d6c8e63041df23c98acb5fc486385b2969d7842793c4. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.b(Lbl;)V",
+      "originalName": "b",
+      "to": "removeOwnedListener",
+      "evidence": "Source-purpose review: Checks ownership, normalizes elapsed frames, and delegates to the unlink-and-notify routine for this mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.b(Lgf;)V",
+      "originalName": "b",
+      "to": "removeChildStream",
+      "evidence": "Source-purpose review: Unlinks a PCM child from its intrusive playback queue.",
       "confidence": "reviewed"
     },
     {
@@ -1515,10 +1557,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bl.a()V",
+      "originalName": "a",
+      "to": "onRemovedFromMixer",
+      "evidence": "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.a(Lbe;)I",
       "originalName": "a",
       "to": "onScheduledEvent",
       "evidence": "Run the scheduled mixer listener callback and return the original next frame delay or negative unschedule result. Preserve the retained virtual dispatch and caller monitor. Concrete tracker callbacks first call their original state updater,conditionally return minus one,and otherwise compute ((sampleRate<<9)+(sampleRate<<7))/(tempo*scale) with original int overflow and division behavior. Original abstract declaration SHA256 2eeea66294c058af6b198d5a684a2569eaffba6e5ef82a3985c7ac0eae3da669. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.b()V",
+      "originalName": "b",
+      "to": "onAddedToMixer",
+      "evidence": "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams.",
       "confidence": "reviewed"
     },
     {
@@ -1858,10 +1914,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dd.a()V",
+      "originalName": "a",
+      "to": "onRemovedFromMixer",
+      "evidence": "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dd.a(Lbe;)I",
       "originalName": "a",
       "to": "onScheduledEvent",
       "evidence": "Run the scheduled mixer listener callback and return the original next frame delay or negative unschedule result. Preserve the retained virtual dispatch and caller monitor. Concrete tracker callbacks first call their original state updater,conditionally return minus one,and otherwise compute ((sampleRate<<9)+(sampleRate<<7))/(tempo*scale) with original int overflow and division behavior. Complete original-body SHA256 6924456d45adb5698d2170a56bda56f47d3a3df04fa15e3cf66ed0e6541fabf4. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.b()V",
+      "originalName": "b",
+      "to": "onAddedToMixer",
+      "evidence": "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams.",
       "confidence": "reviewed"
     },
     {
@@ -7640,6 +7710,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vc.a(III)V",
+      "originalName": "a",
+      "to": "rampScaledVolumeAndPan",
+      "evidence": "Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.a(II[B[IIIIIIIIIILvc;II)I",
       "originalName": "a",
       "to": "mixReverseStereoInterpolatedRamp",
@@ -7672,6 +7749,20 @@
       "originalName": "a",
       "to": "mixReverseStereoAligned",
       "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.a(Lbi;II)Lvc;",
+      "originalName": "a",
+      "to": "createForSampleStepWithScaledVolume",
+      "evidence": "Source-purpose review: Creates a stream with an explicit fixed-point sample step. Converts volume to internal units and uses the default pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.a(Lbi;III)Lvc;",
+      "originalName": "a",
+      "to": "createForSampleStepWithScaledVolumeAndPan",
+      "evidence": "Source-purpose review: Creates a stream with an explicit fixed-point sample step and caller-supplied volume and pan. Converts volume and pan to internal units.",
       "confidence": "reviewed"
     },
     {
@@ -7714,6 +7805,13 @@
       "originalName": "b",
       "to": "skipFrames",
       "evidence": "Advance the original PCM stream state without producing its normal output buffer,including raw loop/ramp position,MIDI timing/voices,scheduled listener or container traversal and effect-specific behavior. Preserve every game-specific empty/guard/global branch,original arithmetic and mutation ordering. Complete original-body SHA256 9408c3bb10a4977ab32a51fe1656026b7949c1451e5aa80dcfbda14c6a5ca222. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.b(II)V",
+      "originalName": "b",
+      "to": "setScaledVolumeAndPan",
+      "evidence": "Source-purpose review: Scales and sets the volume and pan immediately, clearing any active gain ramp.",
       "confidence": "reviewed"
     },
     {
@@ -7801,6 +7899,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vc.c(I)V",
+      "originalName": "c",
+      "to": "setLoopCount",
+      "evidence": "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.c(II)V",
       "originalName": "c",
       "to": "setVolumeAndPan",
@@ -7812,6 +7917,13 @@
       "originalName": "c",
       "to": "mixReverseStereoInterpolated",
       "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.c(Z)V",
+      "originalName": "c",
+      "to": "setPingPongLoop",
+      "evidence": "Source-purpose review: Selects whether the loop reflects playback direction or wraps at a sample boundary.",
       "confidence": "reviewed"
     },
     {
@@ -7829,6 +7941,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vc.d(II)V",
+      "originalName": "d",
+      "to": "setLoopBounds",
+      "evidence": "Source-purpose review: Sets the first sample index and the exclusive ending index for looping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.d(II[B[IIIIIIIILvc;II)I",
       "originalName": "d",
       "to": "mixForwardStereoInterpolated",
@@ -7840,6 +7959,13 @@
       "originalName": "e",
       "to": "cancelRamp",
       "evidence": "If the retained raw PCM ramp countdown is nonzero,translate the MIN_INT fade target to zero,clear the countdown,and invoke gain recomputation in the original order. Complete original-body SHA256 0fda84b94e0ebf1227da678ff5a5cba267546227a0d1922962e221dcc7230464. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.e(I)V",
+      "originalName": "e",
+      "to": "setSamplePosition",
+      "evidence": "Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position.",
       "confidence": "reviewed"
     },
     {
@@ -7857,6 +7983,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vc.f(I)V",
+      "originalName": "f",
+      "to": "fadeOutAndUnlink",
+      "evidence": "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.g()Z",
+      "originalName": "g",
+      "to": "finishOrContinueVolumeRamp",
+      "evidence": "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.g(I)V",
       "originalName": "g",
       "to": "setVolume",
@@ -7868,6 +8008,20 @@
       "originalName": "h",
       "to": "recomputeGains",
       "evidence": "Copy target volume into current mono gain,then evaluate and store left and right panning gains through the two exact original static helpers in their retained order. Complete original-body SHA256 19d19a5891623a43ca4db23b421177eb443c018e27c7e01f01c104f26a91e795. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.h(I)V",
+      "originalName": "h",
+      "to": "setScaledVolume",
+      "evidence": "Source-purpose review: Scales the supplied volume to internal units and applies it while retaining the current pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.i()Z",
+      "originalName": "i",
+      "to": "isPlaybackReversed",
+      "evidence": "Source-purpose review: Reports whether the sample step is negative and playback is moving backward.",
       "confidence": "reviewed"
     },
     {
@@ -8384,7 +8538,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "182a63125ca689c295a485e1bd9ec40ce75e13cab84d464e56574e66558a7476",
+      "confined-names.json": "6cce798f11f7e9bf4d6d8d8ea1400d0cee127e983f78a3dccb80ff19a0bba52a",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -1571,6 +1571,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:we",
+      "originalName": "we",
+      "to": "PcmMixerListener",
+      "evidence": "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wh",
       "originalName": "wh",
       "to": "DiskCacheWorker",
@@ -4931,6 +4938,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lh.c(I)V",
+      "originalName": "c",
+      "to": "fadeOutAndUnlink",
+      "evidence": "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lh.c(II)I",
       "originalName": "c",
       "to": "computeRightVolume",
@@ -4973,6 +4987,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lh.e()Z",
+      "originalName": "e",
+      "to": "finishOrContinueVolumeRamp",
+      "evidence": "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lh.e(I)V",
       "originalName": "e",
       "to": "setVolume",
@@ -5005,6 +5026,13 @@
       "originalName": "g",
       "to": "getPan",
       "evidence": "Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lh.g(I)V",
+      "originalName": "g",
+      "to": "setLoopCount",
+      "evidence": "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping.",
       "confidence": "reviewed"
     },
     {
@@ -6786,6 +6814,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vg.a(Lgg;II)V",
+      "originalName": "a",
+      "to": "playSample",
+      "evidence": "Source-purpose review: Creates a stream from the supplied PCM sample, playback rate and volume, then adds it to this mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Llj;)V",
+      "originalName": "a",
+      "to": "addChildStream",
+      "evidence": "Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vg.a(Luf;Lwe;)V",
       "originalName": "a",
       "to": "insertListenerByDeadline",
@@ -6891,6 +6933,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:we.a()V",
+      "originalName": "a",
+      "to": "onRemovedFromMixer",
+      "evidence": "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:we.a(Lvg;)I",
       "originalName": "a",
       "to": "onScheduledEvent",
@@ -6954,6 +7003,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wl.a(BI)V",
+      "originalName": "a",
+      "to": "resetChannel",
+      "evidence": "Source-purpose review: Restores default channel controller values for reset-all-controllers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(BLsh;)I",
+      "originalName": "a",
+      "to": "computeNoteSampleStep",
+      "evidence": "Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wl.a(B[IILsh;I)Z",
       "originalName": "a",
       "to": "updateVoice",
@@ -6965,6 +7028,55 @@
       "originalName": "a",
       "to": "skipFrames",
       "evidence": "Advance the original PCM stream state without producing its normal output buffer,including raw loop/ramp position,MIDI timing/voices,scheduled listener or container traversal and effect-specific behavior. Preserve every game-specific empty/guard/global branch,original arithmetic and mutation ordering. Complete original-body SHA256 06b70dcf5f01a770e95a8949edb5c7cc59cb7a53b58baf5cf4ec53089d316a5c. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IBII)V",
+      "originalName": "a",
+      "to": "noteOff",
+      "evidence": "Source-purpose review: Releases a channel note when the MIDI note-off status is received.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IIB)V",
+      "originalName": "a",
+      "to": "setProgram",
+      "evidence": "Source-purpose review: Updates the active program used to select a channel’s patch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IIIB)V",
+      "originalName": "a",
+      "to": "noteOn",
+      "evidence": "Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IIII)V",
+      "originalName": "a",
+      "to": "onPolyPressure",
+      "evidence": "Source-purpose review: Handles the per-note pressure status for the specified note and channel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IIZ)V",
+      "originalName": "a",
+      "to": "setPitchWheel",
+      "evidence": "Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IZ)V",
+      "originalName": "a",
+      "to": "resetChannelVoicePhases",
+      "evidence": "Source-purpose review: Resets the retrigger phase of active channel voices when the retrigger controller is turned off.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(Lsh;B)I",
+      "originalName": "a",
+      "to": "computeNoteVolume",
+      "evidence": "Source-purpose review: Computes note gain from channel expression, velocity, master gain and the note envelopes.",
       "confidence": "reviewed"
     },
     {
@@ -6982,10 +7094,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wl.a(ZI)V",
+      "originalName": "a",
+      "to": "resetPlaybackChannels",
+      "evidence": "Source-purpose review: Resets active notes, controllers and channel programs for the system reset message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(ZLsh;)I",
+      "originalName": "a",
+      "to": "computeNotePan",
+      "evidence": "Source-purpose review: Combines channel pan and note pan to produce the stereo pan value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wl.a([III)V",
       "originalName": "a",
       "to": "mixInto",
       "evidence": "Accumulate PCM output into the supplied int buffer through the complete original stream implementation. Retain raw sample loop/interpolation/ramp arithmetic,scheduled listener deadlines,child traversal,MIDI event timing and voice crossfades,envelope/effect state,all buffer offsets/counts,guards,partial writes and exception order. Complete original-body SHA256 49592c293789f9c237d459e02c90a906663a85b8b90bb3559bd96450f22d00b9. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.b(BI)V",
+      "originalName": "b",
+      "to": "removeChannelVoices",
+      "evidence": "Source-purpose review: Fades and removes the channel voices for the all-sound-off controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.b(II)V",
+      "originalName": "b",
+      "to": "handleMidiMessage",
+      "evidence": "Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.b(III)V",
+      "originalName": "b",
+      "to": "onChannelPressure",
+      "evidence": "Source-purpose review: Handles the channel-wide pressure status.",
       "confidence": "reviewed"
     },
     {
@@ -6996,10 +7143,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wl.c(II)V",
+      "originalName": "c",
+      "to": "releaseUnmappedVoices",
+      "evidence": "Source-purpose review: Releases notes retained for portamento when the controller is disabled.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wl.d()I",
       "originalName": "d",
       "to": "getSchedulingCost",
       "evidence": "Return the original PCM scheduler work-cost value:fixed container/leaf cost or state-dependent activity/effect cost as actually implemented. Retain original integer products,guards,shared/volatile reads and all special return values. Complete original-body SHA256 6f0e51fae88af5d49ca110334f2c79b1d4b778152ba5bb31672e7edf472e73be. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.d(II)V",
+      "originalName": "d",
+      "to": "allNotesOff",
+      "evidence": "Source-purpose review: Releases active notes in the channel for the all-notes-off controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.e(II)V",
+      "originalName": "e",
+      "to": "setMasterVolume",
+      "evidence": "Source-purpose review: Sets the master gain read by the note-volume calculation.",
       "confidence": "reviewed"
     },
     {
@@ -7481,7 +7649,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-terraphoenix-rules.mjs": "2b9ef0307d7e8ad8295f9a6d9e8e1d74cc01f0b1d1f8bbcad95b45bfce2e3b38",
-      "terraphoenix-names.json": "cbd36703c0318ff3e8169eab9d3468997b33df3c65dff9401d292bd946dd8cbc",
+      "terraphoenix-names.json": "fa8023f965756dd3adcf0d2578613ed70abb3e8521b22aee7269d62d338e64d3",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

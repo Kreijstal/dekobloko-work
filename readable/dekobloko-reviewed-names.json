@@ -835,7 +835,16 @@
     ["ei","d","(I)V","setSampleStepMagnitude","Source-purpose review: Changes the magnitude of the sample step while preserving its current direction."],
     ["ei","d","(II)I","computeLeftVolume","Source-purpose review: Computes the left-channel gain from volume and pan."],
     ["ei","e","(II)V","rampVolume","Source-purpose review: Schedules a volume ramp while preserving the current pan."],
-    ["ei","h","()I","getPan","Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel."]
+    ["ei","h","()I","getPan","Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel."],
+    ["ei","a","(III)V","rampScaledVolumeAndPan","Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp."],
+    ["ei","a","(Z)V","setPingPongLoop","Source-purpose review: Selects whether the loop reflects playback direction or wraps at a sample boundary."],
+    ["ei","b","(Lud;III)Lei;","createForSampleStepWithScaledVolumeAndPan","Source-purpose review: Creates a stream with an explicit fixed-point sample step and caller-supplied volume and pan. Converts volume and pan to internal units."],
+    ["ei","c","(Lud;III)Lei;","createForPlaybackRateWithPan","Source-purpose review: Creates a stream at a sample-rate-adjusted playback rate with caller-supplied volume and pan."],
+    ["ei","e","(I)V","setSamplePosition","Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position."],
+    ["ei","f","(I)V","setLoopCount","Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."],
+    ["ei","f","(II)V","setLoopBounds","Source-purpose review: Sets the first sample index and the exclusive ending index for looping."],
+    ["ei","g","()Z","finishOrContinueVolumeRamp","Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."],
+    ["ei","g","(I)V","fadeOutAndUnlink","Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."]
   ],
   "fields": [
     ["fn","field_h","Ljava/nio/ByteBuffer;","buffer","Sole instance ByteBuffer allocated directly and read/written by bytes operations; preserve nullable/guard states."]

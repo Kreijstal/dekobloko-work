@@ -319,6 +319,11 @@
       "ge",
       "CoverageBitmapFont",
       "Converts a glyph palette to byte coverage and blends glyph pixels by that coverage."
+    ],
+    [
+      "o",
+      "PcmMixerListener",
+      "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
     ]
   ],
   "methods": [
@@ -6810,6 +6815,167 @@
       "()Z",
       "hasRemainingRampFrames",
       "Source-purpose review: Reports whether the gain ramp still has frames remaining."
+    ],
+    [
+      "ra",
+      "h",
+      "(I)V",
+      "fadeOutAndUnlink",
+      "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."
+    ],
+    [
+      "ra",
+      "i",
+      "(I)V",
+      "setLoopCount",
+      "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."
+    ],
+    [
+      "ra",
+      "k",
+      "()Z",
+      "finishOrContinueVolumeRamp",
+      "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."
+    ],
+    [
+      "db",
+      "a",
+      "(BI)V",
+      "handleMidiMessage",
+      "Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers."
+    ],
+    [
+      "db",
+      "a",
+      "(IZII)V",
+      "noteOff",
+      "Source-purpose review: Releases a channel note when the MIDI note-off status is received."
+    ],
+    [
+      "db",
+      "b",
+      "(IIII)V",
+      "noteOn",
+      "Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event."
+    ],
+    [
+      "db",
+      "a",
+      "(IIII)V",
+      "onPolyPressure",
+      "Source-purpose review: Handles the per-note pressure status for the specified note and channel."
+    ],
+    [
+      "db",
+      "a",
+      "(BII)V",
+      "setProgram",
+      "Source-purpose review: Updates the active program used to select a channel’s patch."
+    ],
+    [
+      "db",
+      "a",
+      "(III)V",
+      "onChannelPressure",
+      "Source-purpose review: Handles the channel-wide pressure status."
+    ],
+    [
+      "db",
+      "d",
+      "(III)V",
+      "setPitchWheel",
+      "Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes."
+    ],
+    [
+      "db",
+      "d",
+      "(ZI)V",
+      "resetPlaybackChannels",
+      "Source-purpose review: Resets active notes, controllers and channel programs for the system reset message."
+    ],
+    [
+      "db",
+      "b",
+      "(II)V",
+      "releaseUnmappedVoices",
+      "Source-purpose review: Releases notes retained for portamento when the controller is disabled."
+    ],
+    [
+      "db",
+      "d",
+      "(BI)V",
+      "resetChannelVoicePhases",
+      "Source-purpose review: Resets the retrigger phase of active channel voices when the retrigger controller is turned off."
+    ],
+    [
+      "db",
+      "c",
+      "(ZI)V",
+      "removeChannelVoices",
+      "Source-purpose review: Fades and removes the channel voices for the all-sound-off controller."
+    ],
+    [
+      "db",
+      "e",
+      "(BI)V",
+      "resetChannel",
+      "Source-purpose review: Restores default channel controller values for reset-all-controllers."
+    ],
+    [
+      "db",
+      "b",
+      "(BI)V",
+      "allNotesOff",
+      "Source-purpose review: Releases active notes in the channel for the all-notes-off controller."
+    ],
+    [
+      "db",
+      "a",
+      "(BLpe;)I",
+      "computeNoteSampleStep",
+      "Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate."
+    ],
+    [
+      "db",
+      "a",
+      "(Lpe;B)I",
+      "computeNoteVolume",
+      "Source-purpose review: Computes note gain from channel expression, velocity, master gain and the note envelopes."
+    ],
+    [
+      "db",
+      "a",
+      "(Lpe;I)I",
+      "computeNotePan",
+      "Source-purpose review: Combines channel pan and note pan to produce the stereo pan value."
+    ],
+    [
+      "db",
+      "c",
+      "(II)V",
+      "setMasterVolume",
+      "Source-purpose review: Sets the master gain read by the note-volume calculation."
+    ],
+    [
+      "fp",
+      "a",
+      "(Lsn;)V",
+      "addChildStream",
+      "Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops."
+    ],
+    [
+      "fp",
+      "b",
+      "(Lsn;)V",
+      "removeChildStream",
+      "Source-purpose review: Unlinks a PCM child from its intrusive playback queue."
+    ],
+    [
+      "o",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
     ]
   ],
   "fields": [

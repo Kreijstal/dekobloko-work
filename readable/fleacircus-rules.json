@@ -703,6 +703,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vl",
+      "originalName": "vl",
+      "to": "PcmMixerListener",
+      "evidence": "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wb",
       "originalName": "wb",
       "to": "NetworkGameClient",
@@ -1991,6 +1998,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.a(BLtk;)I",
+      "originalName": "a",
+      "to": "computeNoteVolume",
+      "evidence": "Source-purpose review: Computes note gain from channel expression, velocity, master gain and the note envelopes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ei.a(I)V",
       "originalName": "a",
       "to": "skipFrames",
@@ -1998,10 +2012,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.a(IB)V",
+      "originalName": "a",
+      "to": "removeChannelVoices",
+      "evidence": "Source-purpose review: Fades and removes the channel voices for the all-sound-off controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(II)V",
+      "originalName": "a",
+      "to": "allNotesOff",
+      "evidence": "Source-purpose review: Releases active notes in the channel for the all-notes-off controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(III)V",
+      "originalName": "a",
+      "to": "onChannelPressure",
+      "evidence": "Source-purpose review: Handles the channel-wide pressure status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(IIII)V",
+      "originalName": "a",
+      "to": "onPolyPressure",
+      "evidence": "Source-purpose review: Handles the per-note pressure status for the specified note and channel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ei.a(IIILtk;[I)Z",
       "originalName": "a",
       "to": "updateVoice",
       "evidence": "Update the retained voice countdown,pitch/portamento,decay/main/release envelopes and raw-stream ramp;on terminal state preserve exact fade/render-or-skip,pending-queue,reset,unlink and indexed-slot cleanup and boolean return. Keep every original global/guard threshold,counter/cursor comparison,FP operation and cast order. Complete original-body SHA256 35066610e7e9d31e82fd701744421b771cea6723ac1859ae587b295de8f9c63c. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(IIIZ)V",
+      "originalName": "a",
+      "to": "noteOn",
+      "evidence": "Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(ILtk;)I",
+      "originalName": "a",
+      "to": "computeNoteSampleStep",
+      "evidence": "Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate.",
       "confidence": "reviewed"
     },
     {
@@ -2019,6 +2075,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.b(IIII)V",
+      "originalName": "b",
+      "to": "noteOff",
+      "evidence": "Source-purpose review: Releases a channel note when the MIDI note-off status is received.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.b(ILtk;)I",
+      "originalName": "b",
+      "to": "computeNotePan",
+      "evidence": "Source-purpose review: Combines channel pan and note pan to produce the stereo pan value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.b(IZ)V",
+      "originalName": "b",
+      "to": "resetPlaybackChannels",
+      "evidence": "Source-purpose review: Resets active notes, controllers and channel programs for the system reset message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ei.b([III)V",
       "originalName": "b",
       "to": "mixInto",
@@ -2030,6 +2107,20 @@
       "originalName": "c",
       "to": "nextChildStream",
       "evidence": "Continue enumeration of immediate child PCM streams using the original cursor/voice traversal or paired-stream state. Preserve next-link read order,sentinel/null tests,skipped voice states,all global/guard paths and exceptional behavior. Complete original-body SHA256 8e3206f68e80879d581c5df2e63d30570ceaacfa4de14fa89bafaf5b71237483. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.c(II)V",
+      "originalName": "c",
+      "to": "resetChannelVoicePhases",
+      "evidence": "Source-purpose review: Resets the retrigger phase of active channel voices when the retrigger controller is turned off.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.c(III)V",
+      "originalName": "c",
+      "to": "setPitchWheel",
+      "evidence": "Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes.",
       "confidence": "reviewed"
     },
     {
@@ -2047,6 +2138,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.d(II)V",
+      "originalName": "d",
+      "to": "releaseUnmappedVoices",
+      "evidence": "Source-purpose review: Releases notes retained for portamento when the controller is disabled.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ei.e(I)V",
       "originalName": "e",
       "to": "stopPlayback",
@@ -2054,10 +2152,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.e(II)V",
+      "originalName": "e",
+      "to": "resetChannel",
+      "evidence": "Source-purpose review: Restores default channel controller values for reset-all-controllers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.e(III)V",
+      "originalName": "e",
+      "to": "setProgram",
+      "evidence": "Source-purpose review: Updates the active program used to select a channel’s patch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ei.f(I)V",
       "originalName": "f",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 4 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.f(II)V",
+      "originalName": "f",
+      "to": "handleMidiMessage",
+      "evidence": "Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers.",
       "confidence": "reviewed"
     },
     {
@@ -3300,10 +3419,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ie.f(I)V",
+      "originalName": "f",
+      "to": "fadeOutAndUnlink",
+      "evidence": "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ie.g()I",
       "originalName": "g",
       "to": "getTargetVolume",
       "evidence": "Source-purpose review: Returns the target volume, treating the pending fade-out sentinel as zero volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.g(I)V",
+      "originalName": "g",
+      "to": "setLoopCount",
+      "evidence": "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.h()Z",
+      "originalName": "h",
+      "to": "finishOrContinueVolumeRamp",
+      "evidence": "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction.",
       "confidence": "reviewed"
     },
     {
@@ -3318,6 +3458,13 @@
       "originalName": "i",
       "to": "hasRemainingRampFrames",
       "evidence": "Source-purpose review: Reports whether the gain ramp still has frames remaining.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.i(I)V",
+      "originalName": "i",
+      "to": "setScaledVolume",
+      "evidence": "Source-purpose review: Scales the supplied volume to internal units and applies it while retaining the current pan.",
       "confidence": "reviewed"
     },
     {
@@ -3626,6 +3773,13 @@
       "originalName": "a",
       "to": "insertListenerByDeadline",
       "evidence": "Walk through listeners with deadline less than or equal to the supplied listener until sentinel/first-greater,perform the original node insertion with exact argument order/guard,and reread the head deadline. Complete original-body SHA256 07fdf1970f9514bf0b3ff7bf3efa147a7e728f51fade5af7145b75002727a4a6. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.a(Lsh;)V",
+      "originalName": "a",
+      "to": "addChildStream",
+      "evidence": "Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops.",
       "confidence": "reviewed"
     },
     {
@@ -5771,6 +5925,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vl.a()V",
+      "originalName": "a",
+      "to": "onRemovedFromMixer",
+      "evidence": "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vl.a(Lke;)I",
       "originalName": "a",
       "to": "onScheduledEvent",
@@ -5941,7 +6102,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "57641ee9ee05f37a706ce33d04a99d360f1bc5b156fde7b9b329a62aaa3de3f2",
+      "fleacircus-names.json": "b520f85f8f4ac2a1edcd4320043e86879a90dd277bd9d104902dea3a8131c7e8",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

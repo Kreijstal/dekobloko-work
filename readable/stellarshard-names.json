@@ -249,6 +249,11 @@
       "ub",
       "BinaryBitmapFont",
       "Uses byte masks to decide which glyph pixels receive the supplied colour."
+    ],
+    [
+      "p",
+      "PcmMixerListener",
+      "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
     ]
   ],
   "methods": [
@@ -4507,6 +4512,139 @@
       "()I",
       "getPan",
       "Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel."
+    ],
+    [
+      "gd",
+      "a",
+      "(Lud;II)Lgd;",
+      "createForPlaybackRate",
+      "Source-purpose review: Creates a stream at a sample-rate-adjusted playback rate. Converts volume to internal units and uses the default pan."
+    ],
+    [
+      "gd",
+      "a",
+      "(Lud;III)Lgd;",
+      "createForSampleStepWithScaledVolumeAndPan",
+      "Source-purpose review: Creates a stream with an explicit fixed-point sample step and caller-supplied volume and pan. Converts volume and pan to internal units."
+    ],
+    [
+      "gd",
+      "a",
+      "(Z)V",
+      "setPingPongLoop",
+      "Source-purpose review: Selects whether the loop reflects playback direction or wraps at a sample boundary."
+    ],
+    [
+      "gd",
+      "b",
+      "(II)V",
+      "rampScaledVolume",
+      "Source-purpose review: Scales the requested volume and ramps to it over the given frame count, retaining the current pan."
+    ],
+    [
+      "gd",
+      "b",
+      "(III)V",
+      "rampScaledVolumeAndPan",
+      "Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp."
+    ],
+    [
+      "gd",
+      "d",
+      "(II)V",
+      "setLoopBounds",
+      "Source-purpose review: Sets the first sample index and the exclusive ending index for looping."
+    ],
+    [
+      "gd",
+      "e",
+      "()Z",
+      "finishOrContinueVolumeRamp",
+      "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."
+    ],
+    [
+      "gd",
+      "e",
+      "(I)V",
+      "setLoopCount",
+      "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."
+    ],
+    [
+      "gd",
+      "g",
+      "(I)V",
+      "fadeOutAndUnlink",
+      "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."
+    ],
+    [
+      "gd",
+      "h",
+      "(I)V",
+      "setSamplePosition",
+      "Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position."
+    ],
+    [
+      "d",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "d",
+      "b",
+      "()V",
+      "onAddedToMixer",
+      "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."
+    ],
+    [
+      "hl",
+      "a",
+      "(Lkd;)V",
+      "addChildStream",
+      "Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops."
+    ],
+    [
+      "hl",
+      "a",
+      "(Lp;)V",
+      "addListener",
+      "Source-purpose review: Checks that the listener is detached, normalizes the mixer frame counter, takes ownership, calls the added hook, and inserts it by deadline."
+    ],
+    [
+      "hl",
+      "a",
+      "(Lud;II)V",
+      "playSample",
+      "Source-purpose review: Creates a stream from the supplied PCM sample, playback rate and volume, then adds it to this mixer."
+    ],
+    [
+      "hl",
+      "b",
+      "(Lkd;)V",
+      "removeChildStream",
+      "Source-purpose review: Unlinks a PCM child from its intrusive playback queue."
+    ],
+    [
+      "hl",
+      "b",
+      "(Lp;)V",
+      "removeOwnedListener",
+      "Source-purpose review: Checks ownership, normalizes elapsed frames, and delegates to the unlink-and-notify routine for this mixer."
+    ],
+    [
+      "p",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "p",
+      "b",
+      "()V",
+      "onAddedToMixer",
+      "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."
     ]
   ],
   "fields": [

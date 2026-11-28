@@ -4621,6 +4621,202 @@
       "()Z",
       "hasRemainingRampFrames",
       "Source-purpose review: Reports whether the gain ramp still has frames remaining."
+    ],
+    [
+      "nc",
+      "a",
+      "(Lfe;III)Lnc;",
+      "createForPlaybackRateWithScaledVolumeAndPan",
+      "Source-purpose review: Creates a stream at a sample-rate-adjusted playback rate with caller-supplied volume and pan. Converts volume and pan to internal units."
+    ],
+    [
+      "nc",
+      "b",
+      "(III)V",
+      "rampScaledVolumeAndPan",
+      "Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp."
+    ],
+    [
+      "nc",
+      "d",
+      "(I)V",
+      "setSamplePositionFixed",
+      "Source-purpose review: Clamps and stores an already fixed-point playback position."
+    ],
+    [
+      "nc",
+      "e",
+      "(I)V",
+      "setLoopCount",
+      "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."
+    ],
+    [
+      "nc",
+      "e",
+      "(II)V",
+      "setLoopBounds",
+      "Source-purpose review: Sets the first sample index and the exclusive ending index for looping."
+    ],
+    [
+      "nc",
+      "f",
+      "(II)V",
+      "rampScaledVolume",
+      "Source-purpose review: Scales the requested volume and ramps to it over the given frame count, retaining the current pan."
+    ],
+    [
+      "nc",
+      "g",
+      "()Z",
+      "finishOrContinueVolumeRamp",
+      "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."
+    ],
+    [
+      "nc",
+      "g",
+      "(I)V",
+      "fadeOutAndUnlink",
+      "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."
+    ],
+    [
+      "nc",
+      "h",
+      "(I)V",
+      "setScaledVolume",
+      "Source-purpose review: Scales the supplied volume to internal units and applies it while retaining the current pan."
+    ],
+    [
+      "nc",
+      "j",
+      "()Z",
+      "isSamplePositionOutOfRange",
+      "Source-purpose review: Checks whether the current fixed-point sample position has left the sample array."
+    ],
+    [
+      "kb",
+      "b",
+      "(II)V",
+      "handleMidiMessage",
+      "Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers."
+    ],
+    [
+      "kb",
+      "a",
+      "(IIII)V",
+      "noteOff",
+      "Source-purpose review: Releases a channel note when the MIDI note-off status is received."
+    ],
+    [
+      "kb",
+      "b",
+      "(IIII)V",
+      "noteOn",
+      "Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event."
+    ],
+    [
+      "kb",
+      "a",
+      "(IBII)V",
+      "onPolyPressure",
+      "Source-purpose review: Handles the per-note pressure status for the specified note and channel."
+    ],
+    [
+      "kb",
+      "a",
+      "(IBI)V",
+      "setProgram",
+      "Source-purpose review: Updates the active program used to select a channel’s patch."
+    ],
+    [
+      "kb",
+      "c",
+      "(IBI)V",
+      "onChannelPressure",
+      "Source-purpose review: Handles the channel-wide pressure status."
+    ],
+    [
+      "kb",
+      "b",
+      "(IBI)V",
+      "setPitchWheel",
+      "Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes."
+    ],
+    [
+      "kb",
+      "a",
+      "(IZ)V",
+      "resetPlaybackChannels",
+      "Source-purpose review: Resets active notes, controllers and channel programs for the system reset message."
+    ],
+    [
+      "kb",
+      "c",
+      "(II)V",
+      "releaseUnmappedVoices",
+      "Source-purpose review: Releases notes retained for portamento when the controller is disabled."
+    ],
+    [
+      "kb",
+      "a",
+      "(II)V",
+      "resetChannelVoicePhases",
+      "Source-purpose review: Resets the retrigger phase of active channel voices when the retrigger controller is turned off."
+    ],
+    [
+      "kb",
+      "a",
+      "(ZI)V",
+      "removeChannelVoices",
+      "Source-purpose review: Fades and removes the channel voices for the all-sound-off controller."
+    ],
+    [
+      "kb",
+      "a",
+      "(BI)V",
+      "resetChannel",
+      "Source-purpose review: Restores default channel controller values for reset-all-controllers."
+    ],
+    [
+      "kb",
+      "a",
+      "(IB)V",
+      "allNotesOff",
+      "Source-purpose review: Releases active notes in the channel for the all-notes-off controller."
+    ],
+    [
+      "kb",
+      "a",
+      "(BLdl;)I",
+      "computeNoteSampleStep",
+      "Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate."
+    ],
+    [
+      "kb",
+      "a",
+      "(ILdl;)I",
+      "computeNotePan",
+      "Source-purpose review: Combines channel pan and note pan to produce the stereo pan value."
+    ],
+    [
+      "kb",
+      "c",
+      "(IZ)V",
+      "setMasterVolume",
+      "Source-purpose review: Sets the master gain read by the note-volume calculation."
+    ],
+    [
+      "jb",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "jk",
+      "b",
+      "(Lqd;)V",
+      "removeChildStream",
+      "Source-purpose review: Unlinks a PCM child from its intrusive playback queue."
     ]
   ],
   "fields": [

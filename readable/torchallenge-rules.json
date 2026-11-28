@@ -3090,6 +3090,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.a()V",
+      "originalName": "a",
+      "to": "onRemovedFromMixer",
+      "evidence": "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.a(Ljk;)I",
       "originalName": "a",
       "to": "onScheduledEvent",
@@ -3185,6 +3192,13 @@
       "originalName": "b",
       "to": "nextSubstream",
       "evidence": "PcmStreamMixer returns the next child. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.b(Lqd;)V",
+      "originalName": "b",
+      "to": "removeChildStream",
+      "evidence": "Source-purpose review: Unlinks a PCM child from its intrusive playback queue.",
       "confidence": "reviewed"
     },
     {
@@ -3538,6 +3552,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kb.a(BI)V",
+      "originalName": "a",
+      "to": "resetChannel",
+      "evidence": "Source-purpose review: Restores default channel controller values for reset-all-controllers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(BLdl;)I",
+      "originalName": "a",
+      "to": "computeNoteSampleStep",
+      "evidence": "Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kb.a(I)V",
       "originalName": "a",
       "to": "skip",
@@ -3545,10 +3573,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kb.a(IB)V",
+      "originalName": "a",
+      "to": "allNotesOff",
+      "evidence": "Source-purpose review: Releases active notes in the channel for the all-notes-off controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(IBI)V",
+      "originalName": "a",
+      "to": "setProgram",
+      "evidence": "Source-purpose review: Updates the active program used to select a channel’s patch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(IBII)V",
+      "originalName": "a",
+      "to": "onPolyPressure",
+      "evidence": "Source-purpose review: Handles the per-note pressure status for the specified note and channel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kb.a(IB[IILdl;)Z",
       "originalName": "a",
       "to": "updateVoice",
       "evidence": "Update the retained voice countdown,pitch/portamento,decay/main/release envelopes and raw-stream ramp;on terminal state preserve exact fade/render-or-skip,pending-queue,reset,unlink and indexed-slot cleanup and boolean return. Keep every original global/guard threshold,counter/cursor comparison,FP operation and cast order. Complete original-body SHA256 0e6deaa08bf823bc1f438f7cc6e21d397a1bcb5193f3ca0a4a824b8fc848711c. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(II)V",
+      "originalName": "a",
+      "to": "resetChannelVoicePhases",
+      "evidence": "Source-purpose review: Resets the retrigger phase of active channel voices when the retrigger controller is turned off.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(IIII)V",
+      "originalName": "a",
+      "to": "noteOff",
+      "evidence": "Source-purpose review: Releases a channel note when the MIDI note-off status is received.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(ILdl;)I",
+      "originalName": "a",
+      "to": "computeNotePan",
+      "evidence": "Source-purpose review: Combines channel pan and note pan to produce the stereo pan value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(IZ)V",
+      "originalName": "a",
+      "to": "resetPlaybackChannels",
+      "evidence": "Source-purpose review: Resets active notes, controllers and channel programs for the system reset message.",
       "confidence": "reviewed"
     },
     {
@@ -3566,6 +3643,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kb.a(ZI)V",
+      "originalName": "a",
+      "to": "removeChannelVoices",
+      "evidence": "Source-purpose review: Fades and removes the channel voices for the all-sound-off controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kb.b()Lqd;",
       "originalName": "b",
       "to": "nextSubstream",
@@ -3577,6 +3661,27 @@
       "originalName": "b",
       "to": "stopPlayback",
       "evidence": "Stop MIDI playback through the retained synchronized clear/reset delegate,with original boolean selection and exact extra guard-path calls,arithmetic and mutations. Complete original-body SHA256 025e2121c053aef268dec228384fd223e42a952dd92371592f843b31ae7099da. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.b(IBI)V",
+      "originalName": "b",
+      "to": "setPitchWheel",
+      "evidence": "Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.b(II)V",
+      "originalName": "b",
+      "to": "handleMidiMessage",
+      "evidence": "Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.b(IIII)V",
+      "originalName": "b",
+      "to": "noteOn",
+      "evidence": "Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event.",
       "confidence": "reviewed"
     },
     {
@@ -3598,6 +3703,27 @@
       "originalName": "c",
       "to": "firstSubstream",
       "evidence": "PcmStreamMixer returns the first child. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.c(IBI)V",
+      "originalName": "c",
+      "to": "onChannelPressure",
+      "evidence": "Source-purpose review: Handles the channel-wide pressure status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.c(II)V",
+      "originalName": "c",
+      "to": "releaseUnmappedVoices",
+      "evidence": "Source-purpose review: Releases notes retained for portamento when the controller is disabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.c(IZ)V",
+      "originalName": "c",
+      "to": "setMasterVolume",
+      "evidence": "Source-purpose review: Sets the master gain read by the note-volume calculation.",
       "confidence": "reviewed"
     },
     {
@@ -4308,6 +4434,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.a(Lfe;III)Lnc;",
+      "originalName": "a",
+      "to": "createForPlaybackRateWithScaledVolumeAndPan",
+      "evidence": "Source-purpose review: Creates a stream at a sample-rate-adjusted playback rate with caller-supplied volume and pan. Converts volume and pan to internal units.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nc.a([B[IIIIIIIILnc;)I",
       "originalName": "a",
       "to": "mixForwardMonoAlignedRamp",
@@ -4340,6 +4473,13 @@
       "originalName": "b",
       "to": "computeLeftVolume",
       "evidence": "Source-purpose review: Computes the left-channel gain from volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(III)V",
+      "originalName": "b",
+      "to": "rampScaledVolumeAndPan",
+      "evidence": "Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp.",
       "confidence": "reviewed"
     },
     {
@@ -4455,6 +4595,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.d(I)V",
+      "originalName": "d",
+      "to": "setSamplePositionFixed",
+      "evidence": "Source-purpose review: Clamps and stores an already fixed-point playback position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nc.d(II)I",
       "originalName": "d",
       "to": "computeRightVolume",
@@ -4476,6 +4623,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.e(I)V",
+      "originalName": "e",
+      "to": "setLoopCount",
+      "evidence": "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.e(II)V",
+      "originalName": "e",
+      "to": "setLoopBounds",
+      "evidence": "Source-purpose review: Sets the first sample index and the exclusive ending index for looping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nc.f()I",
       "originalName": "f",
       "to": "getTargetVolume",
@@ -4490,6 +4651,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.f(II)V",
+      "originalName": "f",
+      "to": "rampScaledVolume",
+      "evidence": "Source-purpose review: Scales the requested volume and ramps to it over the given frame count, retaining the current pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.g()Z",
+      "originalName": "g",
+      "to": "finishOrContinueVolumeRamp",
+      "evidence": "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.g(I)V",
+      "originalName": "g",
+      "to": "fadeOutAndUnlink",
+      "evidence": "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nc.h()V",
       "originalName": "h",
       "to": "cancelRamp",
@@ -4497,10 +4679,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.h(I)V",
+      "originalName": "h",
+      "to": "setScaledVolume",
+      "evidence": "Source-purpose review: Scales the supplied volume to internal units and applies it while retaining the current pan.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nc.i()I",
       "originalName": "i",
       "to": "getPan",
       "evidence": "Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.j()Z",
+      "originalName": "j",
+      "to": "isSamplePositionOutOfRange",
+      "evidence": "Source-purpose review: Checks whether the current fixed-point sample position has left the sample array.",
       "confidence": "reviewed"
     },
     {
@@ -6564,7 +6760,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c696ff6221c68e3b0e602236621fbd79c0e8903c027337dfc07ecd80a8291783",
-      "torchallenge-names.json": "7f76e7ea117489f6be18122e934a0a0ae5c5a5688c1f8aef8eb1c9b52c2f06b5",
+      "torchallenge-names.json": "03b3cd038ee912820a70fceafaf43ce6d6264ab959de2307689d51b21dbce792",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

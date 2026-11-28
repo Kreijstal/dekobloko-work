@@ -299,6 +299,11 @@
       "lk",
       "BinaryBitmapFont",
       "Uses byte masks to decide which glyph pixels receive the supplied colour."
+    ],
+    [
+      "oa",
+      "PcmMixerListener",
+      "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
     ]
   ],
   "methods": [
@@ -4844,6 +4849,125 @@
       "(I)V",
       "setVolume",
       "Source-purpose review: Converts the supplied volume to internal units and applies it using the current pan."
+    ],
+    [
+      "fj",
+      "a",
+      "(Lud;III)Lfj;",
+      "createForSampleStepWithScaledVolumeAndPan",
+      "Source-purpose review: Creates a stream with an explicit fixed-point sample step and caller-supplied volume and pan. Converts volume and pan to internal units."
+    ],
+    [
+      "fj",
+      "a",
+      "(Z)V",
+      "setPingPongLoop",
+      "Source-purpose review: Selects whether the loop reflects playback direction or wraps at a sample boundary."
+    ],
+    [
+      "fj",
+      "b",
+      "(II)V",
+      "setLoopBounds",
+      "Source-purpose review: Sets the first sample index and the exclusive ending index for looping."
+    ],
+    [
+      "fj",
+      "b",
+      "(III)V",
+      "rampScaledVolumeAndPan",
+      "Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp."
+    ],
+    [
+      "fj",
+      "d",
+      "(I)V",
+      "setSamplePosition",
+      "Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position."
+    ],
+    [
+      "fj",
+      "g",
+      "(I)V",
+      "setLoopCount",
+      "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."
+    ],
+    [
+      "oa",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "oa",
+      "b",
+      "()V",
+      "onAddedToMixer",
+      "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."
+    ],
+    [
+      "vi",
+      "a",
+      "(Lc;)V",
+      "removeChildStream",
+      "Source-purpose review: Unlinks a PCM child from its intrusive playback queue."
+    ],
+    [
+      "vi",
+      "a",
+      "(Lc;I)V",
+      "addChildStreamWithDelay",
+      "Source-purpose review: Wraps the child in a delayed PCM stream when the frame delay is positive, then adds it to the mixer queue."
+    ],
+    [
+      "vi",
+      "a",
+      "(Loa;)V",
+      "removeOwnedListener",
+      "Source-purpose review: Checks ownership, normalizes elapsed frames, and delegates to the unlink-and-notify routine for this mixer."
+    ],
+    [
+      "vi",
+      "a",
+      "(Lud;II)V",
+      "playSample",
+      "Source-purpose review: Creates a stream from the supplied PCM sample, playback rate and volume, then adds it to this mixer."
+    ],
+    [
+      "vi",
+      "a",
+      "(Lud;III)V",
+      "playSampleWithDelay",
+      "Source-purpose review: Creates a sample stream and delegates to the mixer overload that delays the start by the requested number of frames."
+    ],
+    [
+      "vi",
+      "b",
+      "(Lc;)V",
+      "addChildStream",
+      "Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops."
+    ],
+    [
+      "vi",
+      "b",
+      "(Loa;)V",
+      "addListener",
+      "Source-purpose review: Checks that the listener is detached, normalizes the mixer frame counter, takes ownership, calls the added hook, and inserts it by deadline."
+    ],
+    [
+      "wd",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "wd",
+      "b",
+      "()V",
+      "onAddedToMixer",
+      "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."
     ]
   ],
   "fields": [

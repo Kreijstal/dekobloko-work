@@ -74,7 +74,8 @@
     ["al","TextFieldValidator","Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."],
     ["tj","BitmapFont","Owns glyph advances, kerning and inline sprites, lays out tagged text, and delegates glyph rendering to subclasses."],
     ["ie","BinaryBitmapFont","Renders glyphs using nonzero mask bytes as on pixels and can blend those pixels with a uniform opacity."],
-    ["o","CoverageBitmapFont","Converts a palette to glyph coverage and blends each pixel using its own coverage value."]
+    ["o","CoverageBitmapFont","Converts a palette to glyph coverage and blends each pixel using its own coverage value."],
+    ["oi","PcmMixerListener","Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."]
   ],
   "methods": [
     ["ab","b","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 100b3a6a165e64b3ded080ec0f696f75a382f92c59f7b42efe45ddbfcda5b071."],
@@ -748,7 +749,32 @@
     ["pi","h","()I","getPan","Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel."],
     ["pi","h","(I)V","setVolume","Source-purpose review: Converts the supplied volume to internal units and applies it using the current pan."],
     ["pi","j","()I","getSampleStepMagnitude","Source-purpose review: Returns the unsigned magnitude of the current fixed-point sample step."],
-    ["pi","k","()Z","hasRemainingRampFrames","Source-purpose review: Reports whether the gain ramp still has frames remaining."]
+    ["pi","k","()Z","hasRemainingRampFrames","Source-purpose review: Reports whether the gain ramp still has frames remaining."],
+    ["pi","c","(II)V","rampScaledVolume","Source-purpose review: Scales the requested volume and ramps to it over the given frame count, retaining the current pan."],
+    ["pi","d","(I)V","setSamplePosition","Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position."],
+    ["pi","f","(I)V","setLoopCount","Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."],
+    ["pi","i","(I)V","fadeOutAndUnlink","Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."],
+    ["pi","l","()Z","finishOrContinueVolumeRamp","Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."],
+    ["pk","e","(II)V","handleMidiMessage","Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers."],
+    ["pk","b","(IIII)V","noteOff","Source-purpose review: Releases a channel note when the MIDI note-off status is received."],
+    ["pk","a","(ZIII)V","noteOn","Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event."],
+    ["pk","a","(IIII)V","onPolyPressure","Source-purpose review: Handles the per-note pressure status for the specified note and channel."],
+    ["pk","a","(BII)V","setProgram","Source-purpose review: Updates the active program used to select a channel’s patch."],
+    ["pk","b","(III)V","onChannelPressure","Source-purpose review: Handles the channel-wide pressure status."],
+    ["pk","a","(IBI)V","setPitchWheel","Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes."],
+    ["pk","b","(ZI)V","resetPlaybackChannels","Source-purpose review: Resets active notes, controllers and channel programs for the system reset message."],
+    ["pk","c","(II)V","releaseUnmappedVoices","Source-purpose review: Releases notes retained for portamento when the controller is disabled."],
+    ["pk","d","(II)V","resetChannelVoicePhases","Source-purpose review: Resets the retrigger phase of active channel voices when the retrigger controller is turned off."],
+    ["pk","a","(II)V","removeChannelVoices","Source-purpose review: Fades and removes the channel voices for the all-sound-off controller."],
+    ["pk","f","(II)V","resetChannel","Source-purpose review: Restores default channel controller values for reset-all-controllers."],
+    ["pk","b","(II)V","allNotesOff","Source-purpose review: Releases active notes in the channel for the all-notes-off controller."],
+    ["pk","a","(Lkl;Z)I","computeNoteSampleStep","Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate."],
+    ["pk","b","(Lkl;B)I","computeNoteVolume","Source-purpose review: Computes note gain from channel expression, velocity, master gain and the note envelopes."],
+    ["pk","a","(Lkl;B)I","computeNotePan","Source-purpose review: Combines channel pan and note pan to produce the stereo pan value."],
+    ["pk","g","(II)V","setMasterVolume","Source-purpose review: Sets the master gain read by the note-volume calculation."],
+    ["oi","a","()V","onRemovedFromMixer","Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."],
+    ["rb","a","(Lue;II)V","playSample","Source-purpose review: Creates a stream from the supplied PCM sample, playback rate and volume, then adds it to this mixer."],
+    ["rb","a","(Lwf;)V","addChildStream","Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops."]
   ],
   "fields": [
     ["wi","field_i","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],

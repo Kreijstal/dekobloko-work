@@ -132270,9 +132270,9 @@
     {
       "symbol": "M:ei.a(III)V",
       "originalName": "a",
-      "to": "performAction0425",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "rampScaledVolumeAndPan",
+      "evidence": "Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.a(II[B[IIIIIIIIIILei;II)I",
@@ -132319,9 +132319,9 @@
     {
       "symbol": "M:ei.a(Z)V",
       "originalName": "a",
-      "to": "performAction0432",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "setPingPongLoop",
+      "evidence": "Source-purpose review: Selects whether the loop reflects playback direction or wraps at a sample boundary.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.a([B[IIIIIIIILei;)I",
@@ -132403,9 +132403,9 @@
     {
       "symbol": "M:ei.b(Lud;III)Lei;",
       "originalName": "b",
-      "to": "computeRawPcmStream0443",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "createForSampleStepWithScaledVolumeAndPan",
+      "evidence": "Source-purpose review: Creates a stream with an explicit fixed-point sample step and caller-supplied volume and pan. Converts volume and pan to internal units.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.b([B[IIIIIIIILei;)I",
@@ -132466,9 +132466,9 @@
     {
       "symbol": "M:ei.c(Lud;III)Lei;",
       "originalName": "c",
-      "to": "computeRawPcmStream0450",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "createForPlaybackRateWithPan",
+      "evidence": "Source-purpose review: Creates a stream at a sample-rate-adjusted playback rate with caller-supplied volume and pan.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.d()Lol;",
@@ -132508,9 +132508,9 @@
     {
       "symbol": "M:ei.e(I)V",
       "originalName": "e",
-      "to": "performAction0455",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "setSamplePosition",
+      "evidence": "Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.e(II)V",
@@ -132529,30 +132529,30 @@
     {
       "symbol": "M:ei.f(I)V",
       "originalName": "f",
-      "to": "performAction0458",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "setLoopCount",
+      "evidence": "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.f(II)V",
       "originalName": "f",
-      "to": "performAction0459",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "setLoopBounds",
+      "evidence": "Source-purpose review: Sets the first sample index and the exclusive ending index for looping.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.g()Z",
       "originalName": "g",
-      "to": "computeBoolean0460",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "finishOrContinueVolumeRamp",
+      "evidence": "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.g(I)V",
       "originalName": "g",
-      "to": "performAction0461",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "fadeOutAndUnlink",
+      "evidence": "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ei.h()I",
@@ -194769,7 +194769,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "reproduce-dekobloko.mjs": "2a1c461995165406fd2fad26551c82dbc06aa441ae38cff980551230c1b2144b",
-      "dekobloko-reviewed-names.json": "7cac21f7943b5602fb2d5d2135616cf14e569f1d58aa41445b9b33ebdde95eb5",
+      "dekobloko-reviewed-names.json": "2ab352da037a951c77aed765966c9e64a5fc9aee728bcba9e5107ec81d806f01",
       "dekobloko-provisional-names.json": "99a1f75e618d2dd63a8885728ecdfb70e4fa3bc7f1b3bd584951c5a27359cb30",
       "catalog-naming-coverage.mjs": "0a733b0a7e4a2779b01b5c15f1e7b027c0fdfed9012851e35f420d3bfcf6ce43",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2"

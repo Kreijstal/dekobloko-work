@@ -85,7 +85,8 @@
     ["mf","TextFieldValidator","Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."],
     ["ok","BitmapFont","Stores glyph metrics, lays out formatted text, and calls abstract glyph rendering hooks."],
     ["ce","BinaryBitmapFont","Uses byte masks to decide which glyph pixels receive the supplied colour."],
-    ["l","CoverageBitmapFont","Converts a glyph palette to byte coverage and blends glyph pixels by that coverage."]
+    ["l","CoverageBitmapFont","Converts a glyph palette to byte coverage and blends glyph pixels by that coverage."],
+    ["bl","PcmMixerListener","Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 949d6acc48a1e275445afcf06af37fb725624f34709abfad7c1ac71fbcd54636."],
@@ -1126,7 +1127,28 @@
     ["vc","d","(I)V","setSampleStepMagnitude","Source-purpose review: Changes the magnitude of the sample step while preserving its current direction."],
     ["vc","e","(II)I","computeRightVolume","Source-purpose review: Computes the right-channel gain from volume and pan."],
     ["vc","f","()I","getPan","Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel."],
-    ["vc","g","(I)V","setVolume","Source-purpose review: Converts the supplied volume to internal units and applies it using the current pan."]
+    ["vc","g","(I)V","setVolume","Source-purpose review: Converts the supplied volume to internal units and applies it using the current pan."],
+    ["vc","a","(III)V","rampScaledVolumeAndPan","Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp."],
+    ["vc","a","(Lbi;II)Lvc;","createForSampleStepWithScaledVolume","Source-purpose review: Creates a stream with an explicit fixed-point sample step. Converts volume to internal units and uses the default pan."],
+    ["vc","a","(Lbi;III)Lvc;","createForSampleStepWithScaledVolumeAndPan","Source-purpose review: Creates a stream with an explicit fixed-point sample step and caller-supplied volume and pan. Converts volume and pan to internal units."],
+    ["vc","b","(II)V","setScaledVolumeAndPan","Source-purpose review: Scales and sets the volume and pan immediately, clearing any active gain ramp."],
+    ["vc","c","(I)V","setLoopCount","Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."],
+    ["vc","c","(Z)V","setPingPongLoop","Source-purpose review: Selects whether the loop reflects playback direction or wraps at a sample boundary."],
+    ["vc","d","(II)V","setLoopBounds","Source-purpose review: Sets the first sample index and the exclusive ending index for looping."],
+    ["vc","e","(I)V","setSamplePosition","Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position."],
+    ["vc","f","(I)V","fadeOutAndUnlink","Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."],
+    ["vc","g","()Z","finishOrContinueVolumeRamp","Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."],
+    ["vc","h","(I)V","setScaledVolume","Source-purpose review: Scales the supplied volume to internal units and applies it while retaining the current pan."],
+    ["vc","i","()Z","isPlaybackReversed","Source-purpose review: Reports whether the sample step is negative and playback is moving backward."],
+    ["be","a","(Lbi;II)V","playSample","Source-purpose review: Creates a stream from the supplied PCM sample, playback rate and volume, then adds it to this mixer."],
+    ["be","a","(Lbl;)V","addListener","Source-purpose review: Checks that the listener is detached, normalizes the mixer frame counter, takes ownership, calls the added hook, and inserts it by deadline."],
+    ["be","a","(Lgf;)V","addChildStream","Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops."],
+    ["be","b","(Lbl;)V","removeOwnedListener","Source-purpose review: Checks ownership, normalizes elapsed frames, and delegates to the unlink-and-notify routine for this mixer."],
+    ["be","b","(Lgf;)V","removeChildStream","Source-purpose review: Unlinks a PCM child from its intrusive playback queue."],
+    ["bl","a","()V","onRemovedFromMixer","Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."],
+    ["bl","b","()V","onAddedToMixer","Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."],
+    ["dd","a","()V","onRemovedFromMixer","Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."],
+    ["dd","b","()V","onAddedToMixer","Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."]
   ],
   "fields": [
     ["kg","field_m","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],

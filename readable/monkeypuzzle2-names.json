@@ -284,6 +284,11 @@
       "vk",
       "BinaryBitmapFont",
       "Uses byte masks to decide which glyph pixels receive the supplied colour."
+    ],
+    [
+      "og",
+      "PcmMixerListener",
+      "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
     ]
   ],
   "methods": [
@@ -4808,6 +4813,118 @@
       "(I)V",
       "setSampleStepMagnitude",
       "Source-purpose review: Changes the magnitude of the sample step while preserving its current direction."
+    ],
+    [
+      "li",
+      "a",
+      "(Ltd;III)Lli;",
+      "createForSampleStepWithScaledVolumeAndPan",
+      "Source-purpose review: Creates a stream with an explicit fixed-point sample step and caller-supplied volume and pan. Converts volume and pan to internal units."
+    ],
+    [
+      "li",
+      "a",
+      "(Z)V",
+      "setPingPongLoop",
+      "Source-purpose review: Selects whether the loop reflects playback direction or wraps at a sample boundary."
+    ],
+    [
+      "li",
+      "b",
+      "(III)V",
+      "rampScaledVolumeAndPan",
+      "Source-purpose review: Converts volume and pan to internal units before scheduling the gain ramp."
+    ],
+    [
+      "li",
+      "c",
+      "(II)V",
+      "setLoopBounds",
+      "Source-purpose review: Sets the first sample index and the exclusive ending index for looping."
+    ],
+    [
+      "li",
+      "e",
+      "(I)V",
+      "setSamplePosition",
+      "Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position."
+    ],
+    [
+      "li",
+      "f",
+      "(I)V",
+      "fadeOutAndUnlink",
+      "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."
+    ],
+    [
+      "li",
+      "h",
+      "(I)V",
+      "setLoopCount",
+      "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."
+    ],
+    [
+      "li",
+      "i",
+      "()Z",
+      "finishOrContinueVolumeRamp",
+      "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."
+    ],
+    [
+      "mj",
+      "a",
+      "(Lfh;)V",
+      "addChildStream",
+      "Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops."
+    ],
+    [
+      "mj",
+      "b",
+      "(Lfh;)V",
+      "removeChildStream",
+      "Source-purpose review: Unlinks a PCM child from its intrusive playback queue."
+    ],
+    [
+      "mj",
+      "b",
+      "(Log;)V",
+      "removeOwnedListener",
+      "Source-purpose review: Checks ownership, normalizes elapsed frames, and delegates to the unlink-and-notify routine for this mixer."
+    ],
+    [
+      "mj",
+      "c",
+      "(Log;)V",
+      "addListener",
+      "Source-purpose review: Checks that the listener is detached, normalizes the mixer frame counter, takes ownership, calls the added hook, and inserts it by deadline."
+    ],
+    [
+      "og",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "og",
+      "b",
+      "()V",
+      "onAddedToMixer",
+      "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."
+    ],
+    [
+      "qf",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "qf",
+      "b",
+      "()V",
+      "onAddedToMixer",
+      "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."
     ]
   ],
   "fields": [

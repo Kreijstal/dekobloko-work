@@ -334,6 +334,11 @@
       "tj",
       "TextFieldValidator",
       "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."
+    ],
+    [
+      "hg",
+      "PcmMixerListener",
+      "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
     ]
   ],
   "methods": [
@@ -5040,6 +5045,139 @@
       "()I",
       "getSampleStepMagnitude",
       "Source-purpose review: Returns the unsigned magnitude of the current fixed-point sample step."
+    ],
+    [
+      "cc",
+      "c",
+      "(I)V",
+      "setSamplePosition",
+      "Source-purpose review: Converts a whole-sample index to fixed point, clamps it to the sample data, and stores the playback position."
+    ],
+    [
+      "cc",
+      "e",
+      "()Z",
+      "finishOrContinueVolumeRamp",
+      "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."
+    ],
+    [
+      "cc",
+      "e",
+      "(I)V",
+      "setLoopCount",
+      "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."
+    ],
+    [
+      "cc",
+      "f",
+      "(I)V",
+      "setScaledVolume",
+      "Source-purpose review: Scales the supplied volume to internal units and applies it while retaining the current pan."
+    ],
+    [
+      "cc",
+      "h",
+      "(I)V",
+      "fadeOutAndUnlink",
+      "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."
+    ],
+    [
+      "hl",
+      "g",
+      "(II)V",
+      "handleMidiMessage",
+      "Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers."
+    ],
+    [
+      "hl",
+      "a",
+      "(IIII)V",
+      "noteOff",
+      "Source-purpose review: Releases a channel note when the MIDI note-off status is received."
+    ],
+    [
+      "hl",
+      "a",
+      "(IIBI)V",
+      "noteOn",
+      "Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event."
+    ],
+    [
+      "hl",
+      "a",
+      "(BIII)V",
+      "onPolyPressure",
+      "Source-purpose review: Handles the per-note pressure status for the specified note and channel."
+    ],
+    [
+      "hl",
+      "a",
+      "(III)V",
+      "setProgram",
+      "Source-purpose review: Updates the active program used to select a channel’s patch."
+    ],
+    [
+      "hl",
+      "c",
+      "(III)V",
+      "onChannelPressure",
+      "Source-purpose review: Handles the channel-wide pressure status."
+    ],
+    [
+      "hl",
+      "b",
+      "(III)V",
+      "setPitchWheel",
+      "Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes."
+    ],
+    [
+      "hl",
+      "a",
+      "(ZB)V",
+      "resetPlaybackChannels",
+      "Source-purpose review: Resets active notes, controllers and channel programs for the system reset message."
+    ],
+    [
+      "hl",
+      "a",
+      "(BLcb;)I",
+      "computeNoteSampleStep",
+      "Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate."
+    ],
+    [
+      "hl",
+      "c",
+      "(Lcb;I)I",
+      "computeNoteVolume",
+      "Source-purpose review: Computes note gain from channel expression, velocity, master gain and the note envelopes."
+    ],
+    [
+      "hl",
+      "a",
+      "(Lcb;I)I",
+      "computeNotePan",
+      "Source-purpose review: Combines channel pan and note pan to produce the stereo pan value."
+    ],
+    [
+      "hg",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "hk",
+      "a",
+      "(Lke;II)V",
+      "playSample",
+      "Source-purpose review: Creates a stream from the supplied PCM sample, playback rate and volume, then adds it to this mixer."
+    ],
+    [
+      "hk",
+      "a",
+      "(Llk;)V",
+      "addChildStream",
+      "Source-purpose review: Links a PCM child into the same intrusive queue traversed by the mixer fill and skip loops."
     ]
   ],
   "fields": [
