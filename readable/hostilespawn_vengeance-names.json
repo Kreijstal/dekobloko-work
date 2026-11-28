@@ -749,6 +749,16 @@
       "sh",
       "ReverbDelayBuffer",
       "Stores the circular delay used by one of four diffusion stages per channel. The matching Pool type has the same layout and role."
+    ],
+    [
+      "gn",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "bk",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -9753,6 +9763,55 @@
       "()V",
       "clear",
       "Source-purpose review: Zeroes all samples in the diffusion delay."
+    ],
+    [
+      "gn",
+      "a",
+      "(B)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "gn",
+      "b",
+      "(I)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "gn",
+      "a",
+      "(Z)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "gn",
+      "a",
+      "(III)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "gn",
+      "d",
+      "(I)Lue;",
+      "enterFullscreen",
+      "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."
+    ],
+    [
+      "gn",
+      "c",
+      "(I)V",
+      "restoreWindowedSize",
+      "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."
+    ],
+    [
+      "bk",
+      "a",
+      "(BII)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [

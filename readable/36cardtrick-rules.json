@@ -283,6 +283,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bj",
+      "originalName": "bj",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bk",
       "originalName": "bk",
       "to": "IntrusiveDeque",
@@ -462,6 +469,13 @@
       "originalName": "el",
       "to": "BufferedImageRasterBuffer",
       "evidence": "AWT raster buffer backed by inherited int pixel storage through DataBufferInt/DirectColorModel/WritableRaster/BufferedImage,and drawn through Graphics.drawImage using retained Component observer. Complete class,public empty no-argument constructor,and both initialization/drawing bodies reviewed;exactly one own nonstatic Component field and four inherited dimension/pixel/image fields verified with bound platform APIs. Preserve finality/visibility,all method/field leaves except constructor class-name display,full primitive domains,guard paths,int overflow and pixel-array size,Lexicominos supplied premultiplication boolean,aliases,partial writes and allocation/call/exception order. Exactly one bound Class.forName string must follow this class rename;other literals unchanged. Deko already has provisional RenderingSupport013 alias,so its existing literal edit is refined rather than counted twice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fa",
+      "originalName": "fa",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
       "confidence": "reviewed"
     },
     {
@@ -2124,10 +2138,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.a(B)V",
+      "originalName": "a",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bj.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.a(IBI)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.a(Z)V",
+      "originalName": "a",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.b(I)V",
+      "originalName": "b",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.b(Z)Z",
+      "originalName": "b",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.c(I)Loe;",
+      "originalName": "c",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
       "confidence": "reviewed"
     },
     {
@@ -3430,6 +3486,13 @@
       "originalName": "a",
       "to": "drawImage",
       "evidence": "Source-purpose review: Publish producer pixels where applicable and draw the retained AWT image through Graphics.drawImage using the original coordinates/observer. Entire26override families/78members,52concrete bodies and26abstract signatures reviewed with all46incoming contexts. Preserve all three member names consistently,visibility/finality,all original parameter permutations/primitive domains,guards,partial assignments,monitors,allocation/call/exception order and diagnostics. Lexicominos supplied premultiplication boolean and all per-game exceptional branches retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(III)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
       "confidence": "reviewed"
     },
     {
@@ -9343,7 +9406,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-36cardtrick-rules.mjs": "50dbdca01ccbc37049448a6c5673dcd1f8af792b0cf93f16ef76c7ac2de01d53",
-      "36cardtrick-names.json": "902755bcfaf26d3f7d966e524af0b90241f65a4a20b75b15c6be0c8782b74ddf",
+      "36cardtrick-names.json": "a90f41a74a8902975fe6ee4e295b858040d773c2721a3f1ea7891096ebdb1150",
       "reproduce-36cardtrick.mjs": "d69474327fda28f59b518411a57d253a7dc723b2c7cebec47cdf1a89a48a54b6",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

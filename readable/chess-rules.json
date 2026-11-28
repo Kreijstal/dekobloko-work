@@ -374,6 +374,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bm",
+      "originalName": "bm",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bn",
       "originalName": "bn",
       "to": "MeshData",
@@ -616,6 +623,13 @@
       "originalName": "ge",
       "to": "FullscreenStatusDialog",
       "evidence": "Displays a fullscreen status notice and a button to dismiss it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gg",
+      "originalName": "gg",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
       "confidence": "reviewed"
     },
     {
@@ -2754,6 +2768,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bm.a(IIB)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bn.a()V",
       "originalName": "a",
       "to": "clearGeometryCaches",
@@ -4368,6 +4389,48 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 210f6b0ae66a7c900f2307e790044b52cd15e87d80a8e700e59a99a59ff6b0b8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.a(B)La;",
+      "originalName": "a",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.a(I)V",
+      "originalName": "a",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.a(III)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.b(I)Z",
+      "originalName": "b",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.c(B)V",
+      "originalName": "c",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.d(I)V",
+      "originalName": "d",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
       "confidence": "reviewed"
     },
     {
@@ -11513,7 +11576,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-chess-rules.mjs": "96e89726e9752b6c32c9c36b36b5bed50f637c08bf0e2c3963477590a7927127",
-      "chess-names.json": "cad9cd1b07d6693a98008ab3b41e9fc0963765dd1c359c6bb200929eaefab4c6",
+      "chess-names.json": "b4e1fb0c02b34876fa26fd57f1e4db0e1c939efb30b65cf751c8e6d6c42debac",
       "reproduce-chess.mjs": "83586202a6788e331bbadf9d01041fd32d100e7110eccafcbf80b4a91364ad46",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

@@ -559,6 +559,16 @@
       "tg",
       "WhirlpoolHasher",
       "Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."
+    ],
+    [
+      "pj",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "ni",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -8674,6 +8684,55 @@
       "(II[B)I",
       "computeCrc32Prefix",
       "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."
+    ],
+    [
+      "pj",
+      "b",
+      "(B)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "pj",
+      "c",
+      "(I)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "pj",
+      "a",
+      "(B)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "pj",
+      "a",
+      "(BII)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "pj",
+      "b",
+      "(I)Lck;",
+      "enterFullscreen",
+      "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."
+    ],
+    [
+      "pj",
+      "a",
+      "(I)V",
+      "restoreWindowedSize",
+      "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."
+    ],
+    [
+      "ni",
+      "a",
+      "(III)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [

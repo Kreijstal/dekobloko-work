@@ -1606,6 +1606,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ni",
+      "originalName": "ni",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nj",
       "originalName": "nj",
       "to": "DirectByteStorage",
@@ -1680,6 +1687,13 @@
       "originalName": "pi",
       "to": "SynthesizerVoice",
       "evidence": "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pj",
+      "originalName": "pj",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
       "confidence": "reviewed"
     },
     {
@@ -8025,6 +8039,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ni.a(III)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nj.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -8435,6 +8456,48 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(B)V",
+      "originalName": "a",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(BII)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(I)V",
+      "originalName": "a",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(B)V",
+      "originalName": "b",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(I)Lck;",
+      "originalName": "b",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.c(I)Z",
+      "originalName": "c",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
       "confidence": "reviewed"
     },
     {
@@ -11324,7 +11387,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-terraphoenix-rules.mjs": "2b9ef0307d7e8ad8295f9a6d9e8e1d74cc01f0b1d1f8bbcad95b45bfce2e3b38",
-      "terraphoenix-names.json": "2a6614af4d0e29987805cc57c5aca08c209f24957d918b5ca9a56732f02d340d",
+      "terraphoenix-names.json": "7c1b65ee0d049590657931b125575c49c5e266cfc63be85a98f24a8aca6ec398",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

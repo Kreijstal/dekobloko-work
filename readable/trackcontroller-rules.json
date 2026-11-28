@@ -402,6 +402,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fl",
+      "originalName": "fl",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:g",
       "originalName": "g",
       "to": "SpriteState",
@@ -434,6 +441,13 @@
       "originalName": "ge",
       "to": "RegistrationAgreementPane",
       "evidence": "Displays the registration agreement with links and a continue button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gf",
+      "originalName": "gf",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
       "confidence": "reviewed"
     },
     {
@@ -4336,6 +4350,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fl.a(IIB)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:g.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4466,6 +4487,48 @@
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.a(I)Z",
+      "originalName": "a",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.a(III)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.a(Z)V",
+      "originalName": "a",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.b(I)V",
+      "originalName": "b",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.b(Z)V",
+      "originalName": "b",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.c(I)Lih;",
+      "originalName": "c",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
       "confidence": "reviewed"
     },
     {
@@ -9903,7 +9966,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "122cd49c24fe88f1fd97d5847263d7ab9c7712f85a2cc70e7a6e446cecf66917",
+      "trackcontroller-names.json": "ce69816f21524df90ef4c6b9586531f8944be26ac36dbc4eb1bbb884b574e05a",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

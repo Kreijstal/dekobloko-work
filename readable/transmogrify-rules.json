@@ -437,6 +437,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ea",
+      "originalName": "ea",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eb",
       "originalName": "eb",
       "to": "WidgetDragListener",
@@ -686,6 +693,13 @@
       "originalName": "ja",
       "to": "WidgetHoverListener",
       "evidence": "Receives notifications when the pointer enters or leaves a widget’s bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jb",
+      "originalName": "jb",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
       "confidence": "reviewed"
     },
     {
@@ -3664,10 +3678,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ea.a(B)V",
+      "originalName": "a",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(I)Z",
+      "originalName": "a",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(III)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ea.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.b(I)V",
+      "originalName": "b",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.c(B)V",
+      "originalName": "c",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.d(B)Ldg;",
+      "originalName": "d",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
       "confidence": "reviewed"
     },
     {
@@ -5271,6 +5327,13 @@
       "originalName": "a",
       "to": "onWidgetHoverChanged",
       "evidence": "Source-purpose review: Handles a hover state change for the supplied widget. The base widget calls it only when the state changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(III)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
       "confidence": "reviewed"
     },
     {
@@ -10379,7 +10442,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "0f5e9dd8bafbf7b93f5cb6eebcee35e80c74571588995c11ab7df39eec5df413",
+      "transmogrify-names.json": "2e2874f44b145fa509a286ed0ec06f2469a013e93223f2b8aaeb68d9781f21c0",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

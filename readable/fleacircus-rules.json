@@ -717,6 +717,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:le",
+      "originalName": "le",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lh",
       "originalName": "lh",
       "to": "IntrusiveNode",
@@ -1148,6 +1155,13 @@
       "originalName": "v",
       "to": "ValidationStatusWidget",
       "evidence": "Renders a validator message or fallback text together with a status sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:va",
+      "originalName": "va",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
       "confidence": "reviewed"
     },
     {
@@ -6534,6 +6548,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:le.a(III)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lf.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -9306,6 +9327,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:va.a(B)V",
+      "originalName": "a",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(I)V",
+      "originalName": "a",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(III)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.b(I)Lvb;",
+      "originalName": "b",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.c(B)Z",
+      "originalName": "c",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.d(B)V",
+      "originalName": "d",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.a(Lce;I)V",
       "originalName": "a",
       "to": "exitFullscreen",
@@ -9910,7 +9973,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "afa46d50bb427a7c6d95c6d621050e3ead81575e871ad433547ca285969b8184",
+      "fleacircus-names.json": "90efe3f563f715a644eb7274a56b6c383fd69430bb787288cf6e3a48f054329f",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

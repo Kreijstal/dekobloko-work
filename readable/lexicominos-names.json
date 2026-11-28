@@ -684,6 +684,16 @@
       "q",
       "IndexedSpriteState",
       "Holds the indexed sprite dimensions and offsets and declares the two drawing operations."
+    ],
+    [
+      "gf",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "oi",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -8715,6 +8725,55 @@
       "(Lsh;IBI)[Ldb;",
       "loadSpriteFrames",
       "Source-purpose review: Loads the specified archive sprite data and constructs the decoded frame array."
+    ],
+    [
+      "gf",
+      "c",
+      "(I)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "gf",
+      "a",
+      "(I)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "gf",
+      "d",
+      "(I)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "gf",
+      "a",
+      "(IBI)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "gf",
+      "b",
+      "(B)Lra;",
+      "enterFullscreen",
+      "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."
+    ],
+    [
+      "gf",
+      "a",
+      "(B)V",
+      "restoreWindowedSize",
+      "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."
+    ],
+    [
+      "oi",
+      "a",
+      "(III)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [

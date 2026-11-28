@@ -148,7 +148,9 @@
     ["nj","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
     ["he","IndexedSprite","Stores palette-indexed pixels and palette colors, with sprite bounds and raster blitters for the indexed representation."],
     ["ql","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."],
-    ["pe","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."]
+    ["pe","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."],
+    ["wg","ViewportSizingController","Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."],
+    ["wf","ViewportResizeListener","Receives resize requests from the viewport sizing controller."]
   ],
   "methods": [
     ["a","b","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 6 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 00a707380dd212c2cce18c3fe1bd46aac7ae81cc6c50eb4374a1dd4596b61c32."],
@@ -1337,7 +1339,12 @@
     ["he","a","(II)V","draw","Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero."],
     ["pe","a","(II)V","draw","Source-purpose review: Declares the indexed sprite unblended draw operation."],
     ["he","a","(III)V","drawAlpha","Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity."],
-    ["pe","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."]
+    ["pe","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."],
+    ["wg","a","(Z)V","applyAdaptiveSize","Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."],
+    ["wg","a","(I)Z","canUseAdaptiveSize","Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."],
+    ["wg","a","(B)V","updateViewport","Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."],
+    ["wg","a","(III)V","setRequestedSize","Source-purpose review: Stores the requested viewport width and height for the next resize."],
+    ["wf","a","(III)V","resizeViewport","Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."]
   ],
   "fields": [
     ["od","field_h","[B","payload","Complete constructors and all owned I/O reviewed: caller byte array or pooled allocation is the backing payload. Preserve array identity and every reference."],

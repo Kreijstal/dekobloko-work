@@ -634,6 +634,16 @@
       "al",
       "MenuSelectionInput",
       "Tracks the selected option, pointer mode, key events, and held-button activity for menu navigation."
+    ],
+    [
+      "ea",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "jb",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -8987,6 +8997,55 @@
       "(I)V",
       "updateMenuTransition",
       "Source-purpose review: Advances the menu fade and switches screens, or updates the current menu’s input."
+    ],
+    [
+      "ea",
+      "a",
+      "(B)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "ea",
+      "a",
+      "(I)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "ea",
+      "b",
+      "(I)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "ea",
+      "a",
+      "(III)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "ea",
+      "d",
+      "(B)Ldg;",
+      "enterFullscreen",
+      "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."
+    ],
+    [
+      "ea",
+      "c",
+      "(B)V",
+      "restoreWindowedSize",
+      "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."
+    ],
+    [
+      "jb",
+      "a",
+      "(III)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [

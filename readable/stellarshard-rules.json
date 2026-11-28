@@ -647,6 +647,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jb",
+      "originalName": "jb",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jc",
       "originalName": "jc",
       "to": "ArgbSprite",
@@ -1246,6 +1253,13 @@
       "originalName": "va",
       "to": "FullscreenFocusCanvas",
       "evidence": "Complete six-method instance contract,Frame/volatile flag declarations and complete canvas factory reviewed. Empty constructor,paint/update/focusGained no-ops,focusLost sets volatile flag,owned exit wrapper delegates reviewed Frame release helper; factory attaches canvas and focus listener to display Frame. Unrelated static helpers preserved. No owned/type-use native declarations. Exact same-spelling non-class literals,where present,are separately source-reviewed and pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vb",
+      "originalName": "vb",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
       "confidence": "reviewed"
     },
     {
@@ -4952,10 +4966,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.a(B)V",
+      "originalName": "a",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(BII)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3e3c7ebee121aea86b94f45cecdbf9ad29dbc5b02522a7eb553d534942854f89.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.b(I)V",
+      "originalName": "b",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.d(I)Z",
+      "originalName": "d",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
       "confidence": "reviewed"
     },
     {
@@ -9026,6 +9068,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vb.a(BII)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -9539,7 +9588,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "754aada6835d7b9621073687b90e355a307c2e7d06c7cff9fee12206375cb426",
+      "stellarshard-names.json": "8b3dfc393bd028daec4cb3afe39c79eb3d067d97a6393546636b754d95659285",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

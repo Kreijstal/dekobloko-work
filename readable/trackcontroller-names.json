@@ -529,6 +529,16 @@
       "ci",
       "PixelBlockEffect",
       "Applies a block pixelation effect to the software framebuffer."
+    ],
+    [
+      "gf",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "fl",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -8035,6 +8045,55 @@
       "(IIIZZ)V",
       "pixelate",
       "Source-purpose review: Processes the software framebuffer in blocks of the requested size and fills clipped blocks with derived pixel colors."
+    ],
+    [
+      "gf",
+      "a",
+      "(Z)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "gf",
+      "a",
+      "(I)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "gf",
+      "b",
+      "(Z)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "gf",
+      "a",
+      "(III)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "gf",
+      "c",
+      "(I)Lih;",
+      "enterFullscreen",
+      "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."
+    ],
+    [
+      "gf",
+      "b",
+      "(I)V",
+      "restoreWindowedSize",
+      "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."
+    ],
+    [
+      "fl",
+      "a",
+      "(IIB)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [

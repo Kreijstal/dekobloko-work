@@ -589,6 +589,16 @@
       "o",
       "IndexedSpriteState",
       "Holds the indexed sprite dimensions and offsets and declares the two drawing operations."
+    ],
+    [
+      "jb",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "vb",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -8242,6 +8252,41 @@
       "(III)V",
       "drawAlpha",
       "Source-purpose review: Declares the indexed sprite opacity-blended draw operation."
+    ],
+    [
+      "jb",
+      "a",
+      "(B)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "jb",
+      "d",
+      "(I)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "jb",
+      "b",
+      "(I)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "jb",
+      "a",
+      "(BII)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "vb",
+      "a",
+      "(BII)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [

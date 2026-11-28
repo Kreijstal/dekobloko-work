@@ -1445,6 +1445,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wf",
+      "originalName": "wf",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wg",
+      "originalName": "wg",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wj",
       "originalName": "wj",
       "to": "SoftwareRasterizer",
@@ -9859,6 +9873,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wf.a(III)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wg.a(B)V",
+      "originalName": "a",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wg.a(I)Z",
+      "originalName": "a",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wg.a(III)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wg.a(Z)V",
+      "originalName": "a",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wg.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -10176,7 +10225,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-drphlogistonsavestheearth-rules.mjs": "cdff48475b3699f7d2746754f9b5638184e39f503c7e52e9a27ce61ac7f4e854",
-      "drphlogistonsavestheearth-names.json": "64f7f3118e83e8c34ba566a9560f40e960a5e32a00bbc60b6933dd1c95e39faa",
+      "drphlogistonsavestheearth-names.json": "d68487dd2a6cfa80ae920afe6e5899bcacadc9ceb8756854accd156c9748ab59",
       "reproduce-drphlogistonsavestheearth.mjs": "4eb61234c8f693a5901143e23655851f6692c61799a49e6912b51d62f66d5dfb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

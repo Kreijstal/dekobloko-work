@@ -564,6 +564,16 @@
       "fs",
       "BattleSessionController",
       "Coordinates battle startup, orders, and completion between the battle view, a local battle state, and the online session."
+    ],
+    [
+      "qe",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "ila",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -11087,6 +11097,55 @@
       "(B)V",
       "resetBattleCompletionReport",
       "Source-purpose review: Clears the flag that suppresses duplicate battle completion messages."
+    ],
+    [
+      "qe",
+      "a",
+      "(I)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "qe",
+      "b",
+      "(I)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "qe",
+      "b",
+      "(B)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "qe",
+      "a",
+      "(ZII)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "qe",
+      "c",
+      "(B)Lkg;",
+      "enterFullscreen",
+      "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."
+    ],
+    [
+      "qe",
+      "a",
+      "(Z)V",
+      "restoreWindowedSize",
+      "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."
+    ],
+    [
+      "ila",
+      "a",
+      "(IBI)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [

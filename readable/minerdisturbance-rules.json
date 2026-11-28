@@ -983,6 +983,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mi",
+      "originalName": "mi",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:n",
       "originalName": "n",
       "to": "BufferedImageRasterBuffer",
@@ -1113,6 +1120,13 @@
       "originalName": "pi",
       "to": "IntrusiveNode",
       "evidence": "Two node links and a long key, subclassed by most pooled objects; same shared role as Ace IntrusiveNode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pl",
+      "originalName": "pl",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
       "confidence": "reviewed"
     },
     {
@@ -6646,6 +6660,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.a(IBI)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mj.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -7885,10 +7906,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pl.a(B)Ll;",
+      "originalName": "a",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.a(I)V",
+      "originalName": "a",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.a(ZII)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pl.b(B)I",
       "originalName": "b",
       "to": "getTickRate",
       "evidence": "Complete getter, period producer and applet clock consumer reviewed: original cast of1000000000/period; preserve bad-guard static string null and zero-period failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.b(I)V",
+      "originalName": "b",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.c(I)V",
+      "originalName": "c",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.d(I)Z",
+      "originalName": "d",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
       "confidence": "reviewed"
     },
     {
@@ -10512,7 +10575,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "310a90a588e133e854f33fae1afd6ff7cb72e21f3c028ef1d4a6eae7400e13a5",
+      "minerdisturbance-names.json": "0e567feede7dc2475ec9c8a73df743459a7ae34097fdb2b820497c1a15d6923e",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

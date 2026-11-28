@@ -1522,6 +1522,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ila",
+      "originalName": "ila",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ima",
       "originalName": "ima",
       "to": "TeleportEvent",
@@ -2471,6 +2478,13 @@
       "originalName": "qda",
       "to": "WidgetRenderer",
       "evidence": "Interface with one draw callback taking a widget and its bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qe",
+      "originalName": "qe",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
       "confidence": "reviewed"
     },
     {
@@ -10244,6 +10258,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ila.a(IBI)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:im.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -17657,6 +17678,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.a(I)V",
+      "originalName": "a",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(Z)V",
+      "originalName": "a",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(ZII)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.b(B)V",
+      "originalName": "b",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.b(I)Z",
+      "originalName": "b",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.c(B)Lkg;",
+      "originalName": "c",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qea.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -22139,7 +22202,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "44bc50348de19a5c270a5c0723b9af2b65919bcc92e08391263db0cbf73c9d12",
+      "bachelorfridge-names.json": "881ff84cd91f04ff7bfb98d8c01fa1233c96456219d1992124745dd707fbb79c",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

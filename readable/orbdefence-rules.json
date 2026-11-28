@@ -878,6 +878,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jk",
+      "originalName": "jk",
+      "to": "ViewportSizingController",
+      "evidence": "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jl",
       "originalName": "jl",
       "to": "ArchiveProvider",
@@ -1211,6 +1218,13 @@
       "originalName": "rc",
       "to": "MusicPatchEnvelope",
       "evidence": "Stores the per-note amplitude and release curves and their timing parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rd",
+      "originalName": "rd",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives resize requests from the viewport sizing controller.",
       "confidence": "reviewed"
     },
     {
@@ -4903,6 +4917,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jk.a(III)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport width and height for the next resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.b(B)V",
+      "originalName": "b",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.b(I)Z",
+      "originalName": "b",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.c(B)V",
+      "originalName": "c",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.c(I)Lea;",
+      "originalName": "c",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.d(B)V",
+      "originalName": "d",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jl.a(I)Lhd;",
       "originalName": "a",
       "to": "loadIndex",
@@ -7941,6 +7997,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rd.a(BII)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.a(B)V",
       "originalName": "a",
       "to": "generateResults",
@@ -10099,7 +10162,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-orbdefence-rules.mjs": "7265f3a9f5e13a3fed5621337395faa83930486229ce2e8682b070f11e4f498e",
-      "orbdefence-names.json": "99c910c8b35d47e2f2ebf0a6a42fd6ecc1230b987d85720b949e75911d6ac023",
+      "orbdefence-names.json": "efa88bfc8cccedc570b42044c95a26a28c634e0b494cee6f463c29f90de25d68",
       "reproduce-orbdefence.mjs": "24edd3e6decd14f7af15c46ba33901279428686ce88376fa1945d21ab4b43608",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

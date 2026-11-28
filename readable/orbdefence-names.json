@@ -143,7 +143,9 @@
     ["vc","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
     ["ml","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."],
     ["qg","IndexedSprite","Stores the indexed pixels and palette and draws the image into the clipped raster."],
-    ["ia","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."]
+    ["ia","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."],
+    ["jk","ViewportSizingController","Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."],
+    ["rd","ViewportResizeListener","Receives resize requests from the viewport sizing controller."]
   ],
   "methods": [
     ["OrbDefence","h","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ff0877dbe972f0920164c2f46f6e7140cfb1d54cd3ba99d181f78ba71f513e7f."],
@@ -1351,7 +1353,14 @@
     ["qg","a","(II)V","draw","Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero."],
     ["ia","a","(II)V","draw","Source-purpose review: Declares the indexed sprite unblended draw operation."],
     ["qg","a","(III)V","drawAlpha","Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity."],
-    ["ia","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."]
+    ["ia","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."],
+    ["jk","b","(B)V","applyAdaptiveSize","Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."],
+    ["jk","b","(I)Z","canUseAdaptiveSize","Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."],
+    ["jk","d","(B)V","updateViewport","Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."],
+    ["jk","a","(III)V","setRequestedSize","Source-purpose review: Stores the requested viewport width and height for the next resize."],
+    ["jk","c","(I)Lea;","enterFullscreen","Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."],
+    ["jk","c","(B)V","restoreWindowedSize","Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."],
+    ["rd","a","(BII)V","resizeViewport","Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."]
   ],
   "fields": [
     ["mg","field_j","[B","payload","Complete constructors and all owned I/O reviewed: caller byte array or pooled allocation is the backing payload. Preserve array identity and every reference."],

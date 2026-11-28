@@ -589,6 +589,16 @@
       "ph",
       "IndexedSpriteState",
       "Holds the indexed sprite dimensions and offsets and declares the two drawing operations."
+    ],
+    [
+      "gl",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "ni",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -8515,6 +8525,55 @@
       "(III)V",
       "drawAlpha",
       "Source-purpose review: Declares the indexed sprite opacity-blended draw operation."
+    ],
+    [
+      "gl",
+      "b",
+      "(I)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "gl",
+      "b",
+      "(B)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "gl",
+      "a",
+      "(I)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "gl",
+      "a",
+      "(III)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "gl",
+      "b",
+      "(Z)Ljg;",
+      "enterFullscreen",
+      "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."
+    ],
+    [
+      "gl",
+      "a",
+      "(Z)V",
+      "restoreWindowedSize",
+      "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."
+    ],
+    [
+      "ni",
+      "a",
+      "(ZII)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [

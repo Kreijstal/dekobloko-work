@@ -589,6 +589,16 @@
       "db",
       "MenuSelectionInput",
       "Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."
+    ],
+    [
+      "m",
+      "ViewportSizingController",
+      "Owns the requested and active viewport dimensions and applies adaptive resizing through the viewport callback."
+    ],
+    [
+      "hd",
+      "ViewportResizeListener",
+      "Receives resize requests from the viewport sizing controller."
     ]
   ],
   "methods": [
@@ -9579,6 +9589,55 @@
       "(Ljava/lang/String;I)Ljava/lang/String;",
       "reverseString",
       "Source-purpose review: Builds a string with every input character in the opposite order."
+    ],
+    [
+      "m",
+      "a",
+      "(Z)V",
+      "applyAdaptiveSize",
+      "Source-purpose review: Applies the configured viewport bounds and aspect ratio and requests a resize when the dimensions change."
+    ],
+    [
+      "m",
+      "c",
+      "(B)Z",
+      "canUseAdaptiveSize",
+      "Source-purpose review: Checks the heap and client mode conditions for adaptive viewport sizing."
+    ],
+    [
+      "m",
+      "a",
+      "(B)V",
+      "updateViewport",
+      "Source-purpose review: Updates the windowed viewport, choosing adaptive sizing or restoring the configured fixed dimensions."
+    ],
+    [
+      "m",
+      "a",
+      "(IZI)V",
+      "setRequestedSize",
+      "Source-purpose review: Stores the requested viewport width and height for the next resize."
+    ],
+    [
+      "m",
+      "b",
+      "(B)Lpp;",
+      "enterFullscreen",
+      "Source-purpose review: Saves the current viewport dimensions, requests fullscreen dimensions, and restores the saved size if canvas creation fails."
+    ],
+    [
+      "m",
+      "b",
+      "(Z)V",
+      "restoreWindowedSize",
+      "Source-purpose review: Requests the viewport dimensions saved before fullscreen entry."
+    ],
+    [
+      "hd",
+      "a",
+      "(III)V",
+      "resizeViewport",
+      "Source-purpose review: Declares the callback that receives viewport resize requests from the sizing controller."
     ]
   ],
   "fields": [
