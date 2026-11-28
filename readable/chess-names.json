@@ -160,7 +160,8 @@
     ["qh","IntHashTable","Maps integer name hashes to archive group or file positions with open addressing."],
     ["kl","IntrusiveNodeHashTable","Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."],
     ["df","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
-    ["rk","IndexedSprite","Stores palette-indexed pixels and palette colors, with sprite bounds and raster blitters for the indexed representation."]
+    ["rk","IndexedSprite","Stores palette-indexed pixels and palette colors, with sprite bounds and raster blitters for the indexed representation."],
+    ["of","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."]
   ],
   "methods": [
     ["Chess","v","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e0ea65b249a209337d86c8869f9b25c29ecbe703ff53b413e4f869c68abc8c1d."],
@@ -1491,7 +1492,11 @@
     ["df","c","(I)V","processBlock","Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state."],
     ["dj","a","([BI)[B","decompressArchiveContainer","Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip."],
     ["ke","a","([BII)I","computeCrc32Prefix","Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."],
-    ["rk","a","()V","normalizeCanvas","Source-purpose review: Expands the indexed pixel array to the full sprite canvas, copies rows at their offsets, and clears the offsets."]
+    ["rk","a","()V","normalizeCanvas","Source-purpose review: Expands the indexed pixel array to the full sprite canvas, copies rows at their offsets, and clears the offsets."],
+    ["of","a","(I)Z","isLeftPressed","Source-purpose review: Reports whether the saved menu key is Left. The original Java key table maps it to 96."],
+    ["of","b","(I)Z","isRightPressed","Source-purpose review: Reports whether the saved menu key is Right. The original Java key table maps it to 97."],
+    ["of","a","(B)Z","isHomePressed","Source-purpose review: Reports whether the saved menu key is Home. The original Java key table maps it to 102."],
+    ["of","a","(Z)Z","isEndPressed","Source-purpose review: Reports whether the saved menu key is End. The original Java key table maps it to 103."]
   ],
   "fields": [
     ["oe","field_g","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."],

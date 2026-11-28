@@ -161,7 +161,8 @@
     ["v","IntHashTable","Maps integer name hashes to archive group or file positions with open addressing."],
     ["lk","ArchiveProvider","Defines the index, packed group and progress interface for an archive source."],
     ["fc","CursorNodeHashTable","Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."],
-    ["ah","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."]
+    ["ah","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
+    ["jh","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 860a6640a0040623dc715c9df38faebec011d486fd06448cd3bee8ff33ccce22."],
@@ -1538,7 +1539,11 @@
     ["ah","a","([BZI)V","finishDigest","Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer."],
     ["ah","a","(I)V","processBlock","Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state."],
     ["b","a","([BI)[B","decompressArchiveContainer","Source-purpose review: Reads the compression type and lengths, checks size limits, and copies the stored payload or dispatches to Bzip2 or gzip."],
-    ["gi","a","(I[BI)I","computeCrc32Prefix","Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."]
+    ["gi","a","(I[BI)I","computeCrc32Prefix","Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."],
+    ["jh","d","(I)Z","isLeftPressed","Source-purpose review: Reports whether the saved menu key is Left. The original Java key table maps it to 96."],
+    ["jh","b","(I)Z","isRightPressed","Source-purpose review: Reports whether the saved menu key is Right. The original Java key table maps it to 97."],
+    ["jh","b","(Z)Z","isHomePressed","Source-purpose review: Reports whether the saved menu key is Home. The original Java key table maps it to 102."],
+    ["jh","e","(I)Z","isEndPressed","Source-purpose review: Reports whether the saved menu key is End. The original Java key table maps it to 103."]
   ],
   "fields": [
     ["ng","field_h","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],
