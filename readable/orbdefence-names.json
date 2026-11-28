@@ -141,7 +141,9 @@
     ["jl","ArchiveProvider","Defines the index, packed group and progress interface for an archive source."],
     ["mh","IntrusiveNodeHashTable","Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."],
     ["vc","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
-    ["ml","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."]
+    ["ml","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."],
+    ["qg","IndexedSprite","Stores the indexed pixels and palette and draws the image into the clipped raster."],
+    ["ia","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."]
   ],
   "methods": [
     ["OrbDefence","h","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ff0877dbe972f0920164c2f46f6e7140cfb1d54cd3ba99d181f78ba71f513e7f."],
@@ -1345,7 +1347,11 @@
     ["ml","b","(II)V","handleArrowNavigation","Source-purpose review: Captures and handles all four arrow keys, wrapping and applying the configured selection fallback."],
     ["ml","d","(I)V","captureCurrentKey","Source-purpose review: Clears the current menu input flags and captures the keyboard event when a pointer button is inactive."],
     ["ml","a","(I)V","detectMaximumHeapMiB","Source-purpose review: Reads the runtime heap limit and stores its converted value in mebibytes."],
-    ["ml","b","(I)Z","hasOpenModalDialog","Source-purpose review: Checks whether the interface has an open dialog."]
+    ["ml","b","(I)Z","hasOpenModalDialog","Source-purpose review: Checks whether the interface has an open dialog."],
+    ["qg","a","(II)V","draw","Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero."],
+    ["ia","a","(II)V","draw","Source-purpose review: Declares the indexed sprite unblended draw operation."],
+    ["qg","a","(III)V","drawAlpha","Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity."],
+    ["ia","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."]
   ],
   "fields": [
     ["mg","field_j","[B","payload","Complete constructors and all owned I/O reviewed: caller byte array or pooled allocation is the backing payload. Preserve array identity and every reference."],

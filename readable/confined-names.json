@@ -161,7 +161,8 @@
     ["jb","GameMenuDialog","Owns option geometry, selection, transition animation, and rendering and input for the in-game dialogs."],
     ["qi","MenuSelectionInput","Owns the menu selection, pointer and key input, navigation wrapping, and hold repeat timing."],
     ["bd","GameMenuOption","Stores an option action code, label, and selection rectangle sized from the label font."],
-    ["qn","HighscoresRequest","An intrusive queued request that retains completion state plus player names, ranking values, and identifiers."]
+    ["qn","HighscoresRequest","An intrusive queued request that retains completion state plus player names, ranking values, and identifiers."],
+    ["ld","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 949d6acc48a1e275445afcf06af37fb725624f34709abfad7c1ac71fbcd54636."],
@@ -1744,7 +1745,11 @@
     ["Confined","g","(B)[Lbm;","createDecodedIndexedSprites","Source-purpose review: Constructs indexed sprites from the shared decoder buffers and releases the scratch arrays."],
     ["Confined","o","(I)V","clearStaticReferences","Source-purpose review: Clears static game references during cleanup."],
     ["Confined","a","(II[I)V","markEmptySpanPixels","Source-purpose review: Visits raster scanline spans and changes zero-valued pixels to the marker value one."],
-    ["Confined","c","(Z)V","updateGameAndMenu","Source-purpose review: Handles menu transitions, polls UI and input, dispatches the active dialog, and advances the game session."]
+    ["Confined","c","(Z)V","updateGameAndMenu","Source-purpose review: Handles menu transitions, polls UI and input, dispatches the active dialog, and advances the game session."],
+    ["bm","a","(II)V","draw","Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero."],
+    ["ld","a","(II)V","draw","Source-purpose review: Declares the indexed sprite unblended draw operation."],
+    ["bm","a","(III)V","drawAlpha","Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity."],
+    ["ld","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."]
   ],
   "fields": [
     ["kg","field_m","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],

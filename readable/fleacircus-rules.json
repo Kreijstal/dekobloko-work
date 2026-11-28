@@ -206,6 +206,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bi",
+      "originalName": "bi",
+      "to": "IndexedSprite",
+      "evidence": "Stores the indexed pixels and palette and draws the image into the clipped raster.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bj",
       "originalName": "bj",
       "to": "ImageProducerRasterBuffer",
@@ -280,6 +287,13 @@
       "originalName": "ck",
       "to": "ConfirmedEmailAvailabilityValidator",
       "evidence": "Checks that the confirmation matches the email input, then obtains and caches the email availability result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cm",
+      "originalName": "cm",
+      "to": "IndexedSpriteState",
+      "evidence": "Holds the indexed sprite dimensions and offsets and declares the two drawing operations.",
       "confidence": "reviewed"
     },
     {
@@ -1865,6 +1879,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.a(II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bi.a([I[B[IIIIIIII)V",
       "originalName": "a",
       "to": "blitIndexedAlpha",
@@ -2541,6 +2569,20 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Source-purpose review: Declares the indexed sprite unblended draw operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "Source-purpose review: Declares the indexed sprite opacity-blended draw operation.",
       "confidence": "reviewed"
     },
     {
@@ -9868,7 +9910,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "b929d75febac5b3738097b61766c4bd5a33324a5508c7aa2eda414285e84d85d",
+      "fleacircus-names.json": "afa46d50bb427a7c6d95c6d621050e3ead81575e871ad433547ca285969b8184",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

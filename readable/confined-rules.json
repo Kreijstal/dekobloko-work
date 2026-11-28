@@ -773,6 +773,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ld",
+      "originalName": "ld",
+      "to": "IndexedSpriteState",
+      "evidence": "Holds the indexed sprite dimensions and offsets and declares the two drawing operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:le",
       "originalName": "le",
       "to": "Win32CursorManager",
@@ -2408,6 +2415,20 @@
       "originalName": "a",
       "to": "normalizeCanvas",
       "evidence": "Source-purpose review: Expands the indexed pixel array to the full sprite canvas, copies rows at their offsets, and clears the offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.a(II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity.",
       "confidence": "reviewed"
     },
     {
@@ -7133,6 +7154,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 01a0e65dc552ca0cb307f412791bbd742ae15ea1fca2619cefbf7ff2518fc9f6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.a(II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Source-purpose review: Declares the indexed sprite unblended draw operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "Source-purpose review: Declares the indexed sprite opacity-blended draw operation.",
       "confidence": "reviewed"
     },
     {
@@ -12710,7 +12745,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "1109e7e4b2e77e29dc1b0d01689abe3473d56d91f5a4630bb950a352f628791d",
+      "confined-names.json": "18f23b1172764be3c5f62c5a3993404fcf8ea4da23e14ff9f564705490029492",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

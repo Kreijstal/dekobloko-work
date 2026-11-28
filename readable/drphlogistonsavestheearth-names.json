@@ -147,7 +147,8 @@
     ["tg","IntrusiveNodeHashTable","Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."],
     ["nj","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
     ["he","IndexedSprite","Stores palette-indexed pixels and palette colors, with sprite bounds and raster blitters for the indexed representation."],
-    ["ql","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."]
+    ["ql","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."],
+    ["pe","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."]
   ],
   "methods": [
     ["a","b","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 6 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 00a707380dd212c2cce18c3fe1bd46aac7ae81cc6c50eb4374a1dd4596b61c32."],
@@ -1332,7 +1333,11 @@
     ["ql","a","(I)Z","isPointerHeld","Source-purpose review: Tests whether a mouse button is currently held."],
     ["ql","a","(II)V","selectOption","Source-purpose review: Sets the supplied option and switches selection to keyboard mode when the selection guard permits it."],
     ["ql","g","(I)Z","isPreviousOptionRequested","Source-purpose review: Tests for the secondary menu button event or Left."],
-    ["ql","a","(IIZI)V","initializeSelection","Source-purpose review: Initializes menu input mode and chooses the pointer selection or the supplied fallback."]
+    ["ql","a","(IIZI)V","initializeSelection","Source-purpose review: Initializes menu input mode and chooses the pointer selection or the supplied fallback."],
+    ["he","a","(II)V","draw","Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero."],
+    ["pe","a","(II)V","draw","Source-purpose review: Declares the indexed sprite unblended draw operation."],
+    ["he","a","(III)V","drawAlpha","Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity."],
+    ["pe","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."]
   ],
   "fields": [
     ["od","field_h","[B","payload","Complete constructors and all owned I/O reviewed: caller byte array or pooled allocation is the backing payload. Preserve array identity and every reference."],

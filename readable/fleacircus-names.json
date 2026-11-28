@@ -144,7 +144,9 @@
     ["gi","ArchiveProvider","Defines the index, packed group and progress interface for an archive source."],
     ["hc","IntrusiveNodeHashTable","Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."],
     ["wa","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
-    ["pl","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."]
+    ["pl","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."],
+    ["bi","IndexedSprite","Stores the indexed pixels and palette and draws the image into the clipped raster."],
+    ["cm","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 bda731de19ac3cd36e27ce7f8ff266e03ab5e3f8cee8293965494f952494d115."],
@@ -1345,7 +1347,11 @@
     ["pl","f","(I)V","clearMenuStaticReferences","Source-purpose review: Clears the menu state class’s static label and object references."],
     ["pl","a","(Lrh;Lrh;Lrh;Z)Z","areButtonAssetsReady","Source-purpose review: Checks the three archives for the common UI and button sprite groups."],
     ["pl","a","(Ljava/lang/CharSequence;I)I","parseDecimalInt","Source-purpose review: Parses the supplied character sequence as a signed radix-ten integer."],
-    ["pl","a","(III)V","drawAnimatedTileMarker","Source-purpose review: Clips to a tile-sized rectangle and draws an animated circle marker at its current offset."]
+    ["pl","a","(III)V","drawAnimatedTileMarker","Source-purpose review: Clips to a tile-sized rectangle and draws an animated circle marker at its current offset."],
+    ["bi","a","(II)V","draw","Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero."],
+    ["cm","a","(II)V","draw","Source-purpose review: Declares the indexed sprite unblended draw operation."],
+    ["bi","a","(III)V","drawAlpha","Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity."],
+    ["cm","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."]
   ],
   "fields": [
     ["ni","field_k","[B","payload","Complete constructors and all owned I/O reviewed: caller byte array or pooled allocation is the backing payload. Preserve array identity and every reference."],

@@ -577,6 +577,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:id",
+      "originalName": "id",
+      "to": "IndexedSprite",
+      "evidence": "Stores the indexed pixels and palette and draws the image into the clipped raster.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ie",
       "originalName": "ie",
       "to": "AlphaWidgetContainer",
@@ -833,6 +840,13 @@
       "originalName": "nd",
       "to": "AccountNameAvailabilityValidator",
       "evidence": "Complete instance contract reviewed: constructor plus text/status/reset methods and two private cache fields. Syntax checks precede asynchronous account-name query; completed error-free result cached by exact input, with explicit Name is available/That name is not available diagnostics and valid/invalid/checking result branches. Corresponding already-readable AoG validator is corroborating context, not automatic name transfer. Preserve inherited method names/overrides, every game-specific guard/reset/exception/static helper and default. No native owned/type-use declarations; same-spelling non-class literals, when present, explicitly reviewed and pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ne",
+      "originalName": "ne",
+      "to": "IndexedSpriteState",
+      "evidence": "Holds the indexed sprite dimensions and offsets and declares the two drawing operations.",
       "confidence": "reviewed"
     },
     {
@@ -4350,6 +4364,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:id.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.a([I[B[IIIIIIII)V",
       "originalName": "a",
       "to": "blitIndexedAlpha",
@@ -4361,6 +4382,13 @@
       "originalName": "b",
       "to": "blitIndexed",
       "evidence": "Source-purpose review: Copy nonzero byte indices through the palette into the destination;index0 leaves destination untouched,including when a nonzero index selects RGB0. Preserve the four-pixel unroll,tail,source/destination offsets and row skips. Original body SHA256 7cfc82afa4257c33681de2809015031780098243424c072e87501204ed53dbae. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.c(II)V",
+      "originalName": "c",
+      "to": "draw",
+      "evidence": "Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero.",
       "confidence": "reviewed"
     },
     {
@@ -6069,6 +6097,20 @@
       "originalName": "g",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 3 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "Source-purpose review: Declares the indexed sprite opacity-blended draw operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.c(II)V",
+      "originalName": "c",
+      "to": "draw",
+      "evidence": "Source-purpose review: Declares the indexed sprite unblended draw operation.",
       "confidence": "reviewed"
     },
     {
@@ -9266,7 +9308,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "faad853cf8fb604f0cba422baecd574d218594f7eb8dc8355eaf184055aa4f9c",
+      "starcannon-names.json": "0a518e2ac7b3e82f5ef92707692647f9e6509fc35946429379d5635fd5f4cfa6",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

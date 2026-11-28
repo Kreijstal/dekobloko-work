@@ -161,7 +161,8 @@
     ["kl","IntrusiveNodeHashTable","Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."],
     ["df","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
     ["rk","IndexedSprite","Stores palette-indexed pixels and palette colors, with sprite bounds and raster blitters for the indexed representation."],
-    ["of","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."]
+    ["of","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."],
+    ["hd","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."]
   ],
   "methods": [
     ["Chess","v","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e0ea65b249a209337d86c8869f9b25c29ecbe703ff53b413e4f869c68abc8c1d."],
@@ -1511,7 +1512,11 @@
     ["of","a","(Ljava/applet/Applet;B)Z","hasTutorialStatsButtonMarker","Source-purpose review: Checks whether the stats button marker is present in the client flag, cookie, or applet parameters."],
     ["of","d","(I)V","resetTooltipState","Source-purpose review: Clears the current tooltip text, delay, visibility state, and stored coordinates."],
     ["of","a","(ZI)V","drawMenuOverlay","Source-purpose review: Delegates painting the dimmed raster backdrop and the active menu overlay."],
-    ["of","a","(IILjava/lang/String;)Ljava/lang/String;","formatLobbyEventMessage","Source-purpose review: Selects the localized message for a lobby event and substitutes the affected player name."]
+    ["of","a","(IILjava/lang/String;)Ljava/lang/String;","formatLobbyEventMessage","Source-purpose review: Selects the localized message for a lobby event and substitutes the affected player name."],
+    ["rk","a","(II)V","draw","Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero."],
+    ["hd","a","(II)V","draw","Source-purpose review: Declares the indexed sprite unblended draw operation."],
+    ["rk","a","(III)V","drawAlpha","Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity."],
+    ["hd","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."]
   ],
   "fields": [
     ["oe","field_g","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."],

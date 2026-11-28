@@ -162,7 +162,9 @@
     ["lk","ArchiveProvider","Defines the index, packed group and progress interface for an archive source."],
     ["fc","CursorNodeHashTable","Stores keyed intrusive nodes in an array of circular sentinel buckets and maintains an iteration cursor."],
     ["ah","WhirlpoolHasher","Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."],
-    ["jh","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."]
+    ["jh","MenuSelectionInput","Tracks menu selection and input mode, captures a shared stored key, and processes vertical and horizontal navigation."],
+    ["wj","IndexedSprite","Stores the indexed pixels and palette and draws the image into the clipped raster."],
+    ["wi","IndexedSpriteState","Holds the indexed sprite dimensions and offsets and declares the two drawing operations."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 860a6640a0040623dc715c9df38faebec011d486fd06448cd3bee8ff33ccce22."],
@@ -1554,7 +1556,11 @@
     ["jh","a","(IZI)V","resetPointerSelection","Source-purpose review: Clears the held button and sets the supplied pointer option when pointer mode is active."],
     ["jh","f","(I)V","handleVerticalNavigation","Source-purpose review: Captures Up and Down events and moves the selection with wrapping."],
     ["jh","a","(B)V","captureCurrentKey","Source-purpose review: Clears the current menu input flags and captures the keyboard event when a pointer button is inactive."],
-    ["jh","a","(Z)Z","isClickOrConfirmRequested","Source-purpose review: Tests for a newly captured button press, Enter, or Space."]
+    ["jh","a","(Z)Z","isClickOrConfirmRequested","Source-purpose review: Tests for a newly captured button press, Enter, or Space."],
+    ["wj","a","(II)V","draw","Source-purpose review: Clips the indexed sprite at the requested position and draws it with transparent palette index zero."],
+    ["wi","a","(II)V","draw","Source-purpose review: Declares the indexed sprite unblended draw operation."],
+    ["wj","a","(III)V","drawAlpha","Source-purpose review: Clips the indexed sprite at the requested position and draws it using the supplied opacity."],
+    ["wi","a","(III)V","drawAlpha","Source-purpose review: Declares the indexed sprite opacity-blended draw operation."]
   ],
   "fields": [
     ["ng","field_h","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],
