@@ -299,6 +299,96 @@
       "va",
       "PcmMixerListener",
       "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
+    ],
+    [
+      "bh",
+      "NameSuggestionListener",
+      "Defines callbacks for selecting a suggested name and requesting another set of suggestions. Both the registration form and the display-name form implement the callbacks."
+    ],
+    [
+      "ek",
+      "NameSuggestionsPanel",
+      "Holds the normalized suggested names and their buttons. It forwards a selected suggestion or a request for more suggestions to the form that owns the panel."
+    ],
+    [
+      "dn",
+      "WidgetActivationListener",
+      "Declares the callback that receives an activated widget and its input context. Account forms and other panels implement it to act on the triggering control."
+    ],
+    [
+      "mi",
+      "InteractiveWidget",
+      "Interactive control that tracks pointer and keyboard input and forwards its activation to the registered listener. The account forms use this control for their buttons and suggestion choices."
+    ],
+    [
+      "ue",
+      "TextHotspotListener",
+      "Receives activation of a tagged link within a text widget and uses its tag ID to choose the intended action."
+    ],
+    [
+      "vq",
+      "RichTextWidget",
+      "Displays formatted text with tagged hotspots, tracks the bounds of each hotspot across wrapped lines, and dispatches the selected hotspot."
+    ],
+    [
+      "jo",
+      "TextHotspotBounds",
+      "Stores the tag ID and one line’s rectangular hotspot bounds. Additional rectangles are linked for hotspots that span multiple rendered lines."
+    ],
+    [
+      "pp",
+      "TextLayout",
+      "Stores the wrapped lines of a widget’s text and maps between text offsets and rendered positions."
+    ],
+    [
+      "co",
+      "TextLineMetrics",
+      "Stores the horizontal positions of character boundaries and vertical bounds for one rendered line."
+    ],
+    [
+      "et",
+      "TextWidgetRenderer",
+      "Defines text layout, widget sizing, input hit testing, and caret and selection painting for text widgets."
+    ],
+    [
+      "qm",
+      "DefaultTextWidgetRenderer",
+      "Implements the text widget renderer using the bound bitmap font, padding and alignment fields, and cached wrapped layout."
+    ],
+    [
+      "vg",
+      "RichTextLayout",
+      "Concrete text layout that wraps and aligns formatted text with the selected bitmap font, caches its inputs, and records per-line caret positions."
+    ],
+    [
+      "ea",
+      "UiWidget",
+      "Base UI widget with bounds, drawing, hit testing, keyboard focus, and pointer-event routing. InteractiveWidget extends it to activate buttons and other controls."
+    ],
+    [
+      "kl",
+      "WidgetHoverListener",
+      "Receives notifications when the pointer enters or leaves a widget’s bounds."
+    ],
+    [
+      "ni",
+      "WidgetFocusListener",
+      "Receives notifications when an interactive widget gains or loses keyboard focus."
+    ],
+    [
+      "uq",
+      "WidgetPointerListener",
+      "Receives pointer press and release callbacks from interactive widgets."
+    ],
+    [
+      "ir",
+      "WidgetRenderer",
+      "Draws a widget on a single render layer using the supplied origin."
+    ],
+    [
+      "no",
+      "WidgetEventListener",
+      "Common marker interface for the listener stored on a base UI widget. The widget checks narrower listener types before sending hover or focus events."
     ]
   ],
   "methods": [
@@ -5684,6 +5774,1343 @@
       "([BI)[B",
       "decompressArchiveContainer",
       "Source-purpose review: Reads the archive container header, validates its sizes, and returns raw, Bzip2, or gzip data."
+    ],
+    [
+      "ll",
+      "a",
+      "(II)V",
+      "drawMultiply",
+      "Source-purpose review: Clips the draw rectangle and multiplies the destination color channels by the corresponding sprite channels."
+    ],
+    [
+      "ll",
+      "a",
+      "(III)V",
+      "drawWithOpacity",
+      "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity."
+    ],
+    [
+      "rd",
+      "a",
+      "(III)V",
+      "drawWithOpacity",
+      "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity."
+    ],
+    [
+      "ll",
+      "a",
+      "(IIIIII)V",
+      "drawRotatedAbout",
+      "Source-purpose review: Uses a turn divided into 65,536 angle steps and a fixed-point scale to rotate about an explicit source pivot. Clips and resamples into the destination raster."
+    ],
+    [
+      "ll",
+      "b",
+      "(II)V",
+      "draw",
+      "Source-purpose review: Clips the sprite rectangle to the raster and draws the visible pixels using the source transparency convention."
+    ],
+    [
+      "rd",
+      "b",
+      "(II)V",
+      "draw",
+      "Source-purpose review: Clips the sprite rectangle to the raster and draws the visible pixels using the source transparency convention."
+    ],
+    [
+      "ll",
+      "b",
+      "(III)V",
+      "drawTintedGray",
+      "Source-purpose review: Passes the clip rectangle and tint color to the kernel that maps grayscale values through a black, tint, and white ramp while retaining colored pixels."
+    ],
+    [
+      "rd",
+      "b",
+      "(III)V",
+      "drawTintedGray",
+      "Source-purpose review: Passes the clip rectangle and tint color to the kernel that maps grayscale values through a black, tint, and white ramp while retaining colored pixels."
+    ],
+    [
+      "ll",
+      "c",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Clips the sprite rectangle to the raster. The base blit copies all visible pixels including zeros. The ARGB override composites using each pixel’s alpha."
+    ],
+    [
+      "rd",
+      "c",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Clips the sprite rectangle to the raster. The base blit copies all visible pixels including zeros. The ARGB override composites using each pixel’s alpha."
+    ],
+    [
+      "ll",
+      "c",
+      "(III)V",
+      "drawSilhouette",
+      "Source-purpose review: Fills the clipped nontransparent shape of the sprite with the supplied replacement color."
+    ],
+    [
+      "ll",
+      "d",
+      "(II)V",
+      "drawHalfSize",
+      "Source-purpose review: Clips half-sized bounds and combines adjacent source pixels to render at half scale."
+    ],
+    [
+      "rd",
+      "d",
+      "(II)V",
+      "drawHalfSize",
+      "Source-purpose review: Clips half-sized bounds and combines adjacent source pixels to render at half scale."
+    ],
+    [
+      "ll",
+      "d",
+      "(III)V",
+      "drawAdditive",
+      "Source-purpose review: Clips the destination rectangle and adds the source RGB channels to corresponding destination channels with saturation."
+    ],
+    [
+      "rd",
+      "d",
+      "(III)V",
+      "drawAdditive",
+      "Source-purpose review: Clips the destination rectangle and adds the source RGB channels to corresponding destination channels with saturation."
+    ],
+    [
+      "ll",
+      "a",
+      "(IIIII)V",
+      "writeBilinearPixel",
+      "Source-purpose review: Computes the weighted color of the four source pixels around a sample position, using the low twelve coordinate bits as interpolation fractions, and writes the result to the destination raster."
+    ],
+    [
+      "bh",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "ep",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "wd",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "bh",
+      "a",
+      "(B)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "ep",
+      "a",
+      "(B)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "wd",
+      "a",
+      "(B)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "ek",
+      "a",
+      "([Ljava/lang/String;Z)V",
+      "setNameSuggestions",
+      "Source-purpose review: Rebuilds the suggestion buttons from the supplied names, normalizes display spacing, and adds the extra button for requesting more suggestions."
+    ],
+    [
+      "mp",
+      "e",
+      "(I)V",
+      "invalidateCheckedName",
+      "Source-purpose review: Clears the cached checked name so the validator rechecks the current input even when its text has stayed the same."
+    ],
+    [
+      "dn",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ce",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ek",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ep",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "jn",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "jq",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "oo",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "oq",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "rs",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "tn",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "wd",
+      "a",
+      "(ILmi;IIB)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "mi",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "sq",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "vq",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "ue",
+      "a",
+      "(BILvq;I)V",
+      "onTextHotspotActivated",
+      "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action."
+    ],
+    [
+      "rs",
+      "a",
+      "(BILvq;I)V",
+      "onTextHotspotActivated",
+      "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action."
+    ],
+    [
+      "wd",
+      "a",
+      "(BILvq;I)V",
+      "onTextHotspotActivated",
+      "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action."
+    ],
+    [
+      "vq",
+      "a",
+      "(B)V",
+      "rebuildHotspotBounds",
+      "Source-purpose review: Scans the formatted text for hotspot tags and constructs the rendered rectangles for each covered line of the text layout."
+    ],
+    [
+      "vq",
+      "c",
+      "(III)Ljo;",
+      "findHotspotAt",
+      "Source-purpose review: Finds the first tagged hotspot whose linked rectangles contain the tested widget position."
+    ],
+    [
+      "vq",
+      "c",
+      "(B)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "kb",
+      "c",
+      "(B)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "ea",
+      "c",
+      "(B)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "ab",
+      "c",
+      "(B)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "bc",
+      "c",
+      "(B)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "kk",
+      "c",
+      "(B)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "pi",
+      "c",
+      "(B)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "to",
+      "c",
+      "(B)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "pp",
+      "b",
+      "(II)I",
+      "getXForTextOffset",
+      "Source-purpose review: Walks the wrapped lines, then reads the horizontal character position at the remaining offset in that line."
+    ],
+    [
+      "pp",
+      "a",
+      "(II)I",
+      "getLineIndexForTextOffset",
+      "Source-purpose review: Walks the wrapped lines, subtracting their text lengths, to find the line for the supplied text offset."
+    ],
+    [
+      "co",
+      "a",
+      "(ZI)I",
+      "findNearestCharacterIndex",
+      "Source-purpose review: Compares the supplied X coordinate with each adjacent pair’s midpoint to find the nearest character boundary."
+    ],
+    [
+      "co",
+      "a",
+      "(Z)I",
+      "getRightX",
+      "Source-purpose review: Returns the final horizontal character position for the line."
+    ],
+    [
+      "pp",
+      "a",
+      "(IBI)I",
+      "getTextOffsetAt",
+      "Source-purpose review: Finds the line covering the supplied Y coordinate, resolves the nearest character boundary at X, and adds the lengths of preceding lines."
+    ],
+    [
+      "pp",
+      "a",
+      "(B)I",
+      "getMaxLineRightX",
+      "Source-purpose review: Returns the greatest right-hand character position across the nonempty wrapped lines."
+    ],
+    [
+      "pp",
+      "a",
+      "(I)I",
+      "getLayoutHeight",
+      "Source-purpose review: Returns the distance from the first line’s top to the last line’s bottom."
+    ],
+    [
+      "et",
+      "a",
+      "(BLea;)Lpp;",
+      "getTextLayout",
+      "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget."
+    ],
+    [
+      "qm",
+      "a",
+      "(BLea;)Lpp;",
+      "getTextLayout",
+      "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget."
+    ],
+    [
+      "et",
+      "a",
+      "(BIIILea;)V",
+      "paintCaret",
+      "Source-purpose review: Resolves the caret’s line and column through the text layout and paints the vertical caret at that position."
+    ],
+    [
+      "qm",
+      "a",
+      "(BIIILea;)V",
+      "paintCaret",
+      "Source-purpose review: Resolves the caret’s line and column through the text layout and paints the vertical caret at that position."
+    ],
+    [
+      "et",
+      "a",
+      "(I)I",
+      "getFontLineHeight",
+      "Source-purpose review: Returns the sum of the bitmap font’s vertical metrics."
+    ],
+    [
+      "qm",
+      "a",
+      "(I)I",
+      "getFontLineHeight",
+      "Source-purpose review: Returns the sum of the bitmap font’s vertical metrics."
+    ],
+    [
+      "et",
+      "a",
+      "(IIIILea;B)V",
+      "paintSelection",
+      "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line."
+    ],
+    [
+      "qm",
+      "a",
+      "(IIIILea;B)V",
+      "paintSelection",
+      "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line."
+    ],
+    [
+      "et",
+      "a",
+      "(ILea;)I",
+      "getPreferredHeight",
+      "Source-purpose review: Gets the wrapped text height and adds the widget’s vertical padding."
+    ],
+    [
+      "qm",
+      "a",
+      "(ILea;)I",
+      "getPreferredHeight",
+      "Source-purpose review: Gets the wrapped text height and adds the widget’s vertical padding."
+    ],
+    [
+      "et",
+      "a",
+      "(ILea;B)I",
+      "getTextOriginX",
+      "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions."
+    ],
+    [
+      "qm",
+      "a",
+      "(ILea;B)I",
+      "getTextOriginX",
+      "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions."
+    ],
+    [
+      "et",
+      "a",
+      "(IZLea;)I",
+      "getTextOriginY",
+      "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting."
+    ],
+    [
+      "qm",
+      "a",
+      "(IZLea;)I",
+      "getTextOriginY",
+      "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting."
+    ],
+    [
+      "et",
+      "a",
+      "(Lea;I)I",
+      "getPreferredWidth",
+      "Source-purpose review: Gets the layout’s farthest line position and adds the widget’s horizontal padding."
+    ],
+    [
+      "qm",
+      "a",
+      "(Lea;I)I",
+      "getPreferredWidth",
+      "Source-purpose review: Gets the layout’s farthest line position and adds the widget’s horizontal padding."
+    ],
+    [
+      "et",
+      "a",
+      "(Lea;IIIII)I",
+      "findTextOffsetAtScreenPosition",
+      "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout."
+    ],
+    [
+      "qm",
+      "a",
+      "(Lea;IIIII)I",
+      "findTextOffsetAtScreenPosition",
+      "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout."
+    ],
+    [
+      "et",
+      "b",
+      "(Lea;I)I",
+      "getTextAreaWidth",
+      "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text."
+    ],
+    [
+      "qm",
+      "b",
+      "(Lea;I)I",
+      "getTextAreaWidth",
+      "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text."
+    ],
+    [
+      "vg",
+      "a",
+      "(Ljava/lang/String;Lhc;IIIIII)V",
+      "layoutWrappedText",
+      "Source-purpose review: Wraps text within the available width and populates each line’s dimensions and character positions, with horizontal and vertical alignment."
+    ],
+    [
+      "vg",
+      "a",
+      "(IILhc;Ljava/lang/String;)Lco;",
+      "initializeSingleLineMetrics",
+      "Source-purpose review: Allocates metrics for one line using the font’s vertical dimensions and the input text length, and stores that line as the current layout."
+    ],
+    [
+      "vg",
+      "a",
+      "(ILhc;ILjava/lang/String;I)V",
+      "layoutSingleLineCentered",
+      "Source-purpose review: Places the line’s bounds one half-width to either side of the supplied center coordinate."
+    ],
+    [
+      "vg",
+      "a",
+      "(ILjava/lang/String;IILhc;)V",
+      "layoutSingleLineRightAligned",
+      "Source-purpose review: Subtracts the measured text width from the supplied right edge to obtain the line start."
+    ],
+    [
+      "vg",
+      "a",
+      "(Ljava/lang/String;IILhc;B)V",
+      "layoutSingleLineLeftAligned",
+      "Source-purpose review: Uses the supplied X coordinate as the line’s starting edge and measures the text to determine the right edge."
+    ],
+    [
+      "ea",
+      "a",
+      "(IIIIB)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "ab",
+      "a",
+      "(IIIIB)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "ss",
+      "a",
+      "(IIIIB)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "to",
+      "a",
+      "(IIIIB)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "vq",
+      "a",
+      "(IIIIB)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "ea",
+      "a",
+      "(IIIII)Z",
+      "containsPointer",
+      "Source-purpose review: Tests whether the supplied pointer position is inside the stored widget rectangle relative to its parent origin."
+    ],
+    [
+      "ea",
+      "a",
+      "(Z)V",
+      "refreshLayout",
+      "Source-purpose review: Calls the bounds setter again using the widget’s current position and size so layout overrides can recompute their child geometry."
+    ],
+    [
+      "ea",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "ab",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "bc",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "bm",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "ce",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "ek",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "gm",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "hi",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "jn",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "kb",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "lt",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "pi",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "ss",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "tn",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "to",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "vq",
+      "a",
+      "(BIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "ea",
+      "f",
+      "(I)I",
+      "getMaximumRenderLayer",
+      "Source-purpose review: Returns the largest draw layer that the widget or its containers need to render."
+    ],
+    [
+      "ab",
+      "f",
+      "(I)I",
+      "getMaximumRenderLayer",
+      "Source-purpose review: Returns the largest draw layer that the widget or its containers need to render."
+    ],
+    [
+      "to",
+      "f",
+      "(I)I",
+      "getMaximumRenderLayer",
+      "Source-purpose review: Returns the largest draw layer that the widget or its containers need to render."
+    ],
+    [
+      "ea",
+      "a",
+      "(III)V",
+      "drawAllLayers",
+      "Source-purpose review: Gets the maximum draw layer and iterates from layer zero through that maximum, invoking the per-layer painter."
+    ],
+    [
+      "ea",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "ab",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "bm",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "ep",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "hg",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "kb",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "kk",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "mi",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "pi",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "ss",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "to",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "vq",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "wd",
+      "a",
+      "(BLea;II)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "ea",
+      "a",
+      "(IIIILea;B)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "ab",
+      "a",
+      "(IIIILea;B)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "hg",
+      "a",
+      "(IIIILea;B)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "mi",
+      "a",
+      "(IIIILea;B)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "sh",
+      "a",
+      "(IIIILea;B)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "to",
+      "a",
+      "(IIIILea;B)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "ea",
+      "a",
+      "(IIIIILea;I)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "ab",
+      "a",
+      "(IIIIILea;I)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "bm",
+      "a",
+      "(IIIIILea;I)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "cn",
+      "a",
+      "(IIIIILea;I)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "hg",
+      "a",
+      "(IIIIILea;I)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "mi",
+      "a",
+      "(IIIIILea;I)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "pf",
+      "a",
+      "(IIIIILea;I)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "to",
+      "a",
+      "(IIIIILea;I)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "ea",
+      "a",
+      "(IIIIILea;Z)Z",
+      "handleWheel",
+      "Source-purpose review: Handles wheel scrolling for the widget. The base implementation leaves the wheel event unhandled."
+    ],
+    [
+      "ab",
+      "a",
+      "(IIIIILea;Z)Z",
+      "handleWheel",
+      "Source-purpose review: Handles wheel scrolling for the widget. The base implementation leaves the wheel event unhandled."
+    ],
+    [
+      "to",
+      "a",
+      "(IIIIILea;Z)Z",
+      "handleWheel",
+      "Source-purpose review: Handles wheel scrolling for the widget. The base implementation leaves the wheel event unhandled."
+    ],
+    [
+      "ea",
+      "a",
+      "(IZIZ)Z",
+      "processPointerInput",
+      "Source-purpose review: Dispatches pointer movement, press, release and wheel input and updates focus and tooltip state at the root widget."
+    ],
+    [
+      "ea",
+      "a",
+      "(Lea;B)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "ab",
+      "a",
+      "(Lea;B)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "kb",
+      "a",
+      "(Lea;B)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "mi",
+      "a",
+      "(Lea;B)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "pi",
+      "a",
+      "(Lea;B)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "to",
+      "a",
+      "(Lea;B)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "vq",
+      "a",
+      "(Lea;B)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "ea",
+      "e",
+      "(I)Z",
+      "isFocused",
+      "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes."
+    ],
+    [
+      "ab",
+      "e",
+      "(I)Z",
+      "isFocused",
+      "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes."
+    ],
+    [
+      "mi",
+      "e",
+      "(I)Z",
+      "isFocused",
+      "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes."
+    ],
+    [
+      "to",
+      "e",
+      "(I)Z",
+      "isFocused",
+      "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes."
+    ],
+    [
+      "ea",
+      "d",
+      "(I)V",
+      "blur",
+      "Source-purpose review: Clears keyboard focus during a pointer-driven focus change or keyboard traversal."
+    ],
+    [
+      "ab",
+      "d",
+      "(I)V",
+      "blur",
+      "Source-purpose review: Clears keyboard focus during a pointer-driven focus change or keyboard traversal."
+    ],
+    [
+      "mi",
+      "d",
+      "(I)V",
+      "blur",
+      "Source-purpose review: Clears keyboard focus during a pointer-driven focus change or keyboard traversal."
+    ],
+    [
+      "to",
+      "d",
+      "(I)V",
+      "blur",
+      "Source-purpose review: Clears keyboard focus during a pointer-driven focus change or keyboard traversal."
+    ],
+    [
+      "ea",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "ab",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "bm",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "ce",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "dg",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "ek",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "ep",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "mi",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "oo",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "rs",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "tn",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "to",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "wd",
+      "a",
+      "(IICLea;)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "ea",
+      "a",
+      "(ICI)Z",
+      "processKeyInput",
+      "Source-purpose review: Checks that keyboard focus is available and dispatches a key or typed character, with focus traversal for Tab."
+    ],
+    [
+      "ea",
+      "a",
+      "(Ljava/lang/StringBuilder;ILjava/util/Hashtable;I)V",
+      "appendDebugProperties",
+      "Source-purpose review: Appends widget identity, bounds and focus information to the diagnostic widget tree."
+    ],
+    [
+      "ea",
+      "a",
+      "(Ljava/lang/StringBuilder;IZLjava/util/Hashtable;)Z",
+      "beginDebugTreeEntry",
+      "Source-purpose review: Checks the visited widget table and initializes a debug-tree entry, with a circular-reference marker for previously visited widgets."
+    ],
+    [
+      "ea",
+      "a",
+      "(Ljava/lang/StringBuilder;IILjava/util/Hashtable;)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "ab",
+      "a",
+      "(Ljava/lang/StringBuilder;IILjava/util/Hashtable;)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "hg",
+      "a",
+      "(Ljava/lang/StringBuilder;IILjava/util/Hashtable;)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "mi",
+      "a",
+      "(Ljava/lang/StringBuilder;IILjava/util/Hashtable;)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "to",
+      "a",
+      "(Ljava/lang/StringBuilder;IILjava/util/Hashtable;)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "kl",
+      "a",
+      "(Lea;BZ)V",
+      "onWidgetHoverChanged",
+      "Source-purpose review: Handles a hover state change for the supplied widget. The base widget calls it only when the state changes."
+    ],
+    [
+      "ni",
+      "a",
+      "(IZLea;)V",
+      "onWidgetFocusChanged",
+      "Source-purpose review: Handles a keyboard focus change. The interactive widget calls the same callback when taking or clearing focus."
+    ],
+    [
+      "uq",
+      "a",
+      "(IIIIIZLmi;)V",
+      "onWidgetPointerPressed",
+      "Source-purpose review: Receives a pointer press after the interactive widget tests the active region and records the pressed button."
+    ],
+    [
+      "uq",
+      "a",
+      "(IIIIILmi;)V",
+      "onWidgetPointerReleased",
+      "Source-purpose review: Receives a pointer release from the interactive widget’s release handler."
+    ],
+    [
+      "ir",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "de",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "jf",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "lj",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "qb",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "qm",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "sl",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "us",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "vi",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "wg",
+      "a",
+      "(ZIILea;I)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
     ]
   ],
   "fields": [
