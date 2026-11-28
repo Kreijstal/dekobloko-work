@@ -644,6 +644,41 @@
       "li$1$CfrPartitionedBody",
       "ClientTextLoader",
       "Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups."
+    ],
+    [
+      "jh",
+      "SocketConnector",
+      "Defines socket creation for a configured host and port and provides the direct connection fallback."
+    ],
+    [
+      "ic",
+      "ProxySocketConnector",
+      "Uses the configured Java ProxySelector to try proxy routes for the destination and falls back to a direct connection."
+    ],
+    [
+      "gi",
+      "KeyboardInputHandler",
+      "Receives Java AWT keyboard and focus events and updates the client keyboard state."
+    ],
+    [
+      "kh",
+      "MouseInputHandler",
+      "Receives Java AWT mouse, pointer motion and focus events and updates the client pointer state."
+    ],
+    [
+      "ch",
+      "ArchiveNetworkClient",
+      "Owns pending and in-flight archive requests and defines connection lifecycle operations."
+    ],
+    [
+      "uf",
+      "SocketArchiveNetworkClient",
+      "Implements the archive request lifecycle over a buffered socket."
+    ],
+    [
+      "bk",
+      "ArchiveSourceManager",
+      "Loads the master archive index and manages the cached providers created from its entries."
     ]
   ],
   "methods": [
@@ -8836,6 +8871,279 @@
       "(Lpi;Lpi;I)V",
       "insertAdjacentNodeWithIntGuard",
       "Source-purpose review: Unlinks the incoming node if already linked, then joins it to the anchor and its adjacent node by updating both directions. Preserves the separate JVM integer-width guard and all bound integer call sites."
+    ],
+    [
+      "jh",
+      "a",
+      "(I)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Declares the socket creation contract for the configured destination."
+    ],
+    [
+      "ic",
+      "a",
+      "(I)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection."
+    ],
+    [
+      "jh",
+      "b",
+      "(B)Ljava/net/Socket;",
+      "openDirectSocket",
+      "Source-purpose review: Opens a TCP socket to the configured destination host and port without using a proxy route."
+    ],
+    [
+      "ic",
+      "a",
+      "(Ljava/net/Proxy;I)Ljava/net/Socket;",
+      "openSocketThroughProxy",
+      "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine."
+    ],
+    [
+      "ic",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;I)Ljava/net/Socket;",
+      "openHttpProxyTunnel",
+      "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established."
+    ],
+    [
+      "ld",
+      "a",
+      "(IBI)V",
+      "writeBits",
+      "Source-purpose review: Packs the requested number of bits into the output byte buffer and tracks space left in the current byte."
+    ],
+    [
+      "ld",
+      "a",
+      "([BIII)V",
+      "readCipheredBytes",
+      "Source-purpose review: Copies bytes from the current position into the requested destination slice, subtracting one cipher value per byte."
+    ],
+    [
+      "ld",
+      "b",
+      "([II)V",
+      "setCipherSeed",
+      "Source-purpose review: Creates the opcode cipher from the supplied integer seed."
+    ],
+    [
+      "ld",
+      "c",
+      "(BI)I",
+      "readBits",
+      "Source-purpose review: Reads the requested number of bits at the current bit offset across byte boundaries and advances the bit offset."
+    ],
+    [
+      "ld",
+      "c",
+      "(Z)V",
+      "beginBitWrite",
+      "Source-purpose review: Clears the current output byte and resets its free-bit count to eight."
+    ],
+    [
+      "ld",
+      "d",
+      "(BI)V",
+      "writeCipheredByte",
+      "Source-purpose review: Adds the next cipher value to the supplied byte and appends it."
+    ],
+    [
+      "ld",
+      "e",
+      "(B)I",
+      "readCipheredByte",
+      "Source-purpose review: Reads one unsigned byte after subtracting the next cipher value."
+    ],
+    [
+      "ld",
+      "f",
+      "(B)V",
+      "beginBitAccess",
+      "Source-purpose review: Initializes the bit-read offset from the current byte position in bit units."
+    ],
+    [
+      "ld",
+      "n",
+      "(I)V",
+      "finishBitWrite",
+      "Source-purpose review: Advances past the partially filled output byte and resets the free-bit count."
+    ],
+    [
+      "ld",
+      "o",
+      "(I)V",
+      "endBitAccess",
+      "Source-purpose review: Restores the byte position rounded up from the bit-read offset."
+    ],
+    [
+      "ld",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+      "replaceAllLiteral",
+      "Source-purpose review: Finds literal substring occurrences, replacing each and continuing after the inserted characters."
+    ],
+    [
+      "vf",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;II)Lan;",
+      "openPreferencesFile",
+      "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix."
+    ],
+    [
+      "dl",
+      "a",
+      "(Ljava/awt/Component;B)V",
+      "attachMouseListeners",
+      "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component."
+    ],
+    [
+      "gj",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "detachKeyboardListeners",
+      "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component."
+    ],
+    [
+      "kd",
+      "a",
+      "(Ljava/awt/Component;Z)V",
+      "attachKeyboardListeners",
+      "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component."
+    ],
+    [
+      "vd",
+      "a",
+      "(BLjava/awt/Component;)V",
+      "detachMouseListeners",
+      "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component."
+    ],
+    [
+      "ch",
+      "a",
+      "(BIZII)Lee;",
+      "enqueueRequest",
+      "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority."
+    ],
+    [
+      "ch",
+      "d",
+      "(B)Z",
+      "isPriorityQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit."
+    ],
+    [
+      "ch",
+      "c",
+      "(B)Z",
+      "isPrefetchQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit."
+    ],
+    [
+      "ch",
+      "a",
+      "(I)I",
+      "getPriorityRequestCount",
+      "Source-purpose review: Counts pending and in-flight priority requests."
+    ],
+    [
+      "ch",
+      "b",
+      "(I)I",
+      "getPrefetchRequestCount",
+      "Source-purpose review: Counts pending and in-flight prefetch requests."
+    ],
+    [
+      "ch",
+      "a",
+      "(Ljava/lang/Object;ZI)V",
+      "attachSocket",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "uf",
+      "a",
+      "(Ljava/lang/Object;ZI)V",
+      "attachSocket",
+      "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection."
+    ],
+    [
+      "ch",
+      "a",
+      "(B)Z",
+      "pollNetwork",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "uf",
+      "a",
+      "(B)Z",
+      "pollNetwork",
+      "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state."
+    ],
+    [
+      "ch",
+      "d",
+      "(I)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "uf",
+      "d",
+      "(I)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask."
+    ],
+    [
+      "ch",
+      "b",
+      "(B)V",
+      "close",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "uf",
+      "b",
+      "(B)V",
+      "close",
+      "Source-purpose review: Closes the active archive socket when it exists."
+    ],
+    [
+      "uf",
+      "a",
+      "(ZI)V",
+      "sendConnectionState",
+      "Source-purpose review: Writes the client connection state message when an archive socket is active."
+    ],
+    [
+      "uf",
+      "e",
+      "(I)V",
+      "sendProtocolSetup",
+      "Source-purpose review: Writes the protocol setup message when the archive socket is attached."
+    ],
+    [
+      "bk",
+      "a",
+      "(B)Z",
+      "loadMasterIndex",
+      "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster."
+    ],
+    [
+      "bk",
+      "a",
+      "(ILuh;ZILuh;)Lij;",
+      "getOrCreateArchiveSource",
+      "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores."
+    ],
+    [
+      "bk",
+      "a",
+      "(I)V",
+      "pollArchiveSources",
+      "Source-purpose review: Polls active providers for pending work and advances their background operations."
     ]
   ],
   "fields": [

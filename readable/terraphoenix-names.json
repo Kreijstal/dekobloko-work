@@ -519,6 +519,21 @@
       "ij$1$CfrPartitionedBody",
       "ClientTextLoader",
       "Local loader carries the resource archive and temporary decode state across 3 sections with 744 bound shared client interface text lookups."
+    ],
+    [
+      "h",
+      "ArchiveNetworkClient",
+      "Owns pending and in-flight archive requests and defines connection lifecycle operations."
+    ],
+    [
+      "kg",
+      "SocketArchiveNetworkClient",
+      "Implements the archive request lifecycle over a buffered socket."
+    ],
+    [
+      "qi",
+      "ArchiveSourceManager",
+      "Loads the master archive index and manages the cached providers created from its entries."
     ]
   ],
   "methods": [
@@ -8312,6 +8327,181 @@
       "(IIB[B)V",
       "enqueueWrite",
       "Source-purpose review: Copies outgoing bytes to the circular write buffer, starts the background writer when needed, and signals it."
+    ],
+    [
+      "ql",
+      "a",
+      "(Ljava/net/Proxy;I)Ljava/net/Socket;",
+      "openSocketThroughProxy",
+      "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine."
+    ],
+    [
+      "ql",
+      "a",
+      "(ILjava/lang/String;BLjava/lang/String;)Ljava/net/Socket;",
+      "openHttpProxyTunnel",
+      "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established."
+    ],
+    [
+      "he",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;I)Lb;",
+      "openPreferencesFile",
+      "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix."
+    ],
+    [
+      "ei",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "attachMouseListeners",
+      "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component."
+    ],
+    [
+      "hk",
+      "a",
+      "(Ljava/awt/Component;B)V",
+      "attachKeyboardListeners",
+      "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component."
+    ],
+    [
+      "me",
+      "a",
+      "(Ljava/awt/Component;B)V",
+      "detachKeyboardListeners",
+      "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component."
+    ],
+    [
+      "pd",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "detachMouseListeners",
+      "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component."
+    ],
+    [
+      "h",
+      "a",
+      "(IZIBB)Lnh;",
+      "enqueueRequest",
+      "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority."
+    ],
+    [
+      "h",
+      "d",
+      "(I)Z",
+      "isPriorityQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit."
+    ],
+    [
+      "h",
+      "b",
+      "(Z)Z",
+      "isPrefetchQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit."
+    ],
+    [
+      "h",
+      "c",
+      "(I)I",
+      "getPriorityRequestCount",
+      "Source-purpose review: Counts pending and in-flight priority requests."
+    ],
+    [
+      "h",
+      "a",
+      "(B)I",
+      "getPrefetchRequestCount",
+      "Source-purpose review: Counts pending and in-flight prefetch requests."
+    ],
+    [
+      "h",
+      "a",
+      "(ILjava/lang/Object;Z)V",
+      "attachSocket",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "kg",
+      "a",
+      "(ILjava/lang/Object;Z)V",
+      "attachSocket",
+      "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection."
+    ],
+    [
+      "h",
+      "c",
+      "(Z)Z",
+      "pollNetwork",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "kg",
+      "c",
+      "(Z)Z",
+      "pollNetwork",
+      "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state."
+    ],
+    [
+      "h",
+      "b",
+      "(I)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "kg",
+      "b",
+      "(I)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask."
+    ],
+    [
+      "h",
+      "a",
+      "(I)V",
+      "close",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "kg",
+      "a",
+      "(I)V",
+      "close",
+      "Source-purpose review: Closes the active archive socket when it exists."
+    ],
+    [
+      "kg",
+      "a",
+      "(IZ)V",
+      "sendConnectionState",
+      "Source-purpose review: Writes the client connection state message when an archive socket is active."
+    ],
+    [
+      "kg",
+      "d",
+      "(Z)V",
+      "sendProtocolSetup",
+      "Source-purpose review: Writes the protocol setup message when the archive socket is attached."
+    ],
+    [
+      "qi",
+      "a",
+      "(Z)Z",
+      "loadMasterIndex",
+      "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster."
+    ],
+    [
+      "qi",
+      "a",
+      "(ZILua;Lua;I)Ltb;",
+      "getOrCreateArchiveSource",
+      "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores."
+    ],
+    [
+      "qi",
+      "a",
+      "(I)V",
+      "pollArchiveSources",
+      "Source-purpose review: Polls active providers for pending work and advances their background operations."
     ]
   ],
   "fields": [

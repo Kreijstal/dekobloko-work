@@ -430,6 +430,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:g",
+      "originalName": "g",
+      "to": "SocketArchiveNetworkClient",
+      "evidence": "Implements the archive request lifecycle over a buffered socket.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ga",
       "originalName": "ga",
       "to": "AgeValidator",
@@ -504,6 +511,13 @@
       "originalName": "hk",
       "to": "VorbisSample",
       "evidence": "Reads a packetized Vorbis sample, manages codec setup and decodes packets into PCM audio.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hm",
+      "originalName": "hm",
+      "to": "SocketConnector",
+      "evidence": "Defines socket creation for a configured host and port and provides the direct connection fallback.",
       "confidence": "reviewed"
     },
     {
@@ -605,6 +619,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jk",
+      "originalName": "jk",
+      "to": "ProxySocketConnector",
+      "evidence": "Uses the configured Java ProxySelector to try proxy routes for the destination and falls back to a direct connection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:k",
       "originalName": "k",
       "to": "BufferedRandomAccessFile",
@@ -693,6 +714,13 @@
       "originalName": "mi",
       "to": "TextHotspotBounds",
       "evidence": "Stores the tag ID and one line’s rectangular hotspot bounds. Additional rectangles are linked for hotspots that span multiple rendered lines.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mj",
+      "originalName": "mj",
+      "to": "KeyboardInputHandler",
+      "evidence": "Receives Java AWT keyboard and focus events and updates the client keyboard state.",
       "confidence": "reviewed"
     },
     {
@@ -934,6 +962,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rd",
+      "originalName": "rd",
+      "to": "MouseInputHandler",
+      "evidence": "Receives Java AWT mouse, pointer motion and focus events and updates the client pointer state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rh",
       "originalName": "rh",
       "to": "ResourceArchive",
@@ -1032,6 +1067,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uf",
+      "originalName": "uf",
+      "to": "ArchiveSourceManager",
+      "evidence": "Loads the master archive index and manages the cached providers created from its entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ui",
       "originalName": "ui",
       "to": "StandardContentDialog",
@@ -1085,6 +1127,13 @@
       "originalName": "vl",
       "to": "PcmMixerListener",
       "evidence": "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:w",
+      "originalName": "w",
+      "to": "ArchiveNetworkClient",
+      "evidence": "Owns pending and in-flight archive requests and defines connection lifecycle operations.",
       "confidence": "reviewed"
     },
     {
@@ -2047,6 +2096,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ca.a(Ljava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "detachKeyboardListeners",
+      "evidence": "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ca.a(Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "onNameSuggestionSelected",
@@ -2289,6 +2345,13 @@
       "originalName": "a",
       "to": "requestFullscreenExit",
       "evidence": "Wrong byte!=-34 calls display wrapper116 before kind7 enqueue with queue guard byte-64. Preserve extra task and queue-guard recursion for values>=-8. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(Ljava/lang/String;IILjava/lang/String;)Lrl;",
+      "originalName": "a",
+      "to": "openPreferencesFile",
+      "evidence": "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix.",
       "confidence": "reviewed"
     },
     {
@@ -3199,6 +3262,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachKeyboardListeners",
+      "evidence": "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -4133,10 +4203,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:g.a(B)V",
+      "originalName": "a",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.a(IZ)V",
+      "originalName": "a",
+      "to": "sendConnectionState",
+      "evidence": "Source-purpose review: Writes the client connection state message when an archive socket is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.a(Ljava/lang/Object;ZB)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:g.a(Z)V",
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.b(B)Z",
+      "originalName": "b",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.d(I)V",
+      "originalName": "d",
+      "to": "close",
+      "evidence": "Source-purpose review: Closes the active archive socket when it exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.g(I)V",
+      "originalName": "g",
+      "to": "sendProtocolSetup",
+      "evidence": "Source-purpose review: Writes the protocol setup message when the archive socket is attached.",
       "confidence": "reviewed"
     },
     {
@@ -4917,6 +5029,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hm.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openDirectSocket",
+      "evidence": "Source-purpose review: Opens a TCP socket to the configured destination host and port without using a proxy route.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.a(Z)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Declares the socket creation contract for the configured destination.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hm.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -5435,6 +5561,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:il.a(ZLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachMouseListeners",
+      "evidence": "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.a(IIILjava/lang/String;Lfa;)V",
       "originalName": "a",
       "to": "layoutSingleLineRightAligned",
@@ -5782,6 +5915,27 @@
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
       "evidence": "Complete declaration/body verified against exact source-reviewed private static<T extends Throwable> RuntimeException helper with throws T and body throw(T)throwable. Preserve generic exception signature, original Throwable identity, null behavior, annotation and every explicit type argument/call site; do not wrap or convert checked exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.a(Ljava/lang/String;ILjava/lang/String;B)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openHttpProxyTunnel",
+      "evidence": "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.a(Ljava/net/Proxy;B)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocketThroughProxy",
+      "evidence": "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.a(Z)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection.",
       "confidence": "reviewed"
     },
     {
@@ -8648,6 +8802,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uf.a(B)Z",
+      "originalName": "a",
+      "to": "loadMasterIndex",
+      "evidence": "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.a(I)V",
+      "originalName": "a",
+      "to": "pollArchiveSources",
+      "evidence": "Source-purpose review: Polls active providers for pending work and advances their background operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.a(IZLah;Lah;I)Lcg;",
+      "originalName": "a",
+      "to": "getOrCreateArchiveSource",
+      "evidence": "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uf.a(Z)V",
       "originalName": "a",
       "to": "resetStaticState",
@@ -8659,6 +8834,13 @@
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 2 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detachMouseListeners",
+      "evidence": "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -8991,10 +9173,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:w.a(B)V",
+      "originalName": "a",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(I)Z",
+      "originalName": "a",
+      "to": "isPriorityQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(IZIIB)Lfk;",
+      "originalName": "a",
+      "to": "enqueueRequest",
+      "evidence": "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(Ljava/lang/Object;ZB)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.b(B)Z",
+      "originalName": "b",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.b(I)Z",
+      "originalName": "b",
+      "to": "isPrefetchQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:w.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.d(I)V",
+      "originalName": "d",
+      "to": "close",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.e(I)I",
+      "originalName": "e",
+      "to": "getPrefetchRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.f(I)I",
+      "originalName": "f",
+      "to": "getPriorityRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight priority requests.",
       "confidence": "reviewed"
     },
     {
@@ -9308,7 +9553,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "381d6c511325cde353a21cc71abf1363608454dc7694e0a5c82de75309b566d9",
+      "fleacircus-names.json": "cfed846aa9955d6a78e367fa724de48b46fb1c4d4f58832189cabf646936bc38",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

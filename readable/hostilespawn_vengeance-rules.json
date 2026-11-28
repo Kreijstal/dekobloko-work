@@ -640,6 +640,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ej",
+      "originalName": "ej",
+      "to": "ArchiveNetworkClient",
+      "evidence": "Owns pending and in-flight archive requests and defines connection lifecycle operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ek",
       "originalName": "ek",
       "to": "VorbisCodebook",
@@ -798,6 +805,13 @@
       "originalName": "ig",
       "to": "EditableTextField",
       "evidence": "Edits and selects text, handles clipboard commands, and dispatches text change and submission events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ih",
+      "originalName": "ih",
+      "to": "SocketArchiveNetworkClient",
+      "evidence": "Implements the archive request lifecycle over a buffered socket.",
       "confidence": "reviewed"
     },
     {
@@ -1253,6 +1267,13 @@
       "originalName": "sf",
       "to": "TextInputField",
       "evidence": "Extends the editable text control with a field-specific input handler and adjusted tooltip coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sg",
+      "originalName": "sg",
+      "to": "ArchiveSourceManager",
+      "evidence": "Loads the master archive index and manages the cached providers created from its entries.",
       "confidence": "reviewed"
     },
     {
@@ -3629,6 +3650,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(Ljava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "attachMouseListeners",
+      "evidence": "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:df.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3937,6 +3965,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ea.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachKeyboardListeners",
+      "evidence": "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ec.$cfr$intArgs$a$7ffe4b125357(IZ)V",
       "originalName": "$cfr$intArgs$a$7ffe4b125357",
       "to": "setAlternateMovementKeysWithIntGuard",
@@ -4056,6 +4091,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.a(B)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(BIIIZ)Llm;",
+      "originalName": "a",
+      "to": "enqueueRequest",
+      "evidence": "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(I)Z",
+      "originalName": "a",
+      "to": "isPriorityQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(ZBLjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.a(Z[BI)Ljava/lang/Object;",
       "originalName": "a",
       "to": "storeBytes",
@@ -4063,10 +4126,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.b(B)I",
+      "originalName": "b",
+      "to": "getPrefetchRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.b(I)Z",
+      "originalName": "b",
+      "to": "isPrefetchQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.c(B)I",
+      "originalName": "c",
+      "to": "getPriorityRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight priority requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.c(I)V",
+      "originalName": "c",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.d(I)V",
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4fd29b93c31668034eaee78cfec354164965f0c71b0d9dd2421e6a108bbdc494.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.e(I)Z",
+      "originalName": "e",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
       "confidence": "reviewed"
     },
     {
@@ -4130,6 +4228,55 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(II[BB)V",
+      "originalName": "a",
+      "to": "readCipheredBytes",
+      "evidence": "Source-purpose review: Copies bytes from the current position into the requested destination slice, subtracting one cipher value per byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(IZ)I",
+      "originalName": "a",
+      "to": "readBits",
+      "evidence": "Source-purpose review: Reads the requested number of bits at the current bit offset across byte boundaries and advances the bit offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a([II)V",
+      "originalName": "a",
+      "to": "setCipherSeed",
+      "evidence": "Source-purpose review: Creates the opcode cipher from the supplied integer seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.c(Z)V",
+      "originalName": "c",
+      "to": "beginBitAccess",
+      "evidence": "Source-purpose review: Initializes the bit-read offset from the current byte position in bit units.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.i(II)V",
+      "originalName": "i",
+      "to": "writeCipheredByte",
+      "evidence": "Source-purpose review: Adds the next cipher value to the supplied byte and appends it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.p(I)I",
+      "originalName": "p",
+      "to": "readCipheredByte",
+      "evidence": "Source-purpose review: Reads one unsigned byte after subtracting the next cipher value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.q(I)V",
+      "originalName": "q",
+      "to": "endBitAccess",
+      "evidence": "Source-purpose review: Restores the byte position rounded up from the bit-read offset.",
       "confidence": "reviewed"
     },
     {
@@ -4340,6 +4487,13 @@
       "originalName": "a",
       "to": "requestThreadStart",
       "evidence": "Evaluate -31/((9-intGuard)/44) before kind2 enqueue,keeping overflow and arithmetic exceptions; retain Runnable/priority and daemon/start-before-priority/result publication. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.a(ILjava/lang/String;Ljava/lang/String;I)Lee;",
+      "originalName": "a",
+      "to": "openPreferencesFile",
+      "evidence": "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix.",
       "confidence": "reviewed"
     },
     {
@@ -5512,10 +5666,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ih.a(B)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Source-purpose review: Closes the active archive socket when it exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(BZ)V",
+      "originalName": "a",
+      "to": "sendConnectionState",
+      "evidence": "Source-purpose review: Writes the client connection state message when an archive socket is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ZBLjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.c(I)V",
+      "originalName": "c",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.e(I)Z",
+      "originalName": "e",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ih.f(I)V",
       "originalName": "f",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 5 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.g(I)V",
+      "originalName": "g",
+      "to": "sendProtocolSetup",
+      "evidence": "Source-purpose review: Writes the protocol setup message when the archive socket is attached.",
       "confidence": "reviewed"
     },
     {
@@ -6412,6 +6608,13 @@
       "originalName": "a",
       "to": "installContent",
       "evidence": "Source-purpose review: Unlinks the previous content, positions the replacement, and adds it to the dialog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attachKeyboardListeners",
+      "evidence": "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -8025,6 +8228,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sg.a(I)Z",
+      "originalName": "a",
+      "to": "loadMasterIndex",
+      "evidence": "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sg.a(ZILum;Lum;I)Lrb;",
+      "originalName": "a",
+      "to": "getOrCreateArchiveSource",
+      "evidence": "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sg.c(I)V",
+      "originalName": "c",
+      "to": "pollArchiveSources",
+      "evidence": "Source-purpose review: Polls active providers for pending work and advances their background operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:si.a()V",
       "originalName": "a",
       "to": "clearScanlineMask",
@@ -8428,6 +8652,13 @@
       "originalName": "a",
       "to": "handleKey",
       "evidence": "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detachMouseListeners",
+      "evidence": "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -9089,10 +9320,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vi.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readNullableString",
+      "evidence": "Source-purpose review: Consumes a zero marker as null or reads the NUL-terminated string.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(BI)V",
+      "originalName": "a",
+      "to": "writeShort",
+      "evidence": "Source-purpose review: Appends the low sixteen bits in big-endian byte order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(BLen;)Z",
+      "originalName": "a",
+      "to": "readBooleanBit",
+      "evidence": "Source-purpose review: Reads one bit from the supplied cipher packet and tests whether that bit is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeBase38Name",
+      "evidence": "Source-purpose review: Packs up to twenty name characters into two seven-byte base-38 values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vi.a(IBI[I)V",
       "originalName": "a",
       "to": "decryptXteaRange",
       "evidence": "Source-purpose review: Source-purpose and bound caller review: Decrypt complete eight-byte blocks in the supplied [start,end) range with the stateful buffer cursor and XTEA subtraction rounds. Retain the package-visible final instance declaration, all supplied int/byte/key-array domains and exact helper arguments. Add no range/key-length/alignment validation, clamping or non-null precondition. Keep the global game flag read before the try block, signed division by8, integer subtraction/addition overflow, 32-round post-decrement loops, exact XOR/add/subtract precedence, all shifts, masks and literals. Do not normalize obfuscating masks. Keep two ordered big-endian reads before each block computation, cursor rewind by8, and two ordered big-endian writes. Preserve output/cursor partial effects and null/index/allocation/exception order. Retain catch wrapping, all diagnostic strings including original obfuscated method names, StringBuilder append order, null versus {...} formatting and wrapper reuse/allocation behavior. Do not add cursor restoration in finally. The key array is accessed only inside processed rounds. Empty or negative computed block counts retain their original behavior even with a null or short key array. Save cursor, assign param2 to cursor and compute (param0-param2)/8 before the byte guard. param1 > -114 returns with cursor at param2; do not restore it on that branch. Start sum at -957401312, subtract the second word, subtract delta, then subtract the first word. Preserve key indices (sum &7500) >>>11 and sum &3 exactly. Restore the saved cursor only when the block loop normally finishes. Both the archive caller using byte -126/start5 and the write-long dummy branch using byte -21/start-127 are bound references and must be renamed without argument or behavior changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(II)V",
+      "originalName": "a",
+      "to": "patchByteLength",
+      "evidence": "Source-purpose review: Backfills a one-byte payload length immediately before the payload at the given distance behind the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(II[BI)V",
+      "originalName": "a",
+      "to": "readBytes",
+      "evidence": "Source-purpose review: Copies the requested number of bytes from the current position into a destination slice and advances the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(IJ)V",
+      "originalName": "a",
+      "to": "writeLong40",
+      "evidence": "Source-purpose review: Writes the low 40 bits of a long value as five big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeCircumfixedString",
+      "evidence": "Source-purpose review: Encodes the string as CP1252 between a leading and trailing NUL byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(I[BZI)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "Source-purpose review: Appends the requested source byte slice at the current position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "writeString",
+      "evidence": "Source-purpose review: Encodes the string as CP1252 and appends its trailing terminator after checking for embedded NUL.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(Ljava/math/BigInteger;ILjava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "writeRsaBlock",
+      "evidence": "Source-purpose review: Applies the supplied RSA exponent and modulus to the buffered payload and writes a length-prefixed result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(Z)I",
+      "originalName": "a",
+      "to": "readLargeSmart",
+      "evidence": "Source-purpose review: Selects an unsigned short or a 31-bit integer based on the next byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(ZI)V",
+      "originalName": "a",
+      "to": "patchShortLength",
+      "evidence": "Source-purpose review: Backfills a two-byte payload length immediately before the payload at the given distance behind the cursor.",
       "confidence": "reviewed"
     },
     {
@@ -9103,6 +9425,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vi.b(IB)V",
+      "originalName": "b",
+      "to": "patchIntLength",
+      "evidence": "Source-purpose review: Backfills a four-byte payload length immediately before the payload at the given distance behind the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.b(II)V",
+      "originalName": "b",
+      "to": "writeInt",
+      "evidence": "Source-purpose review: Appends four bytes of the supplied integer in big-endian order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.b(IJ)V",
+      "originalName": "b",
+      "to": "writeLong",
+      "evidence": "Source-purpose review: Writes all eight bytes of a long value in big-endian order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.b(Z)I",
+      "originalName": "b",
+      "to": "readSignedShort",
+      "evidence": "Source-purpose review: Reads the next two bytes as a big-endian signed 16-bit integer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.b(ZI)V",
+      "originalName": "b",
+      "to": "writeVarInt",
+      "evidence": "Source-purpose review: Writes a variable-length integer using seven data bits per byte and a continuation flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.c(B)Z",
+      "originalName": "c",
+      "to": "verifyTrailingCrc32",
+      "evidence": "Source-purpose review: Recomputes the CRC-32 and compares it with the stored final integer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.c(I)J",
+      "originalName": "c",
+      "to": "readLong",
+      "evidence": "Source-purpose review: Combines two unsigned 32-bit halves of a big-endian 64-bit value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.c(II)V",
+      "originalName": "c",
+      "to": "writeSignedSmart",
+      "evidence": "Source-purpose review: Writes the signed smart representation as one or two bytes for the supported value range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.c(IJ)V",
+      "originalName": "c",
+      "to": "writeLong56",
+      "evidence": "Source-purpose review: Writes the low 56 bits of a long value as seven big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.d(I)I",
+      "originalName": "d",
+      "to": "readInt",
+      "evidence": "Source-purpose review: Reads four bytes as a big-endian integer and advances the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.d(II)V",
+      "originalName": "d",
+      "to": "writeByte",
+      "evidence": "Source-purpose review: Appends the low byte of the supplied value and advances the cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vi.e(I)I",
       "originalName": "e",
       "to": "readUnsignedShort",
@@ -9110,10 +9509,87 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vi.e(II)V",
+      "originalName": "e",
+      "to": "writeMedium",
+      "evidence": "Source-purpose review: Appends the low twenty-four bits in big-endian byte order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.f(I)I",
+      "originalName": "f",
+      "to": "readSmart",
+      "evidence": "Source-purpose review: Selects a one- or two-byte unsigned smart value from the next byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.f(II)I",
+      "originalName": "f",
+      "to": "appendCrc32",
+      "evidence": "Source-purpose review: Computes a CRC-32 over the requested span, appends it as an integer and returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.g(I)V",
+      "originalName": "g",
+      "to": "clearPacketBufferStatics",
+      "evidence": "Source-purpose review: Clears the static references declared by the base packet buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.g(II)V",
+      "originalName": "g",
+      "to": "padWithZerosToPosition",
+      "evidence": "Source-purpose review: Appends zero bytes until the cursor reaches the requested position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.h(I)I",
+      "originalName": "h",
+      "to": "readUnsignedMedium",
+      "evidence": "Source-purpose review: Reads the next three bytes as a big-endian unsigned 24-bit integer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.i(I)I",
+      "originalName": "i",
+      "to": "readSignedSmart",
+      "evidence": "Source-purpose review: Reads the one- or two-byte signed smart representation and applies its corresponding offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.j(I)B",
+      "originalName": "j",
+      "to": "readSignedByte",
+      "evidence": "Source-purpose review: Returns the next stored signed byte and advances the cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vi.l(I)I",
       "originalName": "l",
       "to": "readUnsignedByte",
       "evidence": "Read an unsigned payload byte at the retained cursor and increment cursor once,with every original guard and side effect kept in the exact source order. Pre-rename body SHA256 bea0045493a0d4204de299bfec2ced6808190fcb8d883ce01203e435973c1fc2. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.m(I)I",
+      "originalName": "m",
+      "to": "readVarInt",
+      "evidence": "Source-purpose review: Reads a big-endian variable-length integer using seven data bits per byte and a continuation flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.n(I)Ljava/lang/String;",
+      "originalName": "n",
+      "to": "readCircumfixedString",
+      "evidence": "Source-purpose review: Checks for a leading NUL marker and reads the following NUL-terminated CP1252 string.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.o(I)Ljava/lang/String;",
+      "originalName": "o",
+      "to": "readString",
+      "evidence": "Source-purpose review: Reads and decodes the NUL-terminated CP1252 string at the current cursor.",
       "confidence": "reviewed"
     },
     {
@@ -10022,7 +10498,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "9ad4b2ad68670244052b8dc0e1969a2936ee45422d96a7cbcc0ec5a3f0ac566b",
+      "hostilespawn_vengeance-names.json": "b548c1b2d27f7eb94c28ef29d1303343f735f452d3471646df67eaf18239f87b",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

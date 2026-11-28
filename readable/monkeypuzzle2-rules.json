@@ -290,6 +290,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:c",
+      "originalName": "c",
+      "to": "ArchiveSourceManager",
+      "evidence": "Loads the master archive index and manages the cached providers created from its entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cc",
       "originalName": "cc",
       "to": "MouseWheelInput",
@@ -378,6 +385,13 @@
       "originalName": "eh",
       "to": "Win32CursorManager",
       "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fa",
+      "originalName": "fa",
+      "to": "SocketArchiveNetworkClient",
+      "evidence": "Implements the archive request lifecycle over a buffered socket.",
       "confidence": "reviewed"
     },
     {
@@ -864,6 +878,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qh",
+      "originalName": "qh",
+      "to": "MouseInputHandler",
+      "evidence": "Receives Java AWT mouse, pointer motion and focus events and updates the client pointer state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qi",
       "originalName": "qi",
       "to": "LoginPanel",
@@ -1018,6 +1039,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tk",
+      "originalName": "tk",
+      "to": "KeyboardInputHandler",
+      "evidence": "Receives Java AWT keyboard and focus events and updates the client keyboard state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:u",
       "originalName": "u",
       "to": "TextHotspotListener",
@@ -1148,6 +1176,13 @@
       "originalName": "wj",
       "to": "TextFieldValidator",
       "evidence": "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wl",
+      "originalName": "wl",
+      "to": "ArchiveNetworkClient",
+      "evidence": "Owns pending and in-flight archive requests and defines connection lifecycle operations.",
       "confidence": "reviewed"
     },
     {
@@ -1620,6 +1655,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ac.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachMouseListeners",
+      "evidence": "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ad.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1984,10 +2026,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Declares the socket creation contract for the configured destination.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(IIZ)I",
       "originalName": "a",
       "to": "integerPower",
       "evidence": "Exponentiation-by-squaring helper with signed32-bit multiplication and right shifts. Preserve each actual base/exponent/seed-or-terminal/guard parameter arrangement,global control reads,side effects,early returns and exception wrapper;do not substitute Math.pow. Pre-rename body SHA256 75352a7015d51dbf5bc1d5ef8829aee2518b0612dd9e438f4d08ca405767a180. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.b(B)Ljava/net/Socket;",
+      "originalName": "b",
+      "to": "openDirectSocket",
+      "evidence": "Source-purpose review: Opens a TCP socket to the configured destination host and port without using a proxy route.",
       "confidence": "reviewed"
     },
     {
@@ -2355,10 +2411,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:c.a(B)Z",
+      "originalName": "a",
+      "to": "loadMasterIndex",
+      "evidence": "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:c.a(ILgf;ILgf;Z)Lca;",
+      "originalName": "a",
+      "to": "getOrCreateArchiveSource",
+      "evidence": "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:c.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:c.b(Z)V",
+      "originalName": "b",
+      "to": "pollArchiveSources",
+      "evidence": "Source-purpose review: Polls active providers for pending work and advances their background operations.",
       "confidence": "reviewed"
     },
     {
@@ -2975,6 +3052,48 @@
       "originalName": "b",
       "to": "activateFromInput",
       "evidence": "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(B)Z",
+      "originalName": "a",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(IZLjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(ZB)V",
+      "originalName": "a",
+      "to": "sendConnectionState",
+      "evidence": "Source-purpose review: Writes the client connection state message when an archive socket is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.b(B)V",
+      "originalName": "b",
+      "to": "close",
+      "evidence": "Source-purpose review: Closes the active archive socket when it exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.b(I)V",
+      "originalName": "b",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.e(I)V",
+      "originalName": "e",
+      "to": "sendProtocolSetup",
+      "evidence": "Source-purpose review: Writes the protocol setup message when the archive socket is attached.",
       "confidence": "reviewed"
     },
     {
@@ -4060,6 +4179,27 @@
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
       "evidence": "Complete declaration/body verified against exact source-reviewed private static<T extends Throwable> RuntimeException helper with throws T and body throw(T)throwable. Preserve generic exception signature, original Throwable identity, null behavior, annotation and every explicit type argument/call site; do not wrap or convert checked exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ia.a(BLjava/net/Proxy;)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocketThroughProxy",
+      "evidence": "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ia.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ia.a(Ljava/lang/String;Ljava/lang/String;II)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openHttpProxyTunnel",
+      "evidence": "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established.",
       "confidence": "reviewed"
     },
     {
@@ -5596,6 +5736,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:md.a(ILjava/lang/String;Ljava/lang/String;B)Lpl;",
+      "originalName": "a",
+      "to": "openPreferencesFile",
+      "evidence": "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:md.a(I[Ljava/lang/Class;Ljava/lang/Class;Ljava/lang/String;)Lic;",
       "originalName": "a",
       "to": "requestDeclaredMethod",
@@ -5691,6 +5838,13 @@
       "originalName": "a",
       "to": "drawWidget",
       "evidence": "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachKeyboardListeners",
+      "evidence": "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -5939,6 +6093,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ni.a(Ljava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "detachKeyboardListeners",
+      "evidence": "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ni.b(B)Lbf;",
       "originalName": "b",
       "to": "removeFirst",
@@ -5985,6 +6146,13 @@
       "originalName": "a",
       "to": "scaleRate",
       "evidence": "With a retained coefficient table,scale the original full-width rate/count through long multiplication and division followed by int cast;otherwise retain the supplied value. Keep original guard-specific returns,extra helper calls and arithmetic/exception order. Keep boolean-true recursive resample(false,null) call before work,scaleRate guard greater/equal minus70 calls resample(true,null),and scalePosition byte guard<=20 writes the original static minus31 after scaling. Preserve all captured reads,null behavior,partial work and exact byte guards80/94/44 in the sample wrapper. Complete original-body SHA256 446cdc0523c6803beb2aa8869102c9830b786ee2942c4d32f9381964080a90df. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:o.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attachMouseListeners",
+      "evidence": "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -8697,10 +8865,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wl.a(B)Z",
+      "originalName": "a",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(I)Z",
+      "originalName": "a",
+      "to": "isPrefetchQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IIIZB)Lob;",
+      "originalName": "a",
+      "to": "enqueueRequest",
+      "evidence": "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IZLjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.b(B)V",
+      "originalName": "b",
+      "to": "close",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.b(I)V",
+      "originalName": "b",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wl.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5e63df816a489dc0927c2bb9b5abc89c2007bcec1ed79a438b1e03d1ee4e58c9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.c(I)I",
+      "originalName": "c",
+      "to": "getPriorityRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight priority requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.d(B)I",
+      "originalName": "d",
+      "to": "getPrefetchRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.d(I)Z",
+      "originalName": "d",
+      "to": "isPriorityQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit.",
       "confidence": "reviewed"
     },
     {
@@ -8790,7 +9021,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "96235d7669e47c331d5f2a2cdb7cab0f25bed9de325c3bf6e7626ae392ee1f73",
+      "monkeypuzzle2-names.json": "60b5859d210ff12d49615470ecf7bae664c193b2f3165b526b3ebe241d800533",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

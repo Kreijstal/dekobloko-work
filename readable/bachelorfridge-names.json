@@ -439,6 +439,26 @@
       "u$1$CfrPartitionedBody",
       "ClientTextLoader",
       "Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups."
+    ],
+    [
+      "qfa",
+      "NetworkArchiveRequest",
+      "Represents an enqueued archive request with a priority flag, a resource key and the received data."
+    ],
+    [
+      "vm",
+      "ArchiveNetworkClient",
+      "Owns pending and in-flight archive requests and defines connection lifecycle operations."
+    ],
+    [
+      "cl",
+      "SocketArchiveNetworkClient",
+      "Implements the archive request lifecycle over a buffered socket."
+    ],
+    [
+      "kb",
+      "ArchiveSourceManager",
+      "Loads the master archive index and manages the cached providers created from its entries."
     ]
   ],
   "methods": [
@@ -7714,6 +7734,202 @@
       "(B)V",
       "checkWriteError",
       "Source-purpose review: Checks and clears the saved background-write error, reporting it once as an IOException."
+    ],
+    [
+      "rma",
+      "a",
+      "(B)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Declares the socket creation contract for the configured destination."
+    ],
+    [
+      "dm",
+      "a",
+      "(B)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection."
+    ],
+    [
+      "rma",
+      "a",
+      "(I)Ljava/net/Socket;",
+      "openDirectSocket",
+      "Source-purpose review: Opens a TCP socket to the configured destination host and port without using a proxy route."
+    ],
+    [
+      "dm",
+      "a",
+      "(BLjava/net/Proxy;)Ljava/net/Socket;",
+      "openSocketThroughProxy",
+      "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine."
+    ],
+    [
+      "dm",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;I)Ljava/net/Socket;",
+      "openHttpProxyTunnel",
+      "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established."
+    ],
+    [
+      "ht",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;II)Lqaa;",
+      "openPreferencesFile",
+      "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix."
+    ],
+    [
+      "gda",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "detachMouseListeners",
+      "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component."
+    ],
+    [
+      "hl",
+      "a",
+      "(BLjava/awt/Component;)V",
+      "detachKeyboardListeners",
+      "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component."
+    ],
+    [
+      "ii",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "attachKeyboardListeners",
+      "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component."
+    ],
+    [
+      "jba",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "attachMouseListeners",
+      "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component."
+    ],
+    [
+      "vm",
+      "a",
+      "(IIIBZ)Lqfa;",
+      "enqueueRequest",
+      "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority."
+    ],
+    [
+      "vm",
+      "b",
+      "(I)Z",
+      "isPriorityQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit."
+    ],
+    [
+      "vm",
+      "a",
+      "(Z)Z",
+      "isPrefetchQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit."
+    ],
+    [
+      "vm",
+      "d",
+      "(B)I",
+      "getPriorityRequestCount",
+      "Source-purpose review: Counts pending and in-flight priority requests."
+    ],
+    [
+      "vm",
+      "a",
+      "(I)I",
+      "getPrefetchRequestCount",
+      "Source-purpose review: Counts pending and in-flight prefetch requests."
+    ],
+    [
+      "vm",
+      "a",
+      "(ZLjava/lang/Object;I)V",
+      "attachSocket",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "cl",
+      "a",
+      "(ZLjava/lang/Object;I)V",
+      "attachSocket",
+      "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection."
+    ],
+    [
+      "vm",
+      "c",
+      "(B)Z",
+      "pollNetwork",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "cl",
+      "c",
+      "(B)Z",
+      "pollNetwork",
+      "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state."
+    ],
+    [
+      "vm",
+      "b",
+      "(B)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "cl",
+      "b",
+      "(B)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask."
+    ],
+    [
+      "vm",
+      "c",
+      "(I)V",
+      "close",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "cl",
+      "c",
+      "(I)V",
+      "close",
+      "Source-purpose review: Closes the active archive socket when it exists."
+    ],
+    [
+      "cl",
+      "a",
+      "(IZ)V",
+      "sendConnectionState",
+      "Source-purpose review: Writes the client connection state message when an archive socket is active."
+    ],
+    [
+      "cl",
+      "d",
+      "(I)V",
+      "sendProtocolSetup",
+      "Source-purpose review: Writes the protocol setup message when the archive socket is attached."
+    ],
+    [
+      "kb",
+      "a",
+      "(B)Z",
+      "loadMasterIndex",
+      "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster."
+    ],
+    [
+      "kb",
+      "a",
+      "(ZILta;Lta;I)Lfp;",
+      "getOrCreateArchiveSource",
+      "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores."
+    ],
+    [
+      "kb",
+      "b",
+      "(B)V",
+      "pollArchiveSources",
+      "Source-purpose review: Polls active providers for pending work and advances their background operations."
     ]
   ],
   "fields": [

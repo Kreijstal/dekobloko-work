@@ -634,6 +634,21 @@
       "wc$1$CfrPartitionedBody",
       "ClientTextLoader",
       "Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups."
+    ],
+    [
+      "tk",
+      "ArchiveNetworkClient",
+      "Owns pending and in-flight archive requests and defines connection lifecycle operations."
+    ],
+    [
+      "eg",
+      "SocketArchiveNetworkClient",
+      "Implements the archive request lifecycle over a buffered socket."
+    ],
+    [
+      "kr",
+      "ArchiveSourceManager",
+      "Loads the master archive index and manages the cached providers created from its entries."
     ]
   ],
   "methods": [
@@ -10751,6 +10766,314 @@
       "(I)V",
       "checkWriteError",
       "Source-purpose review: Checks and clears the saved background-write error, reporting it once as an IOException."
+    ],
+    [
+      "ig",
+      "b",
+      "(I)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Declares the socket creation contract for the configured destination."
+    ],
+    [
+      "aj",
+      "b",
+      "(I)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection."
+    ],
+    [
+      "ig",
+      "a",
+      "(B)Ljava/net/Socket;",
+      "openDirectSocket",
+      "Source-purpose review: Opens a TCP socket to the configured destination host and port without using a proxy route."
+    ],
+    [
+      "aj",
+      "a",
+      "(BLjava/net/Proxy;)Ljava/net/Socket;",
+      "openSocketThroughProxy",
+      "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine."
+    ],
+    [
+      "aj",
+      "a",
+      "(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;",
+      "openHttpProxyTunnel",
+      "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established."
+    ],
+    [
+      "ed",
+      "a",
+      "(BLjava/lang/String;)V",
+      "writeString",
+      "Source-purpose review: Encodes the string as CP1252 and appends its trailing terminator after checking for embedded NUL."
+    ],
+    [
+      "ed",
+      "a",
+      "(II[BI)V",
+      "writeBytes",
+      "Source-purpose review: Appends the requested source byte slice at the current position."
+    ],
+    [
+      "ed",
+      "a",
+      "(ILjava/lang/String;)V",
+      "writeCircumfixedString",
+      "Source-purpose review: Encodes the string as CP1252 between a leading and trailing NUL byte."
+    ],
+    [
+      "ed",
+      "a",
+      "(I[BII)V",
+      "readBytes",
+      "Source-purpose review: Copies the requested number of bytes from the current position into a destination slice and advances the cursor."
+    ],
+    [
+      "ed",
+      "a",
+      "(JI)V",
+      "writeLong56",
+      "Source-purpose review: Writes the low 56 bits of a long value as seven big-endian bytes."
+    ],
+    [
+      "ed",
+      "a",
+      "(JIB)V",
+      "writeLongPayloadPacket",
+      "Source-purpose review: Writes the supplied ciphered opcode, payload tag and long value, and backfills the byte length."
+    ],
+    [
+      "ed",
+      "a",
+      "(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",
+      "writeRsaBlock",
+      "Source-purpose review: Applies the supplied RSA exponent and modulus to the buffered payload and writes a length-prefixed result."
+    ],
+    [
+      "ed",
+      "a",
+      "(Z)I",
+      "readVarInt",
+      "Source-purpose review: Reads a big-endian variable-length integer using seven data bits per byte and a continuation flag."
+    ],
+    [
+      "ed",
+      "a",
+      "(ZZ)V",
+      "buildLobbyPanels",
+      "Source-purpose review: Creates and attaches the lobby panels and dispatches their layout."
+    ],
+    [
+      "ed",
+      "b",
+      "(BJ)V",
+      "writeLong40",
+      "Source-purpose review: Writes the low 40 bits of a long value as five big-endian bytes."
+    ],
+    [
+      "ed",
+      "b",
+      "(II)V",
+      "writeVarInt",
+      "Source-purpose review: Writes a variable-length integer using seven data bits per byte and a continuation flag."
+    ],
+    [
+      "ed",
+      "b",
+      "(ILjava/lang/String;)V",
+      "writeBase38Name",
+      "Source-purpose review: Packs up to twenty name characters into two seven-byte base-38 values."
+    ],
+    [
+      "ed",
+      "c",
+      "(II)I",
+      "appendCrc32",
+      "Source-purpose review: Computes a CRC-32 over the requested span, appends it as an integer and returns it."
+    ],
+    [
+      "ed",
+      "c",
+      "(Z)Ljava/lang/String;",
+      "readCircumfixedString",
+      "Source-purpose review: Checks for a leading NUL marker and reads the following NUL-terminated CP1252 string."
+    ],
+    [
+      "ed",
+      "h",
+      "(II)V",
+      "padWithZerosToPosition",
+      "Source-purpose review: Appends zero bytes until the cursor reaches the requested position."
+    ],
+    [
+      "ed",
+      "o",
+      "(I)Z",
+      "verifyTrailingCrc32",
+      "Source-purpose review: Recomputes the CRC-32 and compares it with the stored final integer."
+    ],
+    [
+      "jj",
+      "a",
+      "(IILjava/lang/String;Ljava/lang/String;)Lbj;",
+      "openPreferencesFile",
+      "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix."
+    ],
+    [
+      "ee",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "detachMouseListeners",
+      "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component."
+    ],
+    [
+      "hk",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "attachMouseListeners",
+      "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component."
+    ],
+    [
+      "rm",
+      "a",
+      "(BLjava/awt/Component;)V",
+      "detachKeyboardListeners",
+      "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component."
+    ],
+    [
+      "vm",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "attachKeyboardListeners",
+      "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component."
+    ],
+    [
+      "tk",
+      "a",
+      "(IIZBZ)Lia;",
+      "enqueueRequest",
+      "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority."
+    ],
+    [
+      "tk",
+      "a",
+      "(I)Z",
+      "isPriorityQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit."
+    ],
+    [
+      "tk",
+      "f",
+      "(I)Z",
+      "isPrefetchQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit."
+    ],
+    [
+      "tk",
+      "d",
+      "(B)I",
+      "getPriorityRequestCount",
+      "Source-purpose review: Counts pending and in-flight priority requests."
+    ],
+    [
+      "tk",
+      "b",
+      "(I)I",
+      "getPrefetchRequestCount",
+      "Source-purpose review: Counts pending and in-flight prefetch requests."
+    ],
+    [
+      "tk",
+      "a",
+      "(Ljava/lang/Object;ZI)V",
+      "attachSocket",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "eg",
+      "a",
+      "(Ljava/lang/Object;ZI)V",
+      "attachSocket",
+      "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection."
+    ],
+    [
+      "tk",
+      "d",
+      "(I)Z",
+      "pollNetwork",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "eg",
+      "d",
+      "(I)Z",
+      "pollNetwork",
+      "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state."
+    ],
+    [
+      "tk",
+      "e",
+      "(I)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "eg",
+      "e",
+      "(I)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask."
+    ],
+    [
+      "tk",
+      "b",
+      "(B)V",
+      "close",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "eg",
+      "b",
+      "(B)V",
+      "close",
+      "Source-purpose review: Closes the active archive socket when it exists."
+    ],
+    [
+      "eg",
+      "a",
+      "(ZB)V",
+      "sendConnectionState",
+      "Source-purpose review: Writes the client connection state message when an archive socket is active."
+    ],
+    [
+      "eg",
+      "g",
+      "(I)V",
+      "sendProtocolSetup",
+      "Source-purpose review: Writes the protocol setup message when the archive socket is attached."
+    ],
+    [
+      "kr",
+      "b",
+      "(I)Z",
+      "loadMasterIndex",
+      "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster."
+    ],
+    [
+      "kr",
+      "a",
+      "(ILqh;ZILqh;)Luk;",
+      "getOrCreateArchiveSource",
+      "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores."
+    ],
+    [
+      "kr",
+      "d",
+      "(I)V",
+      "pollArchiveSources",
+      "Source-purpose review: Polls active providers for pending work and advances their background operations."
     ]
   ],
   "fields": [

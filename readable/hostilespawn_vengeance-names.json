@@ -704,6 +704,21 @@
       "ib$1$CfrPartitionedBody",
       "GameTextLoader",
       "Local loader carries the resource archive and temporary decode state across 2 sections with 379 bound game interface text lookups."
+    ],
+    [
+      "ej",
+      "ArchiveNetworkClient",
+      "Owns pending and in-flight archive requests and defines connection lifecycle operations."
+    ],
+    [
+      "ih",
+      "SocketArchiveNetworkClient",
+      "Implements the archive request lifecycle over a buffered socket."
+    ],
+    [
+      "sg",
+      "ArchiveSourceManager",
+      "Loads the master archive index and manages the cached providers created from its entries."
     ]
   ],
   "methods": [
@@ -9008,6 +9023,461 @@
       "(IZ)V",
       "setAlternateMovementKeysWithIntGuard",
       "Source-purpose review: Records the alternate-control option and switches movement bindings between the configured keys and the default directional key codes. Preserves the separate JVM integer-width guard and all bound integer call sites."
+    ],
+    [
+      "en",
+      "a",
+      "(II[BB)V",
+      "readCipheredBytes",
+      "Source-purpose review: Copies bytes from the current position into the requested destination slice, subtracting one cipher value per byte."
+    ],
+    [
+      "en",
+      "a",
+      "(IZ)I",
+      "readBits",
+      "Source-purpose review: Reads the requested number of bits at the current bit offset across byte boundaries and advances the bit offset."
+    ],
+    [
+      "en",
+      "a",
+      "([II)V",
+      "setCipherSeed",
+      "Source-purpose review: Creates the opcode cipher from the supplied integer seed."
+    ],
+    [
+      "en",
+      "c",
+      "(Z)V",
+      "beginBitAccess",
+      "Source-purpose review: Initializes the bit-read offset from the current byte position in bit units."
+    ],
+    [
+      "en",
+      "i",
+      "(II)V",
+      "writeCipheredByte",
+      "Source-purpose review: Adds the next cipher value to the supplied byte and appends it."
+    ],
+    [
+      "en",
+      "p",
+      "(I)I",
+      "readCipheredByte",
+      "Source-purpose review: Reads one unsigned byte after subtracting the next cipher value."
+    ],
+    [
+      "en",
+      "q",
+      "(I)V",
+      "endBitAccess",
+      "Source-purpose review: Restores the byte position rounded up from the bit-read offset."
+    ],
+    [
+      "vi",
+      "a",
+      "(B)Ljava/lang/String;",
+      "readNullableString",
+      "Source-purpose review: Consumes a zero marker as null or reads the NUL-terminated string."
+    ],
+    [
+      "vi",
+      "a",
+      "(BI)V",
+      "writeShort",
+      "Source-purpose review: Appends the low sixteen bits in big-endian byte order."
+    ],
+    [
+      "vi",
+      "a",
+      "(BLjava/lang/String;)V",
+      "writeBase38Name",
+      "Source-purpose review: Packs up to twenty name characters into two seven-byte base-38 values."
+    ],
+    [
+      "vi",
+      "a",
+      "(II)V",
+      "patchByteLength",
+      "Source-purpose review: Backfills a one-byte payload length immediately before the payload at the given distance behind the cursor."
+    ],
+    [
+      "vi",
+      "a",
+      "(II[BI)V",
+      "readBytes",
+      "Source-purpose review: Copies the requested number of bytes from the current position into a destination slice and advances the cursor."
+    ],
+    [
+      "vi",
+      "a",
+      "(IJ)V",
+      "writeLong40",
+      "Source-purpose review: Writes the low 40 bits of a long value as five big-endian bytes."
+    ],
+    [
+      "vi",
+      "a",
+      "(ILjava/lang/String;)V",
+      "writeCircumfixedString",
+      "Source-purpose review: Encodes the string as CP1252 between a leading and trailing NUL byte."
+    ],
+    [
+      "vi",
+      "a",
+      "(I[BZI)V",
+      "writeBytes",
+      "Source-purpose review: Appends the requested source byte slice at the current position."
+    ],
+    [
+      "vi",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "writeString",
+      "Source-purpose review: Encodes the string as CP1252 and appends its trailing terminator after checking for embedded NUL."
+    ],
+    [
+      "vi",
+      "a",
+      "(Ljava/math/BigInteger;ILjava/math/BigInteger;)V",
+      "writeRsaBlock",
+      "Source-purpose review: Applies the supplied RSA exponent and modulus to the buffered payload and writes a length-prefixed result."
+    ],
+    [
+      "vi",
+      "a",
+      "(Z)I",
+      "readLargeSmart",
+      "Source-purpose review: Selects an unsigned short or a 31-bit integer based on the next byte."
+    ],
+    [
+      "vi",
+      "a",
+      "(ZI)V",
+      "patchShortLength",
+      "Source-purpose review: Backfills a two-byte payload length immediately before the payload at the given distance behind the cursor."
+    ],
+    [
+      "vi",
+      "b",
+      "(IB)V",
+      "patchIntLength",
+      "Source-purpose review: Backfills a four-byte payload length immediately before the payload at the given distance behind the cursor."
+    ],
+    [
+      "vi",
+      "b",
+      "(II)V",
+      "writeInt",
+      "Source-purpose review: Appends four bytes of the supplied integer in big-endian order."
+    ],
+    [
+      "vi",
+      "b",
+      "(IJ)V",
+      "writeLong",
+      "Source-purpose review: Writes all eight bytes of a long value in big-endian order."
+    ],
+    [
+      "vi",
+      "b",
+      "(Z)I",
+      "readSignedShort",
+      "Source-purpose review: Reads the next two bytes as a big-endian signed 16-bit integer."
+    ],
+    [
+      "vi",
+      "b",
+      "(ZI)V",
+      "writeVarInt",
+      "Source-purpose review: Writes a variable-length integer using seven data bits per byte and a continuation flag."
+    ],
+    [
+      "vi",
+      "c",
+      "(B)Z",
+      "verifyTrailingCrc32",
+      "Source-purpose review: Recomputes the CRC-32 and compares it with the stored final integer."
+    ],
+    [
+      "vi",
+      "c",
+      "(I)J",
+      "readLong",
+      "Source-purpose review: Combines two unsigned 32-bit halves of a big-endian 64-bit value."
+    ],
+    [
+      "vi",
+      "c",
+      "(II)V",
+      "writeSignedSmart",
+      "Source-purpose review: Writes the signed smart representation as one or two bytes for the supported value range."
+    ],
+    [
+      "vi",
+      "c",
+      "(IJ)V",
+      "writeLong56",
+      "Source-purpose review: Writes the low 56 bits of a long value as seven big-endian bytes."
+    ],
+    [
+      "vi",
+      "d",
+      "(I)I",
+      "readInt",
+      "Source-purpose review: Reads four bytes as a big-endian integer and advances the cursor."
+    ],
+    [
+      "vi",
+      "d",
+      "(II)V",
+      "writeByte",
+      "Source-purpose review: Appends the low byte of the supplied value and advances the cursor."
+    ],
+    [
+      "vi",
+      "e",
+      "(II)V",
+      "writeMedium",
+      "Source-purpose review: Appends the low twenty-four bits in big-endian byte order."
+    ],
+    [
+      "vi",
+      "f",
+      "(I)I",
+      "readSmart",
+      "Source-purpose review: Selects a one- or two-byte unsigned smart value from the next byte."
+    ],
+    [
+      "vi",
+      "f",
+      "(II)I",
+      "appendCrc32",
+      "Source-purpose review: Computes a CRC-32 over the requested span, appends it as an integer and returns it."
+    ],
+    [
+      "vi",
+      "g",
+      "(I)V",
+      "clearPacketBufferStatics",
+      "Source-purpose review: Clears the static references declared by the base packet buffer."
+    ],
+    [
+      "vi",
+      "g",
+      "(II)V",
+      "padWithZerosToPosition",
+      "Source-purpose review: Appends zero bytes until the cursor reaches the requested position."
+    ],
+    [
+      "vi",
+      "h",
+      "(I)I",
+      "readUnsignedMedium",
+      "Source-purpose review: Reads the next three bytes as a big-endian unsigned 24-bit integer."
+    ],
+    [
+      "vi",
+      "i",
+      "(I)I",
+      "readSignedSmart",
+      "Source-purpose review: Reads the one- or two-byte signed smart representation and applies its corresponding offset."
+    ],
+    [
+      "vi",
+      "j",
+      "(I)B",
+      "readSignedByte",
+      "Source-purpose review: Returns the next stored signed byte and advances the cursor."
+    ],
+    [
+      "vi",
+      "m",
+      "(I)I",
+      "readVarInt",
+      "Source-purpose review: Reads a big-endian variable-length integer using seven data bits per byte and a continuation flag."
+    ],
+    [
+      "vi",
+      "n",
+      "(I)Ljava/lang/String;",
+      "readCircumfixedString",
+      "Source-purpose review: Checks for a leading NUL marker and reads the following NUL-terminated CP1252 string."
+    ],
+    [
+      "vi",
+      "o",
+      "(I)Ljava/lang/String;",
+      "readString",
+      "Source-purpose review: Reads and decodes the NUL-terminated CP1252 string at the current cursor."
+    ],
+    [
+      "vi",
+      "a",
+      "(BLen;)Z",
+      "readBooleanBit",
+      "Source-purpose review: Reads one bit from the supplied cipher packet and tests whether that bit is set."
+    ],
+    [
+      "fd",
+      "a",
+      "(ILjava/lang/String;Ljava/lang/String;I)Lee;",
+      "openPreferencesFile",
+      "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix."
+    ],
+    [
+      "dc",
+      "a",
+      "(Ljava/awt/Component;B)V",
+      "attachMouseListeners",
+      "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component."
+    ],
+    [
+      "ea",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "detachKeyboardListeners",
+      "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component."
+    ],
+    [
+      "me",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "attachKeyboardListeners",
+      "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component."
+    ],
+    [
+      "te",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "detachMouseListeners",
+      "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component."
+    ],
+    [
+      "ej",
+      "a",
+      "(BIIIZ)Llm;",
+      "enqueueRequest",
+      "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority."
+    ],
+    [
+      "ej",
+      "a",
+      "(I)Z",
+      "isPriorityQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit."
+    ],
+    [
+      "ej",
+      "b",
+      "(I)Z",
+      "isPrefetchQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit."
+    ],
+    [
+      "ej",
+      "c",
+      "(B)I",
+      "getPriorityRequestCount",
+      "Source-purpose review: Counts pending and in-flight priority requests."
+    ],
+    [
+      "ej",
+      "b",
+      "(B)I",
+      "getPrefetchRequestCount",
+      "Source-purpose review: Counts pending and in-flight prefetch requests."
+    ],
+    [
+      "ej",
+      "a",
+      "(ZBLjava/lang/Object;)V",
+      "attachSocket",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "ih",
+      "a",
+      "(ZBLjava/lang/Object;)V",
+      "attachSocket",
+      "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection."
+    ],
+    [
+      "ej",
+      "e",
+      "(I)Z",
+      "pollNetwork",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "ih",
+      "e",
+      "(I)Z",
+      "pollNetwork",
+      "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state."
+    ],
+    [
+      "ej",
+      "c",
+      "(I)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "ih",
+      "c",
+      "(I)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask."
+    ],
+    [
+      "ej",
+      "a",
+      "(B)V",
+      "close",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "ih",
+      "a",
+      "(B)V",
+      "close",
+      "Source-purpose review: Closes the active archive socket when it exists."
+    ],
+    [
+      "ih",
+      "a",
+      "(BZ)V",
+      "sendConnectionState",
+      "Source-purpose review: Writes the client connection state message when an archive socket is active."
+    ],
+    [
+      "ih",
+      "g",
+      "(I)V",
+      "sendProtocolSetup",
+      "Source-purpose review: Writes the protocol setup message when the archive socket is attached."
+    ],
+    [
+      "sg",
+      "a",
+      "(I)Z",
+      "loadMasterIndex",
+      "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster."
+    ],
+    [
+      "sg",
+      "a",
+      "(ZILum;Lum;I)Lrb;",
+      "getOrCreateArchiveSource",
+      "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores."
+    ],
+    [
+      "sg",
+      "c",
+      "(I)V",
+      "pollArchiveSources",
+      "Source-purpose review: Polls active providers for pending work and advances their background operations."
     ]
   ],
   "fields": [

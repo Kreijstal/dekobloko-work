@@ -339,6 +339,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ea",
+      "originalName": "ea",
+      "to": "SocketArchiveNetworkClient",
+      "evidence": "Implements the archive request lifecycle over a buffered socket.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "DualLinkNode",
@@ -787,6 +794,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ne",
+      "originalName": "ne",
+      "to": "ArchiveSourceManager",
+      "evidence": "Loads the master archive index and manages the cached providers created from its entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nf",
       "originalName": "nf",
       "to": "FullscreenStatusDialog",
@@ -1148,6 +1162,13 @@
       "originalName": "uk",
       "to": "PasswordValidator",
       "evidence": "Checks the proposed account password and supplies feedback about invalid or unsuitable input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:va",
+      "originalName": "va",
+      "to": "ArchiveNetworkClient",
+      "evidence": "Owns pending and in-flight archive requests and defines connection lifecycle operations.",
       "confidence": "reviewed"
     },
     {
@@ -2334,6 +2355,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ch.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attachMouseListeners",
+      "evidence": "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(CBILrc;)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -2859,6 +2887,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dl.a(ILjava/lang/String;ILjava/lang/String;)Lsg;",
+      "originalName": "a",
+      "to": "openPreferencesFile",
+      "evidence": "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dl.a(IZLjava/lang/String;I)Lnj;",
       "originalName": "a",
       "to": "requestSocketConnection",
@@ -2961,6 +2996,48 @@
       "originalName": "e",
       "to": "normalizeListenerDeadlines",
       "evidence": "Only when accumulated progress is positive,subtract it from each scheduled listener deadline,then from the retained next deadline,and finally clear accumulated progress;preserve exact traversal and integer overflow. Complete original-body SHA256 04d72dee127e78cc1cee62a225c546174aabe507558b18bc66ce8f9895af20a7. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(B)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Source-purpose review: Closes the active archive socket when it exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(ZBLjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(ZZ)V",
+      "originalName": "a",
+      "to": "sendConnectionState",
+      "evidence": "Source-purpose review: Writes the client connection state message when an archive socket is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.c(B)V",
+      "originalName": "c",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.c(Z)V",
+      "originalName": "c",
+      "to": "sendProtocolSetup",
+      "evidence": "Source-purpose review: Writes the protocol setup message when the archive socket is attached.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.d(B)Z",
+      "originalName": "d",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state.",
       "confidence": "reviewed"
     },
     {
@@ -3164,6 +3241,13 @@
       "originalName": "a",
       "to": "getBytes",
       "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter uses caller-supplied buffer position, not unconditional zero. Getter wrong guard recurses before allocation. Preserve overflow and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:f.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachKeyboardListeners",
+      "evidence": "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -6058,6 +6142,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ne.a(B)Z",
+      "originalName": "a",
+      "to": "loadMasterIndex",
+      "evidence": "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(I)V",
+      "originalName": "a",
+      "to": "pollArchiveSources",
+      "evidence": "Source-purpose review: Polls active providers for pending work and advances their background operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(ILbi;ZLbi;I)Llg;",
+      "originalName": "a",
+      "to": "getOrCreateArchiveSource",
+      "evidence": "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ne.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -6398,6 +6503,13 @@
       "originalName": "b",
       "to": "publishPixelsToConsumer",
       "evidence": "Source-purpose review: Pushes the current pixels and frame completion notification to the registered AWT image consumer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachKeyboardListeners",
+      "evidence": "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -7332,10 +7444,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qk.a(B)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.a(II)I",
       "originalName": "a",
       "to": "bitwiseOr",
       "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.a(ILjava/lang/String;Ljava/lang/String;I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openHttpProxyTunnel",
+      "evidence": "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.a(Ljava/net/Proxy;I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocketThroughProxy",
+      "evidence": "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine.",
       "confidence": "reviewed"
     },
     {
@@ -8109,6 +8242,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detachMouseListeners",
+      "evidence": "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sk.a(B)I",
       "originalName": "a",
       "to": "getProgressPercent",
@@ -8508,6 +8648,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(B)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Declares the socket creation contract for the configured destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openDirectSocket",
+      "evidence": "Source-purpose review: Opens a TCP socket to the configured destination host and port without using a proxy route.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uh.a(I)V",
       "originalName": "a",
       "to": "resetStaticState",
@@ -8676,10 +8830,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:va.a(B)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(I)Z",
+      "originalName": "a",
+      "to": "isPrefetchQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(IZIIB)Lic;",
+      "originalName": "a",
+      "to": "enqueueRequest",
+      "evidence": "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(ZBLjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:va.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f7d755bca55cfbfdd29a644e917933cdb38a0240d80667e03c3e8910dfc1bc47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.b(I)Z",
+      "originalName": "b",
+      "to": "isPriorityQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.b(Z)I",
+      "originalName": "b",
+      "to": "getPriorityRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight priority requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.c(B)V",
+      "originalName": "c",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.c(I)I",
+      "originalName": "c",
+      "to": "getPrefetchRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.d(B)Z",
+      "originalName": "d",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
       "confidence": "reviewed"
     },
     {
@@ -9238,7 +9455,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-solknight-rules.mjs": "d510dd3c5215d127be812bd794c1668890712739b676d0f83f2bf4b4a34f49d6",
-      "solknight-names.json": "8bde5c1ed7f72740901cd623c02ec3bb52fff09bebda552b962de733ac1101b5",
+      "solknight-names.json": "363c59950d64bc8c93e9bc989e9780a8cc44448eb891346a444071282843ff59",
       "reproduce-solknight.mjs": "13b4e70cdbc3799ce0c256f7eb4afa61bbdd6dd18b17fd5cfda8475d81e10fc3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

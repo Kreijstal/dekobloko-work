@@ -535,6 +535,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eg",
+      "originalName": "eg",
+      "to": "SocketArchiveNetworkClient",
+      "evidence": "Implements the archive request lifecycle over a buffered socket.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:el",
       "originalName": "el",
       "to": "IterableNodeHashTable",
@@ -840,6 +847,13 @@
       "originalName": "kp",
       "to": "EditableTextField",
       "evidence": "Edits and selects text, handles clipboard commands, and dispatches text change and submission events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kr",
+      "originalName": "kr",
+      "to": "ArchiveSourceManager",
+      "evidence": "Loads the master archive index and manages the cached providers created from its entries.",
       "confidence": "reviewed"
     },
     {
@@ -1316,6 +1330,13 @@
       "originalName": "tg",
       "to": "DelegatingCanvas",
       "evidence": "Canvas wrapping another Component that it delegates to.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tk",
+      "originalName": "tk",
+      "to": "ArchiveNetworkClient",
+      "evidence": "Owns pending and in-flight archive requests and defines connection lifecycle operations.",
       "confidence": "reviewed"
     },
     {
@@ -2061,10 +2082,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aj.a(BLjava/net/Proxy;)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocketThroughProxy",
+      "evidence": "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openHttpProxyTunnel",
+      "evidence": "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aj.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.b(I)Ljava/net/Socket;",
+      "originalName": "b",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection.",
       "confidence": "reviewed"
     },
     {
@@ -4266,6 +4308,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeString",
+      "evidence": "Source-purpose review: Encodes the string as CP1252 and appends its trailing terminator after checking for embedded NUL.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.a(I)I",
       "originalName": "a",
       "to": "readLargeSmart",
@@ -4277,6 +4326,62 @@
       "originalName": "a",
       "to": "writeSmart",
       "evidence": "Writes a byte below 128 or a short offset by 32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(II[BI)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "Source-purpose review: Appends the requested source byte slice at the current position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeCircumfixedString",
+      "evidence": "Source-purpose review: Encodes the string as CP1252 between a leading and trailing NUL byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(I[BII)V",
+      "originalName": "a",
+      "to": "readBytes",
+      "evidence": "Source-purpose review: Copies the requested number of bytes from the current position into a destination slice and advances the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(JI)V",
+      "originalName": "a",
+      "to": "writeLong56",
+      "evidence": "Source-purpose review: Writes the low 56 bits of a long value as seven big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(JIB)V",
+      "originalName": "a",
+      "to": "writeLongPayloadPacket",
+      "evidence": "Source-purpose review: Writes the supplied ciphered opcode, payload tag and long value, and backfills the byte length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",
+      "originalName": "a",
+      "to": "writeRsaBlock",
+      "evidence": "Source-purpose review: Applies the supplied RSA exponent and modulus to the buffered payload and writes a length-prefixed result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(Z)I",
+      "originalName": "a",
+      "to": "readVarInt",
+      "evidence": "Source-purpose review: Reads a big-endian variable-length integer using seven data bits per byte and a continuation flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(ZZ)V",
+      "originalName": "a",
+      "to": "buildLobbyPanels",
+      "evidence": "Source-purpose review: Creates and attaches the lobby panels and dispatches their layout.",
       "confidence": "reviewed"
     },
     {
@@ -4301,6 +4406,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.b(BJ)V",
+      "originalName": "b",
+      "to": "writeLong40",
+      "evidence": "Source-purpose review: Writes the low 40 bits of a long value as five big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.b(IB)V",
       "originalName": "b",
       "to": "writeSignedSmart",
@@ -4308,10 +4420,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.b(II)V",
+      "originalName": "b",
+      "to": "writeVarInt",
+      "evidence": "Source-purpose review: Writes a variable-length integer using seven data bits per byte and a continuation flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.b(ILjava/lang/String;)V",
+      "originalName": "b",
+      "to": "writeBase38Name",
+      "evidence": "Source-purpose review: Packs up to twenty name characters into two seven-byte base-38 values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.b(Z)I",
       "originalName": "b",
       "to": "readInt",
       "evidence": "Combines four payload bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.c(II)I",
+      "originalName": "c",
+      "to": "appendCrc32",
+      "evidence": "Source-purpose review: Computes a CRC-32 over the requested span, appends it as an integer and returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.c(Z)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "readCircumfixedString",
+      "evidence": "Source-purpose review: Checks for a leading NUL marker and reads the following NUL-terminated CP1252 string.",
       "confidence": "reviewed"
     },
     {
@@ -4371,6 +4511,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.h(II)V",
+      "originalName": "h",
+      "to": "padWithZerosToPosition",
+      "evidence": "Source-purpose review: Appends zero bytes until the cursor reaches the requested position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.i(I)J",
       "originalName": "i",
       "to": "readLong",
@@ -4420,6 +4567,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.o(I)Z",
+      "originalName": "o",
+      "to": "verifyTrailingCrc32",
+      "evidence": "Source-purpose review: Recomputes the CRC-32 and compares it with the stored final integer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detachMouseListeners",
+      "evidence": "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ee.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -4459,6 +4620,48 @@
       "originalName": "d",
       "to": "hasTexture",
       "evidence": "Source-purpose review: Reports whether a model may use the texture identifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/lang/Object;ZI)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(ZB)V",
+      "originalName": "a",
+      "to": "sendConnectionState",
+      "evidence": "Source-purpose review: Writes the client connection state message when an archive socket is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.b(B)V",
+      "originalName": "b",
+      "to": "close",
+      "evidence": "Source-purpose review: Closes the active archive socket when it exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.d(I)Z",
+      "originalName": "d",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.e(I)V",
+      "originalName": "e",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.g(I)V",
+      "originalName": "g",
+      "to": "sendProtocolSetup",
+      "evidence": "Source-purpose review: Writes the protocol setup message when the archive socket is attached.",
       "confidence": "reviewed"
     },
     {
@@ -5757,6 +5960,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hk.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachMouseListeners",
+      "evidence": "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hk.a(ILjava/lang/String;)Lba;",
       "originalName": "a",
       "to": "getValidationStatus",
@@ -5992,6 +6202,20 @@
       "originalName": "o",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.a(B)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openDirectSocket",
+      "evidence": "Source-purpose review: Opens a TCP socket to the configured destination host and port without using a proxy route.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.b(I)Ljava/net/Socket;",
+      "originalName": "b",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Declares the socket creation contract for the configured destination.",
       "confidence": "reviewed"
     },
     {
@@ -6510,6 +6734,13 @@
       "originalName": "a",
       "to": "requestSocket",
       "evidence": "Delegates to the internal socket request with the host string and port.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.a(IILjava/lang/String;Ljava/lang/String;)Lbj;",
+      "originalName": "a",
+      "to": "openPreferencesFile",
+      "evidence": "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix.",
       "confidence": "reviewed"
     },
     {
@@ -7112,6 +7343,27 @@
       "originalName": "m",
       "to": "deleteSelection",
       "evidence": "Source-purpose review: Removes the selected substring and updates the caret and selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kr.a(ILqh;ZILqh;)Luk;",
+      "originalName": "a",
+      "to": "getOrCreateArchiveSource",
+      "evidence": "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kr.b(I)Z",
+      "originalName": "b",
+      "to": "loadMasterIndex",
+      "evidence": "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kr.d(I)V",
+      "originalName": "d",
+      "to": "pollArchiveSources",
+      "evidence": "Source-purpose review: Polls active providers for pending work and advances their background operations.",
       "confidence": "reviewed"
     },
     {
@@ -10370,6 +10622,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rm.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachKeyboardListeners",
+      "evidence": "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rm.g(I)V",
       "originalName": "g",
       "to": "clearStaticReferences",
@@ -11021,10 +11280,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tk.a(I)Z",
+      "originalName": "a",
+      "to": "isPriorityQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tk.a(II)I",
       "originalName": "a",
       "to": "bitwiseXor",
       "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.a(IIZBZ)Lia;",
+      "originalName": "a",
+      "to": "enqueueRequest",
+      "evidence": "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.a(Ljava/lang/Object;ZI)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.b(B)V",
+      "originalName": "b",
+      "to": "close",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.b(I)I",
+      "originalName": "b",
+      "to": "getPrefetchRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.d(B)I",
+      "originalName": "d",
+      "to": "getPriorityRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight priority requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.d(I)Z",
+      "originalName": "d",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.e(I)V",
+      "originalName": "e",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.f(I)Z",
+      "originalName": "f",
+      "to": "isPrefetchQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit.",
       "confidence": "reviewed"
     },
     {
@@ -11805,6 +12127,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vm.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attachKeyboardListeners",
+      "evidence": "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vo.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -12444,7 +12773,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "962eb24bb57ef766390b2b3efea24effa2f7777b81d2b8c91425fb902ce3dcfb",
+      "vertigo2-names.json": "6278e5bb111b16184e70dbc06c6e7713f380d4105287fb7f608510165e94929a",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

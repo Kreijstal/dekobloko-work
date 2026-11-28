@@ -227,6 +227,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ap",
+      "originalName": "ap",
+      "to": "SocketArchiveNetworkClient",
+      "evidence": "Implements the archive request lifecycle over a buffered socket.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bb",
       "originalName": "bb",
       "to": "RockTile",
@@ -941,6 +948,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ob",
+      "originalName": "ob",
+      "to": "ArchiveNetworkClient",
+      "evidence": "Owns pending and in-flight archive requests and defines connection lifecycle operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:od",
       "originalName": "od",
       "to": "PcmStream",
@@ -1015,6 +1029,13 @@
       "originalName": "pj",
       "to": "WallTile",
       "evidence": "This wall tile chooses the sprite by its wall material and subtype. The material assets are brick, hedge, steel and concrete.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pk",
+      "originalName": "pk",
+      "to": "ArchiveSourceManager",
+      "evidence": "Loads the master archive index and manages the cached providers created from its entries.",
       "confidence": "reviewed"
     },
     {
@@ -1214,6 +1235,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tl",
+      "originalName": "tl",
+      "to": "SocketConnector",
+      "evidence": "Defines socket creation for a configured host and port and provides the direct connection fallback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:u",
       "originalName": "u",
       "to": "AccountRequestState",
@@ -1316,6 +1344,13 @@
       "originalName": "we",
       "to": "LevelProgressUpdate",
       "evidence": "When a player completes their furthest unlocked level, the game queues this level and score-counter payload for transmission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wf",
+      "originalName": "wf",
+      "to": "ProxySocketConnector",
+      "evidence": "Uses the configured Java ProxySelector to try proxy routes for the destination and falls back to a direct connection.",
       "confidence": "reviewed"
     },
     {
@@ -1792,6 +1827,55 @@
       "originalName": "$cfr$lcmp",
       "to": "compareLongs",
       "evidence": "Complete private static declaration/body source reviewed and exactly checked against archived pinned source. Signed64-bit comparison returning-1/0/1 without subtracting operands; preserve full long range and argument order. Pure comparison with no allocation/state/side effects; preserve all operators, result constants, operand types and caller behavior. No replacement of the comparison implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.a(B)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Source-purpose review: Closes the active archive socket when it exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.a(ZI)V",
+      "originalName": "a",
+      "to": "sendConnectionState",
+      "evidence": "Source-purpose review: Writes the client connection state message when an archive socket is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.a(ZLjava/lang/Object;Z)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.b(B)Z",
+      "originalName": "b",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.d(B)V",
+      "originalName": "d",
+      "to": "sendProtocolSetup",
+      "evidence": "Source-purpose review: Writes the protocol setup message when the archive socket is attached.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.e(I)V",
+      "originalName": "e",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aq.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachMouseListeners",
+      "evidence": "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -5316,6 +5400,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ji.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachMouseListeners",
+      "evidence": "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ji.a(Z)I",
       "originalName": "a",
       "to": "getAttributedPlayerMask",
@@ -6618,6 +6709,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mb.a(ZLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachKeyboardListeners",
+      "evidence": "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mc.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -6632,10 +6730,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:md.a(IZII[[Lf;)[[Lf;",
+      "originalName": "a",
+      "to": "copyPuzzleTilesWithBorder",
+      "evidence": "Source-purpose review: Builds a wider tile grid, clones interior cells and the border filler, and initializes each new cell at its new position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a([IZ)V",
+      "originalName": "a",
+      "to": "setCipherSeed",
+      "evidence": "Source-purpose review: Creates the opcode cipher from the supplied integer seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.b(III[B)V",
+      "originalName": "b",
+      "to": "readCipheredBytes",
+      "evidence": "Source-purpose review: Copies bytes from the current position into the requested destination slice, subtracting one cipher value per byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.d(BI)I",
+      "originalName": "d",
+      "to": "readBits",
+      "evidence": "Source-purpose review: Reads the requested number of bits at the current bit offset across byte boundaries and advances the bit offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.d(II)V",
+      "originalName": "d",
+      "to": "writeCipheredByte",
+      "evidence": "Source-purpose review: Adds the next cipher value to the supplied byte and appends it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.e(Z)I",
+      "originalName": "e",
+      "to": "readCipheredByte",
+      "evidence": "Source-purpose review: Reads one unsigned byte after subtracting the next cipher value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.f(B)V",
+      "originalName": "f",
+      "to": "beginBitAccess",
+      "evidence": "Source-purpose review: Initializes the bit-read offset from the current byte position in bit units.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:md.j(I)V",
       "originalName": "j",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 7 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.k(I)V",
+      "originalName": "k",
+      "to": "endBitAccess",
+      "evidence": "Source-purpose review: Restores the byte position rounded up from the bit-read offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.l(I)Z",
+      "originalName": "l",
+      "to": "hasOpenDialog",
+      "evidence": "Source-purpose review: Checks that a dialog host exists and has a top open dialog.",
       "confidence": "reviewed"
     },
     {
@@ -7339,10 +7500,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ob.a(B)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ob.a(I)V",
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 1 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(ZIIIB)Lld;",
+      "originalName": "a",
+      "to": "enqueueRequest",
+      "evidence": "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(ZLjava/lang/Object;Z)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.b(B)Z",
+      "originalName": "b",
+      "to": "pollNetwork",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.b(I)I",
+      "originalName": "b",
+      "to": "getPriorityRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight priority requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.c(B)Z",
+      "originalName": "c",
+      "to": "isPriorityQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.c(I)Z",
+      "originalName": "c",
+      "to": "isPrefetchQueueFull",
+      "evidence": "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.d(I)I",
+      "originalName": "d",
+      "to": "getPrefetchRequestCount",
+      "evidence": "Source-purpose review: Counts pending and in-flight prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.e(I)V",
+      "originalName": "e",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Source-purpose review: Defines the corresponding archive transport operation.",
       "confidence": "reviewed"
     },
     {
@@ -8123,10 +8347,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pk.a(ILsp;ZILsp;)Lee;",
+      "originalName": "a",
+      "to": "getOrCreateArchiveSource",
+      "evidence": "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pk.a(Z)V",
+      "originalName": "a",
+      "to": "pollArchiveSources",
+      "evidence": "Source-purpose review: Polls active providers for pending work and advances their background operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pk.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pk.b(Z)Z",
+      "originalName": "b",
+      "to": "loadMasterIndex",
+      "evidence": "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster.",
       "confidence": "reviewed"
     },
     {
@@ -8799,6 +9044,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8cdc0748b51fdc0709a385c51e2902d91573accd73fa3f0b569108068925aa16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachKeyboardListeners",
+      "evidence": "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -9495,6 +9747,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tl.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openDirectSocket",
+      "evidence": "Source-purpose review: Opens a TCP socket to the configured destination host and port without using a proxy route.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tl.a(Z)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Declares the socket creation contract for the configured destination.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tm.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -9793,6 +10059,13 @@
       "originalName": "a",
       "to": "requestThreadStart",
       "evidence": "Int param1!=2 returns null before enqueue; valid2 kind2 preserves Runnable/priority and daemon/start-before-priority/result order,including partial effects on failure. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:un.a(Ljava/lang/String;IILjava/lang/String;)Lgl;",
+      "originalName": "a",
+      "to": "openPreferencesFile",
+      "evidence": "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix.",
       "confidence": "reviewed"
     },
     {
@@ -10468,6 +10741,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wf.a(Ljava/lang/String;ILjava/lang/String;I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openHttpProxyTunnel",
+      "evidence": "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(Ljava/net/Proxy;B)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocketThroughProxy",
+      "evidence": "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(Z)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wf.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -10799,7 +11093,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-crazycrystals-rules.mjs": "53fc8845bc15628f5f09948271dc7c15e829375009e924a68e220f175e8a3a65",
-      "crazycrystals-names.json": "692485675a0cf34d5eb28b07ee878f51882c827b8e9261c92b86a83de6697039",
+      "crazycrystals-names.json": "4cb09a98ff9f6c985357d61b6a77aa88aae01967e981c2a38aafd9660b844158",
       "reproduce-crazycrystals.mjs": "c436bdc5e8146e9c16d3dfc08e0152874a520d245840468c38a313fe58094a1c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
