@@ -1158,6 +1158,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oi",
+      "originalName": "oi",
+      "to": "ReverbCombFilter",
+      "evidence": "Stores the circular delay and low-pass feedback sample for one of eight parallel comb filters per channel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ok",
       "originalName": "ok",
       "to": "SynthesizerVoice",
@@ -1302,6 +1309,13 @@
       "originalName": "sg",
       "to": "ArchiveSourceManager",
       "evidence": "Loads the master archive index and manages the cached providers created from its entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sh",
+      "originalName": "sh",
+      "to": "ReverbDelayBuffer",
+      "evidence": "Stores the circular delay used by one of four diffusion stages per channel. The matching Pool type has the same layout and role.",
       "confidence": "reviewed"
     },
     {
@@ -4938,6 +4952,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gd.a(F)V",
+      "originalName": "a",
+      "to": "setDryGain",
+      "evidence": "Source-purpose review: Sets the gain applied to the original sample when it is added to the processed output.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gd.a(I[III)I",
       "originalName": "a",
       "to": "findCircularNegativePeak",
@@ -4949,6 +4970,13 @@
       "originalName": "b",
       "to": "nextChildStream",
       "evidence": "Continue enumeration of immediate child PCM streams using the original cursor/voice traversal or paired-stream state. Preserve next-link read order,sentinel/null tests,skipped voice states,all global/guard paths and exceptional behavior. Complete original-body SHA256 8e3206f68e80879d581c5df2e63d30570ceaacfa4de14fa89bafaf5b71237483. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.b(F)V",
+      "originalName": "b",
+      "to": "setFeedbackGain",
+      "evidence": "Source-purpose review: Sets the gain applied to the damped comb-filter sample before feeding it back into the delay.",
       "confidence": "reviewed"
     },
     {
@@ -4994,10 +5022,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gd.e()F",
+      "originalName": "e",
+      "to": "getDryGain",
+      "evidence": "Source-purpose review: Reads the gain applied to the original sample in the output mix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.e(F)V",
+      "originalName": "e",
+      "to": "setDampingTimeMicros",
+      "evidence": "Source-purpose review: Sets the damping half-life in microseconds and calculates the per-sample damping coefficient.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.f()F",
+      "originalName": "f",
+      "to": "getFeedbackGain",
+      "evidence": "Source-purpose review: Reads the comb-filter feedback gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.f(F)V",
+      "originalName": "f",
+      "to": "setInputGain",
+      "evidence": "Source-purpose review: Sets the input gain applied before the comb filters receive the sample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.g()F",
+      "originalName": "g",
+      "to": "getDampingTimeMicros",
+      "evidence": "Source-purpose review: Reads the damping half-life in microseconds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.h()F",
+      "originalName": "h",
+      "to": "getInputGain",
+      "evidence": "Source-purpose review: Reads the gain applied to the sample entering the comb filters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gd.i()V",
       "originalName": "i",
       "to": "configureReverbChannels",
       "evidence": "Reconcile the reverb histories with the retained stereo flag:clear existing comb/allpass histories at the original transitions,drop or allocate second-channel arrays with exact sample-rate-scaled lengths,and replace the 256/512-int scratch buffer in original order. Complete original-body SHA256 83ae46875ecfe393a967d09598ec6736d821635720b24a8b233e775a54f6d4a1. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.j()F",
+      "originalName": "j",
+      "to": "getStereoWidth",
+      "evidence": "Source-purpose review: Reads the stereo width used to derive the two output mix gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.k()F",
+      "originalName": "k",
+      "to": "getWetGain",
+      "evidence": "Source-purpose review: Reads the gain for the processed signal in the reverb output mix.",
       "confidence": "reviewed"
     },
     {
@@ -7381,6 +7465,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oi.a()V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Source-purpose review: Zeroes the damped feedback sample and all samples in the comb delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oj.g(B)V",
       "originalName": "g",
       "to": "clearStaticReferences",
@@ -8414,6 +8505,13 @@
       "originalName": "c",
       "to": "pollArchiveSources",
       "evidence": "Source-purpose review: Polls active providers for pending work and advances their background operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.a()V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Source-purpose review: Zeroes all samples in the diffusion delay.",
       "confidence": "reviewed"
     },
     {
@@ -10687,7 +10785,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "9ee0a98af12cd1627e6384a5077b96b141c4421ce76ca79acd99a8bf3680da83",
+      "hostilespawn_vengeance-names.json": "dd14d4635bc3674e7c6616f02cc2bc099ff9aeac23f624162782fbc4bc1a0abe",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

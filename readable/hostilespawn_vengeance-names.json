@@ -739,6 +739,16 @@
       "bf",
       "WhirlpoolHasher",
       "Maintains the 512-bit digest state, bit count, block buffer, and working words for Whirlpool."
+    ],
+    [
+      "oi",
+      "ReverbCombFilter",
+      "Stores the circular delay and low-pass feedback sample for one of eight parallel comb filters per channel."
+    ],
+    [
+      "sh",
+      "ReverbDelayBuffer",
+      "Stores the circular delay used by one of four diffusion stages per channel. The matching Pool type has the same layout and role."
     ]
   ],
   "methods": [
@@ -9659,6 +9669,90 @@
       "(II[BI)I",
       "computeCrc32",
       "Source-purpose review: Calculates CRC-32 over the specified byte range using the reflected CRC-32 lookup table."
+    ],
+    [
+      "gd",
+      "a",
+      "(F)V",
+      "setDryGain",
+      "Source-purpose review: Sets the gain applied to the original sample when it is added to the processed output."
+    ],
+    [
+      "gd",
+      "b",
+      "(F)V",
+      "setFeedbackGain",
+      "Source-purpose review: Sets the gain applied to the damped comb-filter sample before feeding it back into the delay."
+    ],
+    [
+      "gd",
+      "e",
+      "()F",
+      "getDryGain",
+      "Source-purpose review: Reads the gain applied to the original sample in the output mix."
+    ],
+    [
+      "gd",
+      "e",
+      "(F)V",
+      "setDampingTimeMicros",
+      "Source-purpose review: Sets the damping half-life in microseconds and calculates the per-sample damping coefficient."
+    ],
+    [
+      "gd",
+      "f",
+      "()F",
+      "getFeedbackGain",
+      "Source-purpose review: Reads the comb-filter feedback gain."
+    ],
+    [
+      "gd",
+      "f",
+      "(F)V",
+      "setInputGain",
+      "Source-purpose review: Sets the input gain applied before the comb filters receive the sample."
+    ],
+    [
+      "gd",
+      "g",
+      "()F",
+      "getDampingTimeMicros",
+      "Source-purpose review: Reads the damping half-life in microseconds."
+    ],
+    [
+      "gd",
+      "h",
+      "()F",
+      "getInputGain",
+      "Source-purpose review: Reads the gain applied to the sample entering the comb filters."
+    ],
+    [
+      "gd",
+      "j",
+      "()F",
+      "getStereoWidth",
+      "Source-purpose review: Reads the stereo width used to derive the two output mix gains."
+    ],
+    [
+      "gd",
+      "k",
+      "()F",
+      "getWetGain",
+      "Source-purpose review: Reads the gain for the processed signal in the reverb output mix."
+    ],
+    [
+      "oi",
+      "a",
+      "()V",
+      "clear",
+      "Source-purpose review: Zeroes the damped feedback sample and all samples in the comb delay."
+    ],
+    [
+      "sh",
+      "a",
+      "()V",
+      "clear",
+      "Source-purpose review: Zeroes all samples in the diffusion delay."
     ]
   ],
   "fields": [
