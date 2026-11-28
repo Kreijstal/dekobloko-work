@@ -534,6 +534,16 @@
       "ot",
       "GrowableIntArray",
       "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."
+    ],
+    [
+      "ub$1$CfrPartitionedBody",
+      "ClientTextLoader",
+      "Local loader carries the resource archive and temporary decode state across 3 sections with 744 bound shared client interface text lookups."
+    ],
+    [
+      "wq",
+      "ArchiveSourceManager",
+      "Loads the master archive index and manages the cached providers created from its entries."
     ]
   ],
   "methods": [
@@ -8397,6 +8407,496 @@
       "(B)I",
       "size",
       "Source-purpose review: Returns the number of stored entries as one more than the last occupied index."
+    ],
+    [
+      "vb",
+      "a",
+      "(ILjava/lang/String;)V",
+      "showErrorPage",
+      "Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page."
+    ],
+    [
+      "ct",
+      "a",
+      "(IZLjava/lang/String;II)V",
+      "readAppletParameters",
+      "Source-purpose review: Reads the applet host, server ports, game checksum, instance and membership parameters before startup."
+    ],
+    [
+      "vb",
+      "a",
+      "(IIILjava/lang/String;III)V",
+      "startApplet",
+      "Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread."
+    ],
+    [
+      "ct",
+      "a",
+      "(BLjava/lang/String;I)V",
+      "startWithDefaultSize",
+      "Source-purpose review: Starts applet configuration with the default 640 by 480 canvas size."
+    ],
+    [
+      "vb",
+      "b",
+      "(Z)Z",
+      "allowAppletStartup",
+      "Source-purpose review: Provides the applet’s startup predicate before browser parameters are read."
+    ],
+    [
+      "ct",
+      "a",
+      "(IZIIIIII)V",
+      "initializeFramework",
+      "Source-purpose review: Sets up the client display, network and resource archive services, and the applet’s input handlers."
+    ],
+    [
+      "ct",
+      "f",
+      "(B)V",
+      "dispatchCommonPacket",
+      "Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types."
+    ],
+    [
+      "ct",
+      "b",
+      "(ZB)V",
+      "serviceFramework",
+      "Source-purpose review: Services the client’s resource loading and reconnect state, updates input, and handles canvas resets."
+    ],
+    [
+      "ct",
+      "a",
+      "(IZZ)I",
+      "processAccountUiActions",
+      "Source-purpose review: Dispatches account and login actions and polls the country list download when requested."
+    ],
+    [
+      "ct",
+      "a",
+      "(ZI)I",
+      "pollAccountUiActions",
+      "Source-purpose review: Runs one account and login UI polling step through the common action dispatcher."
+    ],
+    [
+      "ct",
+      "i",
+      "(I)V",
+      "updateLoginFlow",
+      "Source-purpose review: Advances the login UI and connection states while the client cannot enter the game."
+    ],
+    [
+      "ct",
+      "e",
+      "(B)V",
+      "readSessionCookieUpdate",
+      "Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie."
+    ],
+    [
+      "ct",
+      "j",
+      "(I)I",
+      "attemptReconnect",
+      "Source-purpose review: Polls reconnection and updates the pending reconnect state after a server reply."
+    ],
+    [
+      "ct",
+      "p",
+      "(I)I",
+      "reconnectAndResendRequests",
+      "Source-purpose review: Retries the connection and resubmits outstanding requests for enabled response types."
+    ],
+    [
+      "ct",
+      "n",
+      "(I)V",
+      "initializePacketLengths",
+      "Source-purpose review: Registers the fixed and variable lengths of common incoming packets."
+    ],
+    [
+      "ct",
+      "a",
+      "(IZ)V",
+      "enableDefaultPacketHandlers",
+      "Source-purpose review: Configures the common packet routes available to the client and its optional default features."
+    ],
+    [
+      "ct",
+      "m",
+      "(I)V",
+      "enablePacketOne",
+      "Source-purpose review: Enables dispatch for common server packet 1."
+    ],
+    [
+      "ct",
+      "d",
+      "(B)V",
+      "enablePacketTwo",
+      "Source-purpose review: Enables dispatch for common server packet 2."
+    ],
+    [
+      "ct",
+      "g",
+      "(I)V",
+      "enablePacketFour",
+      "Source-purpose review: Enables dispatch for common server packet 4."
+    ],
+    [
+      "ct",
+      "l",
+      "(I)V",
+      "enablePacketFive",
+      "Source-purpose review: Enables dispatch for common server packet 5."
+    ],
+    [
+      "ct",
+      "a",
+      "(BZZZZ)V",
+      "configureOptionalPacketHandlers",
+      "Source-purpose review: Enables the default packet routes and applies the game’s optional packet settings."
+    ],
+    [
+      "ub",
+      "a",
+      "(BLgk;)V",
+      "loadSharedInterfaceText",
+      "Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive."
+    ],
+    [
+      "ub$1$CfrPartitionedBody",
+      "runChunk0",
+      "()V",
+      "loadLoginLobbyAndChatText",
+      "Source-purpose review: Loads 269 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby."
+    ],
+    [
+      "ub$1$CfrPartitionedBody",
+      "runChunk1",
+      "()V",
+      "loadAccountFormsAndLoadingText",
+      "Source-purpose review: Loads 260 text entries in this section, including create_displayname, monthnames, loading_music."
+    ],
+    [
+      "ub$1$CfrPartitionedBody",
+      "runChunk2",
+      "()V",
+      "loadMatchDisplayAndMembershipText",
+      "Source-purpose review: Loads 215 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits."
+    ],
+    [
+      "av",
+      "a",
+      "(BZZZ)Ljava/lang/String;",
+      "getDiscardResultsPromptSuffix",
+      "Source-purpose review: Selects the singular or plural discard-and-continue suffix for the current result flags."
+    ],
+    [
+      "av",
+      "$cfr$intArgs$a$c7de0d339b2a",
+      "(IZZZ)Ljava/lang/String;",
+      "getDiscardResultsPromptSuffixWithIntGuard",
+      "Source-purpose review: Selects the singular or plural discard-and-continue suffix for the current result flags. Preserves the separate JVM integer-width guard and all bound integer call sites."
+    ],
+    [
+      "ci",
+      "a",
+      "(ZBZZ)Ljava/lang/String;",
+      "getAlternativeButtonPromptPrefix",
+      "Source-purpose review: Selects the alternative-button prefix for the current combination of result flags."
+    ],
+    [
+      "ci",
+      "$cfr$intArgs$a$feb7e63b59d8",
+      "(ZIZZ)Ljava/lang/String;",
+      "getAlternativeButtonPromptPrefixWithIntGuard",
+      "Source-purpose review: Selects the alternative-button prefix for the current combination of result flags. Preserves the separate JVM integer-width guard and all bound integer call sites."
+    ],
+    [
+      "ml",
+      "a",
+      "(BLwf;Lwf;)V",
+      "insertAdjacentNode",
+      "Source-purpose review: Unlinks the incoming node if already linked, then joins it to the anchor and its adjacent node by updating both directions."
+    ],
+    [
+      "ml",
+      "$cfr$intArgs$a$9910ad98b3f5",
+      "(ILwf;Lwf;)V",
+      "insertAdjacentNodeWithIntGuard",
+      "Source-purpose review: Unlinks the incoming node if already linked, then joins it to the anchor and its adjacent node by updating both directions. Preserves the separate JVM integer-width guard and all bound integer call sites."
+    ],
+    [
+      "vf",
+      "b",
+      "(I)I",
+      "availableBytes",
+      "Source-purpose review: Returns the number of input bytes available to read without blocking."
+    ],
+    [
+      "vf",
+      "a",
+      "(B)I",
+      "readByteOrEof",
+      "Source-purpose review: Reads one byte from the socket input stream and returns its end-of-stream result."
+    ],
+    [
+      "vf",
+      "a",
+      "(II[BZ)V",
+      "readFully",
+      "Source-purpose review: Reads repeatedly into the requested destination range and throws EOFException when the stream ends early."
+    ],
+    [
+      "vf",
+      "a",
+      "(III[B)V",
+      "enqueueWrite",
+      "Source-purpose review: Copies outgoing bytes to the circular write buffer, starts the background writer when needed, and signals it."
+    ],
+    [
+      "vf",
+      "a",
+      "(I)V",
+      "close",
+      "Source-purpose review: Signals the socket writer to stop and waits for its thread before clearing the writer task."
+    ],
+    [
+      "vf",
+      "b",
+      "(B)V",
+      "checkWriteError",
+      "Source-purpose review: Checks and clears the saved background-write error, reporting it once as an IOException."
+    ],
+    [
+      "jm",
+      "a",
+      "(B)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Declares the socket creation contract for the configured destination."
+    ],
+    [
+      "cm",
+      "a",
+      "(B)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Obtains candidate proxy routes for the destination, tries the available routes and falls back to a direct connection."
+    ],
+    [
+      "cm",
+      "a",
+      "(ILjava/net/Proxy;)Ljava/net/Socket;",
+      "openSocketThroughProxy",
+      "Source-purpose review: Handles the selected proxy type and delegates HTTP tunnels to the HTTP connection routine."
+    ],
+    [
+      "cm",
+      "a",
+      "(BLjava/lang/String;ILjava/lang/String;)Ljava/net/Socket;",
+      "openHttpProxyTunnel",
+      "Source-purpose review: Sends the HTTP CONNECT request, checks the proxy response and returns the socket when the tunnel is established."
+    ],
+    [
+      "dl",
+      "a",
+      "([BIIZ)V",
+      "readCipheredBytes",
+      "Source-purpose review: Copies bytes from the current position into the requested destination slice, subtracting one cipher value per byte."
+    ],
+    [
+      "dl",
+      "b",
+      "(BI)I",
+      "readBits",
+      "Source-purpose review: Reads the requested number of bits at the current bit offset across byte boundaries and advances the bit offset."
+    ],
+    [
+      "dl",
+      "j",
+      "(B)I",
+      "readCipheredOpcode",
+      "Source-purpose review: Reads one unsigned byte after subtracting the next cipher value."
+    ],
+    [
+      "dl",
+      "j",
+      "(I)V",
+      "beginBitAccess",
+      "Source-purpose review: Initializes the bit-read offset from the current byte position in bit units."
+    ],
+    [
+      "dl",
+      "m",
+      "(B)V",
+      "endBitAccess",
+      "Source-purpose review: Restores the byte position rounded up from the bit-read offset."
+    ],
+    [
+      "dl",
+      "k",
+      "(B)Ljava/lang/String;",
+      "describeIncomingPacket",
+      "Source-purpose review: Formats recent packet identifiers and appends the buffered incoming bytes in hexadecimal for diagnostics."
+    ],
+    [
+      "rk",
+      "a",
+      "(Ljava/lang/String;IBLjava/lang/String;)Lfs;",
+      "openPreferencesFile",
+      "Source-purpose review: Finds and opens the bounded preferences file in a supported directory, using the requested environment suffix."
+    ],
+    [
+      "de",
+      "a",
+      "(Ljava/awt/Component;Z)V",
+      "attachMouseListeners",
+      "Source-purpose review: Attaches the game mouse, motion and focus listeners to the supplied component."
+    ],
+    [
+      "ei",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "attachKeyboardListeners",
+      "Source-purpose review: Attaches the game keyboard listener and its focus listener to the supplied component."
+    ],
+    [
+      "g",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "detachMouseListeners",
+      "Source-purpose review: Removes the game mouse, motion and focus listeners from the supplied component."
+    ],
+    [
+      "wl",
+      "a",
+      "(Ljava/awt/Component;B)V",
+      "detachKeyboardListeners",
+      "Source-purpose review: Removes the game keyboard listener and its focus listener from the supplied component."
+    ],
+    [
+      "un",
+      "a",
+      "(IIIZB)Lgp;",
+      "enqueueRequest",
+      "Source-purpose review: Creates an archive request from its resource identifiers and queues it at the requested priority."
+    ],
+    [
+      "un",
+      "a",
+      "(Z)Z",
+      "isPriorityQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight priority requests have reached the queue limit."
+    ],
+    [
+      "un",
+      "a",
+      "(B)Z",
+      "isPrefetchQueueFull",
+      "Source-purpose review: Checks whether the pending and in-flight prefetch requests have reached the queue limit."
+    ],
+    [
+      "un",
+      "b",
+      "(I)I",
+      "getPriorityRequestCount",
+      "Source-purpose review: Counts pending and in-flight priority requests."
+    ],
+    [
+      "un",
+      "c",
+      "(I)I",
+      "getPrefetchRequestCount",
+      "Source-purpose review: Counts pending and in-flight prefetch requests."
+    ],
+    [
+      "un",
+      "a",
+      "(IZLjava/lang/Object;)V",
+      "attachSocket",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "hf",
+      "a",
+      "(IZLjava/lang/Object;)V",
+      "attachSocket",
+      "Source-purpose review: Installs a replacement socket, initializes it and requeues outstanding requests for the new connection."
+    ],
+    [
+      "un",
+      "f",
+      "(I)Z",
+      "pollNetwork",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "hf",
+      "f",
+      "(I)Z",
+      "pollNetwork",
+      "Source-purpose review: Sends queued archive requests, consumes incoming response data and advances connection state."
+    ],
+    [
+      "un",
+      "c",
+      "(B)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "hf",
+      "c",
+      "(B)V",
+      "resetAfterValidationFailure",
+      "Source-purpose review: Closes the socket after a validation failure, records the failure and chooses a new response mask."
+    ],
+    [
+      "un",
+      "b",
+      "(B)V",
+      "close",
+      "Source-purpose review: Defines the corresponding archive transport operation."
+    ],
+    [
+      "hf",
+      "b",
+      "(B)V",
+      "close",
+      "Source-purpose review: Closes the active archive socket when it exists."
+    ],
+    [
+      "hf",
+      "a",
+      "(ZZ)V",
+      "sendConnectionState",
+      "Source-purpose review: Writes the client connection state message when an archive socket is active."
+    ],
+    [
+      "hf",
+      "d",
+      "(B)V",
+      "sendProtocolSetup",
+      "Source-purpose review: Writes the protocol setup message when the archive socket is attached."
+    ],
+    [
+      "wq",
+      "a",
+      "(I)Z",
+      "loadMasterIndex",
+      "Source-purpose review: Requests the priority master index, validates its payload and initializes the archive provider roster."
+    ],
+    [
+      "wq",
+      "a",
+      "(BLbl;Lbl;ZI)Lfg;",
+      "getOrCreateArchiveSource",
+      "Source-purpose review: Looks up the cached provider or builds it from the matching master index entry and cache stores."
+    ],
+    [
+      "wq",
+      "a",
+      "(B)V",
+      "pollArchiveSources",
+      "Source-purpose review: Polls active providers for pending work and advances their background operations."
     ]
   ],
   "fields": [
