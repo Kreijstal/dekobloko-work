@@ -409,6 +409,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:aj",
+      "originalName": "aj",
+      "to": "SpriteBase",
+      "evidence": "Defines shared sprite dimensions and offsets and the two draw operations implemented by the indexed sprite.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:am",
       "originalName": "am",
       "to": "IntrusiveNode",
@@ -430,10 +437,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bg",
+      "originalName": "bg",
+      "to": "FieldValidator",
+      "evidence": "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bj",
+      "originalName": "bj",
+      "to": "DebouncedFieldValidator",
+      "evidence": "Records input changes and defers status and feedback evaluation for 350 milliseconds before calling the field-specific validator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bn",
       "originalName": "bn",
       "to": "BufferedRandomAccessFile",
       "evidence": "BufferedRandomAccessFile source-purpose review: concrete private file/buffer state,all instance bodies,typed constructors and IO callers;preserve existing behavior and full primitive parameter domains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cd",
+      "originalName": "cd",
+      "to": "TextFieldListener",
+      "evidence": "Receives the editable field callbacks for text changes and text submission.",
       "confidence": "reviewed"
     },
     {
@@ -455,6 +483,13 @@
       "originalName": "d",
       "to": "NetworkGameClient",
       "evidence": "GameAppletShell subclass reading server, port, js5 and member applet parameters and owning login state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:db",
+      "originalName": "db",
+      "to": "PasswordValidator",
+      "evidence": "Checks the proposed account password and supplies feedback about invalid or unsuitable input.",
       "confidence": "reviewed"
     },
     {
@@ -507,10 +542,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ei",
+      "originalName": "ei",
+      "to": "DelayedPacket",
+      "evidence": "The packet queue stores the scheduled delivery time, packet opcode, and copied payload in each instance.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ek",
       "originalName": "ek",
       "to": "VorbisCodebook",
       "evidence": "Vorbis codebook: constructor consumes24bits without validating them,reads dimensions/entry count and ordered/sparse code lengths,builds a canonical Huffman tree,and reads quantized lookup vectors. Scalar bit traversal returns complemented tree leaf;vector decoding returns the retained vector row by alias;lookup1 uses the original integer-power helper. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:el",
+      "originalName": "el",
+      "to": "ProxySocketFactory",
+      "evidence": "Implements the socket factory using the system proxy selector and by opening direct, SOCKS, or HTTP proxy connections.",
       "confidence": "reviewed"
     },
     {
@@ -525,6 +574,13 @@
       "originalName": "fd",
       "to": "PlatformTaskDispatcher",
       "evidence": "Daemon platform service with FIFO task submission and worker dispatch; complete original instance contract reviewed. Complete dispatcher constructor/run/FIFO queue/all instance wrappers and task record/constructor reviewed. Preserve original guards,task kinds,permissions,vendor/reflective paths,argument widths,aliases,monitors,field write/notification order and exceptions. Unrelated static members unchanged. No native owned/type-use declarations or exact quoted owned class literals. Identifier-only rename.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fe",
+      "originalName": "fe",
+      "to": "SocketFactory",
+      "evidence": "Defines the socket-opening contract and contains the direct connection implementation using the stored host and port.",
       "confidence": "reviewed"
     },
     {
@@ -577,6 +633,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hd",
+      "originalName": "hd",
+      "to": "ConfirmedEmailAvailabilityValidator",
+      "evidence": "Checks that the confirmation matches the email input, then obtains and caches the email availability result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hi",
+      "originalName": "hi",
+      "to": "TextFieldValidator",
+      "evidence": "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ig",
+      "originalName": "ig",
+      "to": "EditableTextField",
+      "evidence": "Edits and selects text, handles clipboard commands, and dispatches text change and submission events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ij",
+      "originalName": "ij",
+      "to": "DisplayNameSelectionPanel",
+      "evidence": "Shows the required display-name field and submits the name once its validator accepts it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:in",
       "originalName": "in",
       "to": "FrameTimer",
@@ -602,6 +686,13 @@
       "originalName": "jj",
       "to": "AccountServiceResult",
       "evidence": "Complete five-field DTO instance contract and sole boolean constructor reviewed with success/error/suggestion factories, consuming account-creation poller, full result panel and exact success label. Success/status/message/String[] suggestions plus untouched secondary flag; mixed unrelated statics preserved. No other instance operations. All owned/result-type method declarations non-native; exact quoted owned class names absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ka",
+      "originalName": "ka",
+      "to": "EmailFormatValidator",
+      "evidence": "Checks the account email address and supplies feedback when the format is invalid.",
       "confidence": "reviewed"
     },
     {
@@ -640,10 +731,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ld",
+      "originalName": "ld",
+      "to": "AgeValidator",
+      "evidence": "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lg",
       "originalName": "lg",
       "to": "NanoFrameTimer",
       "evidence": "NanoFrameTimer source-purpose review: abstract timer contract or concrete System.nanoTime timestamps/sample buffer;all instance operations,typed factories and selected method callers reviewed;preserve existing behavior and full primitive parameter domains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:li",
+      "originalName": "li",
+      "to": "MatchingFieldValidator",
+      "evidence": "Compares the value with the paired input field and supplies feedback when the values do not match.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lk",
+      "originalName": "lk",
+      "to": "LoginPanel",
+      "evidence": "Owns the login identifier and password fields and forwards submission from the form controls.",
       "confidence": "reviewed"
     },
     {
@@ -658,6 +770,13 @@
       "originalName": "md",
       "to": "DirectByteStorage",
       "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mk",
+      "originalName": "mk",
+      "to": "AccountRegistrationPanel",
+      "evidence": "Builds the six named registration fields, attaches the corresponding validators, and submits the account form.",
       "confidence": "reviewed"
     },
     {
@@ -682,6 +801,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oc",
+      "originalName": "oc",
+      "to": "GridPoint",
+      "evidence": "Stores two integer coordinates and caches their index into the current mission grid.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:oe",
       "originalName": "oe",
       "to": "NodeHashTableIterator",
@@ -689,10 +815,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:of",
+      "originalName": "of",
+      "to": "ClientLookupTables",
+      "evidence": "Initializes the 256-entry CRC-32 table and looks up fixed-point cosine against a quarter-wave sine table.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ol",
       "originalName": "ol",
       "to": "MouseWheelHandler",
       "evidence": "Complete concrete class reviewed: AWT listener adds/removes itself, accumulates and consumes wheel events and synchronously polls stored rotation. Preserve guard-specific state and recursion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pg",
+      "originalName": "pg",
+      "to": "IndexedSprite",
+      "evidence": "Draws byte indices through a color palette and supports opaque, transparent, alpha blended, and scaled draws.",
       "confidence": "reviewed"
     },
     {
@@ -724,10 +864,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sf",
+      "originalName": "sf",
+      "to": "TextInputField",
+      "evidence": "Extends the editable text control with a field-specific input handler and adjusted tooltip coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:si",
       "originalName": "si",
       "to": "SoftwareRasterizer",
       "evidence": "Static software framebuffer rasterizer: all12 fields coherently mapped to pixels,stride,height,four clip boundaries,two row masks and three RGB blur sums; all owned operations covered by reviewed complete reference/alternative method bodies and bound field/call correspondences. Preserve class initialization,visibility,integer domains,clipping,shared state and every allocation/exception/partial-write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sk",
+      "originalName": "sk",
+      "to": "FieldValidatorProvider",
+      "evidence": "Exposes the validator attached to a form input to the status display and submission checks.",
       "confidence": "reviewed"
     },
     {
@@ -742,6 +896,13 @@
       "originalName": "sm",
       "to": "AwtRasterBuffer",
       "evidence": "Abstract AWT raster buffer with exactly four instance fields:two dimension ints,int pixel array,and Image. Declares initialization/drawing operations implemented by ImageProducer and BufferedImage subclasses,and a final method installing its pixels/dimensions as the software raster target. Entire class source and instance/static member context reviewed;all616class-use spans inventoried and70representative contexts read. Preserve modifiers,implicit constructor/default state,all unrelated statics/field names,full primitive domains/guards/aliases/allocation/exception order and native/override bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:t",
+      "originalName": "t",
+      "to": "AchievementNotification",
+      "evidence": "The achievement award queue adds this node and the applet uses its ID to draw the corresponding icon and text.",
       "confidence": "reviewed"
     },
     {
@@ -1095,6 +1256,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:HostileSpawn.a(B)V",
+      "originalName": "a",
+      "to": "renderFrame",
+      "evidence": "Source-purpose review: Selects the active canvas, then draws loading, menu, or gameplay state for the applet frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.a(BI)V",
+      "originalName": "a",
+      "to": "consumeScoreLookupResult",
+      "evidence": "Source-purpose review: Copies a finished lookup result into the local score if it is higher and clears the request slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.a(I)V",
+      "originalName": "a",
+      "to": "initializeGame",
+      "evidence": "Source-purpose review: Configures the game resource channels and constructs the sound engine at applet startup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:HostileSpawn.a(IB)C",
       "originalName": "a",
       "to": "decodeCp1252Byte",
@@ -1102,10 +1284,157 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:HostileSpawn.a(II)V",
+      "originalName": "a",
+      "to": "drawMissionMap",
+      "evidence": "Source-purpose review: Draws the current mission map from the level tiles and map overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.a(ILnm;)V",
+      "originalName": "a",
+      "to": "loadAdditionalSoundEffects",
+      "evidence": "Source-purpose review: Loads additional game sound effects by name, resamples them, and stores them in the sound table.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:HostileSpawn.a(Ljava/applet/Applet;I)V",
       "originalName": "a",
       "to": "openSubscriptionPage",
       "evidence": "Build the original subscribe.ws URL relative to the supplied Applet code base,pass it through the original URL adaptation helper and show it in AppletContext target _top. Preserve original checked/unchecked catches,printStackTrace effects,call/allocation order,null inputs and guard behavior. Retain bad int guard call HostileSpawn.a(-115,(byte)85) before inner Exception catch. Complete original-body SHA256 28d23cbb006540b8a92ffadba0458e49cad603a1ccdf3bae473be95ad1a5ae91. Naming only;45complete selected method bodies,one selected constructor and341field declarations source-reviewed. Preserve original bodies,literals,full JVM argument widths/domains,guards,overflow,casts,aliases,partial writes,call/allocation/exception order,visibility/modifiers and every native/override binding. Existing meaningful aliases unchanged;native/class-name-literal intentional edit allowlists empty. No whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.a(Ljava/awt/Canvas;I)V",
+      "originalName": "a",
+      "to": "drawFrameOverlaysAndPresent",
+      "evidence": "Source-purpose review: Draws overlays such as achievement notifications and presents the completed frame on the selected canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.b(B)V",
+      "originalName": "b",
+      "to": "updateGameTick",
+      "evidence": "Source-purpose review: Updates the sound and input state, advances asset loading or simulation, and handles interface work each tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.c(I)V",
+      "originalName": "c",
+      "to": "releaseGameResources",
+      "evidence": "Source-purpose review: Releases gameplay and platform resources by calling their cleanup functions when the applet terminates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.e(I)V",
+      "originalName": "e",
+      "to": "prepareGameShutdown",
+      "evidence": "Source-purpose review: Closes the secondary canvas when present and shuts down game subsystems at the start of applet teardown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.i(B)V",
+      "originalName": "i",
+      "to": "loadGameplaySprites",
+      "evidence": "Source-purpose review: Loads the sprite assets used during play including the scenery tiles and enemy frames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.j(B)V",
+      "originalName": "j",
+      "to": "initializeCustomCursorSupport",
+      "evidence": "Source-purpose review: Looks up the AWT custom cursor creation method used when drawing the gameplay pointer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.k(B)V",
+      "originalName": "k",
+      "to": "clearHostileSpawnGlobals",
+      "evidence": "Source-purpose review: Clears the static game-owned arrays and sprite references during release of game resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.l(B)V",
+      "originalName": "l",
+      "to": "populateScenerySpriteTable",
+      "evidence": "Source-purpose review: Places the loaded scenery sprites at their numeric object IDs in the level sprite table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.l(I)V",
+      "originalName": "l",
+      "to": "loadFloorAndBackgroundTextures",
+      "evidence": "Source-purpose review: Loads the starfield and floor texture sheets and slices the floor art into tiles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.m(B)V",
+      "originalName": "m",
+      "to": "updateGameOverlays",
+      "evidence": "Source-purpose review: Handles overlay input and advances the lifetime of the current achievement notification when gameplay overlays permit it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.m(I)V",
+      "originalName": "m",
+      "to": "configureInterfaceThemeAndCursor",
+      "evidence": "Source-purpose review: Configures the shared interface fonts, colors, and layout values, then looks up AWT custom cursor support.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.n(I)V",
+      "originalName": "n",
+      "to": "loadOriginalCampaignLevels",
+      "evidence": "Source-purpose review: Loads the numbered mission and tutorial level files into the original campaign slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.o(I)V",
+      "originalName": "o",
+      "to": "loadVengeanceCampaignLevels",
+      "evidence": "Source-purpose review: Loads the ten numbered Vengeance mission files into the second campaign slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.p(I)Z",
+      "originalName": "p",
+      "to": "advanceGameAssetLoading",
+      "evidence": "Source-purpose review: Advances the applet asset loading sequence and returns its completion state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.q(I)Lnm;",
+      "originalName": "q",
+      "to": "loadBaseSoundEffects",
+      "evidence": "Source-purpose review: Constructs the resampler and uses it to populate the base sound effect and weapon sample tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.r(I)V",
+      "originalName": "r",
+      "to": "drawAchievementNotification",
+      "evidence": "Source-purpose review: Draws the first queued achievement notification with its corresponding icon and green title.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.s(I)V",
+      "originalName": "s",
+      "to": "loadEnemyAnimationSprites",
+      "evidence": "Source-purpose review: Loads separate enemy sprite frames for attack, death, idle, and walking animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.t(I)V",
+      "originalName": "t",
+      "to": "loadScenerySprites",
+      "evidence": "Source-purpose review: Loads numbered scenery images from the sprite archive, selecting sprite or animation arrays for each asset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:HostileSpawn.u(I)V",
+      "originalName": "u",
+      "to": "loadAndPreloadMusic",
+      "evidence": "Source-purpose review: Resolves the two campaigns’ music tracks and submits those tracks to the sound engine for preloading.",
       "confidence": "reviewed"
     },
     {
@@ -1225,6 +1554,41 @@
       "originalName": "d",
       "to": "getQueuedFrames",
       "evidence": "Device implementation returns capacity minus available bytes converted to mono/stereo frames. Base implementation returns retained capacity;retain each actual body and units. Original-body SHA256 22b53c14b364b1a4ac1aa4decc7ba81d266c0c651978148612bb0c474bd7c370. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(I)V",
+      "originalName": "a",
+      "to": "clearExpansionTitle",
+      "evidence": "Source-purpose review: Clears the shared Vengeance expansion title string during applet resource cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(II)V",
+      "originalName": "a",
+      "to": "drawOpaque",
+      "evidence": "Source-purpose review: Defines the opaque draw operation implemented by the indexed sprite’s unconditional palette copy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(III)V",
+      "originalName": "a",
+      "to": "drawWithAlpha",
+      "evidence": "Source-purpose review: Defines the draw operation that blends nontransparent sprite pixels into the raster with the given opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(Lkd;IILjava/awt/Component;ZLfd;)V",
+      "originalName": "a",
+      "to": "initializeAudioOutput",
+      "evidence": "Source-purpose review: Passes the mixer, sample rate, component, and platform service to the audio output initializer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getPlayerDisplayName",
+      "evidence": "Source-purpose review: Returns the player display name received from the server, defaulting to an empty string when it has not been set.",
       "confidence": "reviewed"
     },
     {
@@ -1473,6 +1837,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bg.a(B)Z",
+      "originalName": "a",
+      "to": "hasMissingInput",
+      "evidence": "Source-purpose review: Reports whether the text or any required date input is absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(Z)V",
+      "originalName": "a",
+      "to": "recordInputChange",
+      "evidence": "Source-purpose review: Stores the current time on input changes so the validation delay can restart.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.b(I)Lbm;",
+      "originalName": "b",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bh.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1487,10 +1879,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.a(Z)V",
+      "originalName": "a",
+      "to": "recordInputChange",
+      "evidence": "Source-purpose review: Stores the current time on input changes so the validation delay can restart.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.b(B)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "evaluateValidationMessage",
+      "evidence": "Source-purpose review: Obtains feedback for the current input from the field-specific validator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.b(I)Lbm;",
+      "originalName": "b",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bj.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 5 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.d(I)Lbm;",
+      "originalName": "d",
+      "to": "evaluateValidationStatus",
+      "evidence": "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready.",
       "confidence": "reviewed"
     },
     {
@@ -1585,6 +2012,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cd.a(Lig;B)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.a(Lig;I)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1645,6 +2086,20 @@
       "originalName": "a",
       "to": "onScheduledEvent",
       "evidence": "Run the scheduled mixer listener callback and return the original next frame delay or negative unschedule result. Preserve the retained virtual dispatch and caller monitor. Concrete tracker callbacks first call their original state updater,conditionally return minus one,and otherwise compute ((sampleRate<<9)+(sampleRate<<7))/(tempo*scale) with original int overflow and division behavior. Original abstract declaration SHA256 0bf90f91b5a1593dd04f9958759910cab22ec1c9a0df088d9f40db3c7b48d0a8. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.a(BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.a(Ljava/lang/String;B)Lbm;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
       "confidence": "reviewed"
     },
     {
@@ -1956,6 +2411,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.a(Lgb;ILjava/lang/String;Ljava/lang/String;)[Lbd;",
+      "originalName": "a",
+      "to": "loadNamedRgbSprites",
+      "evidence": "Source-purpose review: Resolves the group and file names in the sprite archive and decodes the matching RGB sprite array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.c(I)V",
+      "originalName": "c",
+      "to": "clearDelayedPacketGlobals",
+      "evidence": "Source-purpose review: Releases shared cache, sprite, and panel references owned by the delayed packet class.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.a(Z[BI)Ljava/lang/Object;",
       "originalName": "a",
       "to": "storeBytes",
@@ -2002,6 +2471,27 @@
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
       "evidence": "Complete declaration/body verified against exact source-reviewed private static<T extends Throwable> RuntimeException helper with throws T and body throw(T)throwable. Preserve generic exception signature, original Throwable identity, null behavior, annotation and every explicit type argument/call site; do not wrap or convert checked exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:el.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Selects a system proxy for the configured host and port and opens the socket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:el.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openHttpProxyTunnel",
+      "evidence": "Source-purpose review: Connects to the proxy host and requests an HTTP CONNECT tunnel for the configured destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:el.a(Ljava/net/Proxy;B)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocketThroughProxy",
+      "evidence": "Source-purpose review: Opens a connection using the supplied direct, HTTP, or SOCKS proxy configuration.",
       "confidence": "reviewed"
     },
     {
@@ -2135,6 +2625,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Source-purpose review: Declares the socket factory operation implemented by the system-proxy-aware factory.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.b(I)Ljava/net/Socket;",
+      "originalName": "b",
+      "to": "openDirectSocket",
+      "evidence": "Source-purpose review: Creates a direct TCP socket using the factory’s configured destination host and port.",
       "confidence": "reviewed"
     },
     {
@@ -2621,6 +3125,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hd.a(BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd.a(Ljava/lang/String;B)Lbm;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:he.b(Z)V",
       "originalName": "b",
       "to": "clearDeclaredStaticReferences",
@@ -2646,6 +3164,55 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c29d91091905c40a69d756738114b6d28f4f66845b4bde44a77abf4d4c907805.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(B)Z",
+      "originalName": "a",
+      "to": "hasMissingInput",
+      "evidence": "Source-purpose review: Reports whether the text or any required date input is absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(Lig;B)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(Lig;I)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(Ljava/lang/String;B)Lbm;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.b(B)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "evaluateValidationMessage",
+      "evidence": "Source-purpose review: Obtains feedback for the current input from the field-specific validator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.d(I)Lbm;",
+      "originalName": "d",
+      "to": "evaluateValidationStatus",
+      "evidence": "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready.",
       "confidence": "reviewed"
     },
     {
@@ -2705,10 +3272,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ig.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "insertTextAtCaret",
+      "evidence": "Source-purpose review: Inserts text at the current caret and updates the caret and selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.b(Z)V",
+      "originalName": "b",
+      "to": "deleteSelection",
+      "evidence": "Source-purpose review: Removes the selected substring and updates the caret and selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.e(B)V",
+      "originalName": "e",
+      "to": "notifyTextChanged",
+      "evidence": "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.f(B)V",
+      "originalName": "f",
+      "to": "cutSelection",
+      "evidence": "Source-purpose review: Copies the selected text to the clipboard and then removes it from the editor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.g(B)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "getSelectedText",
+      "evidence": "Source-purpose review: Returns the substring between the caret and the selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.k(I)V",
+      "originalName": "k",
+      "to": "submitText",
+      "evidence": "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.l(I)V",
+      "originalName": "l",
+      "to": "copySelection",
+      "evidence": "Source-purpose review: Copies the selected text to the system clipboard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ig.m(I)V",
       "originalName": "m",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.n(I)V",
+      "originalName": "n",
+      "to": "pasteClipboardText",
+      "evidence": "Source-purpose review: Reads text from the system clipboard and pastes it at the editor caret.",
       "confidence": "reviewed"
     },
     {
@@ -2726,10 +3349,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ij.a(Lsk;B)Z",
+      "originalName": "a",
+      "to": "isFieldValid",
+      "evidence": "Source-purpose review: Returns whether the display-name control reports an acceptable validation status.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ij.e(B)V",
       "originalName": "e",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.j(I)V",
+      "originalName": "j",
+      "to": "submitDisplayName",
+      "evidence": "Source-purpose review: Submits the chosen display name only when the form validation permits it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.l(I)Z",
+      "originalName": "l",
+      "to": "canSubmitDisplayName",
+      "evidence": "Source-purpose review: Evaluates the display-name field before enabling or submitting the form.",
       "confidence": "reviewed"
     },
     {
@@ -2870,6 +3514,20 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;B)Lbm;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
       "confidence": "reviewed"
     },
     {
@@ -3055,6 +3713,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ld.a(BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.a(Ljava/lang/String;B)Lbm;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:le.e(I)V",
       "originalName": "e",
       "to": "resetStaticState",
@@ -3111,10 +3783,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:li.a(BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(Ljava/lang/String;B)Lbm;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:li.d(B)V",
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 6 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(Lig;B)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(Lig;I)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.e(B)V",
+      "originalName": "e",
+      "to": "submitLogin",
+      "evidence": "Source-purpose review: Checks the two login fields and forwards their values from the form to the login request.",
       "confidence": "reviewed"
     },
     {
@@ -3202,6 +3909,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mk.a(BLsk;)Z",
+      "originalName": "a",
+      "to": "isFieldReadyForRegistration",
+      "evidence": "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.c(Z)Z",
+      "originalName": "c",
+      "to": "canSubmitRegistration",
+      "evidence": "Source-purpose review: Checks the readiness of the six account registration inputs before submission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.k(I)Z",
+      "originalName": "k",
+      "to": "submitRegistration",
+      "evidence": "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ml.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3227,6 +3955,20 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(Ljava/lang/String;B)Lbm;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
       "confidence": "reviewed"
     },
     {
@@ -3377,6 +4119,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oc.a(B)V",
+      "originalName": "a",
+      "to": "readSocialListUpdate",
+      "evidence": "Source-purpose review: Reads the packet subtype, updates ignore or friend entries, and accepts the server’s social-list state changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(BLoc;)V",
+      "originalName": "a",
+      "to": "copyCoordinatesFrom",
+      "evidence": "Source-purpose review: Copies both coordinates from the supplied grid point into this point.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(I)D",
+      "originalName": "a",
+      "to": "directionInAngleUnits",
+      "evidence": "Source-purpose review: Converts the coordinate vector to a direction using the game’s 256-units-per-turn angle convention.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(ID)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatTwoDecimals",
+      "evidence": "Source-purpose review: Formats the decimal value using a shared formatter that always displays two fractional digits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(III)V",
+      "originalName": "a",
+      "to": "setCoordinates",
+      "evidence": "Source-purpose review: Sets the two integer positions using the caller-supplied x and y values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(Ljava/lang/CharSequence;I)Z",
+      "originalName": "a",
+      "to": "validateAccountName",
+      "evidence": "Source-purpose review: Checks the account name with the character validator for the username lookup mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(Loc;I)Z",
+      "originalName": "a",
+      "to": "hasSameCoordinates",
+      "evidence": "Source-purpose review: Compares the horizontal and vertical coordinate fields of the supplied point for equality.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.b(I)I",
+      "originalName": "b",
+      "to": "getClampedTileIndex",
+      "evidence": "Source-purpose review: Computes a row-major tile index from the point and level width, clamps it, and caches the result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.b(Loc;I)V",
+      "originalName": "b",
+      "to": "subtractCoordinates",
+      "evidence": "Source-purpose review: Subtracts the supplied point from this point in place along both axes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.c(I)V",
+      "originalName": "c",
+      "to": "clearMissionMapGlobals",
+      "evidence": "Source-purpose review: Clears the static level data and associated shared map references.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:od.e(B)V",
       "originalName": "e",
       "to": "clearDeclaredStaticReferences",
@@ -3395,6 +4207,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 597dc40dcd25dd8ddf3c30727882760cb8e362945012195dcca987fcebe9b0b6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:of.a(BI)I",
+      "originalName": "a",
+      "to": "cosineFixedPoint",
+      "evidence": "Source-purpose review: Looks up a signed 16.16 fixed-point cosine on an 8192-unit circle using the quarter-wave sine table.",
       "confidence": "reviewed"
     },
     {
@@ -3503,6 +4322,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pg.a(II)V",
+      "originalName": "a",
+      "to": "drawOpaque",
+      "evidence": "Source-purpose review: Clips the sprite to the raster bounds and copies palette entries for all pixels, including palette index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.a(III)V",
+      "originalName": "a",
+      "to": "drawWithAlpha",
+      "evidence": "Source-purpose review: Clips and blends the sprite using the supplied opacity and skips transparent palette indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.a(IIII)V",
+      "originalName": "a",
+      "to": "drawScaled",
+      "evidence": "Source-purpose review: Uses fixed-point source coordinate steps to scale the indexed sprite to a requested size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pg.a([I[B[IIIIIII)V",
       "originalName": "a",
       "to": "blitIndexedOpaque",
@@ -3524,10 +4364,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pg.b(II)V",
+      "originalName": "b",
+      "to": "drawTransparent",
+      "evidence": "Source-purpose review: Clips and draws the indexed sprite with index zero skipped by the copy routine.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pg.b([I[B[IIIIIIII)V",
       "originalName": "b",
       "to": "blitIndexedAlpha",
       "evidence": "Source-purpose review: Blend nonzero indexed palette pixels over destination using the original supplied alpha and256-minus-alpha packed RGB expression with signed right shift;index0 leaves destination untouched. Original body SHA256 d798b9b8c1facd081112441f6fb3648865f3a3ad657dc4265b6b72e40c821e6f. Preserve full JVM integer domains,byte signedness,unsigned palette index masking,parameter slots,array aliases,partial writes and all index/null/overflow behavior. Naming only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.c(II)V",
+      "originalName": "c",
+      "to": "drawQuarterSizeAveraged",
+      "evidence": "Source-purpose review: Draws the sprite at quarter width and height by averaging each four-by-four source block.",
       "confidence": "reviewed"
     },
     {
@@ -3874,6 +4728,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:se.a(B)V",
+      "originalName": "a",
+      "to": "renderFrame",
+      "evidence": "Source-purpose review: Abstract applet callback invoked in the graphics frame path and implemented by the game renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.a(I)V",
+      "originalName": "a",
+      "to": "initializeGame",
+      "evidence": "Source-purpose review: Abstract callback invoked while starting the applet and implemented by the game initializer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.b(B)V",
+      "originalName": "b",
+      "to": "updateGameTick",
+      "evidence": "Source-purpose review: Abstract callback invoked once from the applet update path and implemented by the game tick handler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.c(I)V",
+      "originalName": "c",
+      "to": "releaseGameResources",
+      "evidence": "Source-purpose review: Abstract shutdown callback implemented by the game-wide resource cleanup routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.e(I)V",
+      "originalName": "e",
+      "to": "prepareGameShutdown",
+      "evidence": "Source-purpose review: Abstract callback that the applet invokes before disconnecting and releasing game resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(B)Lbg;",
+      "originalName": "a",
+      "to": "getInputHandler",
+      "evidence": "Source-purpose review: Returns the field-specific handler that is updated and notified by this text field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(BLjava/lang/CharSequence;)Z",
+      "originalName": "a",
+      "to": "isDecimalInteger",
+      "evidence": "Source-purpose review: Validates the text as a base-ten integer, allowing a leading plus sign.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(ID)D",
+      "originalName": "a",
+      "to": "tileYToScreenY",
+      "evidence": "Source-purpose review: Converts a fractional tile Y coordinate to screen pixels by subtracting the vertical camera offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(IIIIZ)V",
+      "originalName": "a",
+      "to": "pushAndIntersectClip",
+      "evidence": "Source-purpose review: Saves the raster state on the stack before intersecting its clip with the supplied rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(Lbg;B)V",
+      "originalName": "a",
+      "to": "setInputHandler",
+      "evidence": "Source-purpose review: Installs the input handler returned by the field’s handler accessor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.e(B)V",
+      "originalName": "e",
+      "to": "notifyTextChanged",
+      "evidence": "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.p(I)V",
+      "originalName": "p",
+      "to": "clearTextInputFieldGlobals",
+      "evidence": "Source-purpose review: Releases static text, sprite, and sample references held by the text field class.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:si.a()V",
       "originalName": "a",
       "to": "clearScanlineMask",
@@ -4105,6 +5043,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sk.a(B)Lbg;",
+      "originalName": "a",
+      "to": "getInputHandler",
+      "evidence": "Source-purpose review: Declares the accessor implemented by the text field for its field-specific input handler.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sl.a(B)[I",
       "originalName": "a",
       "to": "listDisplayModes",
@@ -4151,6 +5096,20 @@
       "originalName": "b",
       "to": "setAsRasterTarget",
       "evidence": "Source-purpose review: Install this buffer pixel-array reference and its two dimensions through the already-reviewed static setRasterBuffer operation,which stores the global target/dimensions and resets clipping. All13owning class bodies,13callee bodies,and all135incoming contexts reviewed. Preserve every game-specific guard-dependent return,static cleanup/Canvas nulling,virtual reinitialization,self recursion,pixel-array null assignment,division exception and exact before/after call order;retain argument widths/domains and finality. No signature/body/field changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.a(B)V",
+      "originalName": "a",
+      "to": "readPlayerDisplayName",
+      "evidence": "Source-purpose review: Reads the player display name from the current packet and stores its normalized form.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.a(III)Z",
+      "originalName": "a",
+      "to": "selectWeaponForSlot",
+      "evidence": "Source-purpose review: Changes the weapon in a player slot if it is unlocked and resolves duplicates with the other slot.",
       "confidence": "reviewed"
     },
     {
@@ -5122,7 +6081,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "b532f0600ead7ff9462a0033cb3ba2d6f7613e7ccc6e56d0777c5e82d644b9cf",
+      "hostilespawn_vengeance-names.json": "855b9cd83e5b167e82b80e1a35ed3575009b66e603e2050ab484bf1231b382d7",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -194,6 +194,81 @@
       "ci",
       "ResourceArchive",
       "Loads a resource index and uses it to allocate caches for packed archive groups and decoded files per group. Retrieves file bytes by group and file ID and evicts according to the supplied mode. Constructor retains the initial null index, provider and cache options, validates the mode from 0 through 2, and preserves exception wrapping."
+    ],
+    [
+      "ff",
+      "LoginPanel",
+      "Owns the login identifier and password fields and forwards submission from the form controls."
+    ],
+    [
+      "ck",
+      "DisplayNameSelectionPanel",
+      "Shows the required display-name field and submits the name once its validator accepts it."
+    ],
+    [
+      "wl",
+      "AccountRegistrationPanel",
+      "Builds the six named registration fields, attaches the corresponding validators, and submits the account form."
+    ],
+    [
+      "vh",
+      "EmailFormatValidator",
+      "Checks the account email address and supplies feedback when the format is invalid."
+    ],
+    [
+      "va",
+      "ConfirmedEmailAvailabilityValidator",
+      "Checks that the confirmation matches the email input, then obtains and caches the email availability result."
+    ],
+    [
+      "bg",
+      "PasswordValidator",
+      "Checks the proposed account password and supplies feedback about invalid or unsuitable input."
+    ],
+    [
+      "cg",
+      "MatchingFieldValidator",
+      "Compares the value with the paired input field and supplies feedback when the values do not match."
+    ],
+    [
+      "md",
+      "AgeValidator",
+      "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input."
+    ],
+    [
+      "rg",
+      "EditableTextField",
+      "Edits and selects text, handles clipboard commands, and dispatches text change and submission events."
+    ],
+    [
+      "fb",
+      "TextFieldListener",
+      "Receives the editable field callbacks for text changes and text submission."
+    ],
+    [
+      "ie",
+      "FieldValidatorProvider",
+      "Exposes the validator attached to a form input to the status display and submission checks."
+    ],
+    [
+      "vc",
+      "ValidatedTextField",
+      "Extends the editable field with an attached validator and forwards text changes to the validator."
+    ],
+    [
+      "ca",
+      "DebouncedFieldValidator",
+      "Records input changes and defers status and feedback evaluation for 350 milliseconds before calling the field-specific validator."
+    ],
+    [
+      "wa",
+      "FieldValidator",
+      "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators."
+    ],
+    [
+      "me",
+      "TextFieldValidator",
+      "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."
     ]
   ],
   "methods": [
@@ -4011,6 +4086,356 @@
       "(I)I",
       "getArchiveLoadPercent",
       "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After accumulation, an int other than -22884 calls the string helper with a nested cache byte and null."
+    ],
+    [
+      "ff",
+      "d",
+      "(B)V",
+      "submitLogin",
+      "Source-purpose review: Checks the two login fields and forwards their values from the form to the login request."
+    ],
+    [
+      "ck",
+      "a",
+      "(Lie;B)Z",
+      "isFieldValid",
+      "Source-purpose review: Returns whether the display-name control reports an acceptable validation status."
+    ],
+    [
+      "ck",
+      "m",
+      "(I)Z",
+      "canSubmitDisplayName",
+      "Source-purpose review: Evaluates the display-name field before enabling or submitting the form."
+    ],
+    [
+      "ck",
+      "n",
+      "(I)V",
+      "submitDisplayName",
+      "Source-purpose review: Submits the chosen display name only when the form validation permits it."
+    ],
+    [
+      "bg",
+      "a",
+      "(ILjava/lang/String;)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "cg",
+      "a",
+      "(ILjava/lang/String;)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "li",
+      "a",
+      "(ILjava/lang/String;)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "md",
+      "a",
+      "(ILjava/lang/String;)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "me",
+      "a",
+      "(ILjava/lang/String;)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "va",
+      "a",
+      "(ILjava/lang/String;)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "vh",
+      "a",
+      "(ILjava/lang/String;)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "bg",
+      "b",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "cg",
+      "b",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "li",
+      "b",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "md",
+      "b",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "me",
+      "b",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "va",
+      "b",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "vh",
+      "b",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "wl",
+      "a",
+      "(BLie;)Z",
+      "isFieldReadyForRegistration",
+      "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration."
+    ],
+    [
+      "wl",
+      "o",
+      "(I)Z",
+      "canSubmitRegistration",
+      "Source-purpose review: Checks the readiness of the six account registration inputs before submission."
+    ],
+    [
+      "wl",
+      "l",
+      "(I)Z",
+      "submitRegistration",
+      "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration."
+    ],
+    [
+      "fb",
+      "a",
+      "(Lrg;I)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "ff",
+      "a",
+      "(Lrg;I)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "me",
+      "a",
+      "(Lrg;I)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "fb",
+      "a",
+      "(ILrg;)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "ff",
+      "a",
+      "(ILrg;)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "me",
+      "a",
+      "(ILrg;)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "rg",
+      "e",
+      "(B)V",
+      "notifyTextChanged",
+      "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators."
+    ],
+    [
+      "vc",
+      "e",
+      "(B)V",
+      "notifyTextChanged",
+      "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators."
+    ],
+    [
+      "rg",
+      "j",
+      "(I)V",
+      "submitText",
+      "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler."
+    ],
+    [
+      "ie",
+      "a",
+      "(B)Lwa;",
+      "getFieldValidator",
+      "Source-purpose review: Returns the attached form field validator for status checks or validation feedback."
+    ],
+    [
+      "vc",
+      "a",
+      "(B)Lwa;",
+      "getFieldValidator",
+      "Source-purpose review: Returns the attached form field validator for status checks or validation feedback."
+    ],
+    [
+      "rg",
+      "d",
+      "(Z)V",
+      "copySelection",
+      "Source-purpose review: Copies the selected text to the system clipboard."
+    ],
+    [
+      "rg",
+      "h",
+      "(B)V",
+      "pasteClipboardText",
+      "Source-purpose review: Reads text from the system clipboard and pastes it at the editor caret."
+    ],
+    [
+      "rg",
+      "f",
+      "(B)Ljava/lang/String;",
+      "getSelectedText",
+      "Source-purpose review: Returns the substring between the caret and the selection anchor."
+    ],
+    [
+      "rg",
+      "o",
+      "(I)V",
+      "deleteSelection",
+      "Source-purpose review: Removes the selected substring and updates the caret and selection anchor."
+    ],
+    [
+      "rg",
+      "a",
+      "(ZLjava/lang/String;)V",
+      "insertTextAtCaret",
+      "Source-purpose review: Inserts text at the current caret and updates the caret and selection anchor."
+    ],
+    [
+      "rg",
+      "k",
+      "(I)V",
+      "cutSelection",
+      "Source-purpose review: Copies the selected text to the clipboard and then removes it from the editor."
+    ],
+    [
+      "ca",
+      "a",
+      "(I)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay."
+    ],
+    [
+      "wa",
+      "a",
+      "(I)Lrc;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay."
+    ],
+    [
+      "ca",
+      "c",
+      "(I)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message."
+    ],
+    [
+      "wa",
+      "c",
+      "(I)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message."
+    ],
+    [
+      "ca",
+      "a",
+      "(Z)V",
+      "recordInputChange",
+      "Source-purpose review: Stores the current time on input changes so the validation delay can restart."
+    ],
+    [
+      "wa",
+      "a",
+      "(Z)V",
+      "recordInputChange",
+      "Source-purpose review: Stores the current time on input changes so the validation delay can restart."
+    ],
+    [
+      "me",
+      "b",
+      "(I)Z",
+      "hasMissingInput",
+      "Source-purpose review: Reports whether the text or any required date input is absent."
+    ],
+    [
+      "wa",
+      "b",
+      "(I)Z",
+      "hasMissingInput",
+      "Source-purpose review: Reports whether the text or any required date input is absent."
+    ],
+    [
+      "ca",
+      "e",
+      "(I)Lrc;",
+      "evaluateValidationStatus",
+      "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready."
+    ],
+    [
+      "me",
+      "e",
+      "(I)Lrc;",
+      "evaluateValidationStatus",
+      "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready."
+    ],
+    [
+      "ca",
+      "f",
+      "(I)Ljava/lang/String;",
+      "evaluateValidationMessage",
+      "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "me",
+      "f",
+      "(I)Ljava/lang/String;",
+      "evaluateValidationMessage",
+      "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
     ]
   ],
   "fields": [

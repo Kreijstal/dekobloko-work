@@ -255,6 +255,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cc",
+      "originalName": "cc",
+      "to": "PasswordValidator",
+      "evidence": "Checks the proposed account password and supplies feedback about invalid or unsuitable input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cf",
+      "originalName": "cf",
+      "to": "ConfirmedEmailAvailabilityValidator",
+      "evidence": "Checks that the confirmation matches the email input, then obtains and caches the email availability result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ck",
       "originalName": "ck",
       "to": "PcmOutputWorker",
@@ -266,6 +280,13 @@
       "originalName": "df",
       "to": "AudioOutput",
       "evidence": "PCM output controller: creates output devices,services adaptive frame buffers,schedules/mixes PCM stream children and disposes shared audio service membership. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:di",
+      "originalName": "di",
+      "to": "AgeValidator",
+      "evidence": "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input.",
       "confidence": "reviewed"
     },
     {
@@ -287,6 +308,13 @@
       "originalName": "ek",
       "to": "IterableNodeHashTable",
       "evidence": "Power-of-two bucket array of IntrusiveNode keyed by long, implementing Iterable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fe",
+      "originalName": "fe",
+      "to": "EditableTextField",
+      "evidence": "Edits and selects text, handles clipboard commands, and dispatches text change and submission events.",
       "confidence": "reviewed"
     },
     {
@@ -332,10 +360,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:he",
+      "originalName": "he",
+      "to": "FieldValidator",
+      "evidence": "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hf",
       "originalName": "hf",
       "to": "NanoFrameTimer",
       "evidence": "NanoFrameTimer source-purpose review: abstract timer contract or concrete System.nanoTime timestamps/sample buffer;all instance operations,typed factories and selected method callers reviewed;preserve existing behavior and full primitive parameter domains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hg",
+      "originalName": "hg",
+      "to": "DisplayNameSelectionPanel",
+      "evidence": "Shows the required display-name field and submits the name once its validator accepts it.",
       "confidence": "reviewed"
     },
     {
@@ -416,6 +458,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kh",
+      "originalName": "kh",
+      "to": "AccountRegistrationPanel",
+      "evidence": "Builds the six named registration fields, attaches the corresponding validators, and submits the account form.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ki",
       "originalName": "ki",
       "to": "SoftwareRasterizer",
@@ -465,6 +514,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mh",
+      "originalName": "mh",
+      "to": "EmailFormatValidator",
+      "evidence": "Checks the account email address and supplies feedback when the format is invalid.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nc",
       "originalName": "nc",
       "to": "GzipDecompressor",
@@ -476,6 +532,13 @@
       "originalName": "nd",
       "to": "AccountNameAvailabilityValidator",
       "evidence": "Complete instance contract reviewed: constructor plus text/status/reset methods and two private cache fields. Syntax checks precede asynchronous account-name query; completed error-free result cached by exact input, with explicit Name is available/That name is not available diagnostics and valid/invalid/checking result branches. Corresponding already-readable AoG validator is corroborating context, not automatic name transfer. Preserve inherited method names/overrides, every game-specific guard/reset/exception/static helper and default. No native owned/type-use declarations; same-spelling non-class literals, when present, explicitly reviewed and pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ng",
+      "originalName": "ng",
+      "to": "ValidatedTextField",
+      "evidence": "Extends the editable field with an attached validator and forwards text changes to the validator.",
       "confidence": "reviewed"
     },
     {
@@ -521,6 +584,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qf",
+      "originalName": "qf",
+      "to": "TextFieldValidator",
+      "evidence": "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qh",
       "originalName": "qh",
       "to": "DirectDrawFullscreenManager",
@@ -549,6 +619,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rg",
+      "originalName": "rg",
+      "to": "LoginPanel",
+      "evidence": "Owns the login identifier and password fields and forwards submission from the form controls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rk",
       "originalName": "rk",
       "to": "IntrusiveDeque",
@@ -560,6 +637,13 @@
       "originalName": "sb",
       "to": "BufferedSocket",
       "evidence": "Runnable owning a Socket with input/output streams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:si",
+      "originalName": "si",
+      "to": "TextFieldListener",
+      "evidence": "Receives the editable field callbacks for text changes and text submission.",
       "confidence": "reviewed"
     },
     {
@@ -588,6 +672,20 @@
       "originalName": "tk",
       "to": "AwtRasterBuffer",
       "evidence": "Abstract AWT raster buffer with exactly four instance fields:two dimension ints,int pixel array,and Image. Declares initialization/drawing operations implemented by ImageProducer and BufferedImage subclasses,and a final method installing its pixels/dimensions as the software raster target. Entire class source and instance/static member context reviewed;all616class-use spans inventoried and70representative contexts read. Preserve modifiers,implicit constructor/default state,all unrelated statics/field names,full primitive domains/guards/aliases/allocation/exception order and native/override bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ub",
+      "originalName": "ub",
+      "to": "FieldValidatorProvider",
+      "evidence": "Exposes the validator attached to a form input to the status display and submission checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uc",
+      "originalName": "uc",
+      "to": "DebouncedFieldValidator",
+      "evidence": "Records input changes and defers status and feedback evaluation for 350 milliseconds before calling the field-specific validator.",
       "confidence": "reviewed"
     },
     {
@@ -637,6 +735,13 @@
       "originalName": "uk",
       "to": "Win32CursorManager",
       "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vb",
+      "originalName": "vb",
+      "to": "MatchingFieldValidator",
+      "evidence": "Compares the value with the paired input field and supplies feedback when the values do not match.",
       "confidence": "reviewed"
     },
     {
@@ -1207,6 +1312,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cc.a(Ljava/lang/String;I)Lp;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cc.e(B)V",
       "originalName": "e",
       "to": "clearStaticReferences",
@@ -1225,6 +1344,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ee5da62402d6e696c414ccd4c205df971ace76538d1b7741d453bfabcc30dde1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(Ljava/lang/String;I)Lp;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
       "confidence": "reviewed"
     },
     {
@@ -1407,6 +1540,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0f954696fc1bbf757b63f2d473fee43c5416f88ac2e25c0d168fe8353c429ea5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(Ljava/lang/String;I)Lp;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
       "confidence": "reviewed"
     },
     {
@@ -1641,10 +1788,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fe.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "insertTextAtCaret",
+      "evidence": "Source-purpose review: Inserts text at the current caret and updates the caret and selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.e(B)V",
+      "originalName": "e",
+      "to": "deleteSelection",
+      "evidence": "Source-purpose review: Removes the selected substring and updates the caret and selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.e(Z)V",
+      "originalName": "e",
+      "to": "cutSelection",
+      "evidence": "Source-purpose review: Copies the selected text to the clipboard and then removes it from the editor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fe.f(B)V",
       "originalName": "f",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 81946ed2fbc5b2f2f0661886655c589117c551272f38d133f9d827d833adfc20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.f(Z)V",
+      "originalName": "f",
+      "to": "notifyTextChanged",
+      "evidence": "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.g(I)V",
+      "originalName": "g",
+      "to": "pasteClipboardText",
+      "evidence": "Source-purpose review: Reads text from the system clipboard and pastes it at the editor caret.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.g(Z)V",
+      "originalName": "g",
+      "to": "copySelection",
+      "evidence": "Source-purpose review: Copies the selected text to the system clipboard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.h(I)Ljava/lang/String;",
+      "originalName": "h",
+      "to": "getSelectedText",
+      "evidence": "Source-purpose review: Returns the substring between the caret and the selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.h(Z)V",
+      "originalName": "h",
+      "to": "submitText",
+      "evidence": "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler.",
       "confidence": "reviewed"
     },
     {
@@ -1942,6 +2145,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:he.a(B)V",
+      "originalName": "a",
+      "to": "recordInputChange",
+      "evidence": "Source-purpose review: Stores the current time on input changes so the validation delay can restart.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.a(Z)Z",
+      "originalName": "a",
+      "to": "hasMissingInput",
+      "evidence": "Source-purpose review: Reports whether the text or any required date input is absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.b(B)Lp;",
+      "originalName": "b",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hf.a(B)J",
       "originalName": "a",
       "to": "getDelayMillis",
@@ -1970,10 +2201,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hg.a(BLub;)Z",
+      "originalName": "a",
+      "to": "isFieldValid",
+      "evidence": "Source-purpose review: Returns whether the display-name control reports an acceptable validation status.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hg.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 d15b82f43f1371daf4edff64e2e8ee87581996edb22cd155a8608bffd52ed41a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hg.g(B)Z",
+      "originalName": "g",
+      "to": "canSubmitDisplayName",
+      "evidence": "Source-purpose review: Evaluates the display-name field before enabling or submitting the form.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hg.h(B)V",
+      "originalName": "h",
+      "to": "submitDisplayName",
+      "evidence": "Source-purpose review: Submits the chosen display name only when the form validation permits it.",
       "confidence": "reviewed"
     },
     {
@@ -2530,10 +2782,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kh.a(ILub;)Z",
+      "originalName": "a",
+      "to": "isFieldReadyForRegistration",
+      "evidence": "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kh.h(B)V",
       "originalName": "h",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 6c9497538ec6807b448819e4207918ec37af16bd68554bab28ca8f2049c65173.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.i(I)Z",
+      "originalName": "i",
+      "to": "submitRegistration",
+      "evidence": "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.k(I)Z",
+      "originalName": "k",
+      "to": "canSubmitRegistration",
+      "evidence": "Source-purpose review: Checks the readiness of the six account registration inputs before submission.",
       "confidence": "reviewed"
     },
     {
@@ -2985,6 +3258,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mh.a(Ljava/lang/String;I)Lp;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mi.d(I)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -3055,6 +3342,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nd.a(Ljava/lang/String;I)Lp;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nd.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nd.a(ZII)I",
       "originalName": "a",
       "to": "reverseLowBits",
@@ -3073,6 +3374,20 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 b8e7f65227971cc39d19b87379ff5ab29f8c1a76487ad98329369f840fda9c4c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(Z)Lhe;",
+      "originalName": "a",
+      "to": "getFieldValidator",
+      "evidence": "Source-purpose review: Returns the attached form field validator for status checks or validation feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.f(Z)V",
+      "originalName": "f",
+      "to": "notifyTextChanged",
+      "evidence": "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators.",
       "confidence": "reviewed"
     },
     {
@@ -3395,6 +3710,55 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 2f2fc881341b77f59795d81580446cb6d3f833832ac1e5b76f40a6b19510db30.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.a(ILfe;)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.a(Ljava/lang/String;I)Lp;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.a(Z)Z",
+      "originalName": "a",
+      "to": "hasMissingInput",
+      "evidence": "Source-purpose review: Reports whether the text or any required date input is absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.a(ZLfe;)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "evaluateValidationMessage",
+      "evidence": "Source-purpose review: Obtains feedback for the current input from the field-specific validator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.c(I)Lp;",
+      "originalName": "c",
+      "to": "evaluateValidationStatus",
+      "evidence": "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready.",
       "confidence": "reviewed"
     },
     {
@@ -3769,6 +4133,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rg.a(I)V",
+      "originalName": "a",
+      "to": "submitLogin",
+      "evidence": "Source-purpose review: Checks the two login fields and forwards their values from the form to the login request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rg.a(ILfe;)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rg.a(ZLfe;)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rg.k(I)V",
       "originalName": "k",
       "to": "clearStaticReferences",
@@ -3913,6 +4298,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 151ea8db292e4767ad8b1563f10e04c6308d1fa83f4ef25a4b99ee32f3a0428e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(ILfe;)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(ZLfe;)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
       "confidence": "reviewed"
     },
     {
@@ -4133,10 +4532,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ub.a(Z)Lhe;",
+      "originalName": "a",
+      "to": "getFieldValidator",
+      "evidence": "Source-purpose review: Returns the attached form field validator for status checks or validation feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(B)V",
+      "originalName": "a",
+      "to": "recordInputChange",
+      "evidence": "Source-purpose review: Stores the current time on input changes so the validation delay can restart.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uc.a(IJ)V",
       "originalName": "a",
       "to": "sleepMillis",
       "evidence": "Retain the guarded millisecond delay helper,including the original delay-1 then1 split for multiples of ten where specified. Preserve parameter-derived threshold/modulo behavior,inner helper arguments,all guard effects,early returns and exception wrappers. Complete original-body SHA256 cec7af0835a43df73dfa3edcfb42df412916c89b975d23397acfe580f23ea039. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.b(B)Lp;",
+      "originalName": "b",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "evaluateValidationMessage",
+      "evidence": "Source-purpose review: Obtains feedback for the current input from the field-specific validator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.c(I)Lp;",
+      "originalName": "c",
+      "to": "evaluateValidationStatus",
+      "evidence": "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready.",
       "confidence": "reviewed"
     },
     {
@@ -4392,6 +4833,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vb.a(Ljava/lang/String;I)Lp;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -4604,7 +5059,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "649ac9578eb05b36a6c4f84055006602309c8cb21292ddde0c235f28a6d1f2f2",
+      "starcannon-names.json": "350b981ed51d847a80f0e8981fe130e995da87d1f5c6547aefbdfef9654ed55e",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

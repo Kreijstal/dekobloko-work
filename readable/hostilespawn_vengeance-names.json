@@ -269,6 +269,121 @@
       "wf",
       "Bzip2Decompressor",
       "Whole source-purpose review: final static Bzip2 decompression utility; one private typed state singleton allocated at class initialization; synchronized byte-array entry, bit/byte readers, used-symbol map, canonical Huffman tables, move-to-front block decoding, inverse-BWT/run output and retained cleanup all individually read or linked to exact earlier human-read bodies. All incoming selected helper references lie inside exact reviewed bodies. Keep the state allocation and class-init behavior, shared table ownership, locks, source/output/index/count/cast domains, array aliasing, partial writes, evaluation/exception order and all literals. Rename identifiers only; add no format checks, repairs, CRC handling or guards."
+    ],
+    [
+      "lk",
+      "LoginPanel",
+      "Owns the login identifier and password fields and forwards submission from the form controls."
+    ],
+    [
+      "ij",
+      "DisplayNameSelectionPanel",
+      "Shows the required display-name field and submits the name once its validator accepts it."
+    ],
+    [
+      "mk",
+      "AccountRegistrationPanel",
+      "Builds the six named registration fields, attaches the corresponding validators, and submits the account form."
+    ],
+    [
+      "ka",
+      "EmailFormatValidator",
+      "Checks the account email address and supplies feedback when the format is invalid."
+    ],
+    [
+      "hd",
+      "ConfirmedEmailAvailabilityValidator",
+      "Checks that the confirmation matches the email input, then obtains and caches the email availability result."
+    ],
+    [
+      "db",
+      "PasswordValidator",
+      "Checks the proposed account password and supplies feedback about invalid or unsuitable input."
+    ],
+    [
+      "li",
+      "MatchingFieldValidator",
+      "Compares the value with the paired input field and supplies feedback when the values do not match."
+    ],
+    [
+      "ld",
+      "AgeValidator",
+      "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input."
+    ],
+    [
+      "ig",
+      "EditableTextField",
+      "Edits and selects text, handles clipboard commands, and dispatches text change and submission events."
+    ],
+    [
+      "cd",
+      "TextFieldListener",
+      "Receives the editable field callbacks for text changes and text submission."
+    ],
+    [
+      "sk",
+      "FieldValidatorProvider",
+      "Exposes the validator attached to a form input to the status display and submission checks."
+    ],
+    [
+      "bj",
+      "DebouncedFieldValidator",
+      "Records input changes and defers status and feedback evaluation for 350 milliseconds before calling the field-specific validator."
+    ],
+    [
+      "bg",
+      "FieldValidator",
+      "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators."
+    ],
+    [
+      "hi",
+      "TextFieldValidator",
+      "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."
+    ],
+    [
+      "oc",
+      "GridPoint",
+      "Stores two integer coordinates and caches their index into the current mission grid."
+    ],
+    [
+      "ei",
+      "DelayedPacket",
+      "The packet queue stores the scheduled delivery time, packet opcode, and copied payload in each instance."
+    ],
+    [
+      "t",
+      "AchievementNotification",
+      "The achievement award queue adds this node and the applet uses its ID to draw the corresponding icon and text."
+    ],
+    [
+      "aj",
+      "SpriteBase",
+      "Defines shared sprite dimensions and offsets and the two draw operations implemented by the indexed sprite."
+    ],
+    [
+      "pg",
+      "IndexedSprite",
+      "Draws byte indices through a color palette and supports opaque, transparent, alpha blended, and scaled draws."
+    ],
+    [
+      "sf",
+      "TextInputField",
+      "Extends the editable text control with a field-specific input handler and adjusted tooltip coordinates."
+    ],
+    [
+      "fe",
+      "SocketFactory",
+      "Defines the socket-opening contract and contains the direct connection implementation using the stored host and port."
+    ],
+    [
+      "el",
+      "ProxySocketFactory",
+      "Implements the socket factory using the system proxy selector and by opening direct, SOCKS, or HTTP proxy connections."
+    ],
+    [
+      "of",
+      "ClientLookupTables",
+      "Initializes the 256-entry CRC-32 table and looks up fixed-point cosine against a quarter-wave sine table."
     ]
   ],
   "methods": [
@@ -4282,6 +4397,804 @@
       "(I)I",
       "getGroupCapacity",
       "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. An int at least -111 calls the original helper with a null string before loading the index."
+    ],
+    [
+      "lk",
+      "e",
+      "(B)V",
+      "submitLogin",
+      "Source-purpose review: Checks the two login fields and forwards their values from the form to the login request."
+    ],
+    [
+      "ij",
+      "a",
+      "(Lsk;B)Z",
+      "isFieldValid",
+      "Source-purpose review: Returns whether the display-name control reports an acceptable validation status."
+    ],
+    [
+      "ij",
+      "l",
+      "(I)Z",
+      "canSubmitDisplayName",
+      "Source-purpose review: Evaluates the display-name field before enabling or submitting the form."
+    ],
+    [
+      "ij",
+      "j",
+      "(I)V",
+      "submitDisplayName",
+      "Source-purpose review: Submits the chosen display name only when the form validation permits it."
+    ],
+    [
+      "db",
+      "a",
+      "(Ljava/lang/String;B)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "hd",
+      "a",
+      "(Ljava/lang/String;B)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "hi",
+      "a",
+      "(Ljava/lang/String;B)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ka",
+      "a",
+      "(Ljava/lang/String;B)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ld",
+      "a",
+      "(Ljava/lang/String;B)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "li",
+      "a",
+      "(Ljava/lang/String;B)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "n",
+      "a",
+      "(Ljava/lang/String;B)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "db",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "hd",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "hi",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ka",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ld",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "li",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "n",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "mk",
+      "a",
+      "(BLsk;)Z",
+      "isFieldReadyForRegistration",
+      "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration."
+    ],
+    [
+      "mk",
+      "c",
+      "(Z)Z",
+      "canSubmitRegistration",
+      "Source-purpose review: Checks the readiness of the six account registration inputs before submission."
+    ],
+    [
+      "mk",
+      "k",
+      "(I)Z",
+      "submitRegistration",
+      "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration."
+    ],
+    [
+      "cd",
+      "a",
+      "(Lig;B)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "hi",
+      "a",
+      "(Lig;B)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "lk",
+      "a",
+      "(Lig;B)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "cd",
+      "a",
+      "(Lig;I)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "hi",
+      "a",
+      "(Lig;I)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "lk",
+      "a",
+      "(Lig;I)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "ig",
+      "e",
+      "(B)V",
+      "notifyTextChanged",
+      "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators."
+    ],
+    [
+      "sf",
+      "e",
+      "(B)V",
+      "notifyTextChanged",
+      "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators."
+    ],
+    [
+      "ig",
+      "k",
+      "(I)V",
+      "submitText",
+      "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler."
+    ],
+    [
+      "ig",
+      "l",
+      "(I)V",
+      "copySelection",
+      "Source-purpose review: Copies the selected text to the system clipboard."
+    ],
+    [
+      "ig",
+      "n",
+      "(I)V",
+      "pasteClipboardText",
+      "Source-purpose review: Reads text from the system clipboard and pastes it at the editor caret."
+    ],
+    [
+      "ig",
+      "g",
+      "(B)Ljava/lang/String;",
+      "getSelectedText",
+      "Source-purpose review: Returns the substring between the caret and the selection anchor."
+    ],
+    [
+      "ig",
+      "b",
+      "(Z)V",
+      "deleteSelection",
+      "Source-purpose review: Removes the selected substring and updates the caret and selection anchor."
+    ],
+    [
+      "ig",
+      "a",
+      "(ILjava/lang/String;)V",
+      "insertTextAtCaret",
+      "Source-purpose review: Inserts text at the current caret and updates the caret and selection anchor."
+    ],
+    [
+      "ig",
+      "f",
+      "(B)V",
+      "cutSelection",
+      "Source-purpose review: Copies the selected text to the clipboard and then removes it from the editor."
+    ],
+    [
+      "bg",
+      "b",
+      "(I)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay."
+    ],
+    [
+      "bj",
+      "b",
+      "(I)Lbm;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay."
+    ],
+    [
+      "bg",
+      "a",
+      "(I)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message."
+    ],
+    [
+      "bj",
+      "a",
+      "(I)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message."
+    ],
+    [
+      "bg",
+      "a",
+      "(Z)V",
+      "recordInputChange",
+      "Source-purpose review: Stores the current time on input changes so the validation delay can restart."
+    ],
+    [
+      "bj",
+      "a",
+      "(Z)V",
+      "recordInputChange",
+      "Source-purpose review: Stores the current time on input changes so the validation delay can restart."
+    ],
+    [
+      "bg",
+      "a",
+      "(B)Z",
+      "hasMissingInput",
+      "Source-purpose review: Reports whether the text or any required date input is absent."
+    ],
+    [
+      "hi",
+      "a",
+      "(B)Z",
+      "hasMissingInput",
+      "Source-purpose review: Reports whether the text or any required date input is absent."
+    ],
+    [
+      "bj",
+      "d",
+      "(I)Lbm;",
+      "evaluateValidationStatus",
+      "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready."
+    ],
+    [
+      "hi",
+      "d",
+      "(I)Lbm;",
+      "evaluateValidationStatus",
+      "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready."
+    ],
+    [
+      "bj",
+      "b",
+      "(B)Ljava/lang/String;",
+      "evaluateValidationMessage",
+      "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "hi",
+      "b",
+      "(B)Ljava/lang/String;",
+      "evaluateValidationMessage",
+      "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "HostileSpawn",
+      "m",
+      "(I)V",
+      "configureInterfaceThemeAndCursor",
+      "Source-purpose review: Configures the shared interface fonts, colors, and layout values, then looks up AWT custom cursor support."
+    ],
+    [
+      "aj",
+      "a",
+      "(I)V",
+      "clearExpansionTitle",
+      "Source-purpose review: Clears the shared Vengeance expansion title string during applet resource cleanup."
+    ],
+    [
+      "aj",
+      "a",
+      "(Lkd;IILjava/awt/Component;ZLfd;)V",
+      "initializeAudioOutput",
+      "Source-purpose review: Passes the mixer, sample rate, component, and platform service to the audio output initializer."
+    ],
+    [
+      "aj",
+      "b",
+      "(I)Ljava/lang/String;",
+      "getPlayerDisplayName",
+      "Source-purpose review: Returns the player display name received from the server, defaulting to an empty string when it has not been set."
+    ],
+    [
+      "oc",
+      "a",
+      "(B)V",
+      "readSocialListUpdate",
+      "Source-purpose review: Reads the packet subtype, updates ignore or friend entries, and accepts the server’s social-list state changes."
+    ],
+    [
+      "oc",
+      "a",
+      "(Ljava/lang/CharSequence;I)Z",
+      "validateAccountName",
+      "Source-purpose review: Checks the account name with the character validator for the username lookup mode."
+    ],
+    [
+      "sf",
+      "a",
+      "(BLjava/lang/CharSequence;)Z",
+      "isDecimalInteger",
+      "Source-purpose review: Validates the text as a base-ten integer, allowing a leading plus sign."
+    ],
+    [
+      "HostileSpawn",
+      "a",
+      "(B)V",
+      "renderFrame",
+      "Source-purpose review: Selects the active canvas, then draws loading, menu, or gameplay state for the applet frame."
+    ],
+    [
+      "se",
+      "a",
+      "(B)V",
+      "renderFrame",
+      "Source-purpose review: Abstract applet callback invoked in the graphics frame path and implemented by the game renderer."
+    ],
+    [
+      "HostileSpawn",
+      "a",
+      "(I)V",
+      "initializeGame",
+      "Source-purpose review: Configures the game resource channels and constructs the sound engine at applet startup."
+    ],
+    [
+      "se",
+      "a",
+      "(I)V",
+      "initializeGame",
+      "Source-purpose review: Abstract callback invoked while starting the applet and implemented by the game initializer."
+    ],
+    [
+      "HostileSpawn",
+      "b",
+      "(B)V",
+      "updateGameTick",
+      "Source-purpose review: Updates the sound and input state, advances asset loading or simulation, and handles interface work each tick."
+    ],
+    [
+      "se",
+      "b",
+      "(B)V",
+      "updateGameTick",
+      "Source-purpose review: Abstract callback invoked once from the applet update path and implemented by the game tick handler."
+    ],
+    [
+      "HostileSpawn",
+      "c",
+      "(I)V",
+      "releaseGameResources",
+      "Source-purpose review: Releases gameplay and platform resources by calling their cleanup functions when the applet terminates."
+    ],
+    [
+      "se",
+      "c",
+      "(I)V",
+      "releaseGameResources",
+      "Source-purpose review: Abstract shutdown callback implemented by the game-wide resource cleanup routine."
+    ],
+    [
+      "HostileSpawn",
+      "e",
+      "(I)V",
+      "prepareGameShutdown",
+      "Source-purpose review: Closes the secondary canvas when present and shuts down game subsystems at the start of applet teardown."
+    ],
+    [
+      "se",
+      "e",
+      "(I)V",
+      "prepareGameShutdown",
+      "Source-purpose review: Abstract callback that the applet invokes before disconnecting and releasing game resources."
+    ],
+    [
+      "HostileSpawn",
+      "a",
+      "(BI)V",
+      "consumeScoreLookupResult",
+      "Source-purpose review: Copies a finished lookup result into the local score if it is higher and clears the request slot."
+    ],
+    [
+      "HostileSpawn",
+      "a",
+      "(II)V",
+      "drawMissionMap",
+      "Source-purpose review: Draws the current mission map from the level tiles and map overlays."
+    ],
+    [
+      "HostileSpawn",
+      "a",
+      "(ILnm;)V",
+      "loadAdditionalSoundEffects",
+      "Source-purpose review: Loads additional game sound effects by name, resamples them, and stores them in the sound table."
+    ],
+    [
+      "HostileSpawn",
+      "a",
+      "(Ljava/awt/Canvas;I)V",
+      "drawFrameOverlaysAndPresent",
+      "Source-purpose review: Draws overlays such as achievement notifications and presents the completed frame on the selected canvas."
+    ],
+    [
+      "HostileSpawn",
+      "i",
+      "(B)V",
+      "loadGameplaySprites",
+      "Source-purpose review: Loads the sprite assets used during play including the scenery tiles and enemy frames."
+    ],
+    [
+      "HostileSpawn",
+      "j",
+      "(B)V",
+      "initializeCustomCursorSupport",
+      "Source-purpose review: Looks up the AWT custom cursor creation method used when drawing the gameplay pointer."
+    ],
+    [
+      "HostileSpawn",
+      "k",
+      "(B)V",
+      "clearHostileSpawnGlobals",
+      "Source-purpose review: Clears the static game-owned arrays and sprite references during release of game resources."
+    ],
+    [
+      "HostileSpawn",
+      "l",
+      "(B)V",
+      "populateScenerySpriteTable",
+      "Source-purpose review: Places the loaded scenery sprites at their numeric object IDs in the level sprite table."
+    ],
+    [
+      "HostileSpawn",
+      "l",
+      "(I)V",
+      "loadFloorAndBackgroundTextures",
+      "Source-purpose review: Loads the starfield and floor texture sheets and slices the floor art into tiles."
+    ],
+    [
+      "HostileSpawn",
+      "m",
+      "(B)V",
+      "updateGameOverlays",
+      "Source-purpose review: Handles overlay input and advances the lifetime of the current achievement notification when gameplay overlays permit it."
+    ],
+    [
+      "HostileSpawn",
+      "n",
+      "(I)V",
+      "loadOriginalCampaignLevels",
+      "Source-purpose review: Loads the numbered mission and tutorial level files into the original campaign slots."
+    ],
+    [
+      "HostileSpawn",
+      "o",
+      "(I)V",
+      "loadVengeanceCampaignLevels",
+      "Source-purpose review: Loads the ten numbered Vengeance mission files into the second campaign slots."
+    ],
+    [
+      "HostileSpawn",
+      "p",
+      "(I)Z",
+      "advanceGameAssetLoading",
+      "Source-purpose review: Advances the applet asset loading sequence and returns its completion state."
+    ],
+    [
+      "HostileSpawn",
+      "q",
+      "(I)Lnm;",
+      "loadBaseSoundEffects",
+      "Source-purpose review: Constructs the resampler and uses it to populate the base sound effect and weapon sample tables."
+    ],
+    [
+      "HostileSpawn",
+      "r",
+      "(I)V",
+      "drawAchievementNotification",
+      "Source-purpose review: Draws the first queued achievement notification with its corresponding icon and green title."
+    ],
+    [
+      "HostileSpawn",
+      "s",
+      "(I)V",
+      "loadEnemyAnimationSprites",
+      "Source-purpose review: Loads separate enemy sprite frames for attack, death, idle, and walking animations."
+    ],
+    [
+      "HostileSpawn",
+      "t",
+      "(I)V",
+      "loadScenerySprites",
+      "Source-purpose review: Loads numbered scenery images from the sprite archive, selecting sprite or animation arrays for each asset."
+    ],
+    [
+      "HostileSpawn",
+      "u",
+      "(I)V",
+      "loadAndPreloadMusic",
+      "Source-purpose review: Resolves the two campaigns’ music tracks and submits those tracks to the sound engine for preloading."
+    ],
+    [
+      "oc",
+      "a",
+      "(BLoc;)V",
+      "copyCoordinatesFrom",
+      "Source-purpose review: Copies both coordinates from the supplied grid point into this point."
+    ],
+    [
+      "oc",
+      "a",
+      "(I)D",
+      "directionInAngleUnits",
+      "Source-purpose review: Converts the coordinate vector to a direction using the game’s 256-units-per-turn angle convention."
+    ],
+    [
+      "oc",
+      "a",
+      "(ID)Ljava/lang/String;",
+      "formatTwoDecimals",
+      "Source-purpose review: Formats the decimal value using a shared formatter that always displays two fractional digits."
+    ],
+    [
+      "oc",
+      "a",
+      "(III)V",
+      "setCoordinates",
+      "Source-purpose review: Sets the two integer positions using the caller-supplied x and y values."
+    ],
+    [
+      "oc",
+      "a",
+      "(Loc;I)Z",
+      "hasSameCoordinates",
+      "Source-purpose review: Compares the horizontal and vertical coordinate fields of the supplied point for equality."
+    ],
+    [
+      "oc",
+      "b",
+      "(I)I",
+      "getClampedTileIndex",
+      "Source-purpose review: Computes a row-major tile index from the point and level width, clamps it, and caches the result."
+    ],
+    [
+      "oc",
+      "b",
+      "(Loc;I)V",
+      "subtractCoordinates",
+      "Source-purpose review: Subtracts the supplied point from this point in place along both axes."
+    ],
+    [
+      "oc",
+      "c",
+      "(I)V",
+      "clearMissionMapGlobals",
+      "Source-purpose review: Clears the static level data and associated shared map references."
+    ],
+    [
+      "ei",
+      "a",
+      "(Lgb;ILjava/lang/String;Ljava/lang/String;)[Lbd;",
+      "loadNamedRgbSprites",
+      "Source-purpose review: Resolves the group and file names in the sprite archive and decodes the matching RGB sprite array."
+    ],
+    [
+      "ei",
+      "c",
+      "(I)V",
+      "clearDelayedPacketGlobals",
+      "Source-purpose review: Releases shared cache, sprite, and panel references owned by the delayed packet class."
+    ],
+    [
+      "t",
+      "a",
+      "(III)Z",
+      "selectWeaponForSlot",
+      "Source-purpose review: Changes the weapon in a player slot if it is unlocked and resolves duplicates with the other slot."
+    ],
+    [
+      "t",
+      "a",
+      "(B)V",
+      "readPlayerDisplayName",
+      "Source-purpose review: Reads the player display name from the current packet and stores its normalized form."
+    ],
+    [
+      "aj",
+      "a",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Defines the opaque draw operation implemented by the indexed sprite’s unconditional palette copy."
+    ],
+    [
+      "pg",
+      "a",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Clips the sprite to the raster bounds and copies palette entries for all pixels, including palette index zero."
+    ],
+    [
+      "aj",
+      "a",
+      "(III)V",
+      "drawWithAlpha",
+      "Source-purpose review: Defines the draw operation that blends nontransparent sprite pixels into the raster with the given opacity."
+    ],
+    [
+      "pg",
+      "a",
+      "(III)V",
+      "drawWithAlpha",
+      "Source-purpose review: Clips and blends the sprite using the supplied opacity and skips transparent palette indices."
+    ],
+    [
+      "pg",
+      "a",
+      "(IIII)V",
+      "drawScaled",
+      "Source-purpose review: Uses fixed-point source coordinate steps to scale the indexed sprite to a requested size."
+    ],
+    [
+      "pg",
+      "b",
+      "(II)V",
+      "drawTransparent",
+      "Source-purpose review: Clips and draws the indexed sprite with index zero skipped by the copy routine."
+    ],
+    [
+      "pg",
+      "c",
+      "(II)V",
+      "drawQuarterSizeAveraged",
+      "Source-purpose review: Draws the sprite at quarter width and height by averaging each four-by-four source block."
+    ],
+    [
+      "sf",
+      "a",
+      "(B)Lbg;",
+      "getInputHandler",
+      "Source-purpose review: Returns the field-specific handler that is updated and notified by this text field."
+    ],
+    [
+      "sk",
+      "a",
+      "(B)Lbg;",
+      "getInputHandler",
+      "Source-purpose review: Declares the accessor implemented by the text field for its field-specific input handler."
+    ],
+    [
+      "sf",
+      "a",
+      "(Lbg;B)V",
+      "setInputHandler",
+      "Source-purpose review: Installs the input handler returned by the field’s handler accessor."
+    ],
+    [
+      "sf",
+      "a",
+      "(ID)D",
+      "tileYToScreenY",
+      "Source-purpose review: Converts a fractional tile Y coordinate to screen pixels by subtracting the vertical camera offset."
+    ],
+    [
+      "sf",
+      "a",
+      "(IIIIZ)V",
+      "pushAndIntersectClip",
+      "Source-purpose review: Saves the raster state on the stack before intersecting its clip with the supplied rectangle."
+    ],
+    [
+      "sf",
+      "p",
+      "(I)V",
+      "clearTextInputFieldGlobals",
+      "Source-purpose review: Releases static text, sprite, and sample references held by the text field class."
+    ],
+    [
+      "fe",
+      "a",
+      "(I)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Declares the socket factory operation implemented by the system-proxy-aware factory."
+    ],
+    [
+      "el",
+      "a",
+      "(I)Ljava/net/Socket;",
+      "openSocket",
+      "Source-purpose review: Selects a system proxy for the configured host and port and opens the socket."
+    ],
+    [
+      "fe",
+      "b",
+      "(I)Ljava/net/Socket;",
+      "openDirectSocket",
+      "Source-purpose review: Creates a direct TCP socket using the factory’s configured destination host and port."
+    ],
+    [
+      "el",
+      "a",
+      "(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;",
+      "openHttpProxyTunnel",
+      "Source-purpose review: Connects to the proxy host and requests an HTTP CONNECT tunnel for the configured destination."
+    ],
+    [
+      "el",
+      "a",
+      "(Ljava/net/Proxy;B)Ljava/net/Socket;",
+      "openSocketThroughProxy",
+      "Source-purpose review: Opens a connection using the supplied direct, HTTP, or SOCKS proxy configuration."
+    ],
+    [
+      "of",
+      "a",
+      "(BI)I",
+      "cosineFixedPoint",
+      "Source-purpose review: Looks up a signed 16.16 fixed-point cosine on an 8192-unit circle using the quarter-wave sine table."
     ]
   ],
   "fields": [

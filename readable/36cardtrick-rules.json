@@ -206,6 +206,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ai",
+      "originalName": "ai",
+      "to": "AgeValidator",
+      "evidence": "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ak",
+      "originalName": "ak",
+      "to": "LoginPanel",
+      "evidence": "Owns the login identifier and password fields and forwards submission from the form controls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ba",
+      "originalName": "ba",
+      "to": "FieldValidator",
+      "evidence": "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:be",
       "originalName": "be",
       "to": "KeyboardInputHandler",
@@ -238,6 +259,13 @@
       "originalName": "ce",
       "to": "DelegatingCanvas",
       "evidence": "Complete class reviewed. Component stored by constructor receives paint/update calls; fj canvas creation reviewed. Preserve unrelated intrusive insertion, archive and byte-array helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cg",
+      "originalName": "cg",
+      "to": "TextFieldValidator",
+      "evidence": "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules.",
       "confidence": "reviewed"
     },
     {
@@ -287,6 +315,20 @@
       "originalName": "el",
       "to": "BufferedImageRasterBuffer",
       "evidence": "AWT raster buffer backed by inherited int pixel storage through DataBufferInt/DirectColorModel/WritableRaster/BufferedImage,and drawn through Graphics.drawImage using retained Component observer. Complete class,public empty no-argument constructor,and both initialization/drawing bodies reviewed;exactly one own nonstatic Component field and four inherited dimension/pixel/image fields verified with bound platform APIs. Preserve finality/visibility,all method/field leaves except constructor class-name display,full primitive domains,guard paths,int overflow and pixel-array size,Lexicominos supplied premultiplication boolean,aliases,partial writes and allocation/call/exception order. Exactly one bound Class.forName string must follow this class rename;other literals unchanged. Deko already has provisional RenderingSupport013 alias,so its existing literal edit is refined rather than counted twice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fg",
+      "originalName": "fg",
+      "to": "MatchingFieldValidator",
+      "evidence": "Compares the value with the paired input field and supplies feedback when the values do not match.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fh",
+      "originalName": "fh",
+      "to": "DisplayNameSelectionPanel",
+      "evidence": "Shows the required display-name field and submits the name once its validator accepts it.",
       "confidence": "reviewed"
     },
     {
@@ -353,6 +395,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hf",
+      "originalName": "hf",
+      "to": "EditableTextField",
+      "evidence": "Edits and selects text, handles clipboard commands, and dispatches text change and submission events.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hg",
       "originalName": "hg",
       "to": "IsaacRandom",
@@ -416,6 +465,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:k",
+      "originalName": "k",
+      "to": "DebouncedFieldValidator",
+      "evidence": "Records input changes and defers status and feedback evaluation for 350 milliseconds before calling the field-specific validator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kc",
       "originalName": "kc",
       "to": "RgbSprite",
@@ -434,6 +490,13 @@
       "originalName": "kh",
       "to": "AwtRasterBuffer",
       "evidence": "Abstract AWT raster buffer with exactly four instance fields:two dimension ints,int pixel array,and Image. Declares initialization/drawing operations implemented by ImageProducer and BufferedImage subclasses,and a final method installing its pixels/dimensions as the software raster target. Entire class source and instance/static member context reviewed;all616class-use spans inventoried and70representative contexts read. Preserve modifiers,implicit constructor/default state,all unrelated statics/field names,full primitive domains/guards/aliases/allocation/exception order and native/override bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kl",
+      "originalName": "kl",
+      "to": "AccountRegistrationPanel",
+      "evidence": "Builds the six named registration fields, attaches the corresponding validators, and submits the account form.",
       "confidence": "reviewed"
     },
     {
@@ -479,6 +542,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mk",
+      "originalName": "mk",
+      "to": "PasswordValidator",
+      "evidence": "Checks the proposed account password and supplies feedback about invalid or unsuitable input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:na",
       "originalName": "na",
       "to": "NetworkArchiveRequest",
@@ -500,6 +570,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:of",
+      "originalName": "of",
+      "to": "FieldValidatorProvider",
+      "evidence": "Exposes the validator attached to a form input to the status display and submission checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:p",
+      "originalName": "p",
+      "to": "ConfirmedEmailAvailabilityValidator",
+      "evidence": "Checks that the confirmation matches the email input, then obtains and caches the email availability result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pb",
       "originalName": "pb",
       "to": "PacketBuffer",
@@ -511,6 +595,13 @@
       "originalName": "pc",
       "to": "Crc32Table",
       "evidence": "Complete class reviewed: initializes the reflected CRC32 lookup table used by computeCrc32. Unrelated UI globals and reference cleanup/arithmetic remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pi",
+      "originalName": "pi",
+      "to": "TextFieldListener",
+      "evidence": "Receives the editable field callbacks for text changes and text submission.",
       "confidence": "reviewed"
     },
     {
@@ -539,6 +630,13 @@
       "originalName": "ql",
       "to": "VorbisCodebook",
       "evidence": "Vorbis codebook: constructor consumes24bits without validating them,reads dimensions/entry count and ordered/sparse code lengths,builds a canonical Huffman tree,and reads quantized lookup vectors. Scalar bit traversal returns complemented tree leaf;vector decoding returns the retained vector row by alias;lookup1 uses the original integer-power helper. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rd",
+      "originalName": "rd",
+      "to": "EmailFormatValidator",
+      "evidence": "Checks the account email address and supplies feedback when the format is invalid.",
       "confidence": "reviewed"
     },
     {
@@ -574,6 +672,13 @@
       "originalName": "tk",
       "to": "BufferedRandomAccessFile",
       "evidence": "BufferedRandomAccessFile source-purpose review: concrete private file/buffer state,all instance bodies,typed constructors and IO callers;preserve existing behavior and full primitive parameter domains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:v",
+      "originalName": "v",
+      "to": "ValidatedTextField",
+      "evidence": "Extends the editable field with an attached validator and forwards text changes to the validator.",
       "confidence": "reviewed"
     },
     {
@@ -1032,6 +1137,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ai.a(Ljava/lang/String;I)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ai.g(I)V",
       "originalName": "g",
       "to": "clearDeclaredStaticReferences",
@@ -1046,6 +1165,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.a(Lhf;I)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ak.a(Z)V",
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
@@ -1053,10 +1186,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.e(B)V",
+      "originalName": "e",
+      "to": "submitLogin",
+      "evidence": "Source-purpose review: Checks the two login fields and forwards their values from the form to the login request.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 16e47e8aebd8323ac789fc24cd4eaa23d6360e5d00100ed4f46110af8a53d1d1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a(B)Z",
+      "originalName": "a",
+      "to": "hasMissingInput",
+      "evidence": "Source-purpose review: Reports whether the text or any required date input is absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a(I)V",
+      "originalName": "a",
+      "to": "recordInputChange",
+      "evidence": "Source-purpose review: Stores the current time on input changes so the validation delay can restart.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a(Z)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message.",
       "confidence": "reviewed"
     },
     {
@@ -1277,10 +1445,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cg.a(B)Z",
+      "originalName": "a",
+      "to": "hasMissingInput",
+      "evidence": "Source-purpose review: Reports whether the text or any required date input is absent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cg.a(IC)Z",
       "originalName": "a",
       "to": "isSupportedCp1252KeyCharacter",
       "evidence": "Source-purpose review: Filters typed characters for the keyboard event buffer using direct ranges and a linear lookup of the CP1252 extension characters. For a character absent from the direct ranges and table, int below 94 sets field_f before returning false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.a(Lhf;I)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.a(Ljava/lang/String;I)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.d(I)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "evaluateValidationMessage",
+      "evidence": "Source-purpose review: Obtains feedback for the current input from the field-specific validator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.e(I)Lsg;",
+      "originalName": "e",
+      "to": "evaluateValidationStatus",
+      "evidence": "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready.",
       "confidence": "reviewed"
     },
     {
@@ -1627,10 +1844,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fg.a(Ljava/lang/String;I)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fg.c(Z)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(ILof;)Z",
+      "originalName": "a",
+      "to": "isFieldValid",
+      "evidence": "Source-purpose review: Returns whether the display-name control reports an acceptable validation status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.d(B)Z",
+      "originalName": "d",
+      "to": "canSubmitDisplayName",
+      "evidence": "Source-purpose review: Evaluates the display-name field before enabling or submitting the form.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.l(I)V",
+      "originalName": "l",
+      "to": "submitDisplayName",
+      "evidence": "Source-purpose review: Submits the chosen display name only when the form validation permits it.",
       "confidence": "reviewed"
     },
     {
@@ -1970,6 +2222,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hf.a(Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "insertTextAtCaret",
+      "evidence": "Source-purpose review: Inserts text at the current caret and updates the caret and selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(Z)V",
+      "originalName": "a",
+      "to": "copySelection",
+      "evidence": "Source-purpose review: Copies the selected text to the system clipboard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.b(Z)V",
+      "originalName": "b",
+      "to": "pasteClipboardText",
+      "evidence": "Source-purpose review: Reads text from the system clipboard and pastes it at the editor caret.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.f(B)V",
+      "originalName": "f",
+      "to": "deleteSelection",
+      "evidence": "Source-purpose review: Removes the selected substring and updates the caret and selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.h(I)Ljava/lang/String;",
+      "originalName": "h",
+      "to": "getSelectedText",
+      "evidence": "Source-purpose review: Returns the substring between the caret and the selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.i(I)V",
+      "originalName": "i",
+      "to": "submitText",
+      "evidence": "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.k(I)V",
+      "originalName": "k",
+      "to": "notifyTextChanged",
+      "evidence": "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.l(I)V",
+      "originalName": "l",
+      "to": "cutSelection",
+      "evidence": "Source-purpose review: Copies the selected text to the clipboard and then removes it from the editor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hg.a(I)V",
       "originalName": "a",
       "to": "generateResults",
@@ -2002,6 +2310,20 @@
       "originalName": "a",
       "to": "encodeCp1252Subsequence",
       "evidence": "Source-purpose review: Encodes a range of a character sequence into a supplied byte array at its destination offset. After the loop, true returns 14; false returns the signed end-minus-start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a(Ljava/lang/String;I)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
       "confidence": "reviewed"
     },
     {
@@ -2348,6 +2670,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:k.a(I)V",
+      "originalName": "a",
+      "to": "recordInputChange",
+      "evidence": "Source-purpose review: Stores the current time on input changes so the validation delay can restart.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.a(Z)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.d(I)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "evaluateValidationMessage",
+      "evidence": "Source-purpose review: Obtains feedback for the current input from the field-specific validator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.e(I)Lsg;",
+      "originalName": "e",
+      "to": "evaluateValidationStatus",
+      "evidence": "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ka.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
@@ -2541,6 +2898,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 3e7946516b5597aac66e024b903a3f34ebd11fc50005aae4a8274ceca51d13ac.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ZLof;)Z",
+      "originalName": "a",
+      "to": "isFieldReadyForRegistration",
+      "evidence": "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.e(B)Z",
+      "originalName": "e",
+      "to": "canSubmitRegistration",
+      "evidence": "Source-purpose review: Checks the readiness of the six account registration inputs before submission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.l(I)Z",
+      "originalName": "l",
+      "to": "submitRegistration",
+      "evidence": "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration.",
       "confidence": "reviewed"
     },
     {
@@ -2887,6 +3265,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mk.a(Ljava/lang/String;I)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mk.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -3013,6 +3405,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:of.a(I)Lba;",
+      "originalName": "a",
+      "to": "getFieldValidator",
+      "evidence": "Source-purpose review: Returns the attached form field validator for status checks or validation feedback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:og.a([III)V",
       "originalName": "a",
       "to": "clearInts",
@@ -3031,6 +3430,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 a029de1f61e5c06136be7df283f5162d0e4ef872bb0388ee655b94d6bdf4de71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(Ljava/lang/String;I)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
       "confidence": "reviewed"
     },
     {
@@ -3325,6 +3738,20 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onTextSubmitted",
+      "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(Lhf;I)V",
+      "originalName": "a",
+      "to": "onTextChanged",
+      "evidence": "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay.",
       "confidence": "reviewed"
     },
     {
@@ -3668,6 +4095,20 @@
       "originalName": "a",
       "to": "countSetBits",
       "evidence": "Count set bits through the original masked parallel sums and shifts1,2,4,8,16,then low-byte accumulation. Extra arguments may be real stage masks,guard predicates or arithmetic traps;retain every actual slot and all bad-domain side effects/sentinels. Complete original-body SHA256 13316f6d5c99d879511f22ecd34dd545b2f383bd8407cd4e698dec290a99b422. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(Ljava/lang/String;I)Lsg;",
+      "originalName": "a",
+      "to": "getValidationStatus",
+      "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getValidationMessage",
+      "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
       "confidence": "reviewed"
     },
     {
@@ -4053,6 +4494,20 @@
       "originalName": "l",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(I)Lba;",
+      "originalName": "a",
+      "to": "getFieldValidator",
+      "evidence": "Source-purpose review: Returns the attached form field validator for status checks or validation feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.k(I)V",
+      "originalName": "k",
+      "to": "notifyTextChanged",
+      "evidence": "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators.",
       "confidence": "reviewed"
     },
     {
@@ -4527,7 +4982,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-36cardtrick-rules.mjs": "50dbdca01ccbc37049448a6c5673dcd1f8af792b0cf93f16ef76c7ac2de01d53",
-      "36cardtrick-names.json": "ecdb4b9499a15454a0f5870f6a8964e7687a514c1590926b7f93a487916be20a",
+      "36cardtrick-names.json": "7f607f7cbaabe08d11a73ef0994c5ee9ea47d609025fa9feb9a4c3cbad6f7c29",
       "reproduce-36cardtrick.mjs": "d69474327fda28f59b518411a57d253a7dc723b2c7cebec47cdf1a89a48a54b6",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

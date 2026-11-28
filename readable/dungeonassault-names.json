@@ -294,6 +294,121 @@
       "wd",
       "SpriteAnimationPlayer",
       "Tracks the current sprite animation, timing, frame transitions, and fade state."
+    ],
+    [
+      "dn",
+      "LoginPanel",
+      "Owns the login identifier and password fields and forwards submission from the form controls."
+    ],
+    [
+      "gk",
+      "DisplayNameSelectionPanel",
+      "Shows the required display-name field and submits the name once its validator accepts it."
+    ],
+    [
+      "rg",
+      "AccountRegistrationPanel",
+      "Builds the six named registration fields, attaches the corresponding validators, and submits the account form."
+    ],
+    [
+      "qm",
+      "EmailFormatValidator",
+      "Checks the account email address and supplies feedback when the format is invalid."
+    ],
+    [
+      "ga",
+      "ConfirmedEmailAvailabilityValidator",
+      "Checks that the confirmation matches the email input, then obtains and caches the email availability result."
+    ],
+    [
+      "vo",
+      "PasswordValidator",
+      "Checks the proposed account password and supplies feedback about invalid or unsuitable input."
+    ],
+    [
+      "be",
+      "MatchingFieldValidator",
+      "Compares the value with the paired input field and supplies feedback when the values do not match."
+    ],
+    [
+      "he",
+      "AgeValidator",
+      "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input."
+    ],
+    [
+      "rm",
+      "EditableTextField",
+      "Edits and selects text, handles clipboard commands, and dispatches text change and submission events."
+    ],
+    [
+      "jo",
+      "TextFieldListener",
+      "Receives the editable field callbacks for text changes and text submission."
+    ],
+    [
+      "qn",
+      "FieldValidatorProvider",
+      "Exposes the validator attached to a form input to the status display and submission checks."
+    ],
+    [
+      "uh",
+      "ValidatedTextField",
+      "Extends the editable field with an attached validator and forwards text changes to the validator."
+    ],
+    [
+      "m",
+      "DebouncedFieldValidator",
+      "Records input changes and defers status and feedback evaluation for 350 milliseconds before calling the field-specific validator."
+    ],
+    [
+      "dp",
+      "FieldValidator",
+      "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators."
+    ],
+    [
+      "ip",
+      "TextFieldValidator",
+      "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."
+    ],
+    [
+      "qe",
+      "DungeonAssaultScreen",
+      "Defines the shared screen lifecycle, input dispatch, widget list, and environment rendering for the game screens."
+    ],
+    [
+      "go",
+      "DungeonRaidScreen",
+      "Runs the raid view with dungeon state, raider controls, and separate local and network raid packet handling."
+    ],
+    [
+      "lb",
+      "PlayerDungeonProfile",
+      "Stores the player’s dungeon configuration, raider roster, and statistics and reads versioned snapshots of that state."
+    ],
+    [
+      "ud",
+      "IntroSequenceScreen",
+      "Shows the startup animation, initializes a localized Skip control, and transitions to the main menu on skip or completion."
+    ],
+    [
+      "fi",
+      "InstructionsScreen",
+      "Renders the instructions topics and the menu for navigating the game guide."
+    ],
+    [
+      "qc",
+      "MenuScreen",
+      "Loads one of the main menu variants by index and uses the corresponding menu layout and navigation entries."
+    ],
+    [
+      "p",
+      "DungeonBuilderScreen",
+      "Implements the Dungeon Builder screen, tracks a grid of pending room edits, and saves those edits to the player dungeon."
+    ],
+    [
+      "ih",
+      "RaiderRecruitmentScreen",
+      "Implements the Raider Recruitment screen, drawing the roster and recruitment options and applying purchases."
     ]
   ],
   "methods": [
@@ -5231,6 +5346,1049 @@
       "(II)V",
       "raiseDungeonMonsterDetection",
       "Source-purpose review: Raises the Detect stat of all uncleared monsters in the dungeon."
+    ],
+    [
+      "dn",
+      "j",
+      "(I)V",
+      "submitLogin",
+      "Source-purpose review: Checks the two login fields and forwards their values from the form to the login request."
+    ],
+    [
+      "gk",
+      "a",
+      "(Lqn;I)Z",
+      "isFieldValid",
+      "Source-purpose review: Returns whether the display-name control reports an acceptable validation status."
+    ],
+    [
+      "gk",
+      "i",
+      "(I)Z",
+      "canSubmitDisplayName",
+      "Source-purpose review: Evaluates the display-name field before enabling or submitting the form."
+    ],
+    [
+      "gk",
+      "f",
+      "(B)V",
+      "submitDisplayName",
+      "Source-purpose review: Submits the chosen display name only when the form validation permits it."
+    ],
+    [
+      "be",
+      "a",
+      "(Ljava/lang/String;I)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ga",
+      "a",
+      "(Ljava/lang/String;I)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "he",
+      "a",
+      "(Ljava/lang/String;I)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ip",
+      "a",
+      "(Ljava/lang/String;I)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "kh",
+      "a",
+      "(Ljava/lang/String;I)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "qm",
+      "a",
+      "(Ljava/lang/String;I)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "vo",
+      "a",
+      "(Ljava/lang/String;I)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "be",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ga",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "he",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ip",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "kh",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "qm",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "vo",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "rg",
+      "a",
+      "(ILqn;)Z",
+      "isFieldReadyForRegistration",
+      "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration."
+    ],
+    [
+      "rg",
+      "b",
+      "(Z)Z",
+      "canSubmitRegistration",
+      "Source-purpose review: Checks the readiness of the six account registration inputs before submission."
+    ],
+    [
+      "rg",
+      "f",
+      "(B)Z",
+      "submitRegistration",
+      "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration."
+    ],
+    [
+      "dn",
+      "a",
+      "(Lrm;I)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "ip",
+      "a",
+      "(Lrm;I)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "jo",
+      "a",
+      "(Lrm;I)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "dn",
+      "a",
+      "(Lrm;B)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "ip",
+      "a",
+      "(Lrm;B)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "jo",
+      "a",
+      "(Lrm;B)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "rm",
+      "n",
+      "(I)V",
+      "notifyTextChanged",
+      "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators."
+    ],
+    [
+      "uh",
+      "n",
+      "(I)V",
+      "notifyTextChanged",
+      "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators."
+    ],
+    [
+      "rm",
+      "s",
+      "(I)V",
+      "submitText",
+      "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler."
+    ],
+    [
+      "qn",
+      "a",
+      "(I)Ldp;",
+      "getFieldValidator",
+      "Source-purpose review: Returns the attached form field validator for status checks or validation feedback."
+    ],
+    [
+      "uh",
+      "a",
+      "(I)Ldp;",
+      "getFieldValidator",
+      "Source-purpose review: Returns the attached form field validator for status checks or validation feedback."
+    ],
+    [
+      "rm",
+      "h",
+      "(B)V",
+      "copySelection",
+      "Source-purpose review: Copies the selected text to the system clipboard."
+    ],
+    [
+      "rm",
+      "l",
+      "(I)V",
+      "pasteClipboardText",
+      "Source-purpose review: Reads text from the system clipboard and pastes it at the editor caret."
+    ],
+    [
+      "rm",
+      "k",
+      "(I)Ljava/lang/String;",
+      "getSelectedText",
+      "Source-purpose review: Returns the substring between the caret and the selection anchor."
+    ],
+    [
+      "rm",
+      "g",
+      "(B)V",
+      "deleteSelection",
+      "Source-purpose review: Removes the selected substring and updates the caret and selection anchor."
+    ],
+    [
+      "rm",
+      "a",
+      "(Ljava/lang/String;B)V",
+      "insertTextAtCaret",
+      "Source-purpose review: Inserts text at the current caret and updates the caret and selection anchor."
+    ],
+    [
+      "rm",
+      "i",
+      "(I)V",
+      "cutSelection",
+      "Source-purpose review: Copies the selected text to the clipboard and then removes it from the editor."
+    ],
+    [
+      "dp",
+      "a",
+      "(B)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay."
+    ],
+    [
+      "m",
+      "a",
+      "(B)Lod;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay."
+    ],
+    [
+      "dp",
+      "a",
+      "(Z)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message."
+    ],
+    [
+      "m",
+      "a",
+      "(Z)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message."
+    ],
+    [
+      "dp",
+      "b",
+      "(I)V",
+      "recordInputChange",
+      "Source-purpose review: Stores the current time on input changes so the validation delay can restart."
+    ],
+    [
+      "m",
+      "b",
+      "(I)V",
+      "recordInputChange",
+      "Source-purpose review: Stores the current time on input changes so the validation delay can restart."
+    ],
+    [
+      "dp",
+      "a",
+      "(I)Z",
+      "hasMissingInput",
+      "Source-purpose review: Reports whether the text or any required date input is absent."
+    ],
+    [
+      "ip",
+      "a",
+      "(I)Z",
+      "hasMissingInput",
+      "Source-purpose review: Reports whether the text or any required date input is absent."
+    ],
+    [
+      "ip",
+      "b",
+      "(Z)Lod;",
+      "evaluateValidationStatus",
+      "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready."
+    ],
+    [
+      "m",
+      "b",
+      "(Z)Lod;",
+      "evaluateValidationStatus",
+      "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready."
+    ],
+    [
+      "ip",
+      "c",
+      "(I)Ljava/lang/String;",
+      "evaluateValidationMessage",
+      "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "m",
+      "c",
+      "(I)Ljava/lang/String;",
+      "evaluateValidationMessage",
+      "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "DungeonAssault",
+      "a",
+      "(B)V",
+      "initializeGame",
+      "Source-purpose review: Sets up game resource channels and initializes the audio system and renderer defaults at startup."
+    ],
+    [
+      "kg",
+      "a",
+      "(B)V",
+      "initializeGame",
+      "Source-purpose review: Declares the startup callback that initializes game-specific resources."
+    ],
+    [
+      "DungeonAssault",
+      "a",
+      "(I)V",
+      "updateGameTick",
+      "Source-purpose review: Advances client state once per applet tick and dispatches dungeon and raid packets."
+    ],
+    [
+      "kg",
+      "a",
+      "(I)V",
+      "updateGameTick",
+      "Source-purpose review: Declares the game update callback invoked by the applet tick path."
+    ],
+    [
+      "DungeonAssault",
+      "b",
+      "(B)V",
+      "renderFrame",
+      "Source-purpose review: Draws the loading, menu, or raid frame on the currently active canvas."
+    ],
+    [
+      "kg",
+      "b",
+      "(B)V",
+      "renderFrame",
+      "Source-purpose review: Declares the applet drawing callback invoked from the recurring graphics path."
+    ],
+    [
+      "DungeonAssault",
+      "b",
+      "(Z)V",
+      "releaseGameResources",
+      "Source-purpose review: Releases game, rendering, and platform resources during final applet teardown."
+    ],
+    [
+      "kg",
+      "b",
+      "(Z)V",
+      "releaseGameResources",
+      "Source-purpose review: Declares the resource cleanup callback invoked after the applet removes the canvas and shuts down platform services."
+    ],
+    [
+      "DungeonAssault",
+      "c",
+      "(Z)V",
+      "prepareGameShutdown",
+      "Source-purpose review: Runs early shutdown including closing the secondary canvas when present."
+    ],
+    [
+      "kg",
+      "c",
+      "(Z)V",
+      "prepareGameShutdown",
+      "Source-purpose review: Declares the early shutdown callback invoked before removing the game canvas."
+    ],
+    [
+      "DungeonAssault",
+      "c",
+      "(ZB)V",
+      "updateScreensAndTransitions",
+      "Source-purpose review: Advances active screen input, fade timing, and transitions into new raid views."
+    ],
+    [
+      "DungeonAssault",
+      "h",
+      "(B)V",
+      "clearDungeonAssaultGlobals",
+      "Source-purpose review: Releases the applet’s static text and sprite references during final teardown."
+    ],
+    [
+      "DungeonAssault",
+      "h",
+      "(I)Z",
+      "finishLoadingAndInitializeScreens",
+      "Source-purpose review: Waits for asset readiness, instantiates every game screen, and activates the intro screen."
+    ],
+    [
+      "lb",
+      "a",
+      "(Lec;II)V",
+      "readVersionedProfile",
+      "Source-purpose review: Reads the versioned dungeon profile, including the board, levels, and statistics from the supplied buffer."
+    ],
+    [
+      "lb",
+      "a",
+      "(Z)V",
+      "refreshRaiderStatusIndicators",
+      "Source-purpose review: Rebuilds the status effect indicators on every loaded raider slot."
+    ],
+    [
+      "lb",
+      "a",
+      "(CI)C",
+      "toDisplayTitleCase",
+      "Source-purpose review: Applies Java title case except for the two legacy characters that must be preserved."
+    ],
+    [
+      "qe",
+      "b",
+      "()V",
+      "resetScreenWidgets",
+      "Source-purpose review: Detaches the existing widgets and creates an empty collection for the screen controls."
+    ],
+    [
+      "qe",
+      "d",
+      "()Z",
+      "dispatchModalOrPointerInput",
+      "Source-purpose review: Routes input to the blocking dialog when present or hit tests and dispatches it to the screen widgets."
+    ],
+    [
+      "qe",
+      "e",
+      "()V",
+      "applyScreenLighting",
+      "Source-purpose review: Computes lighting around the current focus against normal-map pixels and applies the resulting intensity map to the raster."
+    ],
+    [
+      "qe",
+      "a",
+      "(Lhb;I)[Lwb;",
+      "buildRaiderStatusIndicators",
+      "Source-purpose review: Collects the raider’s status effects and copies the applicable indicators into a compact array."
+    ],
+    [
+      "qe",
+      "a",
+      "(III[Lwb;I)V",
+      "drawStatusIndicatorGrid",
+      "Source-purpose review: Draws status icons in evenly spaced rows and columns beside a character or tile preview."
+    ],
+    [
+      "qe",
+      "a",
+      "(IILai;)V",
+      "drawDungeonTilePreview",
+      "Source-purpose review: Draws the tile preview and its status indicators in the framed tile panel."
+    ],
+    [
+      "qe",
+      "a",
+      "(IILhb;)V",
+      "drawRaiderPreview",
+      "Source-purpose review: Draws the animated raider and its indicators in the framed preview panel."
+    ],
+    [
+      "qe",
+      "a",
+      "(IILwd;[[I)V",
+      "drawFramedSpriteAnimation",
+      "Source-purpose review: Fills the preview panel with the supplied gradient colors and draws the animation when present."
+    ],
+    [
+      "go",
+      "a",
+      "(JI)Ljava/lang/String;",
+      "formatTimestamp",
+      "Source-purpose review: Formats a timestamp with the localized weekday and month and the clock time."
+    ],
+    [
+      "go",
+      "j",
+      "(I)Z",
+      "handleRaidPacket",
+      "Source-purpose review: Dispatches raid-specific incoming packet types and reports whether the raid screen consumed the packet."
+    ],
+    [
+      "go",
+      "h",
+      "(I)Z",
+      "tryStartRaidActionCooldown",
+      "Source-purpose review: Rejects another raid action while a previous cooldown is active and otherwise starts a fifty-tick cooldown."
+    ],
+    [
+      "go",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "setRaidMessage",
+      "Source-purpose review: Stores the raid message that the screen formats when redrawing its message panel."
+    ],
+    [
+      "go",
+      "d",
+      "(B)V",
+      "renderRaidMessagePanel",
+      "Source-purpose review: Wraps the raid message, renders each line into a sprite, and installs it in the screen panel."
+    ],
+    [
+      "go",
+      "l",
+      "(I)V",
+      "buildRaidControls",
+      "Source-purpose review: Builds and registers the raider selectors, control buttons, and message panel for the raid."
+    ],
+    [
+      "qe",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "bg",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "db",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "fi",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "go",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "ih",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "p",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "qc",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "ud",
+      "a",
+      "(Z)V",
+      "renderScreen",
+      "Source-purpose review: Draws the current game screen through the shared virtual dispatch from the applet frame renderer."
+    ],
+    [
+      "qe",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "bg",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "db",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "fi",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "go",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "ih",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "p",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "qc",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "ud",
+      "b",
+      "(Z)V",
+      "initializeScreen",
+      "Source-purpose review: Initializes the destination screen when it becomes active, preparing its background or screen-specific state."
+    ],
+    [
+      "qe",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "bg",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "db",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "fi",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "go",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "ih",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "p",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "qc",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "ud",
+      "c",
+      "(Z)V",
+      "updateScreen",
+      "Source-purpose review: Advances the active screen’s state and processes input during the applet update."
+    ],
+    [
+      "qe",
+      "c",
+      "()V",
+      "releaseScreenResources",
+      "Source-purpose review: Drops widgets, cached assets, or other screen resources when leaving that screen."
+    ],
+    [
+      "db",
+      "c",
+      "()V",
+      "releaseScreenResources",
+      "Source-purpose review: Drops widgets, cached assets, or other screen resources when leaving that screen."
+    ],
+    [
+      "fi",
+      "c",
+      "()V",
+      "releaseScreenResources",
+      "Source-purpose review: Drops widgets, cached assets, or other screen resources when leaving that screen."
+    ],
+    [
+      "go",
+      "c",
+      "()V",
+      "releaseScreenResources",
+      "Source-purpose review: Drops widgets, cached assets, or other screen resources when leaving that screen."
+    ],
+    [
+      "ih",
+      "c",
+      "()V",
+      "releaseScreenResources",
+      "Source-purpose review: Drops widgets, cached assets, or other screen resources when leaving that screen."
+    ],
+    [
+      "p",
+      "c",
+      "()V",
+      "releaseScreenResources",
+      "Source-purpose review: Drops widgets, cached assets, or other screen resources when leaving that screen."
+    ],
+    [
+      "qc",
+      "c",
+      "()V",
+      "releaseScreenResources",
+      "Source-purpose review: Drops widgets, cached assets, or other screen resources when leaving that screen."
+    ],
+    [
+      "qe",
+      "f",
+      "()V",
+      "handleScreenKeyPress",
+      "Source-purpose review: Handles the current key event or forwards it to the active dialog or screen widget."
+    ],
+    [
+      "db",
+      "f",
+      "()V",
+      "handleScreenKeyPress",
+      "Source-purpose review: Handles the current key event or forwards it to the active dialog or screen widget."
+    ],
+    [
+      "fi",
+      "f",
+      "()V",
+      "handleScreenKeyPress",
+      "Source-purpose review: Handles the current key event or forwards it to the active dialog or screen widget."
+    ],
+    [
+      "go",
+      "f",
+      "()V",
+      "handleScreenKeyPress",
+      "Source-purpose review: Handles the current key event or forwards it to the active dialog or screen widget."
+    ],
+    [
+      "qc",
+      "f",
+      "()V",
+      "handleScreenKeyPress",
+      "Source-purpose review: Handles the current key event or forwards it to the active dialog or screen widget."
+    ],
+    [
+      "go",
+      "a",
+      "(B)V",
+      "createRaidBoardView",
+      "Source-purpose review: Creates the isometric raid board view for the active renderer mode."
+    ],
+    [
+      "go",
+      "a",
+      "(I)V",
+      "refreshRaidPhaseMessage",
+      "Source-purpose review: Chooses the raid message for the current simulation phase and selected raider."
+    ],
+    [
+      "go",
+      "a",
+      "(IZ)V",
+      "leaveRaidScreen",
+      "Source-purpose review: Notifies the server when leaving a network raid and selects the next menu from the raid result or tutorial state."
+    ],
+    [
+      "go",
+      "b",
+      "(Lai;I)V",
+      "playTileActionEffects",
+      "Source-purpose review: Starts the tile animation and schedules the sound effect associated with its action."
+    ],
+    [
+      "go",
+      "b",
+      "(ZI)V",
+      "resetDungeonTileAnimation",
+      "Source-purpose review: Recreates the animation player for one tile and tells the raid board renderer to refresh it."
+    ],
+    [
+      "go",
+      "c",
+      "(I)V",
+      "initializeRaidEffects",
+      "Source-purpose review: Initializes raid effect queues, randomized effect choices, and the two sound streams that accompany play."
+    ],
+    [
+      "go",
+      "d",
+      "(I)V",
+      "refreshRaidControlTooltips",
+      "Source-purpose review: Rebuilds the control tooltips from the selected raider, tile category, and current raid phase."
+    ],
+    [
+      "go",
+      "e",
+      "(Z)V",
+      "clearRaidActionCooldown",
+      "Source-purpose review: Clears the cooldown after processing a server response to the most recent raid action."
+    ],
+    [
+      "go",
+      "f",
+      "(I)V",
+      "clearRaidScreenGlobals",
+      "Source-purpose review: Clears the raid screen’s static sprites and text references during resource release."
+    ],
+    [
+      "go",
+      "g",
+      "(I)V",
+      "advanceRaidAnimations",
+      "Source-purpose review: Advances the board renderer and the animation players for raiders and dungeon tiles."
+    ],
+    [
+      "go",
+      "g",
+      "(Z)V",
+      "buildRaidBackground",
+      "Source-purpose review: Draws the raid screen backdrop and prepares starting raider animations and the board renderer."
+    ],
+    [
+      "p",
+      "b",
+      "(III)I",
+      "findDungeonTileAt",
+      "Source-purpose review: Maps a pointer location to an isometric grid square, returning minus one outside the dungeon."
+    ],
+    [
+      "p",
+      "c",
+      "(I)V",
+      "saveDungeonChanges",
+      "Source-purpose review: Serializes the pending room changes and updates the profile layout and gold balance."
+    ],
+    [
+      "p",
+      "d",
+      "(B)V",
+      "clearPendingRoomChanges",
+      "Source-purpose review: Clears all pending dungeon edits and resets their accumulated total cost."
+    ],
+    [
+      "p",
+      "a",
+      "(I)V",
+      "initializeDungeonBoardArtwork",
+      "Source-purpose review: Prepares the four selection overlay graphics and creates the board view for the current renderer."
+    ],
+    [
+      "ih",
+      "a",
+      "(ICLjava/lang/String;)[Ljava/lang/String;",
+      "splitOnCharacter",
+      "Source-purpose review: Splits the input around the given delimiter and preserves empty substrings."
+    ],
+    [
+      "ih",
+      "a",
+      "(I)V",
+      "buildRecruitmentOptions",
+      "Source-purpose review: Creates a recruitment control for each unlocked raider definition and adds it to the horizontal options list."
+    ],
+    [
+      "ih",
+      "b",
+      "(III)V",
+      "drawRecruitmentCosts",
+      "Source-purpose review: Draws available gold and pending hiring costs, coloring the cost red when it exceeds the available balance."
+    ],
+    [
+      "ih",
+      "d",
+      "(I)V",
+      "reloadRecruitmentRoster",
+      "Source-purpose review: Reloads the editable recruitment roster from the player profile and creates its raider animation players."
+    ],
+    [
+      "ih",
+      "d",
+      "(Z)V",
+      "saveRaiderRecruitment",
+      "Source-purpose review: Submits changes to the party roster and charges the player when the available gold covers the recruitment cost."
+    ],
+    [
+      "fi",
+      "d",
+      "(Z)Ljava/awt/Canvas;",
+      "getActiveCanvas",
+      "Source-purpose review: Returns the fullscreen canvas when active and the regular applet canvas otherwise."
+    ],
+    [
+      "fi",
+      "a",
+      "(IBI)I",
+      "findInstructionsMenuItemAt",
+      "Source-purpose review: Returns the enabled instructions menu entry containing the pointer coordinates or minus one when none match."
+    ],
+    [
+      "fi",
+      "a",
+      "(II)Ljava/lang/String;",
+      "getMenuActionLabel",
+      "Source-purpose review: Returns the localized menu action label, substituting the menu label for action ten in its applicable screen modes."
+    ],
+    [
+      "ud",
+      "a",
+      "(ZI)V",
+      "finishIntroSequence",
+      "Source-purpose review: Resets the intro position, transitions to the main menu, and restores the normal scene lighting."
+    ],
+    [
+      "ud",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "detachKeyboardInput",
+      "Source-purpose review: Detaches the keyboard and focus listeners from the specified AWT component."
+    ],
+    [
+      "qe",
+      "a",
+      "(IIILhb;I)V",
+      "drawRaiderStatusIndicators",
+      "Source-purpose review: Collects the indicators for this raider and draws them through the shared status icon grid."
+    ],
+    [
+      "qe",
+      "a",
+      "(Lcn;Lcn;Lcn;Lcn;Lcn;Lcn;)V",
+      "setStatBarIcons",
+      "Source-purpose review: Assigns the shared and category-specific icons for the two stat bar sets."
+    ],
+    [
+      "qe",
+      "a",
+      "(IILai;ZI)V",
+      "drawDungeonTileStatBars",
+      "Source-purpose review: Draws the tile’s four stat bars with the indicated scaling and reduction."
+    ],
+    [
+      "qe",
+      "a",
+      "(IILhb;I)V",
+      "drawRaiderStatBars",
+      "Source-purpose review: Draws the raider’s four stat bars with their current modifiers applied."
+    ],
+    [
+      "qe",
+      "a",
+      "(IILac;)V",
+      "drawRoomDefinitionStatBars",
+      "Source-purpose review: Draws the four base room-definition stat bars and draws empty bars when no room definition is available."
     ]
   ],
   "fields": [

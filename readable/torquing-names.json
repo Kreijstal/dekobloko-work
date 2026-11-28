@@ -134,6 +134,146 @@
       "fc",
       "Bzip2Decompressor",
       "Whole source-purpose review: final static Bzip2 decompression utility; one private typed state singleton allocated at class initialization; synchronized byte-array entry, bit/byte readers, used-symbol map, canonical Huffman tables, move-to-front block decoding, inverse-BWT/run output and retained cleanup all individually read or linked to exact earlier human-read bodies. All incoming selected helper references lie inside exact reviewed bodies. Keep the state allocation and class-init behavior, shared table ownership, locks, source/output/index/count/cast domains, array aliasing, partial writes, evaluation/exception order and all literals. Rename identifiers only; add no format checks, repairs, CRC handling or guards."
+    ],
+    [
+      "pe",
+      "LoginPanel",
+      "Owns the login identifier and password fields and forwards submission from the form controls."
+    ],
+    [
+      "th",
+      "DisplayNameSelectionPanel",
+      "Shows the required display-name field and submits the name once its validator accepts it."
+    ],
+    [
+      "ki",
+      "AccountRegistrationPanel",
+      "Builds the six named registration fields, attaches the corresponding validators, and submits the account form."
+    ],
+    [
+      "tn",
+      "EmailFormatValidator",
+      "Checks the account email address and supplies feedback when the format is invalid."
+    ],
+    [
+      "ad",
+      "ConfirmedEmailAvailabilityValidator",
+      "Checks that the confirmation matches the email input, then obtains and caches the email availability result."
+    ],
+    [
+      "ij",
+      "PasswordValidator",
+      "Checks the proposed account password and supplies feedback about invalid or unsuitable input."
+    ],
+    [
+      "um",
+      "MatchingFieldValidator",
+      "Compares the value with the paired input field and supplies feedback when the values do not match."
+    ],
+    [
+      "ab",
+      "AgeValidator",
+      "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input."
+    ],
+    [
+      "tk",
+      "EditableTextField",
+      "Edits and selects text, handles clipboard commands, and dispatches text change and submission events."
+    ],
+    [
+      "wm",
+      "TextFieldListener",
+      "Receives the editable field callbacks for text changes and text submission."
+    ],
+    [
+      "wg",
+      "FieldValidatorProvider",
+      "Exposes the validator attached to a form input to the status display and submission checks."
+    ],
+    [
+      "gp",
+      "ValidatedTextField",
+      "Extends the editable field with an attached validator and forwards text changes to the validator."
+    ],
+    [
+      "eq",
+      "DebouncedFieldValidator",
+      "Records input changes and defers status and feedback evaluation for 350 milliseconds before calling the field-specific validator."
+    ],
+    [
+      "sk",
+      "FieldValidator",
+      "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators."
+    ],
+    [
+      "gf",
+      "TextFieldValidator",
+      "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."
+    ],
+    [
+      "bi",
+      "LevelRun",
+      "Owns the active level, timer, vehicle and scene state, and updates and draws the current attempt."
+    ],
+    [
+      "mh",
+      "MenuScreen",
+      "Owns the menu selection state and renders the layers and navigation for one screen ID."
+    ],
+    [
+      "af",
+      "MenuLayer",
+      "Defines the renderer for the drawable layers that the menu composites in order."
+    ],
+    [
+      "ia",
+      "FramedPanelLayer",
+      "Draws a panel with stretchable or tiled edge pieces and a filled center."
+    ],
+    [
+      "di",
+      "IndexedSpriteLayer",
+      "Stores one indexed sprite and draws it at the raster origin as a menu layer."
+    ],
+    [
+      "dg",
+      "TranslucentSpriteLayer",
+      "Draws an indexed sprite using the layer offset and a configured opacity."
+    ],
+    [
+      "bn",
+      "SpriteBase",
+      "Holds shared sprite dimensions and offsets and declares the sprite draw operations."
+    ],
+    [
+      "sm",
+      "IndexedSprite",
+      "Stores byte pixel indices and their palette and implements clipped, scaled, and blended rendering."
+    ],
+    [
+      "id",
+      "LoginRequestBuilder",
+      "Constructs the initial or reconnect login request and writes its length to the outgoing packet."
+    ],
+    [
+      "qp",
+      "AchievementProgressUpdate",
+      "Stores the queued achievement update that is sent when the client can submit progress."
+    ],
+    [
+      "qk",
+      "LevelCompletionUpdate",
+      "Stores the level completion update used to report progress to the server."
+    ],
+    [
+      "sg",
+      "SceneMeshBatch",
+      "Maintains scene mesh slots, their face and vertex data, and auxiliary triangles used by the level renderer."
+    ],
+    [
+      "tg",
+      "NetworkGameClient",
+      "Runs the Torquing client protocol and derives its connection parameters from the applet host and initialization options."
     ]
   ],
   "methods": [
@@ -4294,6 +4434,902 @@
       "(I)Z",
       "processLevelSceneMeshes",
       "Source-purpose review: Consumes scene geometry in time-limited batches and prepares the cached mesh groups before releasing the preparation queue."
+    ],
+    [
+      "pe",
+      "a",
+      "(B)V",
+      "submitLogin",
+      "Source-purpose review: Checks the two login fields and forwards their values from the form to the login request."
+    ],
+    [
+      "th",
+      "a",
+      "(ILwg;)Z",
+      "isFieldValid",
+      "Source-purpose review: Returns whether the display-name control reports an acceptable validation status."
+    ],
+    [
+      "th",
+      "b",
+      "(Z)Z",
+      "canSubmitDisplayName",
+      "Source-purpose review: Evaluates the display-name field before enabling or submitting the form."
+    ],
+    [
+      "th",
+      "g",
+      "(B)V",
+      "submitDisplayName",
+      "Source-purpose review: Submits the chosen display name only when the form validation permits it."
+    ],
+    [
+      "ab",
+      "a",
+      "(ILjava/lang/String;)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ad",
+      "a",
+      "(ILjava/lang/String;)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "gf",
+      "a",
+      "(ILjava/lang/String;)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ij",
+      "a",
+      "(ILjava/lang/String;)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "il",
+      "a",
+      "(ILjava/lang/String;)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "tn",
+      "a",
+      "(ILjava/lang/String;)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "um",
+      "a",
+      "(ILjava/lang/String;)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ab",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ad",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "gf",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ij",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "il",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "tn",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "um",
+      "a",
+      "(BLjava/lang/String;)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules."
+    ],
+    [
+      "ki",
+      "a",
+      "(ILwg;)Z",
+      "isFieldReadyForRegistration",
+      "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration."
+    ],
+    [
+      "ki",
+      "h",
+      "(I)Z",
+      "canSubmitRegistration",
+      "Source-purpose review: Checks the readiness of the six account registration inputs before submission."
+    ],
+    [
+      "ki",
+      "l",
+      "(I)Z",
+      "submitRegistration",
+      "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration."
+    ],
+    [
+      "gf",
+      "a",
+      "(ILtk;)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "pe",
+      "a",
+      "(ILtk;)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "wm",
+      "a",
+      "(ILtk;)V",
+      "onTextChanged",
+      "Source-purpose review: Receives the editor callback after a text edit. Validator implementations restart their input delay."
+    ],
+    [
+      "gf",
+      "a",
+      "(Ltk;B)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "pe",
+      "a",
+      "(Ltk;B)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "wm",
+      "a",
+      "(Ltk;B)V",
+      "onTextSubmitted",
+      "Source-purpose review: Receives the editor callback when the user submits the field value."
+    ],
+    [
+      "gp",
+      "l",
+      "(I)V",
+      "notifyTextChanged",
+      "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators."
+    ],
+    [
+      "tk",
+      "l",
+      "(I)V",
+      "notifyTextChanged",
+      "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators."
+    ],
+    [
+      "tk",
+      "j",
+      "(I)V",
+      "submitText",
+      "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler."
+    ],
+    [
+      "gp",
+      "a",
+      "(I)Lsk;",
+      "getFieldValidator",
+      "Source-purpose review: Returns the attached form field validator for status checks or validation feedback."
+    ],
+    [
+      "wg",
+      "a",
+      "(I)Lsk;",
+      "getFieldValidator",
+      "Source-purpose review: Returns the attached form field validator for status checks or validation feedback."
+    ],
+    [
+      "tk",
+      "h",
+      "(B)V",
+      "copySelection",
+      "Source-purpose review: Copies the selected text to the system clipboard."
+    ],
+    [
+      "tk",
+      "k",
+      "(I)V",
+      "pasteClipboardText",
+      "Source-purpose review: Reads text from the system clipboard and pastes it at the editor caret."
+    ],
+    [
+      "tk",
+      "n",
+      "(I)Ljava/lang/String;",
+      "getSelectedText",
+      "Source-purpose review: Returns the substring between the caret and the selection anchor."
+    ],
+    [
+      "tk",
+      "f",
+      "(B)V",
+      "deleteSelection",
+      "Source-purpose review: Removes the selected substring and updates the caret and selection anchor."
+    ],
+    [
+      "tk",
+      "a",
+      "(ILjava/lang/String;)V",
+      "insertTextAtCaret",
+      "Source-purpose review: Inserts text at the current caret and updates the caret and selection anchor."
+    ],
+    [
+      "tk",
+      "m",
+      "(I)V",
+      "cutSelection",
+      "Source-purpose review: Copies the selected text to the clipboard and then removes it from the editor."
+    ],
+    [
+      "eq",
+      "a",
+      "(B)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay."
+    ],
+    [
+      "sk",
+      "a",
+      "(B)Lcd;",
+      "getValidationStatus",
+      "Source-purpose review: Returns the missing-input or waiting status before dispatching the concrete validation check after the input delay."
+    ],
+    [
+      "eq",
+      "a",
+      "(I)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message."
+    ],
+    [
+      "sk",
+      "a",
+      "(I)Ljava/lang/String;",
+      "getValidationMessage",
+      "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message."
+    ],
+    [
+      "eq",
+      "a",
+      "(Z)V",
+      "recordInputChange",
+      "Source-purpose review: Stores the current time on input changes so the validation delay can restart."
+    ],
+    [
+      "sk",
+      "a",
+      "(Z)V",
+      "recordInputChange",
+      "Source-purpose review: Stores the current time on input changes so the validation delay can restart."
+    ],
+    [
+      "gf",
+      "b",
+      "(Z)Z",
+      "hasMissingInput",
+      "Source-purpose review: Reports whether the text or any required date input is absent."
+    ],
+    [
+      "sk",
+      "b",
+      "(Z)Z",
+      "hasMissingInput",
+      "Source-purpose review: Reports whether the text or any required date input is absent."
+    ],
+    [
+      "eq",
+      "c",
+      "(I)Lcd;",
+      "evaluateValidationStatus",
+      "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready."
+    ],
+    [
+      "gf",
+      "c",
+      "(I)Lcd;",
+      "evaluateValidationStatus",
+      "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready."
+    ],
+    [
+      "eq",
+      "b",
+      "(I)Ljava/lang/String;",
+      "evaluateValidationMessage",
+      "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "gf",
+      "b",
+      "(I)Ljava/lang/String;",
+      "evaluateValidationMessage",
+      "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "bi",
+      "a",
+      "(Lsm;I)Laf;",
+      "createIndexedSpriteLayer",
+      "Source-purpose review: Wraps an indexed sprite in a menu layer that can draw it at the origin."
+    ],
+    [
+      "bi",
+      "a",
+      "(Z)V",
+      "renderLevelRun",
+      "Source-purpose review: Draws the current level background, scene, and on-screen run state."
+    ],
+    [
+      "bi",
+      "i",
+      "(I)V",
+      "updateLevelRun",
+      "Source-purpose review: Advances the active run, handles input, and decreases the remaining level time."
+    ],
+    [
+      "bi",
+      "h",
+      "(I)V",
+      "initializeLevelRun",
+      "Source-purpose review: Copies the level objects, initializes the timer and vehicle state, and resets the run counters."
+    ],
+    [
+      "bi",
+      "f",
+      "(I)V",
+      "restartLevelRun",
+      "Source-purpose review: Resets the vehicle to its initial model and reinitializes the current level attempt."
+    ],
+    [
+      "bi",
+      "d",
+      "(I)V",
+      "advanceToNextLevel",
+      "Source-purpose review: Clears current level effects and switches to the next level when it is available."
+    ],
+    [
+      "bi",
+      "g",
+      "(I)V",
+      "completeLevelRun",
+      "Source-purpose review: Queues a level-completion update and records the achievement and unlocked level progress."
+    ],
+    [
+      "bi",
+      "e",
+      "(I)V",
+      "enableGyroBrake",
+      "Source-purpose review: Enables the gyro braking state after collecting its power-up."
+    ],
+    [
+      "bi",
+      "b",
+      "(BI)V",
+      "addLevelTime",
+      "Source-purpose review: Adds the bonus time from the pickup to the remaining run timer."
+    ],
+    [
+      "bi",
+      "a",
+      "(IBI)V",
+      "awardAchievement",
+      "Source-purpose review: Marks an achievement bit, queues its notification, and either sends or defers the progress update."
+    ],
+    [
+      "bi",
+      "a",
+      "(Ljava/applet/Applet;B)V",
+      "openSupportPage",
+      "Source-purpose review: Opens the service support page in the top-level browser frame."
+    ],
+    [
+      "bi",
+      "c",
+      "(I)V",
+      "clearLevelRunGlobals",
+      "Source-purpose review: Releases the level-run class’s shared strings and interface reference during cleanup."
+    ],
+    [
+      "mh",
+      "a",
+      "(BZ)V",
+      "initializeMenuScreen",
+      "Source-purpose review: Initializes navigation and resets the selection animation for the newly selected menu screen."
+    ],
+    [
+      "mh",
+      "a",
+      "(ZI)V",
+      "updateMenuScreen",
+      "Source-purpose review: Reads input for the active screen and advances menu navigation, dialogue, or action dispatch."
+    ],
+    [
+      "mh",
+      "c",
+      "(I)V",
+      "renderMenuScreen",
+      "Source-purpose review: Draws the background, layers, and screen-specific menu content."
+    ],
+    [
+      "mh",
+      "a",
+      "(ZILjava/lang/String;)I",
+      "measureMenuText",
+      "Source-purpose review: Measures the string using the selected one of the two menu fonts."
+    ],
+    [
+      "af",
+      "b",
+      "(I)V",
+      "drawLayer",
+      "Source-purpose review: Declares the drawing operation used for every layer in the active menu."
+    ],
+    [
+      "ia",
+      "b",
+      "(I)V",
+      "drawLayer",
+      "Source-purpose review: Draws the panel at its stored position by using the zero-offset drawing path."
+    ],
+    [
+      "di",
+      "b",
+      "(I)V",
+      "drawLayer",
+      "Source-purpose review: Draws the indexed sprite at the origin as a menu layer."
+    ],
+    [
+      "dg",
+      "b",
+      "(I)V",
+      "drawLayer",
+      "Source-purpose review: Draws the translucent sprite layer at its stored position."
+    ],
+    [
+      "ia",
+      "a",
+      "(BII)V",
+      "drawFramedPanel",
+      "Source-purpose review: Draws the panel fill, clips each border piece, and repeats the edge tiles around the panel."
+    ],
+    [
+      "dg",
+      "a",
+      "(ZII)V",
+      "drawTranslucentSprite",
+      "Source-purpose review: Clips and blits the sprite using its offsets and the layer’s configured opacity."
+    ],
+    [
+      "bn",
+      "a",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Declares the full sprite pixel copy used by the indexed sprite implementation."
+    ],
+    [
+      "sm",
+      "a",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Clips the sprite to the raster and copies the palette color of every index."
+    ],
+    [
+      "bn",
+      "a",
+      "(III)V",
+      "drawWithAlpha",
+      "Source-purpose review: Declares the sprite drawing operation with a caller-supplied opacity."
+    ],
+    [
+      "sm",
+      "a",
+      "(III)V",
+      "drawWithAlpha",
+      "Source-purpose review: Clips and blends the nonzero indices with the destination using the supplied opacity."
+    ],
+    [
+      "sm",
+      "b",
+      "(II)V",
+      "drawTransparent",
+      "Source-purpose review: Clips and draws the indexed sprite and skips transparent zero indices."
+    ],
+    [
+      "sm",
+      "a",
+      "(IIII)V",
+      "drawScaled",
+      "Source-purpose review: Uses fixed-point steps for the input samples to draw the sprite at the requested width and height."
+    ],
+    [
+      "sm",
+      "a",
+      "()Lt;",
+      "toRgbSprite",
+      "Source-purpose review: Expands each pixel index through the palette into the RGB sprite representation."
+    ],
+    [
+      "uf",
+      "a",
+      "(ZLjava/lang/String;)Z",
+      "appendCenteredText",
+      "Source-purpose review: Wraps the paragraph and stores one horizontally centered line per entry when it fits."
+    ],
+    [
+      "uf",
+      "a",
+      "(Lt;Ljava/lang/String;I)Z",
+      "appendImageAndText",
+      "Source-purpose review: Appends a sprite and wrapped paragraph when their height fits the panel."
+    ],
+    [
+      "uf",
+      "a",
+      "(BI)V",
+      "addFlexibleVerticalSpace",
+      "Source-purpose review: Adds an empty entry carrying the spacing weight that the layout uses to distribute vertical space."
+    ],
+    [
+      "uf",
+      "a",
+      "(III)V",
+      "addVerticalSpace",
+      "Source-purpose review: Adds an empty entry with the requested fixed height and an optional flexible spacing weight."
+    ],
+    [
+      "uf",
+      "a",
+      "(II)I",
+      "availableTextWidth",
+      "Source-purpose review: Finds the first opaque pixel of the background art in each row and uses the closest position as the text width."
+    ],
+    [
+      "uf",
+      "a",
+      "(IILjava/lang/String;I)[Ljava/lang/String;",
+      "wrapTextAroundArtwork",
+      "Source-purpose review: Measures the available width of each potential line and wraps the string to that sequence of widths."
+    ],
+    [
+      "uf",
+      "a",
+      "(Z)I",
+      "getContentHeight",
+      "Source-purpose review: Returns the accumulated height at the end of the current panel layout."
+    ],
+    [
+      "uf",
+      "c",
+      "(I)V",
+      "justifyPanelContents",
+      "Source-purpose review: Distributes the remaining height among flexible spacers, reflows each entry, and finalizes the panel layout."
+    ],
+    [
+      "uf",
+      "d",
+      "(I)V",
+      "finishPanelLayout",
+      "Source-purpose review: Finalizes the panel height and drops the original paragraph text after wrapping."
+    ],
+    [
+      "uf",
+      "b",
+      "(III)V",
+      "drawPanel",
+      "Source-purpose review: Draws each sprite and wrapped text entry at its computed panel position."
+    ],
+    [
+      "id",
+      "a",
+      "(Lbc;IZIZ)V",
+      "buildLoginRequest",
+      "Source-purpose review: Assembles the outgoing initial or reconnect login packet and writes its final length."
+    ],
+    [
+      "qk",
+      "a",
+      "(ILjava/awt/Component;)V",
+      "detachMouseInput",
+      "Source-purpose review: Unregisters the game mouse, motion, and focus listeners from the component."
+    ],
+    [
+      "sg",
+      "a",
+      "([S)[I",
+      "expandUnsignedShorts",
+      "Source-purpose review: Expands each sixteen-bit value to an unsigned integer in the new array."
+    ],
+    [
+      "sg",
+      "a",
+      "(I)[Lti;",
+      "copyTriangleOverrides",
+      "Source-purpose review: Copies the auxiliary triangle records and their attachments while retaining references to the shared vertex coordinates."
+    ],
+    [
+      "sg",
+      "a",
+      "(I[Lti;)V",
+      "setTriangleOverrides",
+      "Source-purpose review: Copies the provided triangles into the auxiliary scene triangle array."
+    ],
+    [
+      "sg",
+      "b",
+      "(I)Lti;",
+      "extractMeshTriangle",
+      "Source-purpose review: Builds a triangle from the selected face’s three vertex indices and material."
+    ],
+    [
+      "sg",
+      "c",
+      "()V",
+      "initializeEmptyMesh",
+      "Source-purpose review: Creates the empty mesh used to represent a disabled scene slot."
+    ],
+    [
+      "sg",
+      "d",
+      "(I)V",
+      "disableMeshSlot",
+      "Source-purpose review: Replaces the requested slot with the empty mesh and marks it disabled."
+    ],
+    [
+      "Torquing",
+      "a",
+      "(B)V",
+      "updateGameTick",
+      "Source-purpose review: Updates audio, the active display and resources once per game tick before delegating to the race or menu simulation."
+    ],
+    [
+      "hk",
+      "a",
+      "(B)V",
+      "updateGameTick",
+      "Source-purpose review: Declares the simulation callback invoked by the applet tick path."
+    ],
+    [
+      "Torquing",
+      "b",
+      "(B)V",
+      "renderFrame",
+      "Source-purpose review: Selects the full-screen or main canvas and draws loading, menu, race, or achievement display according to current state."
+    ],
+    [
+      "hk",
+      "b",
+      "(B)V",
+      "renderFrame",
+      "Source-purpose review: Declares the applet frame callback implemented by the Torquing renderer."
+    ],
+    [
+      "Torquing",
+      "c",
+      "(I)V",
+      "initializeGame",
+      "Source-purpose review: Configures the game resources, creates both audio channels, and initializes the startup state."
+    ],
+    [
+      "hk",
+      "c",
+      "(I)V",
+      "initializeGame",
+      "Source-purpose review: Declares the game initialization callback invoked before the applet enters its recurring loop."
+    ],
+    [
+      "Torquing",
+      "a",
+      "(I)V",
+      "releaseGameResources",
+      "Source-purpose review: Clears Torquing state and calls resource cleanup throughout the game at applet termination."
+    ],
+    [
+      "hk",
+      "a",
+      "(I)V",
+      "releaseGameResources",
+      "Source-purpose review: Declares the applet callback implemented by the game-wide resource cleanup routine."
+    ],
+    [
+      "Torquing",
+      "b",
+      "(I)V",
+      "prepareGameShutdown",
+      "Source-purpose review: Stops both audio output channels and closes the secondary display at the start of applet shutdown."
+    ],
+    [
+      "hk",
+      "b",
+      "(I)V",
+      "prepareGameShutdown",
+      "Source-purpose review: Declares the early shutdown callback invoked before removing the main canvas."
+    ],
+    [
+      "Torquing",
+      "b",
+      "(ZB)Z",
+      "advanceGameAssetLoading",
+      "Source-purpose review: Processes the game archives in stages and prepares menu assets and race audio before entering the title screen."
+    ],
+    [
+      "Torquing",
+      "s",
+      "(I)V",
+      "initializeAssetArchives",
+      "Source-purpose review: Initializes the numbered audio, font, sprite, and other game archives after bootstrap data is processed."
+    ],
+    [
+      "Torquing",
+      "q",
+      "(I)V",
+      "loadInterfaceFonts",
+      "Source-purpose review: Loads the standard and small interface fonts and prepares their color palettes for drawing."
+    ],
+    [
+      "Torquing",
+      "p",
+      "(I)V",
+      "clearTorquingGlobals",
+      "Source-purpose review: Clears the applet-owned static string and audio-stream reference during resource release."
+    ],
+    [
+      "Torquing",
+      "a",
+      "(ILhc;Luf;)V",
+      "populateLevelDescription",
+      "Source-purpose review: Splits the level description into sections and adds their text and optional images to the tooltip panel."
+    ],
+    [
+      "Torquing",
+      "a",
+      "(ZIIZ)V",
+      "transitionGameScreen",
+      "Source-purpose review: Prepares the new screen, resets the transition timer and cached panel, and updates the destination screen and level selection."
+    ],
+    [
+      "Torquing",
+      "f",
+      "(B)V",
+      "updateScreenTransition",
+      "Source-purpose review: Advances screen transition timing, handles keyboard input, and transfers control when the transition reaches its target."
+    ],
+    [
+      "Torquing",
+      "r",
+      "(I)V",
+      "drawScreenTransition",
+      "Source-purpose review: Draws the destination or source screen according to the current transition phase."
+    ],
+    [
+      "Torquing",
+      "a",
+      "(II)V",
+      "drawLevelDescriptionScreen",
+      "Source-purpose review: Draws the selected level art and its localized world, level, and objective text."
+    ],
+    [
+      "Torquing",
+      "a",
+      "(IILfj;)Ljava/lang/String;",
+      "readCompressedChatText",
+      "Source-purpose review: Reads the bounded decoded length, expands the compressed bytes, advances the input cursor, and decodes the chat string."
+    ],
+    [
+      "Torquing",
+      "a",
+      "(IZ)V",
+      "applyPreferredDisplayMode",
+      "Source-purpose review: Applies the selected display mode and installs the fullscreen canvas when the platform can provide one."
+    ],
+    [
+      "Torquing",
+      "b",
+      "(II)V",
+      "drawWorldProgressScreen",
+      "Source-purpose review: Draws the world artwork, a completion heading, and the collected and available power-up counts."
+    ],
+    [
+      "Torquing",
+      "c",
+      "(Z)V",
+      "flushQueuedProgressUpdates",
+      "Source-purpose review: Sends queued achievement and level progress updates and refreshes the related client state."
+    ],
+    [
+      "Torquing",
+      "c",
+      "(ZI)V",
+      "drawWorldPreview",
+      "Source-purpose review: Composites the background and the preview art selected by world index."
+    ],
+    [
+      "Torquing",
+      "o",
+      "(I)V",
+      "initializeTitleScreen",
+      "Source-purpose review: Starts the title music and initializes the transition timing table after game assets finish loading."
+    ],
+    [
+      "tg",
+      "a",
+      "(ILjava/lang/String;I)V",
+      "startAppletClient",
+      "Source-purpose review: Starts the applet client at the game’s fixed dimensions using the supplied name and revision."
+    ],
+    [
+      "tg",
+      "a",
+      "(BIIILjava/lang/String;)V",
+      "readAppletConfigurationAndStart",
+      "Source-purpose review: Reads the host, ports, instance ID, and language settings before starting the game client."
+    ],
+    [
+      "tg",
+      "a",
+      "(IIZIIIII)V",
+      "initializeClientServices",
+      "Source-purpose review: Initializes the network and cache clients and applies the runtime defaults supplied by the applet."
+    ],
+    [
+      "tg",
+      "a",
+      "(BZ)V",
+      "updateClientServices",
+      "Source-purpose review: Updates canvas sizing, advances active service connections, and polls resource loading and client events."
+    ],
+    [
+      "tg",
+      "h",
+      "(I)V",
+      "initializePacketLengths",
+      "Source-purpose review: Initializes the table of fixed and variable packet lengths used by the client decoder."
+    ],
+    [
+      "tg",
+      "j",
+      "(I)I",
+      "pollLoginConnection",
+      "Source-purpose review: Polls the login connection when ready and schedules reconnection after an error."
     ]
   ],
   "fields": [

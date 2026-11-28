@@ -34,7 +34,7 @@ const classes = {
   ka: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
   qd: ['PcmStream', 'Abstract linked audio stream with mix and skip operations.'],
   ee: ['UiComponent', 'Widget with bounds, listener and toString that handles key and pointer events.'],
-  kc: ['LocalizedStrings', 'Looks up text keys such as BACK and COLLECT_MORE_SEALS.'],
+  kc: ['ConfirmedEmailAvailabilityValidator', 'Checks matching email fields and caches the availability result.'],
   mf: ['LevelDecoder', 'Decodes the level byte array into LevelEntity objects.'],
   sl: ['IntrusiveDeque', 'Sentinel-based deque of IntrusiveNode with append, poll and cursor traversal.'],
   ff: ['JavaScriptBridge', 'Static wrappers around netscape.javascript.JSObject call and eval.'],
