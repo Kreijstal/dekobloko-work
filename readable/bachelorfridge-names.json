@@ -479,6 +479,91 @@
       "cga",
       "ArchiveRequest",
       "Defines completed-data retrieval and progress reporting for disk and network archive requests."
+    ],
+    [
+      "aj",
+      "IntPoint",
+      "Stores two integer coordinates and supports setting or copying the pair."
+    ],
+    [
+      "pfa",
+      "CreatureDetailsPanel",
+      "Owns the selected creature, close control, move widgets, and detail rendering."
+    ],
+    [
+      "vca",
+      "FloatingNotice",
+      "Animates a sprite or rendered message through timed entry, hold, and fade phases."
+    ],
+    [
+      "cia",
+      "BattleParticle",
+      "Stores the position, velocity, acceleration, and opacity of a particle that can unlink when expired."
+    ],
+    [
+      "ema",
+      "LobbyPlayerEntry",
+      "Stores a lobby player’s identity and names and provides list ordering for the UI."
+    ],
+    [
+      "saa",
+      "FridgeInterface",
+      "Owns the active fridge view, initializes its controls, routes input and overlay drawing, and transfers creature and food state between the view and its save data."
+    ],
+    [
+      "lna",
+      "CreatureSpriteRenderer",
+      "Builds sprites and attachment positions from a creature appearance, tracks animation playback, and composites the creature poses used by the fridge and battle views."
+    ],
+    [
+      "jla",
+      "GameMenuScreen",
+      "Implements menu navigation, button geometry, help screens, and action dispatch for the selected screen ID."
+    ],
+    [
+      "bi",
+      "IconButtonMenuScreen",
+      "Extends the menu screen with sprite-backed buttons and a dimmed background."
+    ],
+    [
+      "ina",
+      "AchievementsMenu",
+      "Displays the achievement grid and detail pane and filters entries for the selected achievement mode."
+    ],
+    [
+      "eca",
+      "RankingsMenu",
+      "Displays the rankings table, score statistics and login-dependent controls."
+    ],
+    [
+      "dl",
+      "BattleResultsMenu",
+      "Displays the match outcome, award rows, creature portraits, and post-battle controls."
+    ],
+    [
+      "ik",
+      "PlayerContextMenu",
+      "Builds the context menu for a selected player, adds the applicable lobby and chat actions, and dispatches the selected entry."
+    ],
+    [
+      "tc",
+      "WidgetRenderStyle",
+      "Stores widget sprite, text, opacity, and offset settings that can be combined and rendered for a control state."
+    ],
+    [
+      "jd",
+      "MenuSelectionState",
+      "Tracks the active item, input source, pressed state, and selected keyboard command for menus and dialogs."
+    ],
+    [
+      "mk",
+      "CreatureProfileDialog",
+      "Renders the fridge creature profile, displays its stats and move slots, and handles changes to the equipped moves."
+    ],
+    [
+      "fs",
+      "BattleSessionController",
+      "Coordinates battle startup, orders, and completion between the battle view, a local battle state, and the online session."
     ]
   ],
   "methods": [
@@ -8482,6 +8567,2526 @@
       "(BII)V",
       "centerBoardOnTile",
       "Source-purpose review: Sets the board origin so the supplied tile is centered, then clamps the origin."
+    ],
+    [
+      "gj",
+      "q",
+      "(I)V",
+      "updateBattleAnimations",
+      "Source-purpose review: Advances tile effects, queued animations, timed notices, and the creatures’ current animation states."
+    ],
+    [
+      "gj",
+      "a",
+      "(ILad;IILad;)V",
+      "moveCreatureInDirection",
+      "Source-purpose review: Converts the direction and distance to a destination, applies the terrain trail when active, and relocates the creature."
+    ],
+    [
+      "gj",
+      "b",
+      "(IZ)V",
+      "drawBattleScreen",
+      "Source-purpose review: Draws the battle board or pre-battle roster, then the HUD, notices, tooltips, and detail panel."
+    ],
+    [
+      "gj",
+      "c",
+      "(Z)V",
+      "beginOrderEntryPhase",
+      "Source-purpose review: Chooses movement or attack entry mode from the current phase and prepares the turn orders."
+    ],
+    [
+      "gj",
+      "a",
+      "(Lad;Z)Z",
+      "allowsTileEntryPowerup",
+      "Source-purpose review: Allows the tile-entry powerup except at the creature’s own flag base during flag mode."
+    ],
+    [
+      "gj",
+      "d",
+      "(I)V",
+      "confirmAttackTarget",
+      "Source-purpose review: Validates the attack target and range, sets its direction and distance, and queues the selected order."
+    ],
+    [
+      "gj",
+      "e",
+      "(B)V",
+      "drawQueuedAttackIcons",
+      "Source-purpose review: Draws the queued move icons and shows the attack information for the icon under the pointer."
+    ],
+    [
+      "gj",
+      "g",
+      "(B)V",
+      "drawBattleStatusHud",
+      "Source-purpose review: Draws the turn and mode labels, each player’s score or creature roster, and their current status."
+    ],
+    [
+      "gj",
+      "a",
+      "(ZZ)V",
+      "updateBattle",
+      "Source-purpose review: Ticks the battle UI, plays queued updates when animations allow, and handles input and board panning."
+    ],
+    [
+      "gj",
+      "a",
+      "(ILad;I)V",
+      "applyCreatureStatusWithNotice",
+      "Source-purpose review: Applies the requested status, shows its notice, and refreshes tile entry if the creature loses status 32."
+    ],
+    [
+      "gj",
+      "k",
+      "(I)V",
+      "queueSelectedOrder",
+      "Source-purpose review: Adds the selected order, clears the active selection, and sorts queued orders by the creature’s turn priority."
+    ],
+    [
+      "gj",
+      "r",
+      "(I)Z",
+      "isValidSpecialTarget",
+      "Source-purpose review: Validates the special move’s selected tile using the move category, occupancy, and adjacency rules."
+    ],
+    [
+      "gj",
+      "g",
+      "(I)V",
+      "drawLocalRoster",
+      "Source-purpose review: Draws local creature portraits, downed markers, selected highlights, and turn-order numbers."
+    ],
+    [
+      "gj",
+      "a",
+      "(IB)V",
+      "cancelQueuedOrder",
+      "Source-purpose review: Removes the selected queued order, releases any destination reservation, and compacts the order array."
+    ],
+    [
+      "gj",
+      "f",
+      "(I)V",
+      "drawTerrainTooltip",
+      "Source-purpose review: Draws the hovered terrain description and keeps the tooltip within the viewport."
+    ],
+    [
+      "gj",
+      "a",
+      "(ILad;)Lad;",
+      "splitCreatureActor",
+      "Source-purpose review: Splits a creature into an adjacent tile and creates and registers the new screen actor."
+    ],
+    [
+      "gj",
+      "a",
+      "(Laga;B)Z",
+      "isCreatureOwnedLocally",
+      "Source-purpose review: Checks the creature’s owner against the local player index."
+    ],
+    [
+      "gj",
+      "b",
+      "(Lad;Lad;Z)V",
+      "applyCreatureTileEntry",
+      "Source-purpose review: Updates the tile occupant and applies entry effects, powerups, and flag interactions."
+    ],
+    [
+      "gj",
+      "a",
+      "(B)V",
+      "clearQueuedOrderReservations",
+      "Source-purpose review: Clears each queued actor’s order marker and releases reserved move destinations."
+    ],
+    [
+      "gj",
+      "f",
+      "(B)V",
+      "resetBattleAnimationClock",
+      "Source-purpose review: Assigns the battle animation counter’s reset value when the existing guard permits it."
+    ],
+    [
+      "gj",
+      "e",
+      "(I)V",
+      "showBattleResults",
+      "Source-purpose review: Darkens and captures the battle screen and switches to the results view."
+    ],
+    [
+      "gj",
+      "a",
+      "(BLeaa;Ljava/util/Random;I)V",
+      "updateParticleList",
+      "Source-purpose review: Advances each particle in the supplied list, letting expired particles unlink themselves."
+    ],
+    [
+      "gj",
+      "d",
+      "(B)V",
+      "prepareBattleOrders",
+      "Source-purpose review: Refreshes draw order, queues the phase notice and camera animation, and initializes turn-order state."
+    ],
+    [
+      "gj",
+      "a",
+      "(BLema;)V",
+      "insertSortedSocialEntry",
+      "Source-purpose review: Relinks the social-list entry ahead of the first lower-priority entry or appends it."
+    ],
+    [
+      "gj",
+      "a",
+      "(IILad;I)V",
+      "moveCreatureByTiles",
+      "Source-purpose review: Moves a creature the given distance and direction without a separate source creature."
+    ],
+    [
+      "gj",
+      "a",
+      "(II)V",
+      "beginSpecialOrder",
+      "Source-purpose review: Creates the selected creature’s special order, queues it immediately or waits for targeting."
+    ],
+    [
+      "gj",
+      "l",
+      "(I)V",
+      "initializeBoardAndRosterActors",
+      "Source-purpose review: Creates actors from the battle rosters, initializes their pose, and creates and resets the board view."
+    ],
+    [
+      "gj",
+      "c",
+      "(III)V",
+      "showControlVictoryWarning",
+      "Source-purpose review: Shows how many turns remain before the local player or another player wins the control match."
+    ],
+    [
+      "gj",
+      "o",
+      "(I)V",
+      "confirmSpecialTarget",
+      "Source-purpose review: Validates the target tile, sets coordinates and optional creature target, then queues the special order."
+    ],
+    [
+      "gj",
+      "a",
+      "(ILad;BI)V",
+      "moveCreatureToTile",
+      "Source-purpose review: Relocates the actor to the specified tile without an attacker or move source."
+    ],
+    [
+      "gj",
+      "a",
+      "(Laga;I)Z",
+      "isLocalPlayerCreature",
+      "Source-purpose review: Returns whether the requested battle creature belongs to the local player."
+    ],
+    [
+      "gj",
+      "a",
+      "([Lrk;Lop;II)V",
+      "initializeBattleScreen",
+      "Source-purpose review: Attaches battle state, creates the controls and actor arrays, and allocates tile effects."
+    ],
+    [
+      "gj",
+      "b",
+      "(Z)V",
+      "handleRosterClick",
+      "Source-purpose review: Resolves the clicked local roster slot and selects its creature or opens its details."
+    ],
+    [
+      "gj",
+      "d",
+      "(Z)V",
+      "handleBattleInput",
+      "Source-purpose review: Handles creature and tile selection, order confirmation and cancellation, and end-turn submission."
+    ],
+    [
+      "gj",
+      "c",
+      "(B)V",
+      "confirmMovementTarget",
+      "Source-purpose review: Checks the selected destination and traversable straight-line path, then applies the movement direction and distance."
+    ],
+    [
+      "gj",
+      "b",
+      "(I)V",
+      "drawTurnPhaseAndTimer",
+      "Source-purpose review: Draws the current turn phase label and the remaining turn time when enabled."
+    ],
+    [
+      "gj",
+      "n",
+      "(I)V",
+      "tallyControlTileOwners",
+      "Source-purpose review: Adds each assigned control tile to the owning player’s count."
+    ],
+    [
+      "gj",
+      "h",
+      "(I)V",
+      "handleBattleKeyPress",
+      "Source-purpose review: Handles board centering, the diagnostic state-dump shortcut, and opening the battle menu."
+    ],
+    [
+      "jo",
+      "a",
+      "(IZIIIII)V",
+      "drawAttackAreaAtRange",
+      "Source-purpose review: Draws the rotated attack pattern offset from the origin by the chosen range and direction."
+    ],
+    [
+      "jo",
+      "a",
+      "(IIZLsfa;)V",
+      "drawQueuedAttackOverlay",
+      "Source-purpose review: Draws the queued attack’s origin glow and affected target tiles."
+    ],
+    [
+      "jo",
+      "a",
+      "(Z)V",
+      "rebuildInitialTerrainCornerMasks",
+      "Source-purpose review: Builds the initial per-corner masks for terrain overlays and sets their checkerboard variants."
+    ],
+    [
+      "jo",
+      "a",
+      "(IIIIIB)V",
+      "drawPulsingAreaGlow",
+      "Source-purpose review: Draws the additive interior, edges, and corners of a tile rectangle using time-varying intensity."
+    ],
+    [
+      "jo",
+      "b",
+      "(IBI)V",
+      "drawControlTileAnimation",
+      "Source-purpose review: Renders the animated control-tile sprite, tinting owned tiles and their marker with the team color."
+    ],
+    [
+      "jo",
+      "a",
+      "(BLaj;)V",
+      "drawCreaturesAndStatusOverlays",
+      "Source-purpose review: Draws the visible actors in board order with the selected highlight, status sprites, health indicators, flags, and notices."
+    ],
+    [
+      "jo",
+      "a",
+      "(ZLsfa;)V",
+      "drawMoveOrderPath",
+      "Source-purpose review: Projects the originating and destination tiles from the order’s direction and distance, and draws the move path."
+    ],
+    [
+      "jo",
+      "a",
+      "(ILad;Laj;)V",
+      "drawCreatureWithShadowAndEffects",
+      "Source-purpose review: Draws one creature’s shadow, animated sprite, flipping, and foreground and background effects."
+    ],
+    [
+      "jo",
+      "b",
+      "(II)V",
+      "drawUnoccupiedFlag",
+      "Source-purpose review: Draws a team-colored animated flag sprite at the stored flag coordinates when the tile is unoccupied."
+    ],
+    [
+      "jo",
+      "b",
+      "(I)V",
+      "drawTerrainAreaGlows",
+      "Source-purpose review: Finds terrain tiles with the area effect and draws the glow within a bounded rectangle around each source tile."
+    ],
+    [
+      "jo",
+      "a",
+      "(IBIILkv;)V",
+      "shadeSpriteByLinearDistance",
+      "Source-purpose review: Scales the sprite’s nontransparent pixels using an attenuation value derived from the linear pixel coordinates."
+    ],
+    [
+      "jo",
+      "a",
+      "(Laga;Laj;ILaj;I)V",
+      "drawMovementArrow",
+      "Source-purpose review: Rasterizes the tapered movement arrow with opacity increasing along the projected direction."
+    ],
+    [
+      "jo",
+      "c",
+      "(B)V",
+      "buildTileOverlaySprites",
+      "Source-purpose review: Creates the tinted tile masks, selection glows, team-colored overlays, and shaded edge sprites."
+    ],
+    [
+      "jo",
+      "c",
+      "(II)I",
+      "computeLightAttenuation",
+      "Source-purpose review: Computes the scale for sprite lighting from the distance using exponential falloff."
+    ],
+    [
+      "jo",
+      "a",
+      "(IILkv;IIBII)V",
+      "shadeSpriteByRadialDistance",
+      "Source-purpose review: Scales the sprite colors using attenuation calculated from a transformed radial distance."
+    ],
+    [
+      "jo",
+      "d",
+      "(I)V",
+      "rebuildTerrainCornerMasks",
+      "Source-purpose review: Recomputes the four-neighbor overlay masks for the ordinary raised tiles and both special terrain variants."
+    ],
+    [
+      "jo",
+      "a",
+      "(Lad;I)V",
+      "centerBoardOnCreature",
+      "Source-purpose review: Centers the board on the actor’s interpolated tile position and adjusts for its vertical displacement."
+    ],
+    [
+      "jo",
+      "a",
+      "(ILaj;)V",
+      "drawHoveredTileOutline",
+      "Source-purpose review: Draws the hovered tile’s traversal overlay and traces its highlighted screen edges."
+    ],
+    [
+      "jo",
+      "c",
+      "(I)V",
+      "drawBoard",
+      "Source-purpose review: Composes the arena background, terrain, order overlays, creatures, tile effects, and active animations."
+    ],
+    [
+      "jo",
+      "b",
+      "(B)V",
+      "updatePointerTiles",
+      "Source-purpose review: Hit-tests the current and pressed pointer positions against board tile sprites and updates their tile coordinates."
+    ],
+    [
+      "jo",
+      "a",
+      "(ZLaj;)V",
+      "drawArenaBorder",
+      "Source-purpose review: Places the theme’s edge and corner sprites around the outside of the board."
+    ],
+    [
+      "jo",
+      "a",
+      "(II)V",
+      "shakeBoardOrigin",
+      "Source-purpose review: Adds independently sampled horizontal and vertical offsets to shake the board view."
+    ],
+    [
+      "aj",
+      "a",
+      "(IIILvr;)Lee;",
+      "loadIndexedSprite",
+      "Source-purpose review: Loads and decodes a sprite entry from the resource archive and returns its indexed sprite."
+    ],
+    [
+      "aj",
+      "a",
+      "(III)V",
+      "setCoordinates",
+      "Source-purpose review: Updates both coordinate components."
+    ],
+    [
+      "aj",
+      "a",
+      "(BI)I",
+      "findTrackedStatusBitIndex",
+      "Source-purpose review: Maps a status identifier to its bit index in the tracked-status table, returning -1 for an absent identifier."
+    ],
+    [
+      "aj",
+      "a",
+      "(B)Z",
+      "isAccountNameCheckPending",
+      "Source-purpose review: Reports that the current account-name check has yet to return a result."
+    ],
+    [
+      "pfa",
+      "c",
+      "(I)I",
+      "getMessagePanelWidth",
+      "Source-purpose review: Returns the difference between the laid-out right and left message-panel edges."
+    ],
+    [
+      "pfa",
+      "b",
+      "(I)V",
+      "drawMessagePanelRows",
+      "Source-purpose review: Draws rows using the measured layout, distinguishes the local player, and substitutes the countdown for timed rows."
+    ],
+    [
+      "pfa",
+      "a",
+      "(ILad;)V",
+      "setCreature",
+      "Source-purpose review: Assigns the creature shown by the panel."
+    ],
+    [
+      "pfa",
+      "a",
+      "(B)V",
+      "buildPanelControls",
+      "Source-purpose review: Creates the move, status, and close controls for the current creature."
+    ],
+    [
+      "pfa",
+      "a",
+      "(Lkv;IIIII)V",
+      "drawClippedStatBar",
+      "Source-purpose review: Sums the segment widths and draws the stat sprite clipped to that total."
+    ],
+    [
+      "pfa",
+      "d",
+      "(I)V",
+      "close",
+      "Source-purpose review: Marks the creature details panel closed."
+    ],
+    [
+      "pfa",
+      "a",
+      "(I)Z",
+      "updateControls",
+      "Source-purpose review: Updates the close, move, and status controls while the panel is open."
+    ],
+    [
+      "pfa",
+      "a",
+      "(Z)V",
+      "draw",
+      "Source-purpose review: Renders the creature, stat bars, move icons, and contextual details."
+    ],
+    [
+      "vca",
+      "c",
+      "(B)Z",
+      "blocksLaterNoticeUpdates",
+      "Source-purpose review: Keeps following notices from advancing while this notice is within its initial spacing interval."
+    ],
+    [
+      "vca",
+      "c",
+      "(Z)V",
+      "resetLobbyRequestThrottle",
+      "Source-purpose review: Resets the lobby request timer and retry count."
+    ],
+    [
+      "vca",
+      "a",
+      "(IIILjava/lang/String;Lpo;)V",
+      "renderTextSprite",
+      "Source-purpose review: Renders notice text to an outlined sprite and applies the requested scaling."
+    ],
+    [
+      "vca",
+      "a",
+      "(IIZ)V",
+      "drawAt",
+      "Source-purpose review: Draws the notice centered at the supplied position with entry scaling and a rising fade."
+    ],
+    [
+      "vca",
+      "b",
+      "(Z)Z",
+      "advanceAndCheckFinished",
+      "Source-purpose review: Advances the notice age by one tick and reports whether all animation phases have expired."
+    ],
+    [
+      "cia",
+      "a",
+      "(I)Z",
+      "isLobbyConnectionReady",
+      "Source-purpose review: Checks for an active socket and the ready state established by the lobby login response."
+    ],
+    [
+      "cia",
+      "b",
+      "(Z)Z",
+      "update",
+      "Source-purpose review: Advances opacity and motion, unlinking the particle when its opacity expires."
+    ],
+    [
+      "cia",
+      "a",
+      "(IIII)V",
+      "setVelocity",
+      "Source-purpose review: Sets the motion increments for the three particle axes."
+    ],
+    [
+      "cia",
+      "b",
+      "(IIII)V",
+      "setPosition",
+      "Source-purpose review: Sets the three position components of the particle."
+    ],
+    [
+      "cia",
+      "a",
+      "(II)V",
+      "setVerticalAcceleration",
+      "Source-purpose review: Sets the per-tick change in the particle’s vertical velocity."
+    ],
+    [
+      "cia",
+      "a",
+      "(III)V",
+      "setOpacityAndFadeRate",
+      "Source-purpose review: Sets the particle opacity and its per-tick change."
+    ],
+    [
+      "ema",
+      "a",
+      "(ILema;)Z",
+      "ranksAheadOf",
+      "Source-purpose review: Compares two lobby entries using their priority flags and timestamps."
+    ],
+    [
+      "ema",
+      "f",
+      "(B)Z",
+      "isDetachedFromSecondaryList",
+      "Source-purpose review: Reports whether the entry has no secondary list link."
+    ],
+    [
+      "ema",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;)V",
+      "setNames",
+      "Source-purpose review: Replaces both names held by the entry and validates the new primary name."
+    ],
+    [
+      "ola",
+      "a",
+      "(Z)V",
+      "handleFridgePointerInput",
+      "Source-purpose review: Starts a creature drag, handles its drop or return, updates navigation controls, and checks food hover targets."
+    ],
+    [
+      "ola",
+      "c",
+      "(I)V",
+      "createFridgeNavigationButtons",
+      "Source-purpose review: Builds the fridge screen shop and arena buttons from the shared widget style."
+    ],
+    [
+      "ola",
+      "e",
+      "(I)Z",
+      "isPointerOverFreezerDropTarget",
+      "Source-purpose review: Checks the freezer feature flag and accepts either the freezer button bounds or the open freezer panel region."
+    ],
+    [
+      "ola",
+      "a",
+      "(II)V",
+      "drawFridgeScreen",
+      "Source-purpose review: Draws the fridge background, food, creatures, shop, active drag, and modal overlay."
+    ],
+    [
+      "ola",
+      "c",
+      "(B)V",
+      "handleHighScoreResponse",
+      "Source-purpose review: Reads the score reply subtype, matches outstanding request IDs, and decodes ranked score records."
+    ],
+    [
+      "ola",
+      "b",
+      "(I)V",
+      "advanceScrollingLabel",
+      "Source-purpose review: Builds the display label and advances its horizontal offset, wrapping at the measured text width."
+    ],
+    [
+      "ola",
+      "b",
+      "(B)V",
+      "requestQuitToWebsite",
+      "Source-purpose review: Sets client request code 17 from the Quit to website button handler in the account dialog."
+    ],
+    [
+      "ola",
+      "e",
+      "(B)V",
+      "tickFridgeSimulation",
+      "Source-purpose review: Advances the active dialog or ticks creatures, updates fridge food, and spawns creatures when food timers expire."
+    ],
+    [
+      "ola",
+      "d",
+      "(I)Z",
+      "isPointerOverCleanButton",
+      "Source-purpose review: Checks the clean control enable flag and tests the pointer against the widget constructed with the clean identifier."
+    ],
+    [
+      "ola",
+      "a",
+      "(I)V",
+      "updateFridgeNavigation",
+      "Source-purpose review: Updates the arena and shop widgets and handles hover state, clicks, and any required dialogs."
+    ],
+    [
+      "ola",
+      "a",
+      "(IIZ)Z",
+      "isInsideFridgeDragArea",
+      "Source-purpose review: Tests both coordinates against the rectangle used to start a creature drag in the fridge."
+    ],
+    [
+      "ola",
+      "b",
+      "(II)I",
+      "getFridgeBandAtY",
+      "Source-purpose review: Maps the supplied vertical coordinate to one of four fridge bands when the current fridge ID gate matches."
+    ],
+    [
+      "ola",
+      "a",
+      "(BLlu;)V",
+      "decodeSavedFridge",
+      "Source-purpose review: Reads the saved fridge tiles, placed food records, and creature profiles from a packet buffer."
+    ],
+    [
+      "ola",
+      "a",
+      "(B)Z",
+      "hasReturningDrag",
+      "Source-purpose review: Checks whether a dragged fridge creature, freezer creature, or food item is still animating back to its origin."
+    ],
+    [
+      "ola",
+      "a",
+      "(ZLsaa;)V",
+      "initializeFridgeInterface",
+      "Source-purpose review: Stores the owning screen, creates the shop and navigation widgets, and prepares the creature shadow sprite."
+    ],
+    [
+      "ola",
+      "a",
+      "(Ljfa;III)Z",
+      "tryPositionCreatureInFridge",
+      "Source-purpose review: Validates capacity and grid coordinates before assigning the creature tile and recomputing its screen position."
+    ],
+    [
+      "ola",
+      "a",
+      "(BLola;)V",
+      "restoreFridgeFromSavedState",
+      "Source-purpose review: Adopts the saved tile grid, refreshes placed food, and builds active fridge creatures from the saved profiles."
+    ],
+    [
+      "ola",
+      "a",
+      "(BIII)Z",
+      "tryPlaceFoodInFridge",
+      "Source-purpose review: Converts pointer coordinates to a fridge tile, finds a food placement tile, and attempts to install a new food item."
+    ],
+    [
+      "ola",
+      "a",
+      "(III)Ljfa;",
+      "findFridgeCreatureUnderPointer",
+      "Source-purpose review: Iterates active fridge creatures and returns the first whose sprite hit box contains the sampled pointer."
+    ],
+    [
+      "ola",
+      "f",
+      "(I)Z",
+      "hasEnoughCreaturesToDeleteOne",
+      "Source-purpose review: Adds the fridge and freezer creature counts and the dragged creature, then checks the deletion dialog minimum."
+    ],
+    [
+      "jt",
+      "h",
+      "(I)V",
+      "rebuildFoodStockWidgets",
+      "Source-purpose review: Clears the basket children and creates a food widget for every nonzero stock count."
+    ],
+    [
+      "jt",
+      "a",
+      "(II)V",
+      "drawFoodShopAndFreezer",
+      "Source-purpose review: Renders the shop and freezer controls, the selected panel, freezer creature slots, and active dragged items."
+    ],
+    [
+      "jt",
+      "a",
+      "(B)I",
+      "updateShopAndFreezerDrag",
+      "Source-purpose review: Starts, moves, drops, or returns dragged freezer creatures and food, and returns the selected food index."
+    ],
+    [
+      "jt",
+      "c",
+      "(Z)V",
+      "drawFoodBasket",
+      "Source-purpose review: Draws the sliding food basket and its controls and clips the item quantities to the scrolling viewport."
+    ],
+    [
+      "jt",
+      "b",
+      "(II)V",
+      "positionCloseButtonForPanel",
+      "Source-purpose review: Moves the common close widget to the food or freezer panel and places it offscreen when both panels are closed."
+    ],
+    [
+      "jt",
+      "d",
+      "(Z)I",
+      "findFreezerSlotUnderPointer",
+      "Source-purpose review: Turns the pointer position into a visible freezer grid index and maps it to the underlying occupied slot index."
+    ],
+    [
+      "jt",
+      "c",
+      "(I)V",
+      "createShopControls",
+      "Source-purpose review: Constructs the food and freezer hit areas, scroll buttons, close button, scrollbar, and basket."
+    ],
+    [
+      "jt",
+      "f",
+      "(I)I",
+      "countFrozenCreatures",
+      "Source-purpose review: Counts the occupied freezer slots within the active five- or fifty-slot capacity."
+    ],
+    [
+      "jt",
+      "a",
+      "(Z)V",
+      "updateShopAndFreezer",
+      "Source-purpose review: Processes the panel controls, advances slide offsets and food scrolling, and updates drag state."
+    ],
+    [
+      "jt",
+      "e",
+      "(I)V",
+      "advancePanelClosingAnimation",
+      "Source-purpose review: Decreases the freezer and food basket slide offsets when their shared panel state is closed."
+    ],
+    [
+      "jt",
+      "a",
+      "(Z[I)V",
+      "addFoodStock",
+      "Source-purpose review: Adds the supplied counts to existing food stock and rebuilds visible basket entries."
+    ],
+    [
+      "jt",
+      "g",
+      "(I)I",
+      "findFirstEmptyFreezerSlot",
+      "Source-purpose review: Scans the enabled freezer capacity and returns the first empty slot or minus one."
+    ],
+    [
+      "jt",
+      "a",
+      "(I)Z",
+      "isPointerInShopColumn",
+      "Source-purpose review: Checks whether the pointer horizontal coordinate is inside the area occupied by the shop panels."
+    ],
+    [
+      "jt",
+      "c",
+      "(II)V",
+      "setDraggedFoodReturnTarget",
+      "Source-purpose review: Converts a food stock index into basket coordinates and stores them as the dragged item return target."
+    ],
+    [
+      "jt",
+      "d",
+      "(I)V",
+      "closeShopAndFreezer",
+      "Source-purpose review: Sets the closed panel state and moves the shared close control out of the visible panel."
+    ],
+    [
+      "jt",
+      "b",
+      "(I)Ljfa;",
+      "findFrozenCreatureUnderPointer",
+      "Source-purpose review: Maps the pointer to a displayed freezer cell and returns its creature from the compacted occupied slot sequence."
+    ],
+    [
+      "jfa",
+      "b",
+      "(I)I",
+      "findLockedAbilityFoodIcon",
+      "Source-purpose review: Selects a food or food-family icon index for a locked ability, which the creature draws in its thought bubble."
+    ],
+    [
+      "jfa",
+      "a",
+      "(IBI)Z",
+      "containsScreenPoint",
+      "Source-purpose review: Tests a screen coordinate against the creature sprite hit rectangle."
+    ],
+    [
+      "jfa",
+      "c",
+      "(B)I",
+      "getTileScreenX",
+      "Source-purpose review: Converts the creature horizontal tile index to its screen position."
+    ],
+    [
+      "jfa",
+      "d",
+      "(I)V",
+      "tickCreature",
+      "Source-purpose review: Chooses a new action when idle, steps and removes completed actions, and advances the creature model."
+    ],
+    [
+      "jfa",
+      "a",
+      "(Lvr;ILjava/lang/String;)[Lkv;",
+      "loadCreaturePartSprites",
+      "Source-purpose review: Loads five named batches of bacteria component sprites and flattens them into fixed ten-slot groups."
+    ],
+    [
+      "jfa",
+      "f",
+      "(I)Z",
+      "advanceCreatureBehavior",
+      "Source-purpose review: Advances a queued route, consumes eligible food and unlocks abilities, or selects a new move or idle action."
+    ],
+    [
+      "jfa",
+      "c",
+      "(I)V",
+      "findNearbyFoodTarget",
+      "Source-purpose review: Scans nearby fridge tiles by Manhattan distance and selects the nearest active food that can unlock an ability."
+    ],
+    [
+      "jfa",
+      "a",
+      "(I)V",
+      "chooseRandomMovementTarget",
+      "Source-purpose review: Chooses a random target tile and clears the target if its type disallows that movement."
+    ],
+    [
+      "jfa",
+      "e",
+      "(I)I",
+      "getInputTickCount",
+      "Source-purpose review: Returns the input tick counter that increments alongside each sampled pointer and button snapshot."
+    ],
+    [
+      "jfa",
+      "b",
+      "(Z)I",
+      "getTileScreenY",
+      "Source-purpose review: Converts the creature vertical tile index to its screen position."
+    ],
+    [
+      "jfa",
+      "g",
+      "(I)V",
+      "resetCreatureActions",
+      "Source-purpose review: Replaces the action queue and clears the active route, target coordinates, and moving flag."
+    ],
+    [
+      "jfa",
+      "a",
+      "(ZI)I",
+      "readStatModifierIndex",
+      "Source-purpose review: Reads and normalizes the stat name in data table column 18 and looks up its index."
+    ],
+    [
+      "jfa",
+      "a",
+      "(BI)V",
+      "drawCreature",
+      "Source-purpose review: Renders the creature model, indicator sprites, and any current thought bubble or animation particles."
+    ],
+    [
+      "saa",
+      "c",
+      "(B)V",
+      "restoreSavedFridgeContents",
+      "Source-purpose review: Restores the saved fridge, freezer creatures, fridge identifier, and food stock, and clears unavailable move slots."
+    ],
+    [
+      "saa",
+      "b",
+      "(B)V",
+      "requestFridgeTransitionWhenReady",
+      "Source-purpose review: Requests screen transition 1 while the current client and pending transition states allow it."
+    ],
+    [
+      "saa",
+      "a",
+      "(I)V",
+      "copyFridgeIdToSaveState",
+      "Source-purpose review: Copies the runtime fridge identifier to the in-memory save state."
+    ],
+    [
+      "saa",
+      "b",
+      "(I)V",
+      "refreshFoodStockFromSave",
+      "Source-purpose review: Applies the saved food quantities to the shop and refreshes the saved-state consumer."
+    ],
+    [
+      "saa",
+      "f",
+      "(B)V",
+      "updateFridgeControlsAndDialogs",
+      "Source-purpose review: Updates shop, inspect, and clean controls, processes creature deletion and freezer moves, and opens creature details."
+    ],
+    [
+      "saa",
+      "a",
+      "(I[Z)V",
+      "receiveFridgeFlagsPacket",
+      "Source-purpose review: Receives the boolean flags decoded from fridge packet 82. The expected guard value leaves the state untouched."
+    ],
+    [
+      "saa",
+      "b",
+      "(Z)Z",
+      "isPointerInsideCleanControl",
+      "Source-purpose review: Tests the pointer against the clean control rectangle using strict boundary comparisons."
+    ],
+    [
+      "saa",
+      "d",
+      "(B)V",
+      "releaseStatics",
+      "Source-purpose review: Clears the static text, widget, and audio mixer references during client teardown."
+    ],
+    [
+      "saa",
+      "a",
+      "(ZLeaa;)V",
+      "sendFoodPurchaseRequest",
+      "Source-purpose review: Delegates food cart submission to the packet writer that serializes the food indices and quantities."
+    ],
+    [
+      "saa",
+      "a",
+      "(Leaa;I)V",
+      "applyLocalFoodPurchase",
+      "Source-purpose review: Totals cart quantities by food type, stores the quantities, and applies them to the shop stock."
+    ],
+    [
+      "saa",
+      "a",
+      "(Z)V",
+      "createFridgeControls",
+      "Source-purpose review: Creates the shop, magnifier, clean, freeze, creature details, and close controls."
+    ],
+    [
+      "saa",
+      "a",
+      "(ZZ)V",
+      "tickFridgeInterface",
+      "Source-purpose review: Processes pointer input when requested, advances the fridge simulation and dialogs, and updates hover and cooldown state."
+    ],
+    [
+      "saa",
+      "a",
+      "(IIZ)V",
+      "drawFridgeInterface",
+      "Source-purpose review: Draws the outer fridge scene, clean and inspect controls, fridge contents, and active overlays."
+    ],
+    [
+      "saa",
+      "a",
+      "(B)V",
+      "snapshotFridgeForSave",
+      "Source-purpose review: Copies tiles and food placement, active creature profiles, freezer profiles, fridge identifier, and stock into the save state."
+    ],
+    [
+      "saa",
+      "b",
+      "(ZZ)V",
+      "resetFridgeView",
+      "Source-purpose review: Closes the shop panes, clears creature details, resets view helpers, and requests the applicable screen transition."
+    ],
+    [
+      "saa",
+      "e",
+      "(B)V",
+      "handleAlternateFoodCheckout",
+      "Source-purpose review: Receives the alternate checkout action for the matching fridge index. The expected guard value leaves the state untouched."
+    ],
+    [
+      "lna",
+      "a",
+      "(IIIIIB)V",
+      "drawAnimatedCreaturePortrait",
+      "Source-purpose review: Composites six portrait layers from the active pose and scales the result onto the main target."
+    ],
+    [
+      "lna",
+      "a",
+      "(ZIIZI)V",
+      "setAnimationSequence",
+      "Source-purpose review: Creates animation playback from the selected sequence, sets its playback parameter, or clears it for sequence minus one."
+    ],
+    [
+      "lna",
+      "a",
+      "(I)V",
+      "loadCreaturePartSprites",
+      "Source-purpose review: Loads component sprites from the appearance indices and marks them ready."
+    ],
+    [
+      "lna",
+      "a",
+      "(ZZIIIIIII)V",
+      "drawCreature",
+      "Source-purpose review: Culls the creature against the clipping bounds, renders an animated or resting pose, and applies the requested transform."
+    ],
+    [
+      "lna",
+      "a",
+      "(IIIIII)V",
+      "drawCreatureThumbnail",
+      "Source-purpose review: Builds and caches a 160 by 140 creature image and draws it at the requested size and opacity."
+    ],
+    [
+      "lna",
+      "b",
+      "(B)V",
+      "initializePartLayout",
+      "Source-purpose review: Constructs the fourteen positioning entries and combines sprite dimensions with the stored anchor offsets."
+    ],
+    [
+      "lna",
+      "a",
+      "(IIIBIII)V",
+      "drawScaledCreatureSprite",
+      "Source-purpose review: Blits the shared composite at the requested scale and opacity, with an optional silhouette effect."
+    ],
+    [
+      "lna",
+      "b",
+      "(I)V",
+      "composeAnimatedCreatureSprite",
+      "Source-purpose review: Clears the shared composition target and draws all creature layers using transforms from the current animation pose."
+    ],
+    [
+      "lna",
+      "a",
+      "(IZII)V",
+      "drawCreatureSpriteAtNativeSize",
+      "Source-purpose review: Draws the shared composite with the fixed origin offset and without scaling."
+    ],
+    [
+      "lna",
+      "d",
+      "(I)V",
+      "initializePartAnchorOffsets",
+      "Source-purpose review: Computes attachment offsets from the colored alignment marks and rebuilds the layer layout."
+    ],
+    [
+      "lna",
+      "c",
+      "(I)V",
+      "advanceAnimation",
+      "Source-purpose review: Advances playback when a creature animation is active."
+    ],
+    [
+      "lna",
+      "a",
+      "(IIIBZIII)V",
+      "drawCreatureSpriteForTransform",
+      "Source-purpose review: Selects the native-size or scaled blit from the transform and optionally adds a double-size pass."
+    ],
+    [
+      "lna",
+      "a",
+      "(BII)V",
+      "setCreatureAnimationState",
+      "Source-purpose review: Stores the creature animation state and maps it to the matching playback sequence and settings."
+    ],
+    [
+      "lna",
+      "e",
+      "(I)Lkv;",
+      "composeAndGetAnimatedSprite",
+      "Source-purpose review: Renders the current animation frame and returns the shared sprite that holds the result."
+    ],
+    [
+      "lna",
+      "a",
+      "(IBI)V",
+      "drawCreatureSpriteDoubleSize",
+      "Source-purpose review: Blits the shared composite at twice its native size using 8192 for both fixed-point scale factors."
+    ],
+    [
+      "lna",
+      "a",
+      "(IIIIIIIZZ)V",
+      "drawRestingCreature",
+      "Source-purpose review: Composites the creature from its default layer positions, optionally flips it, and draws it with the requested scale."
+    ],
+    [
+      "lna",
+      "a",
+      "(IILkv;IZIILkv;)[I",
+      "findSpriteAnchorOffset",
+      "Source-purpose review: Scans the two sprite pixel arrays for masked marker colors and returns the difference between their coordinates."
+    ],
+    [
+      "lna",
+      "a",
+      "(IIIIIII)V",
+      "drawCachedCreatureThumbnail",
+      "Source-purpose review: Draws the cached thumbnail with fixed-point scaling and selects an opaque or alpha blit."
+    ],
+    [
+      "pn",
+      "a",
+      "(IB)Lee;",
+      "getConnectedTerrainSprite",
+      "Source-purpose review: Retrieves one of the 32 theme sprites used for connected terrain variants."
+    ],
+    [
+      "pn",
+      "b",
+      "(III)Lee;",
+      "getTerrainShadowVariant",
+      "Source-purpose review: Selects a tile shadow variant from the shared shadow sheet according to the arena theme."
+    ],
+    [
+      "pn",
+      "a",
+      "(Ljo;B)V",
+      "drawArenaTerrain",
+      "Source-purpose review: Updates fading tile sprites and draws base tiles, connected terrain, and visible tile features in order."
+    ],
+    [
+      "pn",
+      "a",
+      "(Ljo;I)V",
+      "rebuildFadingTileSprites",
+      "Source-purpose review: Uses the board effect timer to set the alpha and builds transition sprites between successive tile images."
+    ],
+    [
+      "pn",
+      "a",
+      "(II)Lee;",
+      "getTerrainTopVariant",
+      "Source-purpose review: Retrieves a variant starting at slot 96 of the theme sprite sheet for tile types 7, 9, 11, 13, and 15."
+    ],
+    [
+      "pn",
+      "a",
+      "(ILaj;IBLjo;)V",
+      "drawTileTerrainWithShadow",
+      "Source-purpose review: Draws a tile terrain shadow when available and then draws the selected terrain sprite at the projected point."
+    ],
+    [
+      "pn",
+      "d",
+      "(II)Lee;",
+      "getSpecialTileShadow",
+      "Source-purpose review: Selects the theme-specific shadow used for the raised special tile types 23 through 26."
+    ],
+    [
+      "pn",
+      "b",
+      "(II)Lee;",
+      "getTerrain20Shadow",
+      "Source-purpose review: Selects the shared shadow used with terrain type 20 for the arena theme."
+    ],
+    [
+      "pn",
+      "a",
+      "(IIIBII)Lee;",
+      "selectTerrainShadow",
+      "Source-purpose review: Dispatches eligible terrain types to the shared terrain-shadow lookup and chooses a position-dependent variant."
+    ],
+    [
+      "pn",
+      "b",
+      "(Ljo;I)V",
+      "drawArenaBorder",
+      "Source-purpose review: Provides the default arena border drawing hook. The board renderer calls it before drawing the terrain, and the three themes provide their own border sprites."
+    ],
+    [
+      "pn",
+      "a",
+      "(IIILjo;II)V",
+      "drawSpecialTileFeatures",
+      "Source-purpose review: Draws the visible special terrain features, including animated and counter-driven tile sprites."
+    ],
+    [
+      "pn",
+      "a",
+      "(Lkv;II)Lpa;",
+      "copySpriteWithAlpha",
+      "Source-purpose review: Copies normalized nonzero RGB pixels into an ARGB sprite with the supplied alpha and preserves transparent pixels."
+    ],
+    [
+      "pn",
+      "a",
+      "(IILjo;IIZ)V",
+      "drawBaseTerrainTile",
+      "Source-purpose review: Draws a base tile using a repeating variant index calculated from the board coordinates."
+    ],
+    [
+      "pn",
+      "a",
+      "(BI[Ljava/lang/String;)Ljava/lang/String;",
+      "getLabelOrUnknown",
+      "Source-purpose review: Looks up a nonnull label by index and formats an Unknown label for missing entries."
+    ],
+    [
+      "pn",
+      "a",
+      "(Lkv;Lkv;ZI)Lpa;",
+      "crossfadeTerrainSprites",
+      "Source-purpose review: Blends corresponding pixels of two normalized sprites and handles transparent pixels and a missing endpoint."
+    ],
+    [
+      "pn",
+      "a",
+      "(IBIII)Lee;",
+      "selectTerrainSprite",
+      "Source-purpose review: Selects the tile image by terrain type and chooses position-dependent variants from the theme or special tile sheets."
+    ],
+    [
+      "pn",
+      "a",
+      "(IZIILjo;I)V",
+      "drawConnectedTerrain",
+      "Source-purpose review: Uses tile neighbor and orientation fields to draw the connected terrain variant layers and any matching shadows."
+    ],
+    [
+      "pn",
+      "c",
+      "(II)Lee;",
+      "getBaseTerrainVariant",
+      "Source-purpose review: Retrieves the base terrain sprite in the 24-entry theme range starting at slot 64."
+    ],
+    [
+      "pn",
+      "a",
+      "(III)Lee;",
+      "getConnectedTerrainShadow",
+      "Source-purpose review: Returns a connected terrain shadow from the shared sheet for the theme that uses that shadow layer."
+    ],
+    [
+      "pn",
+      "a",
+      "(BI)Lee;",
+      "getTerrainUnderlayVariant",
+      "Source-purpose review: Retrieves a theme sprite starting at slot 88 for tile types 6, 8, 10, 12, and 14."
+    ],
+    [
+      "id",
+      "e",
+      "(II)V",
+      "playAngryCreatureVoice",
+      "Source-purpose review: Chooses one of the three angry creature sound variants and passes it to the sound player."
+    ],
+    [
+      "id",
+      "a",
+      "(ILcq;)V",
+      "removeSoundFromMixer",
+      "Source-purpose review: Removes the sound handle’s child stream from the shared mixer."
+    ],
+    [
+      "id",
+      "a",
+      "(I)V",
+      "buildArenaCornerSprites",
+      "Source-purpose review: Composites four pizza arena corner images from the theme tile sprites."
+    ],
+    [
+      "id",
+      "a",
+      "(Lvr;I)V",
+      "preloadJagexLogoAudio",
+      "Source-purpose review: Loads the shared Vorbis setup and decodes the packaged Jagex logo sound."
+    ],
+    [
+      "id",
+      "b",
+      "(Ljo;I)V",
+      "drawArenaBorder",
+      "Source-purpose review: Projects the board boundary coordinates and draws the pizza theme perimeter and corner decorations."
+    ],
+    [
+      "kn",
+      "a",
+      "(ILvr;II)[Lee;",
+      "loadIndexedSpriteGroup",
+      "Source-purpose review: Reads and decodes the requested archive entry into the indexed sprite array."
+    ],
+    [
+      "kn",
+      "b",
+      "(Ljo;I)V",
+      "drawArenaBorder",
+      "Source-purpose review: Draws curry border tile strips and composites the four corner sprites at the projected board corners."
+    ],
+    [
+      "kn",
+      "b",
+      "(B)V",
+      "buildArenaCornerSprites",
+      "Source-purpose review: Composites the four curry arena corner images from the tile sheet."
+    ],
+    [
+      "kn",
+      "a",
+      "(I)Ljc;",
+      "findDefaultQuickChatCategory",
+      "Source-purpose review: Scans the quick chat category definitions and returns the first one marked for the root menu."
+    ],
+    [
+      "pla",
+      "b",
+      "(B)V",
+      "buildArenaCornerSprites",
+      "Source-purpose review: Composites the four dessert arena corner images from the tile sheet."
+    ],
+    [
+      "pla",
+      "b",
+      "(Ljo;I)V",
+      "drawArenaBorder",
+      "Source-purpose review: Draws dessert border tiles and places its four composed corners around the board."
+    ],
+    [
+      "ng",
+      "b",
+      "(B)V",
+      "handleMoveButtonInput",
+      "Source-purpose review: Checks eligibility and status, handles clicks on available move buttons, and updates hover state."
+    ],
+    [
+      "ng",
+      "a",
+      "(B[I)I",
+      "countAttackAndSpecialMoves",
+      "Source-purpose review: Counts assigned move slots whose definitions are neither movement commands nor passive entries."
+    ],
+    [
+      "ng",
+      "a",
+      "(B)Z",
+      "usesLimitedContent",
+      "Source-purpose review: Returns whether the client is playing offline or lacks the account tier used to enable extra content."
+    ],
+    [
+      "ng",
+      "b",
+      "(III)V",
+      "positionMovePanel",
+      "Source-purpose review: Moves the panel and repositions its status and move-information hit areas relative to it."
+    ],
+    [
+      "ng",
+      "c",
+      "(III)V",
+      "positionAndRebuildMovePanel",
+      "Source-purpose review: Moves the panel to the supplied point and rebuilds the selected creature’s move buttons."
+    ],
+    [
+      "ng",
+      "a",
+      "(III)V",
+      "drawMovePanel",
+      "Source-purpose review: Draws the selected creature move panel with move icons, statuses, cooldowns, and tooltip text."
+    ],
+    [
+      "ng",
+      "a",
+      "(IIII)V",
+      "setListEntryColors",
+      "Source-purpose review: Sets the three text colors used for different list entry selection states."
+    ],
+    [
+      "ng",
+      "a",
+      "(I)V",
+      "rebuildMoveButtons",
+      "Source-purpose review: Counts and recreates eligible move buttons for the selected creature and attaches them to the panel."
+    ],
+    [
+      "ng",
+      "a",
+      "([II)I",
+      "countMovementAbilities",
+      "Source-purpose review: Counts the assigned move slots with movement-command definitions."
+    ],
+    [
+      "ng",
+      "a",
+      "(Z)V",
+      "updateMovePanelWidgets",
+      "Source-purpose review: Refreshes the panel’s owner color gradient and advances the status and move tooltip hover timers."
+    ],
+    [
+      "ng",
+      "a",
+      "(Lop;ILlu;)Laga;",
+      "decodeBattleCreature",
+      "Source-purpose review: Reads a creature profile and tactical state from the buffer, then registers a living creature on the board."
+    ],
+    [
+      "ng",
+      "a",
+      "(BIIZII)V",
+      "createMoveButton",
+      "Source-purpose review: Creates one move button, selecting its visual position and state from the move kind, slot, and eligibility."
+    ],
+    [
+      "ng",
+      "b",
+      "(I)Z",
+      "hasActiveGameOverlay",
+      "Source-purpose review: Returns whether the game overlay object or the modal overlay flag is active."
+    ],
+    [
+      "jla",
+      "b",
+      "(B)V",
+      "drawFlyAndMaggotHelpAnimation",
+      "Source-purpose review: Loads and animates the fly and maggot sprites used by the help pages."
+    ],
+    [
+      "jla",
+      "d",
+      "(II)Z",
+      "canUseMenuButton",
+      "Source-purpose review: Checks button availability through the screen-specific hook."
+    ],
+    [
+      "jla",
+      "c",
+      "(B)V",
+      "drawMatchRewardsHelp",
+      "Source-purpose review: Draws the match rewards section of the help pages."
+    ],
+    [
+      "jla",
+      "b",
+      "(ZI)V",
+      "updateFoodShopControls",
+      "Source-purpose review: Processes shop item selection, cart submission, and shop category buttons."
+    ],
+    [
+      "jla",
+      "h",
+      "(I)V",
+      "drawWaitingForSavegame",
+      "Source-purpose review: Draws the waiting screen and its savegame status message."
+    ],
+    [
+      "jla",
+      "g",
+      "(I)V",
+      "drawSaveProgressPrompt",
+      "Source-purpose review: Formats the sign-in prompt with the Discard action and renders it alongside the current message."
+    ],
+    [
+      "jla",
+      "f",
+      "(I)V",
+      "drawCreatureStatsHelp",
+      "Source-purpose review: Draws the creature evolution and stats guide with illustrated power-ups."
+    ],
+    [
+      "jla",
+      "a",
+      "(I)V",
+      "drawMenuTransitionHeader",
+      "Source-purpose review: Draws the header sprites with opacity based on the current menu transition."
+    ],
+    [
+      "jla",
+      "a",
+      "(BIZ)V",
+      "dispatchMenuButtonAction",
+      "Source-purpose review: Dispatches selected menu actions and handles press and release state and button availability."
+    ],
+    [
+      "jla",
+      "c",
+      "(ZI)V",
+      "openAccountScreenFromMenu",
+      "Source-purpose review: Requests the account screen or starts the account action when the matching client flags are set."
+    ],
+    [
+      "jla",
+      "c",
+      "(Z)V",
+      "drawEnabledMenuButtons",
+      "Source-purpose review: Draws each enabled menu button and marks the current selection."
+    ],
+    [
+      "jla",
+      "d",
+      "(ZI)Ljava/lang/String;",
+      "getMenuButtonLabel",
+      "Source-purpose review: Returns the menu label and adjusts the return label for the current screen transition."
+    ],
+    [
+      "jla",
+      "a",
+      "(B)V",
+      "drawCreatureSkillsHelp",
+      "Source-purpose review: Renders the skill equipment guide with creature illustrations."
+    ],
+    [
+      "jla",
+      "k",
+      "(I)V",
+      "moveKeyboardSelection",
+      "Source-purpose review: Steps the current button selection using keyboard navigation."
+    ],
+    [
+      "jla",
+      "m",
+      "(I)V",
+      "drawHelpPageBackground",
+      "Source-purpose review: Draws the repeating help background, shaded panel and page label."
+    ],
+    [
+      "jla",
+      "n",
+      "(I)V",
+      "drawSelectedHelpPage",
+      "Source-purpose review: Draws the help background and buttons, then dispatches to the active help page."
+    ],
+    [
+      "jla",
+      "a",
+      "(ZII)I",
+      "findMenuButtonAtPoint",
+      "Source-purpose review: Returns the enabled button whose horizontal and vertical bounds contain the supplied point."
+    ],
+    [
+      "jla",
+      "d",
+      "(Z)V",
+      "handleMenuKeyboardNavigation",
+      "Source-purpose review: Routes keyboard input to the current menu or a screen-specific keyboard handler."
+    ],
+    [
+      "jla",
+      "a",
+      "(Z)V",
+      "handleHelpPageSelectionKeys",
+      "Source-purpose review: Maps the page selection keys to buttons and updates the selection tracker."
+    ],
+    [
+      "jla",
+      "b",
+      "(I)V",
+      "drawArenaTerrainHelp",
+      "Source-purpose review: Draws the terrain guide with sample tiles from the three arena themes."
+    ],
+    [
+      "jla",
+      "c",
+      "(I)V",
+      "releaseHelpPageGraphics",
+      "Source-purpose review: Clears the cached help illustrations, effects, and creature renderers."
+    ],
+    [
+      "jla",
+      "d",
+      "(I)V",
+      "drawFridgeOverviewHelp",
+      "Source-purpose review: Draws the fridge overview with pointers to the main controls."
+    ],
+    [
+      "ina",
+      "f",
+      "(II)Z",
+      "isAchievementVisible",
+      "Source-purpose review: Determines the visibility of an achievement from the selected mode and unlock flags."
+    ],
+    [
+      "ina",
+      "g",
+      "(II)Lkv;",
+      "getAchievementIcon",
+      "Source-purpose review: Returns the unlocked icon or the shared locked achievement icon."
+    ],
+    [
+      "ina",
+      "e",
+      "(Z)V",
+      "drawAchievementGrid",
+      "Source-purpose review: Lays out visible achievements in centered rows, drawing their icons and highlights."
+    ],
+    [
+      "ina",
+      "p",
+      "(I)V",
+      "drawAchievementDetails",
+      "Source-purpose review: Draws the active achievement name, description, icon, and progress."
+    ],
+    [
+      "ina",
+      "a",
+      "(BII)I",
+      "findAchievementAtPoint",
+      "Source-purpose review: Maps screen coordinates to a visible achievement cell in the grid."
+    ],
+    [
+      "ina",
+      "e",
+      "(II)Lkv;",
+      "getAchievementHighlightSprite",
+      "Source-purpose review: Builds and caches the glow sprite for the specified achievement icon."
+    ],
+    [
+      "ina",
+      "b",
+      "(IZ)Z",
+      "isAchievementUnlocked",
+      "Source-purpose review: Tests the achievement bit in the unlocked flags."
+    ],
+    [
+      "ina",
+      "a",
+      "(ILjava/lang/String;)Lkv;",
+      "getAchievementTitleSprite",
+      "Source-purpose review: Renders and caches the title sprite for the selected achievement name."
+    ],
+    [
+      "ina",
+      "e",
+      "(B)I",
+      "countVisibleAchievements",
+      "Source-purpose review: Counts achievement indices that pass the visibility test."
+    ],
+    [
+      "bi",
+      "a",
+      "(IZILoha;IIIZD)V",
+      "drawMoveTooltip",
+      "Source-purpose review: Draws the move tooltip within the available screen bounds, adding damage and status details when applicable."
+    ],
+    [
+      "bi",
+      "d",
+      "(B)V",
+      "releaseIconMenuStatics",
+      "Source-purpose review: Clears static widget and sound references used by the menu class."
+    ],
+    [
+      "bi",
+      "o",
+      "(I)V",
+      "showClientMessagePanel",
+      "Source-purpose review: Creates or reuses the client message panel and attaches it to the UI."
+    ],
+    [
+      "eca",
+      "a",
+      "(IIILjava/lang/String;B)V",
+      "drawRankingCell",
+      "Source-purpose review: Centers the value within the requested ranking table column."
+    ],
+    [
+      "eca",
+      "e",
+      "(B)Ljava/lang/String;",
+      "drawRankingsTable",
+      "Source-purpose review: Draws ranking headers, the top entries, and the local player row if needed."
+    ],
+    [
+      "eca",
+      "q",
+      "(I)V",
+      "drawRankingsContent",
+      "Source-purpose review: Requests rankings when needed and draws either the table or request status text."
+    ],
+    [
+      "eca",
+      "a",
+      "(Ljava/lang/String;IIIIIIII)V",
+      "drawRankingRow",
+      "Source-purpose review: Draws one ranking row with its position, player name, rating, count, and outcome percentages."
+    ],
+    [
+      "eca",
+      "a",
+      "(ILjava/lang/String;I)V",
+      "drawRankingColumnHeader",
+      "Source-purpose review: Draws the table column separator and centered header."
+    ],
+    [
+      "eca",
+      "p",
+      "(I)V",
+      "drawRankingsAccountPrompt",
+      "Source-purpose review: Draws the free account prompt displayed when rankings are unavailable offline."
+    ],
+    [
+      "dl",
+      "p",
+      "(I)V",
+      "drawMatchAwardColumns",
+      "Source-purpose review: Draws one results column per player with the awards earned in the match."
+    ],
+    [
+      "dl",
+      "b",
+      "(IB)Lkv;",
+      "getResultsButtonIcon",
+      "Source-purpose review: Chooses the sprite for one of the post-battle menu buttons."
+    ],
+    [
+      "dl",
+      "o",
+      "(I)V",
+      "drawResultCreaturePortraits",
+      "Source-purpose review: Draws the participating creatures in a centered row on the results screen."
+    ],
+    [
+      "dl",
+      "a",
+      "(BI)I",
+      "findAwardWinner",
+      "Source-purpose review: Returns the highest-scoring player for the award and marks ties separately."
+    ],
+    [
+      "jla",
+      "a",
+      "(IZ)I",
+      "getButtonLeft",
+      "Source-purpose review: Returns the left edge of the menu button for layout and hit testing."
+    ],
+    [
+      "dl",
+      "a",
+      "(IZ)I",
+      "getButtonLeft",
+      "Source-purpose review: Returns the left edge of the menu button for layout and hit testing."
+    ],
+    [
+      "eca",
+      "a",
+      "(IZ)I",
+      "getButtonLeft",
+      "Source-purpose review: Returns the left edge of the menu button for layout and hit testing."
+    ],
+    [
+      "ina",
+      "a",
+      "(IZ)I",
+      "getButtonLeft",
+      "Source-purpose review: Returns the left edge of the menu button for layout and hit testing."
+    ],
+    [
+      "jla",
+      "b",
+      "(II)I",
+      "getButtonRight",
+      "Source-purpose review: Returns the right edge of the menu button for layout and hit testing."
+    ],
+    [
+      "dl",
+      "b",
+      "(II)I",
+      "getButtonRight",
+      "Source-purpose review: Returns the right edge of the menu button for layout and hit testing."
+    ],
+    [
+      "eca",
+      "b",
+      "(II)I",
+      "getButtonRight",
+      "Source-purpose review: Returns the right edge of the menu button for layout and hit testing."
+    ],
+    [
+      "ina",
+      "b",
+      "(II)I",
+      "getButtonRight",
+      "Source-purpose review: Returns the right edge of the menu button for layout and hit testing."
+    ],
+    [
+      "jla",
+      "a",
+      "(IB)I",
+      "getButtonTop",
+      "Source-purpose review: Returns the top edge of the menu button, including any screen-specific offset."
+    ],
+    [
+      "dl",
+      "a",
+      "(IB)I",
+      "getButtonTop",
+      "Source-purpose review: Returns the top edge of the menu button, including any screen-specific offset."
+    ],
+    [
+      "eca",
+      "a",
+      "(IB)I",
+      "getButtonTop",
+      "Source-purpose review: Returns the top edge of the menu button, including any screen-specific offset."
+    ],
+    [
+      "ina",
+      "a",
+      "(IB)I",
+      "getButtonTop",
+      "Source-purpose review: Returns the top edge of the menu button, including any screen-specific offset."
+    ],
+    [
+      "jla",
+      "a",
+      "(II)I",
+      "getButtonHeight",
+      "Source-purpose review: Returns the vertical size of the hit area for the menu button."
+    ],
+    [
+      "dl",
+      "a",
+      "(II)I",
+      "getButtonHeight",
+      "Source-purpose review: Returns the vertical size of the hit area for the menu button."
+    ],
+    [
+      "eca",
+      "a",
+      "(II)I",
+      "getButtonHeight",
+      "Source-purpose review: Returns the vertical size of the hit area for the menu button."
+    ],
+    [
+      "ina",
+      "a",
+      "(II)I",
+      "getButtonHeight",
+      "Source-purpose review: Returns the vertical size of the hit area for the menu button."
+    ],
+    [
+      "jla",
+      "c",
+      "(II)Z",
+      "isMenuButtonEnabled",
+      "Source-purpose review: Checks whether the selected menu button is available in the current screen and account state."
+    ],
+    [
+      "dl",
+      "c",
+      "(II)Z",
+      "isMenuButtonEnabled",
+      "Source-purpose review: Checks whether the selected menu button is available in the current screen and account state."
+    ],
+    [
+      "eca",
+      "c",
+      "(II)Z",
+      "isMenuButtonEnabled",
+      "Source-purpose review: Checks whether the selected menu button is available in the current screen and account state."
+    ],
+    [
+      "ina",
+      "c",
+      "(II)Z",
+      "isMenuButtonEnabled",
+      "Source-purpose review: Checks whether the selected menu button is available in the current screen and account state."
+    ],
+    [
+      "jla",
+      "b",
+      "(ZII)V",
+      "drawMenuButton",
+      "Source-purpose review: Draws one menu button and its label using the current selection and availability."
+    ],
+    [
+      "bi",
+      "b",
+      "(ZII)V",
+      "drawMenuButton",
+      "Source-purpose review: Draws one menu button and its label using the current selection and availability."
+    ],
+    [
+      "eca",
+      "b",
+      "(ZII)V",
+      "drawMenuButton",
+      "Source-purpose review: Draws one menu button and its label using the current selection and availability."
+    ],
+    [
+      "dl",
+      "b",
+      "(ZII)V",
+      "drawMenuButton",
+      "Source-purpose review: Draws one menu button and its label using the current selection and availability."
+    ],
+    [
+      "jla",
+      "e",
+      "(I)V",
+      "updateMenu",
+      "Source-purpose review: Updates screen-specific state and processes the active menu input."
+    ],
+    [
+      "ina",
+      "e",
+      "(I)V",
+      "updateMenu",
+      "Source-purpose review: Updates screen-specific state and processes the active menu input."
+    ],
+    [
+      "dl",
+      "e",
+      "(I)V",
+      "updateMenu",
+      "Source-purpose review: Updates screen-specific state and processes the active menu input."
+    ],
+    [
+      "jla",
+      "l",
+      "(I)V",
+      "drawMenu",
+      "Source-purpose review: Draws the current menu screen and its controls."
+    ],
+    [
+      "ina",
+      "l",
+      "(I)V",
+      "drawMenu",
+      "Source-purpose review: Draws the current menu screen and its controls."
+    ],
+    [
+      "eca",
+      "l",
+      "(I)V",
+      "drawMenu",
+      "Source-purpose review: Draws the current menu screen and its controls."
+    ],
+    [
+      "dl",
+      "l",
+      "(I)V",
+      "drawMenu",
+      "Source-purpose review: Draws the current menu screen and its controls."
+    ],
+    [
+      "jla",
+      "j",
+      "(I)V",
+      "onMenuExit",
+      "Source-purpose review: Clears resources or cached state when the menu is left."
+    ],
+    [
+      "ina",
+      "j",
+      "(I)V",
+      "onMenuExit",
+      "Source-purpose review: Clears resources or cached state when the menu is left."
+    ],
+    [
+      "dl",
+      "j",
+      "(I)V",
+      "onMenuExit",
+      "Source-purpose review: Clears resources or cached state when the menu is left."
+    ],
+    [
+      "jla",
+      "i",
+      "(I)V",
+      "drawMenuBackground",
+      "Source-purpose review: Draws the common fridge background with any menu-specific dimming."
+    ],
+    [
+      "bi",
+      "i",
+      "(I)V",
+      "drawMenuBackground",
+      "Source-purpose review: Draws the common fridge background with any menu-specific dimming."
+    ],
+    [
+      "jla",
+      "a",
+      "(ZI)V",
+      "onMenuEnter",
+      "Source-purpose review: Initializes menu selection and any screen-specific state on entry."
+    ],
+    [
+      "ina",
+      "a",
+      "(ZI)V",
+      "onMenuEnter",
+      "Source-purpose review: Initializes menu selection and any screen-specific state on entry."
+    ],
+    [
+      "bi",
+      "b",
+      "(IB)Lkv;",
+      "getButtonIcon",
+      "Source-purpose review: Provides the sprite used to draw a button in an icon-backed menu."
+    ],
+    [
+      "eca",
+      "b",
+      "(IB)Lkv;",
+      "getButtonIcon",
+      "Source-purpose review: Provides the sprite used to draw a button in an icon-backed menu."
+    ],
+    [
+      "ina",
+      "b",
+      "(IB)Lkv;",
+      "getButtonIcon",
+      "Source-purpose review: Provides the sprite used to draw a button in an icon-backed menu."
+    ],
+    [
+      "ik",
+      "b",
+      "(Z)V",
+      "addLobbyInvitationActions",
+      "Source-purpose review: Adds actions to accept, decline, request, or withdraw game invitations according to the selected lobby entry."
+    ],
+    [
+      "ik",
+      "a",
+      "(ILgs;)V",
+      "addChatVisibilityActions",
+      "Source-purpose review: Adds the chat visibility options for the message channel and current filtering state."
+    ],
+    [
+      "ik",
+      "a",
+      "(I)V",
+      "addReportPlayerAction",
+      "Source-purpose review: Adds a player report option when the target differs from the local player."
+    ],
+    [
+      "ik",
+      "a",
+      "(IZ)V",
+      "addCurrentGamePlayerActions",
+      "Source-purpose review: Adds the host and invitation controls that apply to the selected player in the current game."
+    ],
+    [
+      "ik",
+      "b",
+      "(III)Lkv;",
+      "createSolidSquareSprite",
+      "Source-purpose review: Allocates a square sprite and fills every pixel with the supplied color."
+    ],
+    [
+      "ik",
+      "c",
+      "(III)Z",
+      "handleLobbyAndTableAction",
+      "Source-purpose review: Dispatches menu actions for the selected player and lobby table, returning whether the code was handled."
+    ],
+    [
+      "ik",
+      "a",
+      "(BZ)V",
+      "drawPlayerContextMenu",
+      "Source-purpose review: Renders the underlying context menu using the supplied display flag."
+    ],
+    [
+      "ik",
+      "a",
+      "([IBI)V",
+      "addPlayerListAndReplyActions",
+      "Source-purpose review: Adds applicable friend-list, ignore-list, messaging, and reply actions for the selected player."
+    ],
+    [
+      "ik",
+      "a",
+      "(III)Z",
+      "handleSocialAndChatAction",
+      "Source-purpose review: Dispatches social and chat actions by menu code, including private replies and channel visibility changes."
+    ],
+    [
+      "ik",
+      "b",
+      "(I)Ljava/lang/String;",
+      "getTargetDisplayName",
+      "Source-purpose review: Returns the alternate display label when present, otherwise the player name."
+    ],
+    [
+      "ik",
+      "a",
+      "(Z)Z",
+      "isPlayerContextMenuOpen",
+      "Source-purpose review: Returns the active state from the underlying menu if it exists."
+    ],
+    [
+      "ik",
+      "a",
+      "(ZZIII)Z",
+      "handlePlayerContextMenuInput",
+      "Source-purpose review: Gets the selected menu action and passes it to the appropriate action handlers."
+    ],
+    [
+      "ik",
+      "a",
+      "(ILjfa;II)V",
+      "sendFreezeCreatureRequest",
+      "Source-purpose review: Writes the moved creature profile and source and destination slots for a freezer transfer when online."
+    ],
+    [
+      "ik",
+      "e",
+      "(III)Z",
+      "openPlayerReportDialog",
+      "Source-purpose review: Opens the report dialog for the selected player when the report action is chosen."
+    ],
+    [
+      "ik",
+      "d",
+      "(III)Z",
+      "handlePlayerListAction",
+      "Source-purpose review: Handles the friend and ignore list menu actions and displays any resulting feedback."
+    ],
+    [
+      "tc",
+      "a",
+      "(IIIZ)Z",
+      "dispatchActiveWidgetInput",
+      "Source-purpose review: Routes input to active overlays and other widget handlers in priority order."
+    ],
+    [
+      "tc",
+      "a",
+      "(ILtc;)V",
+      "copyStyleTo",
+      "Source-purpose review: Copies all style fields to the destination widget style."
+    ],
+    [
+      "tc",
+      "a",
+      "(BI)Ltc;",
+      "setVerticalOffset",
+      "Source-purpose review: Sets the vertical offset used for the foreground sprite and text."
+    ],
+    [
+      "tc",
+      "a",
+      "([Lkv;B)Ltc;",
+      "setBackgroundSprites",
+      "Source-purpose review: Sets the sprite array used for the widget background."
+    ],
+    [
+      "tc",
+      "b",
+      "(I)V",
+      "drawDepthSortedModels",
+      "Source-purpose review: Computes view depths, draws models in order, and passes the pointer-dependent lighting vectors to the renderer."
+    ],
+    [
+      "tc",
+      "a",
+      "(I)V",
+      "resetStyle",
+      "Source-purpose review: Resets the style fields to the defaults used for widget rendering."
+    ],
+    [
+      "tc",
+      "a",
+      "(ILjava/applet/Applet;)Z",
+      "hasTutorialStatusMarker",
+      "Source-purpose review: Checks for the tutorial status marker in memory, the browser cookies, or the applet parameters."
+    ],
+    [
+      "tc",
+      "a",
+      "(ILwd;Lwj;II)V",
+      "drawStyledWidget",
+      "Source-purpose review: Renders the background sprites, aligned foreground sprite, and text with the configured offsets and colors."
+    ],
+    [
+      "tc",
+      "a",
+      "(ZI)Ltc;",
+      "setResetBeforeApplying",
+      "Source-purpose review: Marks whether applying this style should draw and reset the accumulated style first."
+    ],
+    [
+      "tc",
+      "b",
+      "(BI)Ltc;",
+      "setHorizontalOffset",
+      "Source-purpose review: Sets the horizontal offset applied to the foreground sprite and text."
+    ],
+    [
+      "tc",
+      "a",
+      "(Lwd;ILwj;BLtc;I)V",
+      "applyStyleTo",
+      "Source-purpose review: Applies the explicitly set style fields to the destination and handles reset-before-apply."
+    ],
+    [
+      "tc",
+      "b",
+      "(II)Ltc;",
+      "setTextColor",
+      "Source-purpose review: Sets the primary color passed to the text renderer."
+    ],
+    [
+      "tc",
+      "c",
+      "(II)Ltc;",
+      "setTextShadowColor",
+      "Source-purpose review: Sets the secondary text color used for the shadow."
+    ],
+    [
+      "tc",
+      "a",
+      "(ZLgs;)I",
+      "getChatMessageColor",
+      "Source-purpose review: Selects the chat text color from the channel, sender, and message state."
+    ],
+    [
+      "tc",
+      "a",
+      "(II)V",
+      "sendPendingClientRecords",
+      "Source-purpose review: Serializes the records in both pending client record collections using the supplied message code."
+    ],
+    [
+      "jd",
+      "b",
+      "(B)Z",
+      "isRightKey",
+      "Source-purpose review: Tests whether the most recently handled key is the internal Right arrow code."
+    ],
+    [
+      "jd",
+      "a",
+      "(ZB)V",
+      "drawChatOverlayWidgets",
+      "Source-purpose review: Sets the chat region clip and draws the active chat overlay widgets when their display state permits."
+    ],
+    [
+      "jd",
+      "b",
+      "(II)V",
+      "setKeyboardSelection",
+      "Source-purpose review: Sets the active menu index and records a keyboard selection change when press tracking is idle."
+    ],
+    [
+      "jd",
+      "b",
+      "(I)Z",
+      "isPointerPressed",
+      "Source-purpose review: Reports whether the pointer press state is active."
+    ],
+    [
+      "jd",
+      "a",
+      "(II)V",
+      "handleHorizontalMenuKeys",
+      "Source-purpose review: Processes horizontal arrow navigation and other menu navigation keys, wrapping indices as needed."
+    ],
+    [
+      "jd",
+      "d",
+      "(I)Z",
+      "isHomeKey",
+      "Source-purpose review: Tests whether the most recently handled key is Home."
+    ],
+    [
+      "jd",
+      "a",
+      "(Z)V",
+      "resetSelectionEvents",
+      "Source-purpose review: Clears the transient selection events and refreshes the sampled key state when allowed."
+    ],
+    [
+      "jd",
+      "a",
+      "(I)Z",
+      "isEndKey",
+      "Source-purpose review: Tests whether the most recently handled key is End."
+    ],
+    [
+      "jd",
+      "b",
+      "(Z)V",
+      "handleVerticalMenuKeys",
+      "Source-purpose review: Processes Up and Down navigation and wraps the menu selection at either end."
+    ],
+    [
+      "jd",
+      "e",
+      "(I)Z",
+      "isSelectionActivated",
+      "Source-purpose review: Checks for a pointer activation, Enter, or Space."
+    ],
+    [
+      "jd",
+      "a",
+      "(ZIII)V",
+      "initializeMenuSelection",
+      "Source-purpose review: Starts pointer or keyboard selection with the respective initial index and clears the active press."
+    ],
+    [
+      "jd",
+      "a",
+      "(III)V",
+      "updatePointerSelection",
+      "Source-purpose review: Tracks the clicked and hovered menu indices and manages the selection state across pointer presses and releases."
+    ],
+    [
+      "jd",
+      "c",
+      "(I)Z",
+      "isLeftKey",
+      "Source-purpose review: Tests whether the most recently handled key is the internal Left arrow code."
+    ],
+    [
+      "mk",
+      "a",
+      "([II[I)Z",
+      "haveEqualMoveLoadouts",
+      "Source-purpose review: Compares two move loadouts from the supplied starting slot after checking their lengths."
+    ],
+    [
+      "mk",
+      "a",
+      "(I[II)Z",
+      "containsMoveIndex",
+      "Source-purpose review: Returns whether the given move index is already in the loadout."
+    ],
+    [
+      "mk",
+      "b",
+      "(Z)V",
+      "handleProfileDialogInput",
+      "Source-purpose review: Processes save and close controls and edits the creature move loadout through the move widgets."
+    ],
+    [
+      "mk",
+      "a",
+      "(Z)Z",
+      "hasValidMoveLoadout",
+      "Source-purpose review: Checks that the equipped loadout has a movement skill and attack skill and respects the content tier."
+    ],
+    [
+      "mk",
+      "a",
+      "(ZI)V",
+      "drawCreatureProfile",
+      "Source-purpose review: Draws the creature portrait, stats, equipped and available moves, and the selected move tooltip."
+    ],
+    [
+      "mk",
+      "c",
+      "(Z)V",
+      "drawAvailableMoveIcons",
+      "Source-purpose review: Draws the move palette with the current unlock and equipped states."
+    ],
+    [
+      "mk",
+      "a",
+      "(B)V",
+      "buildAnimationNameLookup",
+      "Source-purpose review: Indexes lowercased animation names by hash so animation IDs can be resolved by name."
+    ],
+    [
+      "mk",
+      "a",
+      "(BILkv;III)V",
+      "drawCreatureStatBar",
+      "Source-purpose review: Computes the displayed stat bar width, clips the sprite to that width, and draws the result."
+    ],
+    [
+      "mk",
+      "a",
+      "(II)V",
+      "playMoveSound",
+      "Source-purpose review: Looks up and plays the sound for the supplied move ID if it has a sound."
+    ],
+    [
+      "mk",
+      "a",
+      "([III)I",
+      "findMoveSlot",
+      "Source-purpose review: Finds the first loadout slot containing the requested move index from the supplied starting slot."
+    ],
+    [
+      "fs",
+      "a",
+      "(II)V",
+      "startBattleSession",
+      "Source-purpose review: Initializes the local battle copy when needed and sends the battle start command."
+    ],
+    [
+      "fs",
+      "b",
+      "(I)V",
+      "sendOnlineBattleCommand",
+      "Source-purpose review: Writes the supplied command when the battle session is online."
+    ],
+    [
+      "fs",
+      "c",
+      "(I)V",
+      "syncBattleScreenFromState",
+      "Source-purpose review: Synchronizes the battle phase, timing, viewport, and controls with the current battle state."
+    ],
+    [
+      "fs",
+      "d",
+      "(I)V",
+      "markPlayerExitedBattle",
+      "Source-purpose review: Marks the local player in the battle exit flags and sends the corresponding online command."
+    ],
+    [
+      "fs",
+      "b",
+      "(B)V",
+      "sendBattleExitCommand",
+      "Source-purpose review: Sends the exit command for an online battle when leaving through the menu."
+    ],
+    [
+      "fs",
+      "d",
+      "(B)V",
+      "reportBattleCompletion",
+      "Source-purpose review: Reports completion once, includes a state snapshot when checksums differ, and updates the battle view."
+    ],
+    [
+      "fs",
+      "a",
+      "(Z[Lsfa;I)V",
+      "submitBattleOrders",
+      "Source-purpose review: Writes the battle orders, applies them to the local state, and refreshes the visible game state."
+    ],
+    [
+      "fs",
+      "a",
+      "(I)[[Lwda;",
+      "createDefaultFridgeTiles",
+      "Source-purpose review: Builds the default six-by-ten fridge tile grid from the layout template and tile flags."
+    ],
+    [
+      "fs",
+      "a",
+      "(B)V",
+      "resetBattleCompletionReport",
+      "Source-purpose review: Clears the flag that suppresses duplicate battle completion messages."
     ]
   ],
   "fields": [
