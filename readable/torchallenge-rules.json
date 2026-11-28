@@ -381,6 +381,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:ab",
+      "originalName": "ab",
+      "to": "MusicPatchEnvelope",
+      "evidence": "Stores the per-note amplitude and release curves and their timing parameters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ad",
       "originalName": "ad",
       "to": "FullscreenFocusCanvas",
@@ -549,6 +556,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dl",
+      "originalName": "dl",
+      "to": "MusicPatchNode",
+      "evidence": "Carries the sample, envelope, playback stream and timing state of an active MIDI note.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ed",
       "originalName": "ed",
       "to": "IsaacRandom",
@@ -616,6 +630,13 @@
       "originalName": "fa",
       "to": "RichTextLayout",
       "evidence": "Concrete text layout that wraps and aligns formatted text with the selected bitmap font, caches its inputs, and records per-line caret positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fb",
+      "originalName": "fb",
+      "to": "MusicPatch",
+      "evidence": "Maps MIDI notes to sample IDs, decoded samples, tuning, gain, pan and envelopes for one instrument patch.",
       "confidence": "reviewed"
     },
     {
@@ -707,6 +728,13 @@
       "originalName": "hd",
       "to": "GzipDecoder",
       "evidence": "Owns a raw java.util.zip.Inflater that reads compressed bytes from a PacketBuffer into a supplied byte array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:he",
+      "originalName": "he",
+      "to": "ArrayBlockSupport",
+      "evidence": "Implements in-place fills and overlap-safe array copies with unrolled loops.",
       "confidence": "reviewed"
     },
     {
@@ -917,6 +945,13 @@
       "originalName": "ll",
       "to": "FullscreenNoticeType",
       "evidence": "Distinguishes the status messages selected by the fullscreen notice dialog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:m",
+      "originalName": "m",
+      "to": "GrowableIntArray",
+      "evidence": "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity.",
       "confidence": "reviewed"
     },
     {
@@ -1169,6 +1204,13 @@
       "originalName": "rk",
       "to": "BufferedCacheFile",
       "evidence": "Buffers reads and writes over a RandomAccessCacheFile with separate windows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:s",
+      "originalName": "s",
+      "to": "MidiNoteMask",
+      "evidence": "Stores a per-note usage mask in the music track’s instrument patch table.",
       "confidence": "reviewed"
     },
     {
@@ -2047,6 +2089,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ba.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bb.a(I)Ljava/lang/String;",
       "originalName": "a",
       "to": "readStringFromPacketBuffer",
@@ -2516,6 +2565,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:d.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:da.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2583,6 +2639,27 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.a(ILjava/awt/Component;II)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.e(I)V",
+      "originalName": "e",
+      "to": "publishPixelsToConsumer",
+      "evidence": "Source-purpose review: Pushes the current pixels and frame completion notification to the registered AWT image consumer.",
       "confidence": "reviewed"
     },
     {
@@ -2782,6 +2859,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dh.a(ILlj;Z)Lfb;",
+      "originalName": "a",
+      "to": "loadMusicPatch",
+      "evidence": "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dh.a(Lee;I)Z",
       "originalName": "a",
       "to": "takeFocus",
@@ -2954,6 +3038,13 @@
       "originalName": "l",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 5 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.a(I)V",
+      "originalName": "a",
+      "to": "releaseReferences",
+      "evidence": "Source-purpose review: Drops the patch, sample, envelope, and playback stream references after a note ends.",
       "confidence": "reviewed"
     },
     {
@@ -3657,6 +3748,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fb.a(Lu;[IB[B)Z",
+      "originalName": "a",
+      "to": "prepareSamples",
+      "evidence": "Source-purpose review: Loads samples from the sound cache for notes in the instrument mask while observing the decode budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.b(B)V",
+      "originalName": "b",
+      "to": "releaseSampleIds",
+      "evidence": "Source-purpose review: Releases the encoded sample IDs once the decoded instrument samples are ready.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fc.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
@@ -3850,6 +3955,27 @@
       "originalName": "a",
       "to": "skip",
       "evidence": "Advances stream time without writing samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(II)V",
+      "originalName": "a",
+      "to": "setVolume",
+      "evidence": "Source-purpose review: Stores the master gain used to scale both synthesizers when their output is mixed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(IIIZILej;)V",
+      "originalName": "a",
+      "to": "switchTrack",
+      "evidence": "Source-purpose review: Starts the requested MIDI track in one synthesizer and sets the direction and rate of the crossfade.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(IILkb;I)V",
+      "originalName": "a",
+      "to": "configureSynthesizer",
+      "evidence": "Source-purpose review: Applies the track’s gain and timing settings to the selected MIDI synthesizer.",
       "confidence": "reviewed"
     },
     {
@@ -4147,6 +4273,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:he.a([II[III)V",
+      "originalName": "a",
+      "to": "copyIntRange",
+      "evidence": "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.a([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "originalName": "a",
+      "to": "copyObjectRange",
+      "evidence": "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hf.a(Lee;IIBZ)V",
       "originalName": "a",
       "to": "paintWidget",
@@ -4252,6 +4392,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ib.a(ILjava/lang/String;Lee;ILjava/lang/String;II)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ib.a(ILuh;)Z",
       "originalName": "a",
       "to": "isFieldValid",
@@ -4270,6 +4417,13 @@
       "originalName": "a",
       "to": "onNameSuggestionSelected",
       "evidence": "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ib.a(Ljava/lang/String;IIILjava/lang/String;Lee;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with the form’s default validation message height.",
       "confidence": "reviewed"
     },
     {
@@ -4592,6 +4746,13 @@
       "originalName": "n",
       "to": "discardDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -5295,6 +5456,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kb.b(Z)V",
+      "originalName": "b",
+      "to": "releasePatchSampleIds",
+      "evidence": "Source-purpose review: Walks the loaded instruments and releases their encoded sample ID arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kb.b([III)V",
       "originalName": "b",
       "to": "mixInto",
@@ -5369,6 +5537,20 @@
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.a(ILjava/awt/Component;II)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
       "confidence": "reviewed"
     },
     {
@@ -6058,6 +6240,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:m.a(IB)V",
+      "originalName": "a",
+      "to": "append",
+      "evidence": "Source-purpose review: Inserts an integer at the next index after the current last entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(IBI)V",
+      "originalName": "a",
+      "to": "set",
+      "evidence": "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(II)V",
+      "originalName": "a",
+      "to": "grow",
+      "evidence": "Source-purpose review: Allocates a larger backing array and copies the existing entries into it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(Z)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "Source-purpose review: Returns the number of stored entries as one more than the last occupied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.b(IB)V",
+      "originalName": "b",
+      "to": "removeAt",
+      "evidence": "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.b(II)I",
+      "originalName": "b",
+      "to": "computeCapacity",
+      "evidence": "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.c(II)I",
+      "originalName": "c",
+      "to": "get",
+      "evidence": "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ma.a(BLjava/lang/String;)Lrj;",
       "originalName": "a",
       "to": "getValidationStatus",
@@ -6146,6 +6377,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mf.a(II)[B",
+      "originalName": "a",
+      "to": "acquireByteArray",
+      "evidence": "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array.",
       "confidence": "reviewed"
     },
     {
@@ -6912,6 +7150,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILjava/awt/Component;II)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -7021,6 +7273,13 @@
       "originalName": "a",
       "to": "correctedCurrentTimeMillis",
       "evidence": "Read System.currentTimeMillis,apply the original retained correction when the sampled clock goes backwards,update the retained sample and return the corrected time where the original guard permits. Preserve synchronization and every game-specific guard,sentinel,recursive call,arithmetic trap and update order. Complete original-body SHA256 40d23f9ae5e35947dc2b4bf71d0e190c806733d70554f8372eb5dc356669e577. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -9371,7 +9630,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c696ff6221c68e3b0e602236621fbd79c0e8903c027337dfc07ecd80a8291783",
-      "torchallenge-names.json": "07b3607ac15c31e375d2078a4d3c27d6b27052085fa35a1d7043ee1a82e3ee27",
+      "torchallenge-names.json": "b5e60e7321dc99b1213745a733a2df20c2a0543f9668e5e50bfe57735f5db186",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

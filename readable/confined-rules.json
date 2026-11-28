@@ -367,6 +367,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dl",
+      "originalName": "dl",
+      "to": "ByteArrayPoolSupport",
+      "evidence": "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dm",
       "originalName": "dm",
       "to": "FieldValidator",
@@ -728,6 +735,13 @@
       "originalName": "lg",
       "to": "SynthesizerVoice",
       "evidence": "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lj",
+      "originalName": "lj",
+      "to": "ArrayBlockSupport",
+      "evidence": "Implements in-place fills and overlap-safe array copies with unrolled loops.",
       "confidence": "reviewed"
     },
     {
@@ -1260,6 +1274,13 @@
       "originalName": "wk",
       "to": "WidgetDragListener",
       "evidence": "Receives notifications from draggable widgets as they move.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wl",
+      "originalName": "wl",
+      "to": "GrowableIntArray",
+      "evidence": "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity.",
       "confidence": "reviewed"
     },
     {
@@ -2086,6 +2107,20 @@
       "originalName": "a",
       "to": "updatePointer",
       "evidence": "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(Lfj;IIILjava/lang/String;Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(Lfj;ILjava/lang/String;ILjava/lang/String;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with the form’s default validation message height.",
       "confidence": "reviewed"
     },
     {
@@ -3066,6 +3101,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 115a1fe6f1a9c51fd6e694e511bf718f1f680b540fa8c554270c353658ac15a6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.a(II)[B",
+      "originalName": "a",
+      "to": "acquireByteArray",
+      "evidence": "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array.",
       "confidence": "reviewed"
     },
     {
@@ -5491,6 +5533,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kd.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kd.d(B)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -6044,6 +6093,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.b(II)I",
       "originalName": "b",
       "to": "bitLength",
@@ -6363,6 +6419,27 @@
       "originalName": "a",
       "to": "clearInts",
       "evidence": "Zero an int-array segment using the original eight sequential stores per unrolled iteration and scalar tail. Retain start/count arithmetic overflow,null/index exceptions and partial writes;do not substitute a library fill. Complete original-body SHA256 b3d53399488c4b1eb25cb619da620df3b5fedda0a1a29e454ee47e028fd4bdb6. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a([IIII)V",
+      "originalName": "a",
+      "to": "fillInts",
+      "evidence": "Source-purpose review: Fills the requested range of an integer array with the supplied value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a([II[III)V",
+      "originalName": "a",
+      "to": "copyIntRange",
+      "evidence": "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "originalName": "a",
+      "to": "copyObjectRange",
+      "evidence": "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array.",
       "confidence": "reviewed"
     },
     {
@@ -7339,6 +7416,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nl.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nn.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -7826,6 +7910,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -8981,6 +9072,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 4 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -10307,6 +10405,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:va.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.a(B)Lrk;",
       "originalName": "a",
       "to": "startFromTail",
@@ -11350,10 +11455,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wl.a(B)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "Source-purpose review: Returns the number of stored entries as one more than the last occupied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(BI)V",
+      "originalName": "a",
+      "to": "append",
+      "evidence": "Source-purpose review: Inserts an integer at the next index after the current last entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(IB)V",
+      "originalName": "a",
+      "to": "removeAt",
+      "evidence": "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(II)I",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(III)V",
+      "originalName": "a",
+      "to": "set",
+      "evidence": "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wl.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 aea7f5e605e1e2b6c14818b8aa30830770de3c557b5e796089419e2dd24e303d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.b(II)I",
+      "originalName": "b",
+      "to": "computeCapacity",
+      "evidence": "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.c(II)V",
+      "originalName": "c",
+      "to": "grow",
+      "evidence": "Source-purpose review: Allocates a larger backing array and copies the existing entries into it.",
       "confidence": "reviewed"
     },
     {
@@ -11422,7 +11576,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "2b06a9ccbdda53d1f9decb5f0770d5f6788ad90a2e7c438ce90cef71c228a94b",
+      "confined-names.json": "85ab06dbe87f411a877042da3511c55e65c51e160b9a77bb229156891bc99744",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

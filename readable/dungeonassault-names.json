@@ -684,6 +684,41 @@
       "tn",
       "ValidationStatusWidget",
       "Renders a validator message or fallback text together with a status sprite."
+    ],
+    [
+      "kk",
+      "MusicPatch",
+      "Maps MIDI notes to sample IDs, decoded samples, tuning, gain, pan and envelopes for one instrument patch."
+    ],
+    [
+      "lp",
+      "MusicPatchNode",
+      "Carries the sample, envelope, playback stream and timing state of an active MIDI note."
+    ],
+    [
+      "of",
+      "MusicPatchEnvelope",
+      "Stores the per-note amplitude and release curves and their timing parameters."
+    ],
+    [
+      "mk",
+      "MidiNoteMask",
+      "Stores a per-note usage mask in the music track’s instrument patch table."
+    ],
+    [
+      "cj",
+      "ArrayBlockSupport",
+      "Implements in-place fills and overlap-safe array copies with unrolled loops."
+    ],
+    [
+      "kn",
+      "ByteArrayPoolSupport",
+      "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available."
+    ],
+    [
+      "bp",
+      "GrowableIntArray",
+      "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."
     ]
   ],
   "methods": [
@@ -9870,6 +9905,195 @@
       "(Ljava/lang/String;B)Z",
       "containsEmailComponent",
       "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."
+    ],
+    [
+      "kk",
+      "a",
+      "(BLlc;[I[B)Z",
+      "prepareSamples",
+      "Source-purpose review: Loads samples from the sound cache for notes in the instrument mask while observing the decode budget."
+    ],
+    [
+      "kk",
+      "a",
+      "(B)V",
+      "releaseSampleIds",
+      "Source-purpose review: Releases the encoded sample IDs once the decoded instrument samples are ready."
+    ],
+    [
+      "ug",
+      "f",
+      "(I)V",
+      "releasePatchSampleIds",
+      "Source-purpose review: Walks the loaded instruments and releases their encoded sample ID arrays."
+    ],
+    [
+      "dl",
+      "a",
+      "(BILnh;)Lkk;",
+      "loadMusicPatch",
+      "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record."
+    ],
+    [
+      "lp",
+      "b",
+      "(Z)V",
+      "releaseReferences",
+      "Source-purpose review: Drops the patch, sample, envelope, and playback stream references after a note ends."
+    ],
+    [
+      "eg",
+      "a",
+      "(JJ)J",
+      "bitwiseAnd",
+      "Source-purpose review: Returns the bitwise conjunction of the two primitive operands."
+    ],
+    [
+      "id",
+      "a",
+      "(JJ)J",
+      "bitwiseOr",
+      "Source-purpose review: Returns the bitwise disjunction of the two primitive operands."
+    ],
+    [
+      "md",
+      "b",
+      "(II)I",
+      "bitwiseXor",
+      "Source-purpose review: Returns the exclusive OR of the two primitive operands."
+    ],
+    [
+      "mn",
+      "a",
+      "(JJ)J",
+      "bitwiseXor",
+      "Source-purpose review: Returns the exclusive OR of the two primitive operands."
+    ],
+    [
+      "mp",
+      "a",
+      "(II)I",
+      "bitwiseOr",
+      "Source-purpose review: Returns the bitwise disjunction of the two primitive operands."
+    ],
+    [
+      "nb",
+      "a",
+      "(II)I",
+      "bitwiseAnd",
+      "Source-purpose review: Returns the bitwise conjunction of the two primitive operands."
+    ],
+    [
+      "gk",
+      "a",
+      "(Ljava/lang/String;IILjava/lang/String;Llm;II)I",
+      "addLabeledFieldWithValidationMessage",
+      "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height."
+    ],
+    [
+      "gk",
+      "a",
+      "(Ljava/lang/String;ILlm;Ljava/lang/String;II)I",
+      "addLabeledFieldWithDefaultValidationMessage",
+      "Source-purpose review: Adds the display name field with the form’s default validation message height."
+    ],
+    [
+      "cj",
+      "a",
+      "([II[III)V",
+      "copyIntRange",
+      "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "cj",
+      "a",
+      "([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "copyObjectRange",
+      "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "tc",
+      "a",
+      "(IIILvh;IZ)V",
+      "switchTrack",
+      "Source-purpose review: Starts the requested MIDI track in one synthesizer and sets the direction and rate of the crossfade."
+    ],
+    [
+      "tc",
+      "a",
+      "(Lug;III)V",
+      "configureSynthesizer",
+      "Source-purpose review: Applies the track’s gain and timing settings to the selected MIDI synthesizer."
+    ],
+    [
+      "tc",
+      "a",
+      "(II)V",
+      "setVolume",
+      "Source-purpose review: Stores the master gain used to scale both synthesizers when their output is mixed."
+    ],
+    [
+      "tc",
+      "a",
+      "(ZLug;Lug;)V",
+      "attachSynthesizers",
+      "Source-purpose review: Assigns the two MIDI synthesizers and resets the crossfade position."
+    ],
+    [
+      "kn",
+      "a",
+      "(IZ)[B",
+      "acquireByteArray",
+      "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array."
+    ],
+    [
+      "bp",
+      "b",
+      "(II)V",
+      "removeAt",
+      "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size."
+    ],
+    [
+      "bp",
+      "a",
+      "(II)I",
+      "get",
+      "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index."
+    ],
+    [
+      "bp",
+      "d",
+      "(II)V",
+      "grow",
+      "Source-purpose review: Allocates a larger backing array and copies the existing entries into it."
+    ],
+    [
+      "bp",
+      "c",
+      "(II)I",
+      "computeCapacity",
+      "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy."
+    ],
+    [
+      "bp",
+      "a",
+      "(III)V",
+      "set",
+      "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed."
+    ],
+    [
+      "bp",
+      "e",
+      "(II)V",
+      "append",
+      "Source-purpose review: Inserts an integer at the next index after the current last entry."
+    ],
+    [
+      "bp",
+      "a",
+      "(B)I",
+      "size",
+      "Source-purpose review: Returns the number of stored entries as one more than the last occupied index."
     ]
   ],
   "fields": [

@@ -139,7 +139,10 @@
     ["od","MeshData","Stores source vertices and faces, prepares their lighting and skin groups, and constructs a renderable mesh."],
     ["de","TextureProvider","Supplies texture pixels, average colours and format properties to the model and triangle rasterizer."],
     ["ba","ValidationStatusIcon","Renders a validation status sprite beside a form field and exposes its message as a hover tooltip."],
-    ["rh","ValidationStatusWidget","Renders a validator message or fallback text together with a status sprite."]
+    ["rh","ValidationStatusWidget","Renders a validator message or fallback text together with a status sprite."],
+    ["lj","ArrayBlockSupport","Implements in-place fills and overlap-safe array copies with unrolled loops."],
+    ["dl","ByteArrayPoolSupport","Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available."],
+    ["wl","GrowableIntArray","Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 949d6acc48a1e275445afcf06af37fb725624f34709abfad7c1ac71fbcd54636."],
@@ -1560,7 +1563,26 @@
     ["w","g","(B)V","clearCredentials","Source-purpose review: Clears both editable credential fields in the login form."],
     ["w","a","(ILjava/lang/String;)V","setAccountAndClearPassword","Source-purpose review: Fills the account identifier field with the supplied text and clears the password field."],
     ["w","j","(I)Ljava/lang/String;","getAccountIdentifier","Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent."],
-    ["gl","a","(Ljava/lang/String;B)Z","containsEmailComponent","Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."]
+    ["gl","a","(Ljava/lang/String;B)Z","containsEmailComponent","Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."],
+    ["kd","a","(JJ)J","bitwiseAnd","Source-purpose review: Returns the bitwise conjunction of the two primitive operands."],
+    ["km","a","(II)I","bitwiseXor","Source-purpose review: Returns the exclusive OR of the two primitive operands."],
+    ["nl","a","(II)I","bitwiseOr","Source-purpose review: Returns the bitwise disjunction of the two primitive operands."],
+    ["pa","a","(JJ)J","bitwiseXor","Source-purpose review: Returns the exclusive OR of the two primitive operands."],
+    ["rk","a","(JJ)J","bitwiseOr","Source-purpose review: Returns the bitwise disjunction of the two primitive operands."],
+    ["va","a","(II)I","bitwiseAnd","Source-purpose review: Returns the bitwise conjunction of the two primitive operands."],
+    ["bf","a","(Lfj;IIILjava/lang/String;Ljava/lang/String;I)I","addLabeledFieldWithValidationMessage","Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height."],
+    ["bf","a","(Lfj;ILjava/lang/String;ILjava/lang/String;I)I","addLabeledFieldWithDefaultValidationMessage","Source-purpose review: Adds the display name field with the form’s default validation message height."],
+    ["lj","a","([IIII)V","fillInts","Source-purpose review: Fills the requested range of an integer array with the supplied value."],
+    ["lj","a","([II[III)V","copyIntRange","Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array."],
+    ["lj","a","([Ljava/lang/Object;I[Ljava/lang/Object;II)V","copyObjectRange","Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array."],
+    ["dl","a","(II)[B","acquireByteArray","Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array."],
+    ["wl","a","(IB)V","removeAt","Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size."],
+    ["wl","a","(II)I","get","Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index."],
+    ["wl","c","(II)V","grow","Source-purpose review: Allocates a larger backing array and copies the existing entries into it."],
+    ["wl","b","(II)I","computeCapacity","Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy."],
+    ["wl","a","(III)V","set","Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed."],
+    ["wl","a","(BI)V","append","Source-purpose review: Inserts an integer at the next index after the current last entry."],
+    ["wl","a","(B)I","size","Source-purpose review: Returns the number of stored entries as one more than the last occupied index."]
   ],
   "fields": [
     ["kg","field_m","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],

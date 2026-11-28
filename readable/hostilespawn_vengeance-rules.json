@@ -465,6 +465,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bc",
+      "originalName": "bc",
+      "to": "MidiNoteMask",
+      "evidence": "Stores a per-note usage mask in the music track’s instrument patch table.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bd",
       "originalName": "bd",
       "to": "RgbSprite",
@@ -553,6 +560,13 @@
       "originalName": "db",
       "to": "PasswordValidator",
       "evidence": "Checks the proposed account password and supplies feedback about invalid or unsuitable input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:df",
+      "originalName": "df",
+      "to": "GrowableIntArray",
+      "evidence": "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity.",
       "confidence": "reviewed"
     },
     {
@@ -745,6 +759,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hf",
+      "originalName": "hf",
+      "to": "ByteArrayPoolSupport",
+      "evidence": "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hi",
       "originalName": "hi",
       "to": "TextFieldValidator",
@@ -861,6 +882,13 @@
       "originalName": "kd",
       "to": "CrossfadingMidiPcmStream",
       "evidence": "PCM music stream crossfading the retained MIDI synthesizers with fixed-point1048576 position,256-scaled volume and optional third overlay. Mix/skip retain exact decoder-ready reversal,endpoint stopping,buffer allocation/clearing,stereo offsets and integer sample blending. Constructors preserve original defaults and exact initializer argument order,copy/shared-cache behavior and retained third-stream identity. Reviewed constructor SHA256s e44560ce9fe910686eaeb31bbddce2af870b296cabe706ed7396dfa81779f872. Naming only. Complete owning PCM API and directly supporting bodies,all91 candidate constructor bodies and independent selected native/class-name-literal scans reviewed. Preserve original fields and default/declaration state,constructor chaining,all JVM widths/domains,guards,literals,overflow,FP/casts,aliases,partial writes,allocation/call/exception ordering,visibility/modifiers and native/override binding identities. No intentional literal/native edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kf",
+      "originalName": "kf",
+      "to": "ArrayBlockSupport",
+      "evidence": "Implements in-place fills and overlap-safe array copies with unrolled loops.",
       "confidence": "reviewed"
     },
     {
@@ -1018,6 +1046,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nf",
+      "originalName": "nf",
+      "to": "MusicPatch",
+      "evidence": "Maps MIDI notes to sample IDs, decoded samples, tuning, gain, pan and envelopes for one instrument patch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nh",
       "originalName": "nh",
       "to": "LabeledWidgetContainer",
@@ -1113,6 +1148,13 @@
       "originalName": "ph",
       "to": "InteractiveWidget",
       "evidence": "Interactive control that tracks pointer and keyboard input and forwards its activation to the registered listener. The account forms use this control for their buttons and suggestion choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pl",
+      "originalName": "pl",
+      "to": "MusicPatchEnvelope",
+      "evidence": "Stores the per-note amplitude and release curves and their timing parameters.",
       "confidence": "reviewed"
     },
     {
@@ -1267,6 +1309,13 @@
       "originalName": "tl",
       "to": "Win32CursorManager",
       "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tm",
+      "originalName": "tm",
+      "to": "MusicPatchNode",
+      "evidence": "Carries the sample, envelope, playback stream and timing state of an active MIDI note.",
       "confidence": "reviewed"
     },
     {
@@ -3006,6 +3055,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bm.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bn.a(I)V",
       "originalName": "a",
       "to": "fillReadBuffer",
@@ -3468,6 +3524,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:df.a(IB)V",
+      "originalName": "a",
+      "to": "removeAt",
+      "evidence": "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(II)I",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(III)V",
+      "originalName": "a",
+      "to": "set",
+      "evidence": "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(ZI)V",
+      "originalName": "a",
+      "to": "grow",
+      "evidence": "Source-purpose review: Allocates a larger backing array and copies the existing entries into it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.b(I)I",
+      "originalName": "b",
+      "to": "size",
+      "evidence": "Source-purpose review: Returns the number of stored entries as one more than the last occupied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.b(II)I",
+      "originalName": "b",
+      "to": "computeCapacity",
+      "evidence": "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.b(ZI)V",
+      "originalName": "b",
+      "to": "append",
+      "evidence": "Source-purpose review: Inserts an integer at the next index after the current last entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.a(IIILph;B)V",
       "originalName": "a",
       "to": "onWidgetActivated",
@@ -3598,6 +3703,13 @@
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 4 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -4256,6 +4368,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -4945,6 +5064,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hf.a(ZI)[B",
+      "originalName": "a",
+      "to": "acquireByteArray",
+      "evidence": "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hg.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -5239,10 +5365,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ij.a(ILag;Ljava/lang/String;BILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with the form’s default validation message height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ij.a(Lag;III)V",
       "originalName": "a",
       "to": "updatePointer",
       "evidence": "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.a(Ljava/lang/String;Ljava/lang/String;BIILag;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height.",
       "confidence": "reviewed"
     },
     {
@@ -5554,6 +5694,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kd.a(IBZILji;I)V",
+      "originalName": "a",
+      "to": "switchTrack",
+      "evidence": "Source-purpose review: Starts the requested MIDI track in one synthesizer and sets the direction and rate of the crossfade.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kd.a(ILw;BI)V",
+      "originalName": "a",
+      "to": "configureSynthesizer",
+      "evidence": "Source-purpose review: Applies the track’s gain and timing settings to the selected MIDI synthesizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kd.a(ILw;Lw;)V",
+      "originalName": "a",
+      "to": "attachSynthesizers",
+      "evidence": "Source-purpose review: Assigns the two MIDI synthesizers and resets the crossfade position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kd.a(IZ)V",
+      "originalName": "a",
+      "to": "setVolume",
+      "evidence": "Source-purpose review: Stores the master gain used to scale both synthesizers when their output is mixed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kd.b()Ltj;",
       "originalName": "b",
       "to": "nextChildStream",
@@ -5621,6 +5789,27 @@
       "originalName": "a",
       "to": "clearInts",
       "evidence": "Zero an int-array segment using the original eight sequential stores per unrolled iteration and scalar tail. Retain start/count arithmetic overflow,null/index exceptions and partial writes;do not substitute a library fill. Complete original-body SHA256 b3d53399488c4b1eb25cb619da620df3b5fedda0a1a29e454ee47e028fd4bdb6. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a([IIII)V",
+      "originalName": "a",
+      "to": "fillInts",
+      "evidence": "Source-purpose review: Fills the requested range of an integer array with the supplied value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a([II[III)V",
+      "originalName": "a",
+      "to": "copyIntRange",
+      "evidence": "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "originalName": "a",
+      "to": "copyObjectRange",
+      "evidence": "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array.",
       "confidence": "reviewed"
     },
     {
@@ -5887,6 +6076,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -6412,6 +6608,20 @@
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 4 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(Lgb;II)Lnf;",
+      "originalName": "a",
+      "to": "loadMusicPatch",
+      "evidence": "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a([I[BLrd;I)Z",
+      "originalName": "a",
+      "to": "prepareSamples",
+      "evidence": "Source-purpose review: Loads samples from the sound cache for notes in the instrument mask while observing the decode budget.",
       "confidence": "reviewed"
     },
     {
@@ -7112,6 +7322,13 @@
       "originalName": "e",
       "to": "readBits",
       "evidence": "Read the requested bit count LSB-first across byte boundaries,retaining the exact signed shifts,mask calculations,32-bit accumulation,cursor updates and invalid-count behavior. Pre-rename body SHA256 9aab6eb70774e8d70948cd208841488320d0cc089c9279edcbb98c79e12d18ba. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -8148,6 +8365,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 82d6c303919a4d0a0a55175dbe0cb776e4e9c357c3bba01bdb7013a1903e45e7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.b(Z)V",
+      "originalName": "b",
+      "to": "releaseReferences",
+      "evidence": "Source-purpose review: Drops the patch, sample, envelope, and playback stream references after a note ends.",
       "confidence": "reviewed"
     },
     {
@@ -9602,7 +9826,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "b039638b89cfb792120dda50400c15ec85503aa64d218d30cbefad54d05c5d13",
+      "hostilespawn_vengeance-names.json": "6f9c4885ba1f0353b3bd3674f791c710a8aa3cafb8b7fd42f28c95c370a8a89b",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

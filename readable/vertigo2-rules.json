@@ -304,6 +304,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:al",
+      "originalName": "al",
+      "to": "MusicPatch",
+      "evidence": "Maps MIDI notes to sample IDs, decoded samples, tuning, gain, pan and envelopes for one instrument patch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:am",
       "originalName": "am",
       "to": "LevelRenderer",
@@ -623,6 +630,13 @@
       "originalName": "gf",
       "to": "NodeHashTableIterator",
       "evidence": "Iterator constructed from an IterableNodeHashTable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gl",
+      "originalName": "gl",
+      "to": "MusicPatchEnvelope",
+      "evidence": "Stores the per-note amplitude and release curves and their timing parameters.",
       "confidence": "reviewed"
     },
     {
@@ -1011,10 +1025,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pe",
+      "originalName": "pe",
+      "to": "MusicPatchNode",
+      "evidence": "Carries the sample, envelope, playback stream and timing state of an active MIDI note.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pg",
       "originalName": "pg",
       "to": "VorbisMapping",
       "evidence": "Reads the submap selector and the floor and residue indices for each Vorbis submap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ph",
+      "originalName": "ph",
+      "to": "MidiNoteMask",
+      "evidence": "Stores a per-note usage mask in the music track’s instrument patch table.",
       "confidence": "reviewed"
     },
     {
@@ -1116,6 +1144,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qq",
+      "originalName": "qq",
+      "to": "ArrayBlockSupport",
+      "evidence": "Implements in-place fills and overlap-safe array copies with unrolled loops.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:r",
       "originalName": "r",
       "to": "Archive",
@@ -1134,6 +1169,13 @@
       "originalName": "rd",
       "to": "VorbisFloor",
       "evidence": "Vorbis floor type1: constructor reads and requires16-bit type1,partition classes,subclass codebooks,multiplier and x coordinates. Owns shared x/y/active scratch and inverse-dB/range tables;decodes presence and scalar y values,unpacks predicted residuals,sorts linked points and applies the floor curve to the spectrum. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:re",
+      "originalName": "re",
+      "to": "GrowableIntArray",
+      "evidence": "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity.",
       "confidence": "reviewed"
     },
     {
@@ -1330,6 +1372,13 @@
       "originalName": "vb",
       "to": "DirectByteStorage",
       "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vc",
+      "originalName": "vc",
+      "to": "ByteArrayPoolSupport",
+      "evidence": "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available.",
       "confidence": "reviewed"
     },
     {
@@ -1991,6 +2040,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.a(I[BLid;[I)Z",
+      "originalName": "a",
+      "to": "prepareSamples",
+      "evidence": "Source-purpose review: Loads samples from the sound cache for notes in the instrument mask while observing the decode budget.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:am.a(B)I",
       "originalName": "a",
       "to": "getRequestedCameraHeading",
@@ -2103,6 +2159,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ap.a(ILr;I)Lal;",
+      "originalName": "a",
+      "to": "loadMusicPatch",
+      "evidence": "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aq.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2128,6 +2191,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -2800,6 +2870,13 @@
       "originalName": "g",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bq.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -4406,6 +4483,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:em.a(Ljava/awt/Component;III)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.a(Ljava/awt/Graphics;III)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:en.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4973,10 +5064,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fk.a(IB)V",
+      "originalName": "a",
+      "to": "setVolume",
+      "evidence": "Source-purpose review: Stores the master gain used to scale both synthesizers when their output is mixed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fk.a(III)I",
       "originalName": "a",
       "to": "reverseLowBits",
       "evidence": "Reverse the requested low input bits into the retained int accumulator by repeatedly shifting the accumulator left,ORing the low input bit,and shifting input right unsigned until the original full-width count is nonpositive. Preserve negative/zero counts and counts beyond32 without clamping,masking or positive normalization,int overflow,all captured global field reads before the try,exact argument mutation/call/guard/write/exception order and original diagnostic literals with mutated arguments. Naming only;all24complete concrete bodies and28used field declarations source-reviewed;original JVM descriptors,visibility/modifiers,native and override bindings preserved. Existing meaningful aliases and two frozen queued counterparts unchanged;no field/class/literal edits or whole-game runtime equivalence claim. Input parameter index1,count parameter index0. int guard!=1 invokes fk.c(-114,68,-107) after accumulator initialization before loop. Complete original-body SHA256 867c6be9aadaa0d984af123e84da72957f082620fd020b3b5bee5f5eebbe8874.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(IILdb;I)V",
+      "originalName": "a",
+      "to": "configureSynthesizer",
+      "evidence": "Source-purpose review: Applies the track’s gain and timing settings to the selected MIDI synthesizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(Lsi;IIZBI)V",
+      "originalName": "a",
+      "to": "switchTrack",
+      "evidence": "Source-purpose review: Starts the requested MIDI track in one synthesizer and sets the direction and rate of the crossfade.",
       "confidence": "reviewed"
     },
     {
@@ -6135,6 +6247,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ja.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -7115,6 +7234,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lk.a(I)V",
+      "originalName": "a",
+      "to": "setAsRasterTarget",
+      "evidence": "Source-purpose review: Binds the backing pixel array and its dimensions as the current target for software drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(Ljava/awt/Component;III)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(Ljava/awt/Graphics;III)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lk.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -7203,6 +7343,27 @@
       "originalName": "a",
       "to": "drawWidget",
       "evidence": "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(B)V",
+      "originalName": "a",
+      "to": "publishPixelsToConsumer",
+      "evidence": "Source-purpose review: Pushes the current pixels and frame completion notification to the registered AWT image consumer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(Ljava/awt/Component;III)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(Ljava/awt/Graphics;III)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
       "confidence": "reviewed"
     },
     {
@@ -7577,6 +7738,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ne.a(IILjava/lang/String;IILjava/lang/String;Liq;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ne.a(ILd;BII)V",
       "originalName": "a",
       "to": "onWidgetActivated",
@@ -7595,6 +7763,13 @@
       "originalName": "a",
       "to": "onNameSuggestionSelected",
       "evidence": "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(Ljava/lang/String;Ljava/lang/String;Liq;IIZ)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with the form’s default validation message height.",
       "confidence": "reviewed"
     },
     {
@@ -8305,6 +8480,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:om.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -8491,6 +8673,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(I)V",
+      "originalName": "a",
+      "to": "releaseReferences",
+      "evidence": "Source-purpose review: Drops the patch, sample, envelope, and playback stream references after a note ends.",
       "confidence": "reviewed"
     },
     {
@@ -9075,6 +9264,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qq.a([IIII)V",
+      "originalName": "a",
+      "to": "fillInts",
+      "evidence": "Source-purpose review: Fills the requested range of an integer array with the supplied value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.a([II[III)V",
+      "originalName": "a",
+      "to": "copyIntRange",
+      "evidence": "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.a([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "originalName": "a",
+      "to": "copyObjectRange",
+      "evidence": "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qr.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -9642,10 +9852,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:re.a(BI)V",
+      "originalName": "a",
+      "to": "append",
+      "evidence": "Source-purpose review: Inserts an integer at the next index after the current last entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a(BII)V",
+      "originalName": "a",
+      "to": "set",
+      "evidence": "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.a(I)V",
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a(IB)I",
+      "originalName": "a",
+      "to": "computeCapacity",
+      "evidence": "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a(II)I",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.b(I)I",
+      "originalName": "b",
+      "to": "size",
+      "evidence": "Source-purpose review: Returns the number of stored entries as one more than the last occupied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.b(IB)V",
+      "originalName": "b",
+      "to": "grow",
+      "evidence": "Source-purpose review: Allocates a larger backing array and copies the existing entries into it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.b(II)V",
+      "originalName": "b",
+      "to": "removeAt",
+      "evidence": "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size.",
       "confidence": "reviewed"
     },
     {
@@ -10510,6 +10769,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tk.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tl.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -11067,6 +11333,13 @@
       "originalName": "b",
       "to": "getBytes",
       "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter allocates before optional static panel clear. Getter guard arithmetic follows complete allocation/position/get. Preserve partial state on failure. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.a(IB)[B",
+      "originalName": "a",
+      "to": "acquireByteArray",
+      "evidence": "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array.",
       "confidence": "reviewed"
     },
     {
@@ -11842,7 +12115,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "1f2ecbdd806dc58a3f5ae421a4a93800a5d1eb26a90c694126549199968b4205",
+      "vertigo2-names.json": "f390a81350069fe0bf01dba37f266c333e64e273464bf17ef18d00424f721ebd",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

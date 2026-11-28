@@ -353,10 +353,24 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:aa",
+      "originalName": "aa",
+      "to": "GrowableIntArray",
+      "evidence": "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ad",
       "originalName": "ad",
       "to": "WidgetRenderer",
       "evidence": "Draws a widget on a single render layer using the supplied origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ai",
+      "originalName": "ai",
+      "to": "ArrayBlockSupport",
+      "evidence": "Implements in-place fills and overlap-safe array copies with unrolled loops.",
       "confidence": "reviewed"
     },
     {
@@ -469,6 +483,13 @@
       "originalName": "cf",
       "to": "TextWidgetRenderer",
       "evidence": "Defines text layout, widget sizing, input hit testing, and caret and selection painting for text widgets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cg",
+      "originalName": "cg",
+      "to": "MusicPatchNode",
+      "evidence": "Carries the sample, envelope, playback stream and timing state of an active MIDI note.",
       "confidence": "reviewed"
     },
     {
@@ -815,6 +836,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lh",
+      "originalName": "lh",
+      "to": "ByteArrayPoolSupport",
+      "evidence": "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lk",
       "originalName": "lk",
       "to": "JavaScriptBridge",
@@ -889,6 +917,13 @@
       "originalName": "nf",
       "to": "TextLayout",
       "evidence": "Stores the wrapped lines of a widget’s text and maps between text offsets and rendered positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ng",
+      "originalName": "ng",
+      "to": "MusicPatchEnvelope",
+      "evidence": "Stores the per-note amplitude and release curves and their timing parameters.",
       "confidence": "reviewed"
     },
     {
@@ -1008,6 +1043,13 @@
       "originalName": "qd",
       "to": "GuestPlayConfirmationForm",
       "evidence": "Displays the benefits of creating an account and offers guest play and account options.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qf",
+      "originalName": "qf",
+      "to": "MidiNoteMask",
+      "evidence": "Stores a per-note usage mask in the music track’s instrument patch table.",
       "confidence": "reviewed"
     },
     {
@@ -1211,6 +1253,13 @@
       "originalName": "vb",
       "to": "ArchiveProvider",
       "evidence": "Abstract provider of the encoded index and groups consumed by ResourceArchive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vc",
+      "originalName": "vc",
+      "to": "MusicPatch",
+      "evidence": "Maps MIDI notes to sample IDs, decoded samples, tuning, gain, pan and envelopes for one instrument patch.",
       "confidence": "reviewed"
     },
     {
@@ -1613,6 +1662,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aa.a(IB)I",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(II)I",
+      "originalName": "a",
+      "to": "computeCapacity",
+      "evidence": "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(III)V",
+      "originalName": "a",
+      "to": "set",
+      "evidence": "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.b(I)I",
+      "originalName": "b",
+      "to": "size",
+      "evidence": "Source-purpose review: Returns the number of stored entries as one more than the last occupied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.b(II)V",
+      "originalName": "b",
+      "to": "grow",
+      "evidence": "Source-purpose review: Allocates a larger backing array and copies the existing entries into it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.c(II)V",
+      "originalName": "c",
+      "to": "removeAt",
+      "evidence": "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.d(II)V",
+      "originalName": "d",
+      "to": "append",
+      "evidence": "Source-purpose review: Inserts an integer at the next index after the current last entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ab.a(II)I",
       "originalName": "a",
       "to": "roundUpPowerOfTwo",
@@ -1666,6 +1764,20 @@
       "originalName": "a",
       "to": "clearInts",
       "evidence": "Zero an int-array segment using the original eight sequential stores per unrolled iteration and scalar tail. Retain start/count arithmetic overflow,null/index exceptions and partial writes;do not substitute a library fill. Complete original-body SHA256 b3d53399488c4b1eb25cb619da620df3b5fedda0a1a29e454ee47e028fd4bdb6. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a([II[III)V",
+      "originalName": "a",
+      "to": "copyIntRange",
+      "evidence": "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "originalName": "a",
+      "to": "copyObjectRange",
+      "evidence": "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array.",
       "confidence": "reviewed"
     },
     {
@@ -1925,6 +2037,13 @@
       "originalName": "a",
       "to": "onTextHotspotActivated",
       "evidence": "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -2208,6 +2327,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:c.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:c.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2429,6 +2555,13 @@
       "originalName": "c",
       "to": "getTextLayout",
       "evidence": "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.a(B)V",
+      "originalName": "a",
+      "to": "releaseReferences",
+      "evidence": "Source-purpose review: Drops the patch, sample, envelope, and playback stream references after a note ends.",
       "confidence": "reviewed"
     },
     {
@@ -2870,6 +3003,13 @@
       "originalName": "d",
       "to": "onChannelPressure",
       "evidence": "Source-purpose review: Handles the channel-wide pressure status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.e(I)V",
+      "originalName": "e",
+      "to": "releasePatchSampleIds",
+      "evidence": "Source-purpose review: Walks the loaded instruments and releases their encoded sample ID arrays.",
       "confidence": "reviewed"
     },
     {
@@ -3339,6 +3479,13 @@
       "originalName": "a",
       "to": "drawTextWithDefaultStyle",
       "evidence": "Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -4483,6 +4630,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hi.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hi.a(IIIIII)V",
       "originalName": "a",
       "to": "rotateNearest",
@@ -5519,6 +5673,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lh.a(BI)[B",
+      "originalName": "a",
+      "to": "acquireByteArray",
+      "evidence": "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lj.a(B)V",
       "originalName": "a",
       "to": "resetStaticState",
@@ -5624,6 +5785,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lm.a(ILfe;Ljava/lang/String;ZILjava/lang/String;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lm.a(ILsg;)Z",
       "originalName": "a",
       "to": "isFieldValid",
@@ -5635,6 +5803,13 @@
       "originalName": "a",
       "to": "onNameSuggestionSelected",
       "evidence": "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lm.a(ZLjava/lang/String;ILjava/lang/String;ILfe;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with the form’s default validation message height.",
       "confidence": "reviewed"
     },
     {
@@ -6534,6 +6709,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oh.a(IILbj;)Lvc;",
+      "originalName": "a",
+      "to": "loadMusicPatch",
+      "evidence": "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oh.c(B)Loe;",
       "originalName": "c",
       "to": "createMouseWheelInput",
@@ -6748,6 +6930,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 71e8c618203ecf7b42a54f76a944bb21dd9df85f38a493bd9e6e29d7851f8692.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -8179,6 +8368,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:te.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:te.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -8690,6 +8886,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vc.a(I)V",
+      "originalName": "a",
+      "to": "releaseSampleIds",
+      "evidence": "Source-purpose review: Releases the encoded sample IDs once the decoded instrument samples are ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.a(Lri;B[B[I)Z",
+      "originalName": "a",
+      "to": "prepareSamples",
+      "evidence": "Source-purpose review: Loads samples from the sound cache for notes in the instrument mask while observing the decode budget.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.e(I)V",
       "originalName": "e",
       "to": "clearDeclaredStaticReferences",
@@ -8701,6 +8911,27 @@
       "originalName": "a",
       "to": "skipFrames",
       "evidence": "Advance the original PCM stream state without producing its normal output buffer,including raw loop/ramp position,MIDI timing/voices,scheduled listener or container traversal and effect-specific behavior. Preserve every game-specific empty/guard/global branch,original arithmetic and mutation ordering. Complete original-body SHA256 215574be2d87e8666828d91c7beea7cee95352c1a741ea777d1bb27cc0f4c9bc. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(II)V",
+      "originalName": "a",
+      "to": "setVolume",
+      "evidence": "Source-purpose review: Stores the master gain used to scale both synthesizers when their output is mixed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(IIBLdi;)V",
+      "originalName": "a",
+      "to": "configureSynthesizer",
+      "evidence": "Source-purpose review: Applies the track’s gain and timing settings to the selected MIDI synthesizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(ZLwh;ZIII)V",
+      "originalName": "a",
+      "to": "switchTrack",
+      "evidence": "Source-purpose review: Starts the requested MIDI track in one synthesizer and sets the direction and rate of the crossfade.",
       "confidence": "reviewed"
     },
     {
@@ -9357,7 +9588,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "e9d90436c4c0db52181a4ee6570ca56567600e247dc8745077aa43dbb46eca1f",
+      "minerdisturbance-names.json": "288a53358ec0ce9334a31ebd7c0bebc6d4b32ce63f566bfe0087fcd6b2475f78",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

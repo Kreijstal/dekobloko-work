@@ -451,6 +451,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gl",
+      "originalName": "gl",
+      "to": "ArrayBlockSupport",
+      "evidence": "Implements in-place fills and overlap-safe array copies with unrolled loops.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ha",
       "originalName": "ha",
       "to": "ProgressMessageDialog",
@@ -731,6 +738,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nj",
+      "originalName": "nj",
+      "to": "ByteArrayPoolSupport",
+      "evidence": "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:o",
       "originalName": "o",
       "to": "PcmResampler",
@@ -763,6 +777,13 @@
       "originalName": "og",
       "to": "PcmMixerListener",
       "evidence": "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oi",
+      "originalName": "oi",
+      "to": "GrowableIntArray",
+      "evidence": "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity.",
       "confidence": "reviewed"
     },
     {
@@ -1998,6 +2019,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bd.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:be.a(I)I",
       "originalName": "a",
       "to": "getRightX",
@@ -2275,6 +2303,13 @@
       "originalName": "a",
       "to": "fillReadBuffer",
       "evidence": "Source-purpose review: BufferedRandomAccessFile source-purpose review: owned file/buffer fields,all constructor/instance operation bodies and incoming caller/construction contexts verified. Preserve full primitive domains,all guards,IO/copy/store/arithmetic/exception order and literals. Contracts catalog-buffered-file-access-1-method-contracts-34-not-applied.json.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -2607,6 +2642,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eb.a(Ljava/lang/String;Lwe;ILjava/lang/String;II)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with the form’s default validation message height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eb.a(Lwe;CII)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -2618,6 +2660,13 @@
       "originalName": "a",
       "to": "updatePointer",
       "evidence": "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.a(Lwe;Ljava/lang/String;IIILjava/lang/String;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height.",
       "confidence": "reviewed"
     },
     {
@@ -3027,6 +3076,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gd.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3300,6 +3356,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gi.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a(B)I",
       "originalName": "a",
       "to": "readUnsignedByte",
@@ -3552,6 +3615,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gl.a([IIII)V",
+      "originalName": "a",
+      "to": "fillInts",
+      "evidence": "Source-purpose review: Fills the requested range of an integer array with the supplied value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gl.a([II[III)V",
+      "originalName": "a",
+      "to": "copyIntRange",
+      "evidence": "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gl.a([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "originalName": "a",
+      "to": "copyObjectRange",
+      "evidence": "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:h.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3619,6 +3703,13 @@
       "originalName": "a",
       "to": "sleepIgnoringInterrupts",
       "evidence": "Call Thread.sleep with the original full long delay slot and catch InterruptedException as originally recovered. Retain pre/post sleep guards and side effects,early returns,recursive calls,arithmetic failures,outer unchecked rethrows and checked-Throwable wrapping. Complete original-body SHA256 3c0d49bdcaf231a39ca0e11eeef84d614f52a3021aae548052c2de6c33c5cc4b. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -5582,6 +5673,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nj.a(II)[B",
+      "originalName": "a",
+      "to": "acquireByteArray",
+      "evidence": "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nl.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -5691,6 +5789,55 @@
       "originalName": "b",
       "to": "onAddedToMixer",
       "evidence": "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(BI)V",
+      "originalName": "a",
+      "to": "removeAt",
+      "evidence": "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(BII)V",
+      "originalName": "a",
+      "to": "set",
+      "evidence": "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(II)I",
+      "originalName": "a",
+      "to": "computeCapacity",
+      "evidence": "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.b(I)I",
+      "originalName": "b",
+      "to": "size",
+      "evidence": "Source-purpose review: Returns the number of stored entries as one more than the last occupied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.b(II)V",
+      "originalName": "b",
+      "to": "append",
+      "evidence": "Source-purpose review: Inserts an integer at the next index after the current last entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.c(II)V",
+      "originalName": "c",
+      "to": "grow",
+      "evidence": "Source-purpose review: Allocates a larger backing array and copies the existing entries into it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.d(II)I",
+      "originalName": "d",
+      "to": "get",
+      "evidence": "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index.",
       "confidence": "reviewed"
     },
     {
@@ -6825,6 +6972,13 @@
       "originalName": "a",
       "to": "addListenerButton",
       "evidence": "Source-purpose review: Creates a button with the supplied label and listener and adds it to the message pane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -8342,7 +8496,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "e1d9f098d6c5533a3039abbfb02ef49393613edc982f6c20bf1e99a6885271ca",
+      "monkeypuzzle2-names.json": "9f72c2e64708e190c6c209e7e433fa783c8f72fdf1cd62d08c9f50628ea65a0b",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -659,6 +659,41 @@
       "al",
       "ValidationStatusWidget",
       "Renders a validator message or fallback text together with a status sprite."
+    ],
+    [
+      "nf",
+      "MusicPatch",
+      "Maps MIDI notes to sample IDs, decoded samples, tuning, gain, pan and envelopes for one instrument patch."
+    ],
+    [
+      "tm",
+      "MusicPatchNode",
+      "Carries the sample, envelope, playback stream and timing state of an active MIDI note."
+    ],
+    [
+      "pl",
+      "MusicPatchEnvelope",
+      "Stores the per-note amplitude and release curves and their timing parameters."
+    ],
+    [
+      "bc",
+      "MidiNoteMask",
+      "Stores a per-note usage mask in the music track’s instrument patch table."
+    ],
+    [
+      "kf",
+      "ArrayBlockSupport",
+      "Implements in-place fills and overlap-safe array copies with unrolled loops."
+    ],
+    [
+      "hf",
+      "ByteArrayPoolSupport",
+      "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available."
+    ],
+    [
+      "df",
+      "GrowableIntArray",
+      "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."
     ]
   ],
   "methods": [
@@ -8606,6 +8641,181 @@
       "(ILjava/lang/String;)Z",
       "containsEmailComponent",
       "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."
+    ],
+    [
+      "nf",
+      "a",
+      "([I[BLrd;I)Z",
+      "prepareSamples",
+      "Source-purpose review: Loads samples from the sound cache for notes in the instrument mask while observing the decode budget."
+    ],
+    [
+      "ne",
+      "a",
+      "(Lgb;II)Lnf;",
+      "loadMusicPatch",
+      "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record."
+    ],
+    [
+      "tm",
+      "b",
+      "(Z)V",
+      "releaseReferences",
+      "Source-purpose review: Drops the patch, sample, envelope, and playback stream references after a note ends."
+    ],
+    [
+      "bm",
+      "a",
+      "(II)I",
+      "bitwiseXor",
+      "Source-purpose review: Returns the exclusive OR of the two primitive operands."
+    ],
+    [
+      "dk",
+      "a",
+      "(JJ)J",
+      "bitwiseAnd",
+      "Source-purpose review: Returns the bitwise conjunction of the two primitive operands."
+    ],
+    [
+      "ga",
+      "a",
+      "(JJ)J",
+      "bitwiseXor",
+      "Source-purpose review: Returns the exclusive OR of the two primitive operands."
+    ],
+    [
+      "ll",
+      "a",
+      "(II)I",
+      "bitwiseOr",
+      "Source-purpose review: Returns the bitwise disjunction of the two primitive operands."
+    ],
+    [
+      "qg",
+      "a",
+      "(JJ)J",
+      "bitwiseOr",
+      "Source-purpose review: Returns the bitwise disjunction of the two primitive operands."
+    ],
+    [
+      "ij",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;BIILag;I)I",
+      "addLabeledFieldWithValidationMessage",
+      "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height."
+    ],
+    [
+      "ij",
+      "a",
+      "(ILag;Ljava/lang/String;BILjava/lang/String;)I",
+      "addLabeledFieldWithDefaultValidationMessage",
+      "Source-purpose review: Adds the display name field with the form’s default validation message height."
+    ],
+    [
+      "kf",
+      "a",
+      "([IIII)V",
+      "fillInts",
+      "Source-purpose review: Fills the requested range of an integer array with the supplied value."
+    ],
+    [
+      "kf",
+      "a",
+      "([II[III)V",
+      "copyIntRange",
+      "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "kf",
+      "a",
+      "([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "copyObjectRange",
+      "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "kd",
+      "a",
+      "(IBZILji;I)V",
+      "switchTrack",
+      "Source-purpose review: Starts the requested MIDI track in one synthesizer and sets the direction and rate of the crossfade."
+    ],
+    [
+      "kd",
+      "a",
+      "(ILw;BI)V",
+      "configureSynthesizer",
+      "Source-purpose review: Applies the track’s gain and timing settings to the selected MIDI synthesizer."
+    ],
+    [
+      "kd",
+      "a",
+      "(IZ)V",
+      "setVolume",
+      "Source-purpose review: Stores the master gain used to scale both synthesizers when their output is mixed."
+    ],
+    [
+      "kd",
+      "a",
+      "(ILw;Lw;)V",
+      "attachSynthesizers",
+      "Source-purpose review: Assigns the two MIDI synthesizers and resets the crossfade position."
+    ],
+    [
+      "hf",
+      "a",
+      "(ZI)[B",
+      "acquireByteArray",
+      "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array."
+    ],
+    [
+      "df",
+      "a",
+      "(IB)V",
+      "removeAt",
+      "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size."
+    ],
+    [
+      "df",
+      "a",
+      "(II)I",
+      "get",
+      "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index."
+    ],
+    [
+      "df",
+      "a",
+      "(ZI)V",
+      "grow",
+      "Source-purpose review: Allocates a larger backing array and copies the existing entries into it."
+    ],
+    [
+      "df",
+      "b",
+      "(II)I",
+      "computeCapacity",
+      "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy."
+    ],
+    [
+      "df",
+      "a",
+      "(III)V",
+      "set",
+      "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed."
+    ],
+    [
+      "df",
+      "b",
+      "(ZI)V",
+      "append",
+      "Source-purpose review: Inserts an integer at the next index after the current last entry."
+    ],
+    [
+      "df",
+      "b",
+      "(I)I",
+      "size",
+      "Source-purpose review: Returns the number of stored entries as one more than the last occupied index."
     ]
   ],
   "fields": [

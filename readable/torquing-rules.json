@@ -500,6 +500,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dk",
+      "originalName": "dk",
+      "to": "ArrayBlockSupport",
+      "evidence": "Implements in-place fills and overlap-safe array copies with unrolled loops.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dl",
       "originalName": "dl",
       "to": "MouseWheelHandler",
@@ -773,6 +780,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hq",
+      "originalName": "hq",
+      "to": "GrowableIntArray",
+      "evidence": "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:i",
       "originalName": "i",
       "to": "FullscreenStatusDialog",
@@ -994,6 +1008,13 @@
       "originalName": "me",
       "to": "ArchiveSource",
       "evidence": "Abstract provider returning the archive index and per-group byte arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mg",
+      "originalName": "mg",
+      "to": "ByteArrayPoolSupport",
+      "evidence": "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available.",
       "confidence": "reviewed"
     },
     {
@@ -2950,6 +2971,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.a([IIII)V",
+      "originalName": "a",
+      "to": "fillInts",
+      "evidence": "Source-purpose review: Fills the requested range of an integer array with the supplied value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a([II[III)V",
+      "originalName": "a",
+      "to": "copyIntRange",
+      "evidence": "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "originalName": "a",
+      "to": "copyObjectRange",
+      "evidence": "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dl.a(BLjava/awt/Component;)V",
       "originalName": "a",
       "to": "attach",
@@ -3066,6 +3108,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Source-purpose review: Returns the bitwise disjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -3500,6 +3549,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(Ljava/awt/Component;BII)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
       "confidence": "reviewed"
     },
     {
@@ -4756,10 +4819,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hq.a(BI)I",
+      "originalName": "a",
+      "to": "computeCapacity",
+      "evidence": "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hq.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 5 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hq.a(II)V",
+      "originalName": "a",
+      "to": "grow",
+      "evidence": "Source-purpose review: Allocates a larger backing array and copies the existing entries into it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hq.a(IZI)V",
+      "originalName": "a",
+      "to": "set",
+      "evidence": "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hq.a(Z)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "Source-purpose review: Returns the number of stored entries as one more than the last occupied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hq.b(II)I",
+      "originalName": "b",
+      "to": "get",
+      "evidence": "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hq.c(II)V",
+      "originalName": "c",
+      "to": "removeAt",
+      "evidence": "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hq.d(II)V",
+      "originalName": "d",
+      "to": "append",
+      "evidence": "Source-purpose review: Inserts an integer at the next index after the current last entry.",
       "confidence": "reviewed"
     },
     {
@@ -4781,6 +4893,13 @@
       "originalName": "b",
       "to": "closeStatusNotice",
       "evidence": "Source-purpose review: Closes the fullscreen status notice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.c(II)I",
+      "originalName": "c",
+      "to": "bitwiseXor",
+      "evidence": "Source-purpose review: Returns the exclusive OR of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -4830,6 +4949,13 @@
       "originalName": "a",
       "to": "buildLoginRequest",
       "evidence": "Source-purpose review: Assembles the outgoing initial or reconnect login packet and writes its final length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -5652,6 +5778,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kn.a(I)V",
+      "originalName": "a",
+      "to": "setAsRasterTarget",
+      "evidence": "Source-purpose review: Binds the backing pixel array and its dimensions as the current target for software drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kn.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kn.a(Ljava/awt/Component;BII)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ko.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -6258,6 +6405,13 @@
       "originalName": "g",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(II)[B",
+      "originalName": "a",
+      "to": "acquireByteArray",
+      "evidence": "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array.",
       "confidence": "reviewed"
     },
     {
@@ -7021,6 +7175,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:on.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
       "confidence": "reviewed"
     },
     {
@@ -8445,6 +8606,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sn.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "drawImage",
+      "evidence": "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sn.a(Ljava/awt/Component;BII)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sn.b(I)V",
+      "originalName": "b",
+      "to": "publishPixelsToConsumer",
+      "evidence": "Source-purpose review: Pushes the current pixels and frame completion notification to the registered AWT image consumer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:so.g(B)V",
       "originalName": "g",
       "to": "clearDeclaredStaticReferences",
@@ -8844,6 +9026,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:th.a(IILjava/lang/String;Lgm;IZLjava/lang/String;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:th.a(ILgm;CI)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -8862,6 +9051,13 @@
       "originalName": "a",
       "to": "isFieldValid",
       "evidence": "Source-purpose review: Returns whether the display-name control reports an acceptable validation status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.a(Ljava/lang/String;ILgm;Ljava/lang/String;II)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds the display name field with the form’s default validation message height.",
       "confidence": "reviewed"
     },
     {
@@ -10267,7 +10463,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "b674df8f6fc057fcef43aaf3c7ed23d0ed0597554f2747a6ce7c641593b6a60c",
-      "torquing-names.json": "253a489c6eb457a4704e4398e6ebfcbfb32f4df3fbb732039b481210593bf2a3",
+      "torquing-names.json": "5937c86f120a9cf5abb82dbf3d27248109cae27f605f61f8ec2475fc182b3d11",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

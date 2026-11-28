@@ -499,6 +499,41 @@
       "pk",
       "ValidationStatusWidget",
       "Renders a validator message or fallback text together with a status sprite."
+    ],
+    [
+      "fc",
+      "MusicPatch",
+      "Maps MIDI notes to sample IDs, decoded samples, tuning, gain, pan and envelopes for one instrument patch."
+    ],
+    [
+      "hg",
+      "MusicPatchNode",
+      "Carries the sample, envelope, playback stream and timing state of an active MIDI note."
+    ],
+    [
+      "g",
+      "MusicPatchEnvelope",
+      "Stores the per-note amplitude and release curves and their timing parameters."
+    ],
+    [
+      "ee",
+      "MidiNoteMask",
+      "Stores a per-note usage mask in the music track’s instrument patch table."
+    ],
+    [
+      "fk",
+      "ArrayBlockSupport",
+      "Implements in-place fills and overlap-safe array copies with unrolled loops."
+    ],
+    [
+      "fl",
+      "ByteArrayPoolSupport",
+      "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available."
+    ],
+    [
+      "of",
+      "GrowableIntArray",
+      "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."
     ]
   ],
   "methods": [
@@ -7571,6 +7606,244 @@
       "(BLjava/lang/String;)Z",
       "containsEmailComponent",
       "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."
+    ],
+    [
+      "fc",
+      "a",
+      "(Lme;[I[BI)Z",
+      "prepareSamples",
+      "Source-purpose review: Loads samples from the sound cache for notes in the instrument mask while observing the decode budget."
+    ],
+    [
+      "fc",
+      "a",
+      "(I)V",
+      "releaseSampleIds",
+      "Source-purpose review: Releases the encoded sample IDs once the decoded instrument samples are ready."
+    ],
+    [
+      "mf",
+      "b",
+      "(Z)V",
+      "releasePatchSampleIds",
+      "Source-purpose review: Walks the loaded instruments and releases their encoded sample ID arrays."
+    ],
+    [
+      "oa",
+      "a",
+      "(IILda;)Lfc;",
+      "loadMusicPatch",
+      "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record."
+    ],
+    [
+      "hg",
+      "a",
+      "(B)V",
+      "releaseReferences",
+      "Source-purpose review: Drops the patch, sample, envelope, and playback stream references after a note ends."
+    ],
+    [
+      "fi",
+      "a",
+      "(II)I",
+      "bitwiseAnd",
+      "Source-purpose review: Returns the bitwise conjunction of the two primitive operands."
+    ],
+    [
+      "ke",
+      "a",
+      "(JJ)J",
+      "bitwiseXor",
+      "Source-purpose review: Returns the exclusive OR of the two primitive operands."
+    ],
+    [
+      "qk",
+      "a",
+      "(II)I",
+      "bitwiseOr",
+      "Source-purpose review: Returns the bitwise disjunction of the two primitive operands."
+    ],
+    [
+      "td",
+      "a",
+      "(JJ)J",
+      "bitwiseOr",
+      "Source-purpose review: Returns the bitwise disjunction of the two primitive operands."
+    ],
+    [
+      "tk",
+      "a",
+      "(JJ)J",
+      "bitwiseAnd",
+      "Source-purpose review: Returns the bitwise conjunction of the two primitive operands."
+    ],
+    [
+      "wa",
+      "a",
+      "(II)I",
+      "bitwiseXor",
+      "Source-purpose review: Returns the exclusive OR of the two primitive operands."
+    ],
+    [
+      "ga",
+      "a",
+      "(BILjava/lang/String;ILrc;ILjava/lang/String;)I",
+      "addLabeledFieldWithValidationMessage",
+      "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height."
+    ],
+    [
+      "ga",
+      "a",
+      "(IILjava/lang/String;Lrc;ILjava/lang/String;)I",
+      "addLabeledFieldWithDefaultValidationMessage",
+      "Source-purpose review: Adds the display name field with the form’s default validation message height."
+    ],
+    [
+      "fk",
+      "a",
+      "([II[III)V",
+      "copyIntRange",
+      "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "fk",
+      "a",
+      "([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "copyObjectRange",
+      "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "pd",
+      "a",
+      "(IIILjava/awt/Graphics;)V",
+      "drawImage",
+      "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position."
+    ],
+    [
+      "pd",
+      "a",
+      "(Ljava/awt/Component;III)V",
+      "initialize",
+      "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size."
+    ],
+    [
+      "oa",
+      "b",
+      "(Z)V",
+      "publishPixelsToConsumer",
+      "Source-purpose review: Pushes the current pixels and frame completion notification to the registered AWT image consumer."
+    ],
+    [
+      "pd",
+      "a",
+      "(Z)V",
+      "setAsRasterTarget",
+      "Source-purpose review: Binds the backing pixel array and its dimensions as the current target for software drawing."
+    ],
+    [
+      "oa",
+      "a",
+      "(IIILjava/awt/Graphics;)V",
+      "drawImage",
+      "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position."
+    ],
+    [
+      "vf",
+      "a",
+      "(IIILjava/awt/Graphics;)V",
+      "drawImage",
+      "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position."
+    ],
+    [
+      "oa",
+      "a",
+      "(Ljava/awt/Component;III)V",
+      "initialize",
+      "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size."
+    ],
+    [
+      "vf",
+      "a",
+      "(Ljava/awt/Component;III)V",
+      "initialize",
+      "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size."
+    ],
+    [
+      "se",
+      "a",
+      "(IIZLrl;II)V",
+      "switchTrack",
+      "Source-purpose review: Starts the requested MIDI track in one synthesizer and sets the direction and rate of the crossfade."
+    ],
+    [
+      "se",
+      "a",
+      "(BLmf;II)V",
+      "configureSynthesizer",
+      "Source-purpose review: Applies the track’s gain and timing settings to the selected MIDI synthesizer."
+    ],
+    [
+      "se",
+      "b",
+      "(II)V",
+      "setVolume",
+      "Source-purpose review: Stores the master gain used to scale both synthesizers when their output is mixed."
+    ],
+    [
+      "fl",
+      "a",
+      "(II)[B",
+      "acquireByteArray",
+      "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array."
+    ],
+    [
+      "of",
+      "a",
+      "(ZI)V",
+      "removeAt",
+      "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size."
+    ],
+    [
+      "of",
+      "a",
+      "(BI)I",
+      "get",
+      "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index."
+    ],
+    [
+      "of",
+      "b",
+      "(II)V",
+      "grow",
+      "Source-purpose review: Allocates a larger backing array and copies the existing entries into it."
+    ],
+    [
+      "of",
+      "a",
+      "(II)I",
+      "computeCapacity",
+      "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy."
+    ],
+    [
+      "of",
+      "a",
+      "(IBI)V",
+      "set",
+      "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed."
+    ],
+    [
+      "of",
+      "c",
+      "(II)V",
+      "append",
+      "Source-purpose review: Inserts an integer at the next index after the current last entry."
+    ],
+    [
+      "of",
+      "b",
+      "(I)I",
+      "size",
+      "Source-purpose review: Returns the number of stored entries as one more than the last occupied index."
     ]
   ],
   "fields": [
