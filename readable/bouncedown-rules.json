@@ -241,6 +241,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ae",
+      "originalName": "ae",
+      "to": "HuffmanDecoder",
+      "evidence": "Decodes successive input bits through an integer trie, resetting to the root for each emitted byte.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:af",
       "originalName": "af",
       "to": "MouseWheelHandler",
@@ -689,6 +696,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:h",
+      "originalName": "h",
+      "to": "DirectSoundBackend",
+      "evidence": "Empty interface implemented by the DirectSound backend that constructs the sound buffer and cursor descriptors.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ha",
       "originalName": "ha",
       "to": "AsyncAssetDownload",
@@ -875,6 +889,13 @@
       "originalName": "ka",
       "to": "MusicPatchPcmStream",
       "evidence": "PCM mixer for the parent MIDI synthesizer musical patch voices,with intrusive voice deque and auxiliary stream mixer for fading/retriggered streams. Constructor allocates deque then mixer and retains the parent with original exception wrapping;mix/skip preserve per-voice countdown,envelope update and retrigger crossfades. Reviewed constructor SHA256s 448bca5fb0e122a03adc78c15ca3d36bcc9b40a75a6daad1dd089966ed9f1600. Naming only. Complete owning PCM API and directly supporting bodies,all91 candidate constructor bodies and independent selected native/class-name-literal scans reviewed. Preserve original fields and default/declaration state,constructor chaining,all JVM widths/domains,guards,literals,overflow,FP/casts,aliases,partial writes,allocation/call/exception ordering,visibility/modifiers and native/override binding identities. No intentional literal/native edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ke",
+      "originalName": "ke",
+      "to": "AchievementSubmission",
+      "evidence": "Holds the achievement index and submission fields queued upon unlocking an achievement and serialized by the score service.",
       "confidence": "reviewed"
     },
     {
@@ -1337,6 +1358,13 @@
       "originalName": "s",
       "to": "ValidationStatusWidget",
       "evidence": "Renders a validator message or fallback text together with a status sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sa",
+      "originalName": "sa",
+      "to": "LeaderboardQuery",
+      "evidence": "Holds the pending query ID and options plus the returned arrays for names, timestamps and scores.",
       "confidence": "reviewed"
     },
     {
@@ -2128,6 +2156,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 4 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 6ea2ac4df02d9e67c19ca95fb60e0a9743e5c5862f19e893a892267c247deb2b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(BLjava/lang/Throwable;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatCompactStackTrace",
+      "evidence": "Source-purpose review: Unwraps a tagged throwable and compacts its printed stack trace to frame names and source line numbers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(ILjava/lang/CharSequence;)I",
+      "originalName": "a",
+      "to": "hashCp1252Name",
+      "evidence": "Source-purpose review: Accumulates the 31-based hash of the encoded name bytes used for archive name lookups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a([BII[BII)I",
+      "originalName": "a",
+      "to": "decodeHuffmanBytes",
+      "evidence": "Source-purpose review: Walks the bitwise decoding trie, emits leaves as bytes, and stops at the requested output count.",
       "confidence": "reviewed"
     },
     {
@@ -3923,6 +3972,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ee.a(ILjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "a",
+      "to": "containsNameOrVariant",
+      "evidence": "Source-purpose review: Checks for the supplied name or its normalized variant after removing underscores, as used by password validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(Lgk;B)Z",
+      "originalName": "a",
+      "to": "tryLoadAllArchiveGroups",
+      "evidence": "Source-purpose review: Returns whether all groups in the specified archive have been loaded.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ef.a(IBLjava/awt/Component;I)V",
       "originalName": "a",
       "to": "initialize",
@@ -4098,10 +4161,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fa.a(BI)Lgk;",
+      "originalName": "a",
+      "to": "openStandardResourceArchive",
+      "evidence": "Source-purpose review: Opens the given resource archive index using the standard archive options.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fa.a(I)J",
       "originalName": "a",
       "to": "correctedCurrentTimeMillis",
       "evidence": "Read System.currentTimeMillis,apply the original retained correction when the sampled clock goes backwards,update the retained sample and return the corrected time where the original guard permits. Preserve synchronization and every game-specific guard,sentinel,recursive call,arithmetic trap and update order. Complete original-body SHA256 78b46a7b456a852bea613e4dfd98638d70c3c5a6374b5b59eac3669704271202. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.b(I)Ljava/lang/Boolean;",
+      "originalName": "b",
+      "to": "consumeLoginResponseFlag",
+      "evidence": "Source-purpose review: Returns the optional flag from the login reply and clears the saved value after consumption.",
       "confidence": "reviewed"
     },
     {
@@ -5057,6 +5134,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hf.a(Ljava/lang/String;Z)Lfb;",
+      "originalName": "a",
+      "to": "findSocialListEntry",
+      "evidence": "Source-purpose review: Normalizes the display name and searches its hash bucket for a matching social list entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(Z)I",
+      "originalName": "a",
+      "to": "pollAccountInterfaceAction",
+      "evidence": "Source-purpose review: Updates the account interface and consumes its pending action, or returns the action implied by login state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.b(Z)I",
+      "originalName": "b",
+      "to": "pollArchiveNetworkConnection",
+      "evidence": "Source-purpose review: Advances the archive socket handshake, detects failures or timeouts, and installs a working connection in the archive network client.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hg.a(BLjava/lang/String;)[B",
       "originalName": "a",
       "to": "loadClientTextBytes",
@@ -5362,6 +5460,27 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 cab2e0875c73becae7ef797ab92eadfec922e198e12f946419027ff4d08d476b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(II)V",
+      "originalName": "a",
+      "to": "resendPendingGameServiceRequests",
+      "evidence": "Source-purpose review: Resends queued achievement submissions and the follow-up service messages when the game connection is ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ILih;)V",
+      "originalName": "a",
+      "to": "copySetPropertiesFrom",
+      "evidence": "Source-purpose review: Copies properties present on a supplied entry, using sentinel checks to retain defaults for absent values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ZLjava/lang/CharSequence;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "validateDisplayName",
+      "evidence": "Source-purpose review: Checks the length, normalization, and spacing rules for player display names and returns the relevant validation message.",
       "confidence": "reviewed"
     },
     {
@@ -6058,10 +6177,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ke.a(I)V",
+      "originalName": "a",
+      "to": "clearAchievementSharedReferences",
+      "evidence": "Source-purpose review: Releases the three shared text references from the achievement submission class during teardown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ke.a(II)I",
       "originalName": "a",
       "to": "roundUpPowerOfTwo",
       "evidence": "Round an integer through decrement,OR with unsigned shifts1,2,4,8,16,and increment. Retain exact signed32-bit overflow,all argument positions,guard thresholds,partial evaluation,early returns,field writes and diagnostic wrappers. Complete original-body SHA256 77f1458a29c2d49703bc76ac343492ae35734bbcaa52df672aa7fa7c4cd85b2a. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.a(Ljava/awt/Canvas;ZZ)V",
+      "originalName": "a",
+      "to": "renderClientFrame",
+      "evidence": "Source-purpose review: Chooses the loading, waiting, game, or menu draw path based on startup and game state.",
       "confidence": "reviewed"
     },
     {
@@ -9670,6 +9803,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sa.a(BLii;)V",
+      "originalName": "a",
+      "to": "writeReflectionCheckResult",
+      "evidence": "Source-purpose review: Waits for the head reflection check’s lookups, writes the check result codes and payload, and removes the completed check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(Ljava/lang/String;ZILjava/lang/String;IILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "pollAccountCreation",
+      "evidence": "Source-purpose review: Wraps the supplied credential fields and delegates to the shared account poller with the registration inputs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.a(Z)V",
       "originalName": "a",
       "to": "clearCp1252ExtensionTable",
@@ -11560,6 +11707,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wi.a(Ltj;Ljava/lang/String;IZLbh;)V",
+      "originalName": "a",
+      "to": "populateTextCharacterOffsets",
+      "evidence": "Source-purpose review: Fills the character X offsets in the line metrics using substring widths, spacing adjustments, and markup boundaries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wi.a(Z)Ljava/lang/String;",
       "originalName": "a",
       "to": "readPrefixedString",
@@ -11571,6 +11725,13 @@
       "originalName": "a",
       "to": "encryptXtea",
       "evidence": "Complete owned body reviewed: Process64-bit blocks using32 XTEA rounds, delta-1640531527 and four indexed int key words. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. Floor(old cursor/8), reset0 before guard modulo, leave processed-end cursor; mask(sum&6638)>>>11 retains key index3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.a([Ltg;IIB)V",
+      "originalName": "a",
+      "to": "setMenuOverlayFrame",
+      "evidence": "Source-purpose review: Installs the frame sprites and inset sizes, then refreshes the overlay dimensions.",
       "confidence": "reviewed"
     },
     {
@@ -11658,6 +11819,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wi.e(B)Z",
+      "originalName": "e",
+      "to": "hasAppletStartupMarker",
+      "evidence": "Source-purpose review: Checks the applet startup marker through the browser cookie helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wi.e(I)I",
       "originalName": "e",
       "to": "readUnsignedShortOrInt",
@@ -11690,6 +11858,13 @@
       "originalName": "g",
       "to": "readNullableString",
       "evidence": "Complete owned body reviewed: Consume null marker or delegate original zero-terminated reader. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. Null marker is consumed before guard modulo on nonzero path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.g(I)V",
+      "originalName": "g",
+      "to": "initializeKeyCodeMappings",
+      "evidence": "Source-purpose review: Sets the platform key mappings for punctuation and related keys during client startup.",
       "confidence": "reviewed"
     },
     {
@@ -11793,7 +11968,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "b28d8bcf6a1ab2c2948dc7a78f919cb61644fa4765ce3c5c532532bf67838250",
+      "bouncedown-names.json": "835707dfd9e3d987a5dc0ef3f19d7475340c644954f89bb90ad64bfda0c1e8eb",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
