@@ -563,6 +563,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ei",
+      "originalName": "ei",
+      "to": "AnimationFrameSet",
+      "evidence": "Loads a group of animation frames, resolves each frame’s shared skeleton, and reuses skeletons during decoding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:el",
       "originalName": "el",
       "to": "IterableNodeHashTable",
@@ -955,6 +962,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mb",
+      "originalName": "mb",
+      "to": "AnimationSkeleton",
+      "evidence": "Decodes the ordered transform types, transform masks, and per-transform vertex and face group labels used by animation frames.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mg",
       "originalName": "mg",
       "to": "LabeledWidgetContainer",
@@ -1319,6 +1333,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sb",
+      "originalName": "sb",
+      "to": "ModelBase",
+      "evidence": "Provides the common base type for source model geometry and the renderable model mesh hierarchy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sd",
       "originalName": "sd",
       "to": "ModalDialogHost",
@@ -1428,6 +1449,13 @@
       "originalName": "uk",
       "to": "CachedArchiveSource",
       "evidence": "Loads the archive index and coordinates local reads and network requests for its packed groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ul",
+      "originalName": "ul",
+      "to": "AnimationFrame",
+      "evidence": "Decodes the per-frame transform indices, axes, flags, and pivot references against a shared animation skeleton.",
       "confidence": "reviewed"
     },
     {
@@ -3034,6 +3062,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bn.a()Z",
+      "originalName": "a",
+      "to": "prepareGroupTransforms",
+      "evidence": "Source-purpose review: Defines the hook that initializes group transforms before the mesh receives animation data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bn.a(I[IIIIZ)V",
       "originalName": "a",
       "to": "applyGroupTransform",
@@ -3045,6 +3080,34 @@
       "originalName": "a",
       "to": "applyMaskedGroupTransform",
       "evidence": "Source-purpose review: Applies the group animation operation subject to vertex and face masks and optional transform coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.a(Lei;ILei;IIIZ)V",
+      "originalName": "a",
+      "to": "applyAnimationFrames",
+      "evidence": "Source-purpose review: Resolves the primary frame and optional compatible second frame, applies the sequence, and finalizes mesh state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.a(Lmb;Lul;Lul;II[ZZZI[I)V",
+      "originalName": "a",
+      "to": "applyInterpolatedFrame",
+      "evidence": "Source-purpose review: Selects or interpolates frame transforms by skeleton slot and applies them to the matching groups with the supplied masks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.a(ZZZ)Lbn;",
+      "originalName": "a",
+      "to": "copyForAnimation",
+      "evidence": "Source-purpose review: Defines the mesh copy requested by the animation caller before applying a frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.b()V",
+      "originalName": "b",
+      "to": "finishAnimationTransforms",
+      "evidence": "Source-purpose review: Defines the hook that the animation driver calls after applying the group transforms.",
       "confidence": "reviewed"
     },
     {
@@ -4805,6 +4868,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.a(B)Z",
+      "originalName": "a",
+      "to": "loadAnimationFrames",
+      "evidence": "Source-purpose review: Loads frame records and their skeleton files, decodes each frame, and returns whether the group is ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(Lr;B)V",
+      "originalName": "a",
+      "to": "loadGameplayModels",
+      "evidence": "Source-purpose review: Loads models and low-detail variants from the archive and builds the software meshes used by the game.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -5155,10 +5232,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fc.a()Z",
+      "originalName": "a",
+      "to": "prepareGroupTransforms",
+      "evidence": "Source-purpose review: Checks that vertex groups are present and clears the shared transform pivot before applying an animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(I)V",
+      "originalName": "a",
+      "to": "drawNearClippedFace",
+      "evidence": "Source-purpose review: Clips the triangle against the near plane and rasterizes the resulting triangle or quadrilateral with the face material.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(II)I",
+      "originalName": "a",
+      "to": "scalePackedColorLightness",
+      "evidence": "Source-purpose review: Scales and clamps the lightness component while preserving the other bits of the packed color.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fc.a(IIIIIIII)Z",
       "originalName": "a",
       "to": "isPointInTriangleBounds",
       "evidence": "Source-purpose review: Rejects points outside the triangle coordinate extrema before the caller performs hit testing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(IIIIIIIJ)V",
+      "originalName": "a",
+      "to": "drawPerspective",
+      "evidence": "Source-purpose review: Rotates and translates the mesh vertices, projects them with perspective division, and dispatches its faces for drawing.",
       "confidence": "reviewed"
     },
     {
@@ -5176,10 +5281,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fc.a(Lfc;)V",
+      "originalName": "a",
+      "to": "appendMesh",
+      "evidence": "Source-purpose review: Appends faces, texture triangles and vertices to an allocated mesh, offsetting source indices by the existing counts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(ZZJII)V",
+      "originalName": "a",
+      "to": "drawSortedFaces",
+      "evidence": "Source-purpose review: Tests projected faces for visibility and pointer hits, then draws the faces in depth and priority order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(ZZLfc;[B[S[I[I[I)Lbn;",
+      "originalName": "a",
+      "to": "copyMeshInto",
+      "evidence": "Source-purpose review: Copies the vertex coordinates into the destination mesh, shares topology, and copies or shares the requested face attributes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(ZZZ)Lbn;",
+      "originalName": "a",
+      "to": "copyForAnimation",
+      "evidence": "Source-purpose review: Returns a mesh copy for the animation caller, reusing scratch storage and copying mutable face attributes when requested.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fc.a([I[I)V",
       "originalName": "a",
       "to": "drawTransformed",
       "evidence": "Source-purpose review: Checks the projected mesh bounds, transforms vertices, and dispatches visible faces for drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.b()V",
+      "originalName": "b",
+      "to": "finishAnimationTransforms",
+      "evidence": "Source-purpose review: Refreshes face lighting when required and invalidates cached mesh bounds after animation transforms.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.b(I)I",
+      "originalName": "b",
+      "to": "clampLightness",
+      "evidence": "Source-purpose review: Clamps a computed face lightness to the range two through 126.",
       "confidence": "reviewed"
     },
     {
@@ -5201,6 +5348,20 @@
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.e()V",
+      "originalName": "e",
+      "to": "calculateBounds",
+      "evidence": "Source-purpose review: Scans vertex extrema and computes horizontal and three-dimensional radii, then marks the bounds cache valid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.f()I",
+      "originalName": "f",
+      "to": "getHorizontalRadius",
+      "evidence": "Source-purpose review: Recomputes stale bounds and returns the radius in the horizontal plane, which the tile-placement code uses when splitting a mesh.",
       "confidence": "reviewed"
     },
     {
@@ -8015,6 +8176,34 @@
       "originalName": "c",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(B)Z",
+      "originalName": "a",
+      "to": "isPlayerListEditDialogOpen",
+      "evidence": "Source-purpose review: Checks whether the player-list add or remove dialog is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getSuggestedLoginName",
+      "evidence": "Source-purpose review: Returns the username from the existing login form, falling back to the saved name and then the supplied account name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(IIBI)Lri;",
+      "originalName": "a",
+      "to": "requestHighScoreTable",
+      "evidence": "Source-purpose review: Reuses the pending request for the table identifier or creates one and sends the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.b(B)V",
+      "originalName": "b",
+      "to": "initializeClientOverlay",
+      "evidence": "Source-purpose review: Runs the shared initializer that builds the client overlay widget hierarchy on entry.",
       "confidence": "reviewed"
     },
     {
@@ -13053,7 +13242,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "02947f92295f2c8ba135872bdd369a0ee5b4c20256d430c1f319bfb49f323c6d",
+      "vertigo2-names.json": "3315e8e1ae84c43e1cb6fa301304f9c06bb3ada271a6f65d05f1a12a555fb681",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

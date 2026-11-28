@@ -689,6 +689,26 @@
       "bn",
       "ModelMesh",
       "Defines the model and animation transform interface, and applies animation frame data through its concrete group transform hooks."
+    ],
+    [
+      "ei",
+      "AnimationFrameSet",
+      "Loads a group of animation frames, resolves each frame’s shared skeleton, and reuses skeletons during decoding."
+    ],
+    [
+      "mb",
+      "AnimationSkeleton",
+      "Decodes the ordered transform types, transform masks, and per-transform vertex and face group labels used by animation frames."
+    ],
+    [
+      "ul",
+      "AnimationFrame",
+      "Decodes the per-frame transform indices, axes, flags, and pivot references against a shared animation skeleton."
+    ],
+    [
+      "sb",
+      "ModelBase",
+      "Provides the common base type for source model geometry and the renderable model mesh hierarchy."
     ]
   ],
   "methods": [
@@ -11338,6 +11358,167 @@
       "([SI[SII)V",
       "copy",
       "Source-purpose review: Copies the requested short-array segment and handles overlapping ranges in either direction."
+    ],
+    [
+      "fc",
+      "f",
+      "()I",
+      "getHorizontalRadius",
+      "Source-purpose review: Recomputes stale bounds and returns the radius in the horizontal plane, which the tile-placement code uses when splitting a mesh."
+    ],
+    [
+      "fc",
+      "b",
+      "(I)I",
+      "clampLightness",
+      "Source-purpose review: Clamps a computed face lightness to the range two through 126."
+    ],
+    [
+      "fc",
+      "a",
+      "(I)V",
+      "drawNearClippedFace",
+      "Source-purpose review: Clips the triangle against the near plane and rasterizes the resulting triangle or quadrilateral with the face material."
+    ],
+    [
+      "fc",
+      "a",
+      "(ZZLfc;[B[S[I[I[I)Lbn;",
+      "copyMeshInto",
+      "Source-purpose review: Copies the vertex coordinates into the destination mesh, shares topology, and copies or shares the requested face attributes."
+    ],
+    [
+      "fc",
+      "a",
+      "(ZZZ)Lbn;",
+      "copyForAnimation",
+      "Source-purpose review: Returns a mesh copy for the animation caller, reusing scratch storage and copying mutable face attributes when requested."
+    ],
+    [
+      "fc",
+      "a",
+      "(IIIIIIIJ)V",
+      "drawPerspective",
+      "Source-purpose review: Rotates and translates the mesh vertices, projects them with perspective division, and dispatches its faces for drawing."
+    ],
+    [
+      "fc",
+      "a",
+      "(ZZJII)V",
+      "drawSortedFaces",
+      "Source-purpose review: Tests projected faces for visibility and pointer hits, then draws the faces in depth and priority order."
+    ],
+    [
+      "fc",
+      "b",
+      "()V",
+      "finishAnimationTransforms",
+      "Source-purpose review: Refreshes face lighting when required and invalidates cached mesh bounds after animation transforms."
+    ],
+    [
+      "fc",
+      "a",
+      "(Lfc;)V",
+      "appendMesh",
+      "Source-purpose review: Appends faces, texture triangles and vertices to an allocated mesh, offsetting source indices by the existing counts."
+    ],
+    [
+      "fc",
+      "a",
+      "()Z",
+      "prepareGroupTransforms",
+      "Source-purpose review: Checks that vertex groups are present and clears the shared transform pivot before applying an animation."
+    ],
+    [
+      "fc",
+      "e",
+      "()V",
+      "calculateBounds",
+      "Source-purpose review: Scans vertex extrema and computes horizontal and three-dimensional radii, then marks the bounds cache valid."
+    ],
+    [
+      "fc",
+      "a",
+      "(II)I",
+      "scalePackedColorLightness",
+      "Source-purpose review: Scales and clamps the lightness component while preserving the other bits of the packed color."
+    ],
+    [
+      "bn",
+      "a",
+      "(Lmb;Lul;Lul;II[ZZZI[I)V",
+      "applyInterpolatedFrame",
+      "Source-purpose review: Selects or interpolates frame transforms by skeleton slot and applies them to the matching groups with the supplied masks."
+    ],
+    [
+      "bn",
+      "a",
+      "(ZZZ)Lbn;",
+      "copyForAnimation",
+      "Source-purpose review: Defines the mesh copy requested by the animation caller before applying a frame."
+    ],
+    [
+      "bn",
+      "a",
+      "()Z",
+      "prepareGroupTransforms",
+      "Source-purpose review: Defines the hook that initializes group transforms before the mesh receives animation data."
+    ],
+    [
+      "bn",
+      "a",
+      "(Lei;ILei;IIIZ)V",
+      "applyAnimationFrames",
+      "Source-purpose review: Resolves the primary frame and optional compatible second frame, applies the sequence, and finalizes mesh state."
+    ],
+    [
+      "bn",
+      "b",
+      "()V",
+      "finishAnimationTransforms",
+      "Source-purpose review: Defines the hook that the animation driver calls after applying the group transforms."
+    ],
+    [
+      "ei",
+      "a",
+      "(B)Z",
+      "loadAnimationFrames",
+      "Source-purpose review: Loads frame records and their skeleton files, decodes each frame, and returns whether the group is ready."
+    ],
+    [
+      "ei",
+      "a",
+      "(Lr;B)V",
+      "loadGameplayModels",
+      "Source-purpose review: Loads models and low-detail variants from the archive and builds the software meshes used by the game."
+    ],
+    [
+      "mb",
+      "a",
+      "(IIBI)Lri;",
+      "requestHighScoreTable",
+      "Source-purpose review: Reuses the pending request for the table identifier or creates one and sends the request."
+    ],
+    [
+      "mb",
+      "a",
+      "(B)Z",
+      "isPlayerListEditDialogOpen",
+      "Source-purpose review: Checks whether the player-list add or remove dialog is active."
+    ],
+    [
+      "mb",
+      "b",
+      "(B)V",
+      "initializeClientOverlay",
+      "Source-purpose review: Runs the shared initializer that builds the client overlay widget hierarchy on entry."
+    ],
+    [
+      "mb",
+      "a",
+      "(I)Ljava/lang/String;",
+      "getSuggestedLoginName",
+      "Source-purpose review: Returns the username from the existing login form, falling back to the saved name and then the supplied account name."
     ]
   ],
   "fields": [
