@@ -5561,10 +5561,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jh.a(B)V",
+      "originalName": "a",
+      "to": "captureCurrentKey",
+      "evidence": "Source-purpose review: Clears the current menu input flags and captures the keyboard event when a pointer button is inactive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(BIIIIII)I",
+      "originalName": "a",
+      "to": "findOptionAt",
+      "evidence": "Source-purpose review: Converts coordinates inside the menu rectangle to an option index and reports a miss outside it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(BZII)V",
+      "originalName": "a",
+      "to": "initializeSelection",
+      "evidence": "Source-purpose review: Initializes menu input mode and chooses the pointer selection or the supplied fallback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jh.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(IB)V",
+      "originalName": "a",
+      "to": "handleArrowNavigation",
+      "evidence": "Source-purpose review: Captures and handles all four arrow keys, wrapping and applying the configured selection fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(III)V",
+      "originalName": "a",
+      "to": "updatePointerSelection",
+      "evidence": "Source-purpose review: Processes press, hover, and available button-repeat state and updates the selected option.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(IIIBI)V",
+      "originalName": "a",
+      "to": "updatePointerSelectionFromBounds",
+      "evidence": "Source-purpose review: Hit-tests the pressed and current pointer locations before updating menu selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(IZI)V",
+      "originalName": "a",
+      "to": "resetPointerSelection",
+      "evidence": "Source-purpose review: Clears the held button and sets the supplied pointer option when pointer mode is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(Z)Z",
+      "originalName": "a",
+      "to": "isClickOrConfirmRequested",
+      "evidence": "Source-purpose review: Tests for a newly captured button press, Enter, or Space.",
       "confidence": "reviewed"
     },
     {
@@ -5582,6 +5638,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jh.c(I)Z",
+      "originalName": "c",
+      "to": "isActivationRequested",
+      "evidence": "Source-purpose review: Tests for the menu activation button event, Enter, or Space.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jh.d(I)Z",
       "originalName": "d",
       "to": "isLeftPressed",
@@ -5593,6 +5656,20 @@
       "originalName": "e",
       "to": "isEndPressed",
       "evidence": "Source-purpose review: Reports whether the saved menu key is End. The original Java key table maps it to 103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.f(I)V",
+      "originalName": "f",
+      "to": "handleVerticalNavigation",
+      "evidence": "Source-purpose review: Captures Up and Down events and moves the selection with wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.g(I)Z",
+      "originalName": "g",
+      "to": "isPointerHeld",
+      "evidence": "Source-purpose review: Tests whether a mouse button is currently held.",
       "confidence": "reviewed"
     },
     {
@@ -11317,7 +11394,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-crazycrystals-rules.mjs": "53fc8845bc15628f5f09948271dc7c15e829375009e924a68e220f175e8a3a65",
-      "crazycrystals-names.json": "6c14f8f8552c9fe5fe46aa4bf2271c49edfa8c1a1a260780ea7563531fe2d9dd",
+      "crazycrystals-names.json": "ffb0b23939e29c93297a764637e344d68a37f350fa1781568f650ba15a85b278",
       "reproduce-crazycrystals.mjs": "c436bdc5e8146e9c16d3dfc08e0152874a520d245840468c38a313fe58094a1c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
