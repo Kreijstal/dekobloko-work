@@ -234,6 +234,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bd",
+      "originalName": "bd",
+      "to": "GameMenuOption",
+      "evidence": "Stores an option action code, label, and selection rectangle sized from the label font.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:be",
       "originalName": "be",
       "to": "PcmStreamMixer",
@@ -654,6 +661,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jb",
+      "originalName": "jb",
+      "to": "GameMenuDialog",
+      "evidence": "Owns option geometry, selection, transition animation, and rendering and input for the in-game dialogs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jf",
       "originalName": "jf",
       "to": "ArchiveNetworkClient",
@@ -1060,10 +1074,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qi",
+      "originalName": "qi",
+      "to": "MenuSelectionInput",
+      "evidence": "Owns the menu selection, pointer and key input, navigation wrapping, and hold repeat timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ql",
       "originalName": "ql",
       "to": "StageDirector",
       "evidence": "Configures each stage and controls tunnel progression, enemy spawning, bosses, and power-up availability.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qn",
+      "originalName": "qn",
+      "to": "HighscoresRequest",
+      "evidence": "An intrusive queued request that retains completion state plus player names, ranking values, and identifiers.",
       "confidence": "reviewed"
     },
     {
@@ -1599,10 +1627,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Confined.a(II[I)V",
+      "originalName": "a",
+      "to": "markEmptySpanPixels",
+      "evidence": "Source-purpose review: Visits raster scanline spans and changes zero-valued pixels to the marker value one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:Confined.c(I)V",
       "originalName": "c",
       "to": "clearClientResources",
       "evidence": "Source-purpose review: Clears remaining client resources after applet shutdown has detached the window components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Confined.c(Z)V",
+      "originalName": "c",
+      "to": "updateGameAndMenu",
+      "evidence": "Source-purpose review: Handles menu transitions, polls UI and input, dispatches the active dialog, and advances the game session.",
       "confidence": "reviewed"
     },
     {
@@ -1620,6 +1662,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Confined.f(B)V",
+      "originalName": "f",
+      "to": "loadGameAssets",
+      "evidence": "Source-purpose review: Loads models, sounds, fonts, and UI resources in stages and sets the game startup-complete flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:Confined.f(I)V",
       "originalName": "f",
       "to": "initializeClient",
@@ -1627,10 +1676,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Confined.g(B)[Lbm;",
+      "originalName": "g",
+      "to": "createDecodedIndexedSprites",
+      "evidence": "Source-purpose review: Constructs indexed sprites from the shared decoder buffers and releases the scratch arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:Confined.h(I)V",
       "originalName": "h",
       "to": "renderClientFrame",
       "evidence": "Source-purpose review: Draws the current client frame after the applet updates the drawing canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Confined.o(I)V",
+      "originalName": "o",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Clears static game references during cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -2075,10 +2138,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bd.a(I)V",
+      "originalName": "a",
+      "to": "continueAsGuest",
+      "evidence": "Source-purpose review: Processes the startup dialog’s Just play option and records the guest continuation result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bd.a(Lkg;B)V",
+      "originalName": "a",
+      "to": "decodePackedMatchStatistics",
+      "evidence": "Source-purpose review: Unpacks adjacent bit fields from the match summary packet into the client statistics.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bd.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7ab652e62c391f796f3f6e799cd5375f42490f39efc59b5d41f606f379177e8a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bd.b(I)V",
+      "originalName": "b",
+      "to": "releaseLoadingBarResources",
+      "evidence": "Source-purpose review: Releases the cached image and font used by the early loading bar.",
       "confidence": "reviewed"
     },
     {
@@ -5516,6 +5600,244 @@
       "originalName": "b",
       "to": "pollArchiveSources",
       "evidence": "Source-purpose review: Polls active providers for pending work and advances their background operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(B)V",
+      "originalName": "a",
+      "to": "drawDialog",
+      "evidence": "Source-purpose review: Draws the animated backdrop and, when open, its standard option rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(BD[D)V",
+      "originalName": "a",
+      "to": "scaleArrayInPlace",
+      "evidence": "Source-purpose review: Multiplies every element of the supplied double array by the scale factor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(BII)I",
+      "originalName": "a",
+      "to": "findOptionAt",
+      "evidence": "Source-purpose review: Returns the option whose rectangle contains the supplied coordinates, or the miss sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(BLbd;)V",
+      "originalName": "a",
+      "to": "addOption",
+      "evidence": "Source-purpose review: Appends an option to the dialog and increments the option count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(I)V",
+      "originalName": "a",
+      "to": "drawLoginRequiredDialog",
+      "evidence": "Source-purpose review: Draws the dialog and explains that the current action requires a logged-in account.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(IIII)V",
+      "originalName": "a",
+      "to": "layoutMenuOptions",
+      "evidence": "Source-purpose review: Measures the options, applies a uniform width, and positions them in centered rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(IZ)Z",
+      "originalName": "a",
+      "to": "handleMainMenuInput",
+      "evidence": "Source-purpose review: Dispatches the selected main-menu action, including opening submenus, adjusting audio, and game transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(Z)Z",
+      "originalName": "a",
+      "to": "advanceClosingAnimation",
+      "evidence": "Source-purpose review: Advances closing animation twice toward the zero phase and reports when it finishes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(ZB)I",
+      "originalName": "a",
+      "to": "drawOrSelectAchievementIcons",
+      "evidence": "Source-purpose review: Paints and hit-tests achievement icons or toggles the clicked icon, then returns the active icon.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(ZI)Z",
+      "originalName": "a",
+      "to": "handleHelpMenuInput",
+      "evidence": "Source-purpose review: Handles help navigation and closing and reports when the input closes the page.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(ZII)V",
+      "originalName": "a",
+      "to": "initializeSelection",
+      "evidence": "Source-purpose review: Initializes pointer or fallback selection from the mouse position and provided default.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.b(B)V",
+      "originalName": "b",
+      "to": "updateLoginRequiredDialog",
+      "evidence": "Source-purpose review: Reads key and pointer input and processes the login-required dialog actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.b(I)V",
+      "originalName": "b",
+      "to": "previousHelpPage",
+      "evidence": "Source-purpose review: Moves the help page back when possible and plays activation feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.b(IZ)Z",
+      "originalName": "b",
+      "to": "handleAchievementsMenuInput",
+      "evidence": "Source-purpose review: Handles login, back navigation, and returning from the achievement dialog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.b(ZB)V",
+      "originalName": "b",
+      "to": "resetPointerSelection",
+      "evidence": "Source-purpose review: Clears the pointer press and selects the option under the current pointer when pointer mode is enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.c(B)V",
+      "originalName": "c",
+      "to": "playSelectionSound",
+      "evidence": "Source-purpose review: Plays a selection-change sound and pans it to the current option position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.c(I)V",
+      "originalName": "c",
+      "to": "calculateDialogBounds",
+      "evidence": "Source-purpose review: Encloses all option rectangles in a padded dialog rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.c(IZ)Z",
+      "originalName": "c",
+      "to": "handleHighscoresMenuInput",
+      "evidence": "Source-purpose review: Handles closing, login actions, board selection, and difficulty selection in highscores.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.d(B)V",
+      "originalName": "d",
+      "to": "drawHelpMenu",
+      "evidence": "Source-purpose review: Draws the help page navigation buttons and numbered help content.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.d(I)V",
+      "originalName": "d",
+      "to": "drawOptionRows",
+      "evidence": "Source-purpose review: Paints option panels, labels, value indicators, and volume sliders.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.d(IZ)Z",
+      "originalName": "d",
+      "to": "handleLoginRequiredDialogInput",
+      "evidence": "Source-purpose review: Dispatches the login action or dismissal and reports whether the dialog consumed the input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.e(B)V",
+      "originalName": "e",
+      "to": "playActivationSound",
+      "evidence": "Source-purpose review: Plays menu activation feedback and pans it to the current option.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.e(I)V",
+      "originalName": "e",
+      "to": "drawAnimatedDialogFrame",
+      "evidence": "Source-purpose review: Draws the dialog backdrop and frame using the current opening or closing phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.f(B)V",
+      "originalName": "f",
+      "to": "drawHighscoresMenu",
+      "evidence": "Source-purpose review: Requests highscores when needed and renders ranks, names, scores, and status text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.f(I)V",
+      "originalName": "f",
+      "to": "drawHelpContent",
+      "evidence": "Source-purpose review: Paints the dialog frame and displays the current help page and page count when open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.g(B)V",
+      "originalName": "g",
+      "to": "updateAchievementsMenu",
+      "evidence": "Source-purpose review: Routes keyboard, pointer, and icon clicks in the achievements dialog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.g(I)V",
+      "originalName": "g",
+      "to": "updateHelpMenu",
+      "evidence": "Source-purpose review: Handles arrow keys for help-page navigation and forwards pointer and close input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.h(B)V",
+      "originalName": "h",
+      "to": "drawAchievementsMenu",
+      "evidence": "Source-purpose review: Draws the achievements shell, icon grid, and details for the hovered or selected icon.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.h(I)V",
+      "originalName": "h",
+      "to": "updateHighscoresMenu",
+      "evidence": "Source-purpose review: Updates highscores dialog selection, category controls, and input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.i(B)V",
+      "originalName": "i",
+      "to": "drawMainMenu",
+      "evidence": "Source-purpose review: Renders the main menu using the standard animated dialog and option painter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.i(I)V",
+      "originalName": "i",
+      "to": "updateMainMenu",
+      "evidence": "Source-purpose review: Drains key and pointer events for the main menu and dispatches its option actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.j(I)V",
+      "originalName": "j",
+      "to": "drawHelpNavigation",
+      "evidence": "Source-purpose review: Draws the help navigation labels and highlight, omitting previous and next at the page bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.k(I)V",
+      "originalName": "k",
+      "to": "advanceHelpPage",
+      "evidence": "Source-purpose review: Moves the help page forward while it is below the last page and plays activation feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.l(I)V",
+      "originalName": "l",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Releases the dialog class’s static strings during shutdown.",
       "confidence": "reviewed"
     },
     {
@@ -9264,6 +9586,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qi.a(I)Z",
+      "originalName": "a",
+      "to": "isHomePressed",
+      "evidence": "Source-purpose review: Checks the stored key for Home.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(II)V",
+      "originalName": "a",
+      "to": "selectOption",
+      "evidence": "Source-purpose review: Changes the selection and marks it changed in keyboard mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(IZI)V",
+      "originalName": "a",
+      "to": "resetPointerSelection",
+      "evidence": "Source-purpose review: Clears the held pointer button and updates selection if pointer mode is enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(ZII)V",
+      "originalName": "a",
+      "to": "updatePointerSelection",
+      "evidence": "Source-purpose review: Updates click, hover, and hold-repeat state and moves selection to the clicked or hovered option.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(ZIII)V",
+      "originalName": "a",
+      "to": "initializeSelection",
+      "evidence": "Source-purpose review: Records the held button and chooses either the pointer selection or the supplied fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.b(B)Z",
+      "originalName": "b",
+      "to": "isNextOptionRequested",
+      "evidence": "Source-purpose review: Signals a next choice for a primary pointer action, Right, Enter, or Space.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.b(I)Z",
+      "originalName": "b",
+      "to": "isRightPressed",
+      "evidence": "Source-purpose review: Checks the stored key for Right.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.c(B)Z",
+      "originalName": "c",
+      "to": "isEndPressed",
+      "evidence": "Source-purpose review: Checks the stored key for End.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.c(I)V",
+      "originalName": "c",
+      "to": "handleVerticalNavigation",
+      "evidence": "Source-purpose review: Captures the key and moves the selection up or down with wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.d(B)Z",
+      "originalName": "d",
+      "to": "isActivationRequested",
+      "evidence": "Source-purpose review: Signals menu activation from a new pointer press, Enter, or Space.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.e(B)Z",
+      "originalName": "e",
+      "to": "isLeftPressed",
+      "evidence": "Source-purpose review: Checks the stored key for Left.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.f(B)Z",
+      "originalName": "f",
+      "to": "isPointerHeld",
+      "evidence": "Source-purpose review: Checks whether a mouse button remains held.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.g(B)Z",
+      "originalName": "g",
+      "to": "isPreviousOptionRequested",
+      "evidence": "Source-purpose review: Signals a previous choice for the secondary pointer action or Left key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.h(B)V",
+      "originalName": "h",
+      "to": "captureCurrentKey",
+      "evidence": "Source-purpose review: Clears transient events and records the key when a pointer button is inactive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -9352,6 +9772,20 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 4 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a(II)V",
+      "originalName": "a",
+      "to": "setTickRate",
+      "evidence": "Source-purpose review: Sets the game tick interval in nanoseconds from the requested rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a(Lmi;I)Z",
+      "originalName": "a",
+      "to": "tryLoadAllArchiveGroups",
+      "evidence": "Source-purpose review: Delegates to the archive’s group loading check on the normal startup path.",
       "confidence": "reviewed"
     },
     {
@@ -12276,7 +12710,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "f5b604bc042ee0c02af241851c6b4bde9000b0568be0458ef564114f57363329",
+      "confined-names.json": "1109e7e4b2e77e29dc1b0d01689abe3473d56d91f5a4630bb950a352f628791d",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
