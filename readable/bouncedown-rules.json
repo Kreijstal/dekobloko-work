@@ -479,6 +479,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ea",
+      "originalName": "ea",
+      "to": "IntrusiveDequeCursor",
+      "evidence": "Holds an independent traversal cursor over an intrusive deque sentinel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eb",
       "originalName": "eb",
       "to": "RegistrationAgreementPane",
@@ -504,6 +511,13 @@
       "originalName": "ef",
       "to": "AwtRasterBuffer",
       "evidence": "Abstract AWT raster buffer with exactly four instance fields:two dimension ints,int pixel array,and Image. Declares initialization/drawing operations implemented by ImageProducer and BufferedImage subclasses,and a final method installing its pixels/dimensions as the software raster target. Entire class source and instance/static member context reviewed;all616class-use spans inventoried and70representative contexts read. Preserve modifiers,implicit constructor/default state,all unrelated statics/field names,full primitive domains/guards/aliases/allocation/exception order and native/override bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:eg",
+      "originalName": "eg",
+      "to": "WeightedCacheEntry",
+      "evidence": "Abstract dual-link entry stores the weight and supplies the value and promotion policy.",
       "confidence": "reviewed"
     },
     {
@@ -602,6 +616,13 @@
       "originalName": "hb",
       "to": "LabeledWidgetContainer",
       "evidence": "Draws a text label beside a child widget using a bitmap font.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hc",
+      "originalName": "hc",
+      "to": "DualLinkNodeHashTable",
+      "evidence": "Stores secondary-linked nodes in power-of-two hash buckets and supports repeated key lookup.",
       "confidence": "reviewed"
     },
     {
@@ -885,6 +906,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ml",
+      "originalName": "ml",
+      "to": "DualLinkNodeDeque",
+      "evidence": "Maintains a circular list through dual-link node pointers with a traversal cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:na",
       "originalName": "na",
       "to": "SoftwareRasterizer",
@@ -945,6 +973,13 @@
       "originalName": "oa",
       "to": "SocketConnector",
       "evidence": "Defines socket creation for a configured host and port and provides the direct connection fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:od",
+      "originalName": "od",
+      "to": "WeightedObjectCache",
+      "evidence": "Tracks remaining cache weight, evicts oldest entries to make room, and promotes entries on access.",
       "confidence": "reviewed"
     },
     {
@@ -1148,6 +1183,13 @@
       "originalName": "sk",
       "to": "WidgetEventListener",
       "evidence": "Common marker interface for the listener stored on a base UI widget. The widget checks narrower listener types before sending hover or focus events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:t",
+      "originalName": "t",
+      "to": "StrongCacheEntry",
+      "evidence": "Holds the cached object directly and reports that strong promotion is unnecessary.",
       "confidence": "reviewed"
     },
     {
@@ -3272,6 +3314,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ea.a(B)Lai;",
+      "originalName": "a",
+      "to": "nextBackward",
+      "evidence": "Source-purpose review: Returns the cursor node and advances along the same backward link as IntrusiveDeque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(I)Lai;",
+      "originalName": "a",
+      "to": "beginForward",
+      "evidence": "Source-purpose review: Starts from the sentinel’s forward neighbor and advances the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(Lai;I)Lai;",
+      "originalName": "a",
+      "to": "beginBackward",
+      "evidence": "Source-purpose review: Starts backward traversal by returning a supplied start node, or the last node when omitted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a([BB)Lie;",
+      "originalName": "a",
+      "to": "createBitmapFontFromDecodedGlyphs",
+      "evidence": "Source-purpose review: Constructs the bitmap font from supplied metrics and decoded glyph arrays, then clears the decoder buffers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Clears only the class’s static object references on the normal cleanup path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.b(Lai;I)Lai;",
+      "originalName": "b",
+      "to": "beginForward",
+      "evidence": "Source-purpose review: Starts forward traversal by returning a supplied start node, or the first node when omitted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.c(I)Lai;",
+      "originalName": "c",
+      "to": "nextForward",
+      "evidence": "Source-purpose review: Returns the cursor node and advances along the forward link until the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.e(I)Lai;",
+      "originalName": "e",
+      "to": "beginBackward",
+      "evidence": "Source-purpose review: Starts at the sentinel’s backward neighbor and advances along the backward link.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eb.a(BIIILwd;)V",
       "originalName": "a",
       "to": "onWidgetActivated",
@@ -3419,10 +3517,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eg.c(B)Z",
+      "originalName": "c",
+      "to": "requiresStrongPromotion",
+      "evidence": "Source-purpose review: Abstract predicate checked before replacing an entry with a strong entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eg.d(I)V",
       "originalName": "d",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.e(I)Ljava/lang/Object;",
+      "originalName": "e",
+      "to": "getValue",
+      "evidence": "Source-purpose review: Abstract operation used by the cache before it refreshes or evicts an entry.",
       "confidence": "reviewed"
     },
     {
@@ -4168,10 +4280,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hc.a(IIB)Ltg;",
+      "originalName": "a",
+      "to": "createFilledSquareSprite",
+      "evidence": "Source-purpose review: Allocates a square sprite and sets every pixel to the supplied color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(JI)Lug;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Source-purpose review: Saves the lookup key, searches its bucket, then leaves the next cursor position ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(JLug;I)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Source-purpose review: Detaches the node from its old secondary list, links it into the selected bucket, and stores its key.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hc.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 aee6e1898f6f47031a82ce8aca5d2dacb60e182b55065695f7ce35c78c83c6bb.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.b(I)Lug;",
+      "originalName": "b",
+      "to": "getNextWithSameKey",
+      "evidence": "Source-purpose review: Resumes the previous lookup and returns the next node with the saved key.",
       "confidence": "reviewed"
     },
     {
@@ -5694,6 +5834,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:m.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Clears the class’s static deque and array references.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:m.a(IJLai;)V",
       "originalName": "a",
       "to": "put",
@@ -5960,10 +6107,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ml.a(B)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "Source-purpose review: Counts secondary-linked nodes until traversal returns to the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.a(BLug;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Source-purpose review: Unlinks the node if necessary, then inserts it immediately before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.a(I)Lug;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "Source-purpose review: Unlinks and returns the sentinel’s first neighbor, returning null when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.b(I)Lug;",
+      "originalName": "b",
+      "to": "nextForward",
+      "evidence": "Source-purpose review: Returns the current cursor node and advances toward the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ml.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 4 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.d(I)Lug;",
+      "originalName": "d",
+      "to": "beginForward",
+      "evidence": "Source-purpose review: Returns the first node and primes the traversal cursor.",
       "confidence": "reviewed"
     },
     {
@@ -6398,6 +6580,41 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 e17dfb2ad6167cd5063b02e7199fd0eb190c7e16babeadc625064bcd9ebcfd56.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:od.a(IJ)V",
+      "originalName": "a",
+      "to": "removeByKey",
+      "evidence": "Source-purpose review: Looks up the keyed entry and delegates removal to the entry helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:od.a(ILeg;)V",
+      "originalName": "a",
+      "to": "removeEntry",
+      "evidence": "Source-purpose review: Unlinks the entry from both collections and restores its weight to free capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:od.a(JI)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Source-purpose review: Looks up the value, removes dead entries, and makes live entries most recent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:od.a(Ljava/lang/Object;JI)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Source-purpose review: Delegates to weighted insertion with the regular insertion flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:od.a(Ljava/lang/Object;JZI)V",
+      "originalName": "a",
+      "to": "putWithWeight",
+      "evidence": "Source-purpose review: Replaces the key and evicts oldest nodes until the requested weight fits.",
       "confidence": "reviewed"
     },
     {
@@ -8207,6 +8424,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:t.c(B)Z",
+      "originalName": "c",
+      "to": "requiresStrongPromotion",
+      "evidence": "Source-purpose review: Returns false because a strong entry already holds its value directly.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.e(I)Ljava/lang/Object;",
+      "originalName": "e",
+      "to": "getValue",
+      "evidence": "Source-purpose review: Returns the directly stored object.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:t.f(I)V",
       "originalName": "f",
       "to": "clearStaticReferences",
@@ -9882,7 +10113,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "dd2ee1997272324f944353486b24a42ba439928696b7edf27392f925249dfd66",
+      "bouncedown-names.json": "9cfaff1388f5e6f44d1da6eb8c9dd3f586abc6ae110bbe57ec90a77e792ff972",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
