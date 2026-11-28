@@ -4602,10 +4602,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vj.a(B)Lmk;",
+      "originalName": "a",
+      "to": "createTerrainProfileBuffer",
+      "evidence": "Source-purpose review: Creates the terrain-profile object with a new zero-initialized 1,440,000-entry height array. Keeps the intermediate remainder evaluation before the assignment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vj.a(BI)V",
       "originalName": "a",
       "to": "loadPackedGroup",
       "evidence": "Source-purpose review: Fetches a packed group from its archive provider and stores raw or wrapped bytes according to the supplied cache policy. Byte other than 109 returns before requesting the group. For the wrapped path retain the byte arithmetic forwarded to the provider.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(BLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A first byte other than 12 invokes numeric group progress with the original constants before lookup.",
       "confidence": "reviewed"
     },
     {
@@ -4620,6 +4634,13 @@
       "originalName": "a",
       "to": "ensureIndexLoaded",
       "evidence": "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. Allocate file table before packed cache on initial success. Nonzero int performs the original nested cached array read and write afterwards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(IB)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte at most 125 returns 71 before group validation.",
       "confidence": "reviewed"
     },
     {
@@ -4651,10 +4672,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vj.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A first int other than 255 returns false before lowercasing. The group-table lookup guard is that int minus 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(ILjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A first int at least -10 invokes the original file reader with two null names before checking the index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vj.a(Ljava/lang/String;B)I",
       "originalName": "a",
       "to": "getGroupIdByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. A final byte at least -75 returns -83 after lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(Ljava/lang/String;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "reverseStringCodeUnits",
+      "evidence": "Source-purpose review: Reverses the order of UTF-16 char units in the supplied string. A final int above -110 triggers the original helper before allocating the character array.",
       "confidence": "reviewed"
     },
     {
@@ -4672,10 +4714,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vj.a(ZLjava/lang/CharSequence;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getAccountNameValidationError",
+      "evidence": "Source-purpose review: With a true guard, returns the original account-name validation message, or null when the name passes validation. The delegate checks the existing name constraints and the allowed characters. False returns null immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.b(B)V",
+      "originalName": "b",
+      "to": "showFullscreenFocusWarningIfDialogActive",
+      "evidence": "Source-purpose review: Shows the original fullscreen focus warning dialog when a dialog is already active. Preserves the readiness branch, intermediate division and delegated dialog type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.b(I)I",
+      "originalName": "b",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. An int other than -16032 writes -39 into a packed-cache byte after loading the index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vj.b(IB)Z",
       "originalName": "b",
       "to": "validateGroupId",
       "evidence": "Source-purpose review: Validates a populated archive group index with the original load, bounds and strict-mode exception branches. For a valid group, byte other than 14 calls the name-based helper with null and the original packed-cache value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.b(II)[B",
+      "originalName": "b",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. The multi-group branch compares the final guard with the complemented file capacity. Its caller passes -2 for the one-slot case.",
       "confidence": "reviewed"
     },
     {
@@ -4711,6 +4781,20 @@
       "originalName": "c",
       "to": "tryLoadGroup",
       "evidence": "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. The post-request fallback is true if the second int differs from 29691.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.d(B)I",
+      "originalName": "d",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. A byte other than 95 copies between nested cache booleans before iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.e(B)I",
+      "originalName": "e",
+      "to": "pollArchiveConnection",
+      "evidence": "Source-purpose review: Advances the archive connection asynchronously through socket acquisition, the archive handshake, reply handling and connection handoff. Preserves the existing retry statuses, timeout, state resets and exception handling.",
       "confidence": "reviewed"
     },
     {
@@ -5094,7 +5178,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-drphlogistonsavestheearth-rules.mjs": "08315c3da5b003a5c650d15e9848760b3143b6b5152cbe9d0b4f811976e18e5b",
-      "drphlogistonsavestheearth-names.json": "4cb61b7e50720781bb21d85f87a7648796b48ce39e8378eba5072a9f0f8757d8",
+      "drphlogistonsavestheearth-names.json": "a2108df2830de975ea29fc973ffb065c239dfec20ab88f2ad3a6389784fc5e1b",
       "reproduce-drphlogistonsavestheearth.mjs": "4eb61234c8f693a5901143e23655851f6692c61799a49e6912b51d62f66d5dfb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

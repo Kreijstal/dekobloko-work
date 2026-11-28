@@ -962,6 +962,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ad.a(IIZZLjava/lang/String;Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "pollLoginHandshake",
+      "evidence": "Source-purpose review: Advances the login state machine, including the original pending returns, reply handling, profile and session setup, and retries. Keeps the existing workflow branches and all state assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A first int other than zero invokes the original bulk group loader before the index check.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ad.a(I[IIB)[B",
       "originalName": "a",
       "to": "getFileWithKeys",
@@ -969,10 +983,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ad.a(Ljava/applet/Applet;Z)V",
+      "originalName": "a",
+      "to": "clearSessionAndReloadPage",
+      "evidence": "Source-purpose review: When the boolean allows it, clears the original browser session value and invokes the page reload helper. False returns before either call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ad.a(Ljava/lang/String;B)I",
       "originalName": "a",
       "to": "getGroupLoadPercentByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the numeric group load progress for the looked-up ID. A final byte other than -81 calls the original string helper before checking readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.a(Ljava/lang/String;IF)V",
+      "originalName": "a",
+      "to": "setLoadingStatus",
+      "evidence": "Source-purpose review: Stores the loading message and its original float progress for the loading screen. Keeps the fallback static-string clear and the runtime exception wrapper.",
       "confidence": "reviewed"
     },
     {
@@ -987,6 +1015,20 @@
       "originalName": "a",
       "to": "getFileByName",
       "evidence": "Source-purpose review: Ensures the archive index is ready, lowercases both names, hashes the group name and validates the looked-up ID, then looks up the file name within that group and returns bytes from the unkeyed reader. Preserves the division after normalizing both names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.a(Ljava/lang/String;ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. False returns true after lowercasing and before the group lookup. The boolean passes through to both name tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.a(Z)Z",
+      "originalName": "a",
+      "to": "isMessageDialogActive",
+      "evidence": "Source-purpose review: Returns the active flag set by message-dialog construction and cleared by dialog cleanup. True also clears the original static string before reading the flag.",
       "confidence": "reviewed"
     },
     {
@@ -1018,6 +1060,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ad.b(Ljava/lang/String;B)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. Preserves the remainder before lowercasing after checking readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.b(Z)I",
+      "originalName": "b",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. False assigns 47 to an instance int before iteration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ad.c(III)Z",
       "originalName": "c",
       "to": "tryLoadFile",
@@ -1029,6 +1085,13 @@
       "originalName": "c",
       "to": "getGroupIdByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. A final byte other than -105 clears a static string before lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.c(Z)Z",
+      "originalName": "c",
+      "to": "hasStatsButtonSetting",
+      "evidence": "Source-purpose review: Checks the original stats-button setting through the current applet. Its delegate uses the existing flag, browser setting and applet parameter. True also clears the original static int array before querying.",
       "confidence": "reviewed"
     },
     {
@@ -4590,7 +4653,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "dedfa4505f72c320cadc3a7bab3f0f6ebc7eb5e7971847b0087ba6ef24e45d66",
+      "monkeypuzzle2-names.json": "e0bab5aea21918ea2b4dd09765f9ebc593891fcab2538bcbfc15dff98f017bb6",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -283,6 +283,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:am",
+      "originalName": "am",
+      "to": "LevelRenderer",
+      "evidence": "Owns the level camera, player render models, visible-object queue, and explosion effects that are drawn each frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bg",
+      "originalName": "bg",
+      "to": "LevelRenderable",
+      "evidence": "Defines shared render entry points and layer information for level tiles, player avatars, and blast fragments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bh",
+      "originalName": "bh",
+      "to": "LevelSimulation",
+      "evidence": "Owns the players, grid tiles and level objects. Loads a level, advances its simulation, constructs snapshots and supplies the scene renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bi",
       "originalName": "bi",
       "to": "SoftwareRasterizer",
@@ -329,6 +350,20 @@
       "originalName": "cj",
       "to": "WidgetContainer",
       "evidence": "UiWidget owning an IntrusiveDeque of child widgets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cn",
+      "originalName": "cn",
+      "to": "LevelCamera",
+      "evidence": "Tracks camera heading and zoom and computes the view transform for player-follow and level-overview modes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cq",
+      "originalName": "cq",
+      "to": "BlastEffectRenderer",
+      "evidence": "Owns the blast animation, expanding particle positions, and animated debris models.",
       "confidence": "reviewed"
     },
     {
@@ -472,10 +507,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hb",
+      "originalName": "hb",
+      "to": "PlayerAvatarRenderer",
+      "evidence": "Owns mesh and animation state for a player avatar and updates it from the player simulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hi",
+      "originalName": "hi",
+      "to": "BlastDebrisModel",
+      "evidence": "Renders one debris model on the blast animation timeline at its stored level coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hk",
       "originalName": "hk",
       "to": "AccountNameAvailabilityValidator",
       "evidence": "Complete instance contract reviewed: constructor plus text/status/reset methods and two private cache fields. Syntax checks precede asynchronous account-name query; completed error-free result cached by exact input, with explicit Name is available/That name is not available diagnostics and valid/invalid/checking result branches. Corresponding already-readable AoG validator is corroborating context, not automatic name transfer. Preserve inherited method names/overrides, every game-specific guard/reset/exception/static helper and default. No native owned/type-use declarations; same-spelling non-class literals, when present, explicitly reviewed and pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ho",
+      "originalName": "ho",
+      "to": "BlastDebrisBatch",
+      "evidence": "Stores an explosion origin, player slot, and a fixed-size list of the affected tile models and their coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -525,6 +581,13 @@
       "originalName": "je",
       "to": "JavaScriptBridge",
       "evidence": "JavaScriptBridge source-purpose review:all3static JSObject.getWindow/call/eval wrapper bodies and380incoming method refs in238human-read windows;preserve all primitive guard domains,null versus supplied Object[] arguments,array/cast/sentinel/arithmetic/exception paths,script literals,static/throws declarations and operation order. Preserve argument-call arithmetic-103%((guard+7)/52) BEFOREgetWindow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jg",
+      "originalName": "jg",
+      "to": "LevelTile",
+      "evidence": "Stores the type, coordinates, discrete grid cell, and animation state of a level tile.",
       "confidence": "reviewed"
     },
     {
@@ -581,6 +644,13 @@
       "originalName": "li",
       "to": "IntrusiveNode",
       "evidence": "Long key plus two reciprocal links; unlink splices both neighbours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lj",
+      "originalName": "lj",
+      "to": "MatchSession",
+      "evidence": "Creates player states, owns the live simulation and its level snapshot, tracks the current level and records the final outcome for the results screen.",
       "confidence": "reviewed"
     },
     {
@@ -717,6 +787,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rn",
+      "originalName": "rn",
+      "to": "MovingLevelTile",
+      "evidence": "Extends a tile with a movement direction, travel limits, and mutable position along the movement axis.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rq",
       "originalName": "rq",
       "to": "MusicPatchPcmStream",
@@ -833,6 +910,13 @@
       "originalName": "wk",
       "to": "AsyncRequest",
       "evidence": "Plain request record with a volatile status and result object.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wo",
+      "originalName": "wo",
+      "to": "PlayerState",
+      "evidence": "Holds the per-player position, velocity, phase and lives. The match creates one state per player. The simulation updates it, renders it and reads it from snapshots.",
       "confidence": "reviewed"
     },
     {
@@ -1312,10 +1396,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:am.a(B)I",
+      "originalName": "a",
+      "to": "getRequestedCameraHeading",
+      "evidence": "Source-purpose review: Returns the requested camera quadrant. Input uses it to choose level-relative directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(BII)V",
+      "originalName": "a",
+      "to": "startFocusTransition",
+      "evidence": "Source-purpose review: Stores the old and new focus-player indices and restarts their interpolation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(I)V",
+      "originalName": "a",
+      "to": "rotateCameraLeft",
+      "evidence": "Source-purpose review: Requests the preceding camera quadrant when the last heading request has been accepted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(III)V",
+      "originalName": "a",
+      "to": "sortRenderQueueByDepth",
+      "evidence": "Source-purpose review: Quicksorts the visible renderables and their distance keys in parallel arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(IIIZLbh;IIII)V",
+      "originalName": "a",
+      "to": "drawMatchFrame",
+      "evidence": "Source-purpose review: Draws the active match view with camera, scene objects, players, particles, and match overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(IILbh;)V",
+      "originalName": "a",
+      "to": "drawLevelSelectionPreview",
+      "evidence": "Source-purpose review: Draws the level-selection preview with the preview camera, player models, and level geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(Lbh;BZI)V",
+      "originalName": "a",
+      "to": "advanceMatchRenderState",
+      "evidence": "Source-purpose review: Advances camera and player animation, consumes newly queued blast effects, and updates the renderer from level state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(Lbh;II)V",
+      "originalName": "a",
+      "to": "advancePreviewRenderState",
+      "evidence": "Source-purpose review: Advances the preview camera and updates avatar animation state as the level phase changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(Z)Z",
+      "originalName": "a",
+      "to": "isFocusTransitionActive",
+      "evidence": "Source-purpose review: Reports whether the previous and target focus-player indices still differ.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(ZILbh;B)V",
+      "originalName": "a",
+      "to": "drawAlternateLevelPreview",
+      "evidence": "Source-purpose review: Draws the other level-selection preview, including its optional backdrop and visible level objects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.b(B)V",
+      "originalName": "b",
+      "to": "rotateCameraRight",
+      "evidence": "Source-purpose review: Requests the next camera quadrant when the last heading request has been accepted.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:am.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.c(B)V",
+      "originalName": "c",
+      "to": "resetAvatarAndBlastEffects",
+      "evidence": "Source-purpose review: Resets player rendering state and expires active blast effects.",
       "confidence": "reviewed"
     },
     {
@@ -1410,10 +1578,318 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bg.a(I)I",
+      "originalName": "a",
+      "to": "getRenderHeight",
+      "evidence": "Source-purpose review: Defines the height used by the world renderer for depth effects and transparency decisions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(IIIIII)V",
+      "originalName": "a",
+      "to": "fillUnclippedRasterRectangle",
+      "evidence": "Source-purpose review: Fills each row of the rectangle using the unbounded span writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(I[IZ[BZ)V",
+      "originalName": "a",
+      "to": "drawWithFaceAlpha",
+      "evidence": "Source-purpose review: Defines the render pass that accepts a per-face transparency array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(Ljava/lang/String;ILjava/lang/String;ZLjava/lang/String;BLmk;)Z",
+      "originalName": "a",
+      "to": "startAccountCreation",
+      "evidence": "Source-purpose review: Opens the account-creation progress panel and records the details for the pending request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(Llg;IIB)Lfc;",
+      "originalName": "a",
+      "to": "buildClippedShadowMesh",
+      "evidence": "Source-purpose review: Defines optional clipping of a projected avatar shadow to the receiving renderable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(Z)I",
+      "originalName": "a",
+      "to": "getShadowSurfaceHeight",
+      "evidence": "Source-purpose review: Provides the default surface height used during avatar shadow projection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(Z[IZZ)V",
+      "originalName": "a",
+      "to": "drawRenderable",
+      "evidence": "Source-purpose review: Defines the ordinary draw pass for all world renderable objects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(B)Lho;",
+      "originalName": "a",
+      "to": "popParticleEffect",
+      "evidence": "Source-purpose review: Returns the most recently registered particle effect and decrements the pending count, or returns null when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(BIII)Ljg;",
+      "originalName": "a",
+      "to": "getTileAt",
+      "evidence": "Source-purpose review: Bounds-checks three grid coordinates, flattens them into a row index and returns the tile or null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(BILed;)V",
+      "originalName": "a",
+      "to": "loadLevel",
+      "evidence": "Source-purpose review: Reads player spawn coordinates, tile grid and dynamic level objects from the indexed level data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bh.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(II)I",
+      "originalName": "a",
+      "to": "getDebrisModelIndex",
+      "evidence": "Source-purpose review: Maps a blasted tile or object type to the model index used when rendering its debris.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(IIBI)I",
+      "originalName": "a",
+      "to": "getTileSlotIndex",
+      "evidence": "Source-purpose review: Flattens the supplied grid coordinates after bounds checks. The ordinary path returns -1 for a coordinate outside the stored grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(IIII)V",
+      "originalName": "a",
+      "to": "updateObjectTravelBounds",
+      "evidence": "Source-purpose review: Searches along the movement axis from the object’s grid location to update lower and upper travel bounds and their blocking tile indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(IIIIIZ)V",
+      "originalName": "a",
+      "to": "applyBlast",
+      "evidence": "Source-purpose review: Removes nearby level objects and tiles around the blast coordinates and records their debris for rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(III[Ljava/lang/String;ILcc;II[Ljava/lang/String;II[Lfe;I)V",
+      "originalName": "a",
+      "to": "drawTutorialEntries",
+      "evidence": "Source-purpose review: Measures the tutorial descriptions, distributes the remaining column height, and draws each icon, heading and description.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(ILwo;ZB)V",
+      "originalName": "a",
+      "to": "resolvePlayerCollisions",
+      "evidence": "Source-purpose review: Updates player collisions against level objects and grid tiles. Handles movable platforms, contact effects, tile-height snapping, and tile visibility marks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(IZ)V",
+      "originalName": "a",
+      "to": "removeLevelObject",
+      "evidence": "Source-purpose review: Removes an indexed object, shifts subsequent slots down when present and decrements the object count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(IZIILwo;)V",
+      "originalName": "a",
+      "to": "applyLevelObjectContact",
+      "evidence": "Source-purpose review: Applies an indexed object’s contact behavior and any player-driven object type change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(IZIZLwo;)I",
+      "originalName": "a",
+      "to": "applyTileTypeEffect",
+      "evidence": "Source-purpose review: Applies the effect of a tile type when the simulation and player are eligible, and returns its replacement type or a sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(IZIZLwo;IIB)V",
+      "originalName": "a",
+      "to": "applyTileContact",
+      "evidence": "Source-purpose review: Applies grid tile effects, including portal transport and block responses, then applies the resulting tile type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(Lmi;I)V",
+      "originalName": "a",
+      "to": "readSimulationSnapshot",
+      "evidence": "Source-purpose review: Reads the timer and phase, restores player snapshots, then conditionally reconstructs the tile grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(Z)Lho;",
+      "originalName": "a",
+      "to": "beginParticleEffect",
+      "evidence": "Source-purpose review: Reserves the next pending effect slot and resets its particle metadata. The full-array branch reuses slot zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(ZB)V",
+      "originalName": "a",
+      "to": "placeSkullOnPaintedTile",
+      "evidence": "Source-purpose review: Selects an eligible painted tile, optionally away from both players, and changes it to a skull-bearing variant.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(ZLbh;)V",
+      "originalName": "a",
+      "to": "copySimulationStateFrom",
+      "evidence": "Source-purpose review: Copies live player, tile, object and phase state from another simulation, reusing destination objects when possible.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(Z[ZI[IZ)Z",
+      "originalName": "a",
+      "to": "tickLevel",
+      "evidence": "Source-purpose review: Advances the level phase and timer, level objects, player input and collision state. Signals when the recovery sequence requires restoring the level.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a([Lwo;II)V",
+      "originalName": "a",
+      "to": "copyOtherPlayerStates",
+      "evidence": "Source-purpose review: Copies each supplied player state except the player at the index to preserve.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.b(B)V",
+      "originalName": "b",
+      "to": "resetToOutcomePlatforms",
+      "evidence": "Source-purpose review: Clears the active level and positions the players on one or two display platforms used by the outcome scenes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.b(I)Z",
+      "originalName": "b",
+      "to": "didSecondPlayerDie",
+      "evidence": "Source-purpose review: Returns the death display flag set for a nonzero player index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.b(IZ)I",
+      "originalName": "b",
+      "to": "getTileContactMask",
+      "evidence": "Source-purpose review: Maps tile or object variants to the mask that the player collision pass combines across contacts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.c(B)Z",
+      "originalName": "c",
+      "to": "canFollowPlayerWithCamera",
+      "evidence": "Source-purpose review: Allows the renderer to use the player-following view during the level phases that retain that view.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.c(I)[Ljg;",
+      "originalName": "c",
+      "to": "getLevelTiles",
+      "evidence": "Source-purpose review: Returns the tile grid consumed by the scene renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.c(IZ)I",
+      "originalName": "c",
+      "to": "getPaintedTilePercent",
+      "evidence": "Source-purpose review: Counts target tiles and objects by color and returns the painted share as a percentage. The HUD passes it to the progress bar.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.d(B)I",
+      "originalName": "d",
+      "to": "updateLevelOutcome",
+      "evidence": "Source-purpose review: Checks for remaining targets and the level timer, advances end-of-level phases and reports a winning index, draw or pending outcome.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.d(I)Z",
+      "originalName": "d",
+      "to": "isLevelOverviewActive",
+      "evidence": "Source-purpose review: Returns the overview flag used by the camera to switch from player tracking to fitting the level bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.e(B)I",
+      "originalName": "e",
+      "to": "getLevelObjectCount",
+      "evidence": "Source-purpose review: Returns the length of the populated prefix of the dynamic level object array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.e(I)Z",
+      "originalName": "e",
+      "to": "shouldSuppressPlayerInput",
+      "evidence": "Source-purpose review: Tests the overview flag for the simulation’s input path. While active, directional input is replaced with zero and jump dismisses the overview.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.f(I)Z",
+      "originalName": "f",
+      "to": "isLevelActive",
+      "evidence": "Source-purpose review: Tests the active simulation phase used to gate player input and the match’s active-play counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.g(I)I",
+      "originalName": "g",
+      "to": "computeSimulationChecksum",
+      "evidence": "Source-purpose review: Combines player positions and velocities, dynamic object state and tile data into an integer state check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.h(I)I",
+      "originalName": "h",
+      "to": "getSimulationPhase",
+      "evidence": "Source-purpose review: Returns the phase used by the simulation state machine and by its scene renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.i(I)V",
+      "originalName": "i",
+      "to": "endOverviewAfterSnapshot",
+      "evidence": "Source-purpose review: Clears the level overview flag after applying a simulation snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.j(I)V",
+      "originalName": "j",
+      "to": "exitLevelOverview",
+      "evidence": "Source-purpose review: Clears the overview flag in response to the jump input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.k(I)Z",
+      "originalName": "k",
+      "to": "didFirstPlayerDie",
+      "evidence": "Source-purpose review: Returns the death display flag set for player index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.l(I)I",
+      "originalName": "l",
+      "to": "getTileSlotCount",
+      "evidence": "Source-purpose review: Returns the number of addressable slots in the current tile grid. Empty slots count too.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.m(I)[Lrn;",
+      "originalName": "m",
+      "to": "getLevelObjects",
+      "evidence": "Source-purpose review: Returns the array of dynamic level objects consumed by the renderer and simulation reconciliation.",
       "confidence": "reviewed"
     },
     {
@@ -1823,10 +2299,129 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cn.a(BIIIIII)V",
+      "originalName": "a",
+      "to": "computeCameraTransform",
+      "evidence": "Source-purpose review: Fills the translation and rotation components of the camera transform from follow angles or the overview look-at target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(BLjava/lang/String;CLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "replaceCharacterInString",
+      "evidence": "Source-purpose review: Replaces all occurrences of a character with the supplied string.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(I)V",
+      "originalName": "a",
+      "to": "advanceCameraMotion",
+      "evidence": "Source-purpose review: Moves zoom, heading and pitch toward their requested values and advances the overview orbit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(II)V",
+      "originalName": "a",
+      "to": "setCameraMode",
+      "evidence": "Source-purpose review: Updates the camera mode and selects the pitch and zoom targets associated with it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(IIII)V",
+      "originalName": "a",
+      "to": "updateViewTransform",
+      "evidence": "Source-purpose review: Builds the view transform from player tracking coordinates or the stored overview orbit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(IIIZIII)V",
+      "originalName": "a",
+      "to": "startLevelOverview",
+      "evidence": "Source-purpose review: Enters overview mode and centers its look-at target within the specified world bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(Led;I)V",
+      "originalName": "a",
+      "to": "writeRandomDatBytes",
+      "evidence": "Source-purpose review: Writes the 24-byte random.dat payload used in the login block, handling zero-filled or unreadable data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(Z)Z",
+      "originalName": "a",
+      "to": "hasAcceptedRequestedHeading",
+      "evidence": "Source-purpose review: Checks whether the requested camera quadrant matches the accepted turn target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.b(I)I",
+      "originalName": "b",
+      "to": "getPreviousCameraMode",
+      "evidence": "Source-purpose review: Returns the former camera mode until the transition reaches the new pitch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.b(Z)Z",
+      "originalName": "b",
+      "to": "isLocalPlayerLobbyHost",
+      "evidence": "Source-purpose review: Tests whether the lobby’s host player ID matches the local player ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.c(I)I",
+      "originalName": "c",
+      "to": "getCameraMode",
+      "evidence": "Source-purpose review: Returns the active camera mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.d(I)V",
+      "originalName": "d",
+      "to": "resetCameraZoomTransition",
+      "evidence": "Source-purpose review: Sets the zoom target, starts from a quarter of that distance, and resets pitch and heading for the transition.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cp.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.a(B)V",
+      "originalName": "a",
+      "to": "advanceBlastEffect",
+      "evidence": "Source-purpose review: Advances the animation clock and particle positions, damping outward velocities as the effect ages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.a(I)V",
+      "originalName": "a",
+      "to": "expireBlastEffect",
+      "evidence": "Source-purpose review: Sets the elapsed time to the expiry threshold so its debris stops rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.a(IIII[[IB)V",
+      "originalName": "a",
+      "to": "startBlastEffect",
+      "evidence": "Source-purpose review: Initializes the blast particles and debris at the supplied coordinates and restarts the animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.a([II)V",
+      "originalName": "a",
+      "to": "drawBlastEffect",
+      "evidence": "Source-purpose review: Draws blast particles and its animated center model using the given camera transform.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.b(I)[Lhi;",
+      "originalName": "b",
+      "to": "getActiveDebrisModels",
+      "evidence": "Source-purpose review: Returns the debris array while the effect passes the caller’s age limit.",
       "confidence": "reviewed"
     },
     {
@@ -3006,10 +3601,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hb.a(I)I",
+      "originalName": "a",
+      "to": "getRenderHeight",
+      "evidence": "Source-purpose review: Exposes the avatar’s current world height through the shared rendering contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(IB)V",
+      "originalName": "a",
+      "to": "requestAvatarAnimation",
+      "evidence": "Source-purpose review: Requests an avatar animation and switches when the current animation permits interruption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(II)V",
+      "originalName": "a",
+      "to": "setPlayerSlot",
+      "evidence": "Source-purpose review: Records the player slot used to associate the renderable with its simulation player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(IIII)I",
+      "originalName": "a",
+      "to": "getRenderDepthKey",
+      "evidence": "Source-purpose review: Returns the squared distance from the tracked avatar origin to the supplied render origin with a fixed avatar-specific bias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(I[IZ[BZ)V",
+      "originalName": "a",
+      "to": "drawWithFaceAlpha",
+      "evidence": "Source-purpose review: Applies the supplied transparency to eligible avatar faces before drawing its current mesh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(Lwo;B)V",
+      "originalName": "a",
+      "to": "advanceAvatarAnimation",
+      "evidence": "Source-purpose review: Advances avatar and overlay animation clocks and selects poses and models from current player state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(ZLwo;)V",
+      "originalName": "a",
+      "to": "syncPlayerPosition",
+      "evidence": "Source-purpose review: Copies x, y and height from player simulation state to the avatar renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(Z[IZZ)V",
+      "originalName": "a",
+      "to": "drawRenderable",
+      "evidence": "Source-purpose review: Draws the current avatar mesh at its world position with the supplied camera transform.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.b(B)I",
+      "originalName": "b",
+      "to": "getMouseIdleTicks",
+      "evidence": "Source-purpose review: Returns the mouse inactivity counter used by the client’s idle handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.b(I)I",
+      "originalName": "b",
+      "to": "getPlayerSlot",
+      "evidence": "Source-purpose review: Returns the player slot assigned to this avatar renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.b(IIIIII)V",
+      "originalName": "b",
+      "to": "fillClippedRasterRectangle",
+      "evidence": "Source-purpose review: Clamps horizontal and vertical bounds before filling each visible raster span.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.b(Z)V",
+      "originalName": "b",
+      "to": "prepareAnimatedAvatarMesh",
+      "evidence": "Source-purpose review: Rebuilds the dirty avatar mesh, applies the active animation and optional overlay, and transforms the model for drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.c(B)Llg;",
+      "originalName": "c",
+      "to": "createAvatarShadowMesh",
+      "evidence": "Source-purpose review: Builds the shadow mesh using either the default silhouette or the current avatar mesh with shadow face settings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hb.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.c(Z)I",
+      "originalName": "c",
+      "to": "getAvatarAnimationId",
+      "evidence": "Source-purpose review: Returns the animation identifier last requested or selected for this avatar.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.d(I)V",
+      "originalName": "d",
+      "to": "resetAvatarAnimation",
+      "evidence": "Source-purpose review: Restarts avatar animation at its initial state and clears transitional flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.e(I)V",
+      "originalName": "e",
+      "to": "releaseStartupFontAndImage",
+      "evidence": "Source-purpose review: Clears the startup font and image references when the main assets have loaded.",
       "confidence": "reviewed"
     },
     {
@@ -3034,6 +3741,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hi.a(BIII)I",
+      "originalName": "a",
+      "to": "getRenderDepthKey",
+      "evidence": "Source-purpose review: Returns the squared offset from the camera plus the debris sort bias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(BLjava/lang/CharSequence;)Z",
+      "originalName": "a",
+      "to": "isValidPlayerName",
+      "evidence": "Source-purpose review: Validates the player-name structure and checks every character against the allowed set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(I)I",
+      "originalName": "a",
+      "to": "getRenderHeight",
+      "evidence": "Source-purpose review: Uses a zero height for the blast debris model in the shared rendering height calculation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(IIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawClippedCubicCurve",
+      "evidence": "Source-purpose review: Draws a cubic curve with a fast in-bounds path and falls back to clipping when a control point is outside the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(IIIIILwg;)V",
+      "originalName": "a",
+      "to": "setDebrisModelAndPosition",
+      "evidence": "Source-purpose review: Stores the debris model variant, its world coordinates, and the shared blast animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(I[IZ[BZ)V",
+      "originalName": "a",
+      "to": "drawWithFaceAlpha",
+      "evidence": "Source-purpose review: Implements the shared alpha-capable draw entry point by drawing the debris’s animated mesh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(Lr;I)V",
+      "originalName": "a",
+      "to": "preloadLogoVorbisAudio",
+      "evidence": "Source-purpose review: Loads the shared Vorbis headers and preloads the Jagex logo audio.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(Z[IZZ)V",
+      "originalName": "a",
+      "to": "drawRenderable",
+      "evidence": "Source-purpose review: Routes the ordinary render pass through the current animated debris model.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.b(B)V",
+      "originalName": "b",
+      "to": "checkDebrisTickGuard",
+      "evidence": "Source-purpose review: Evaluates the argument guard at the per-fragment tick call. The shared blast renderer advances the animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.b(I)Lcr;",
+      "originalName": "b",
+      "to": "getIgnoreListContent",
+      "evidence": "Source-purpose review: Returns the content container for the ignore-list rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.c(B)Z",
+      "originalName": "c",
+      "to": "isReconnectLoginActive",
+      "evidence": "Source-purpose review: Returns whether the client is currently attempting to reconnect to an existing login.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hi.d(B)V",
       "originalName": "d",
       "to": "resetStaticState",
@@ -3052,6 +3836,48 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(I)V",
+      "originalName": "a",
+      "to": "openStartupLogin",
+      "evidence": "Source-purpose review: Switches from the startup sequence to the login interface and resets the interface counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(IIIII)V",
+      "originalName": "a",
+      "to": "addDebrisModel",
+      "evidence": "Source-purpose review: Appends a debris model type and its three coordinates if the batch has room.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(IZ)V",
+      "originalName": "a",
+      "to": "layoutLobbyPanels",
+      "evidence": "Source-purpose review: Resizes and arranges the lobby header, player list panels and footer controls for the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(IZI)V",
+      "originalName": "a",
+      "to": "refreshSocialListPanels",
+      "evidence": "Source-purpose review: Refreshes the friends and ignore panels and adds the remove-friend action when the friends refresh returns a selected row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.b(I)V",
+      "originalName": "b",
+      "to": "clearDebrisModels",
+      "evidence": "Source-purpose review: Clears debris model slots and resets the batch’s entry count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.c(I)V",
+      "originalName": "c",
+      "to": "clearBlastDebrisBatchGlobals",
+      "evidence": "Source-purpose review: Releases the shared texts and lookup array during shutdown.",
       "confidence": "reviewed"
     },
     {
@@ -3332,6 +4158,111 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(BI)V",
+      "originalName": "a",
+      "to": "setTileTypeAndAnimation",
+      "evidence": "Source-purpose review: Updates tile type and derived flags and selects its corresponding animated model when applicable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(I)I",
+      "originalName": "a",
+      "to": "getRenderHeight",
+      "evidence": "Source-purpose review: Returns the tile’s world height for the renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(IB)V",
+      "originalName": "a",
+      "to": "changeTileType",
+      "evidence": "Source-purpose review: Applies a new tile type and resets its derived animation state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(IIII)I",
+      "originalName": "a",
+      "to": "getRenderDepthKey",
+      "evidence": "Source-purpose review: Computes the squared offset from the camera for tile ordering, from the center and vertical offset of the tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(I[IZ[BZ)V",
+      "originalName": "a",
+      "to": "drawWithFaceAlpha",
+      "evidence": "Source-purpose review: Draws tile geometry and its overlays with the provided face transparency values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(JI)Lbs;",
+      "originalName": "a",
+      "to": "findLobbyPlayerById",
+      "evidence": "Source-purpose review: Looks up the lobby player record keyed by the supplied account identifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(Ljg;I)V",
+      "originalName": "a",
+      "to": "copyTileStateFrom",
+      "evidence": "Source-purpose review: Copies tile coordinates, type flags, and animation state from a source tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(Llg;IIB)Lfc;",
+      "originalName": "a",
+      "to": "buildClippedShadowMesh",
+      "evidence": "Source-purpose review: Clips the supplied avatar shadow mesh along the tile’s horizontal bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(Z)I",
+      "originalName": "a",
+      "to": "getShadowSurfaceHeight",
+      "evidence": "Source-purpose review: Returns this tile’s world height as the receiving shadow plane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(Z[IZZ)V",
+      "originalName": "a",
+      "to": "drawRenderable",
+      "evidence": "Source-purpose review: Draws a tile with its ordinary face opacity and performs optional animation setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.b(I)Z",
+      "originalName": "b",
+      "to": "tickAndCheckExpired",
+      "evidence": "Source-purpose review: Advances the tile timer and animation and reports when a temporary tile should be removed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.b(IIIIII)Z",
+      "originalName": "b",
+      "to": "intersectsCollisionBounds",
+      "evidence": "Source-purpose review: Tests horizontal overlap with the tile and whether the queried height lies in its collision interval.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.b(Z)V",
+      "originalName": "b",
+      "to": "clearLevelTileGlobals",
+      "evidence": "Source-purpose review: Clears shared tile text, lookup and panel references during shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.c(I)V",
+      "originalName": "c",
+      "to": "startFanStopAnimation",
+      "evidence": "Source-purpose review: Switches a spinning fan tile to its stop animation when a player moves out of range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.c(Z)V",
+      "originalName": "c",
+      "to": "startFanAnimationIfIdle",
+      "evidence": "Source-purpose review: Starts the fan animation when the tile has no active animation.",
       "confidence": "reviewed"
     },
     {
@@ -3720,10 +4651,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lj.a(B)V",
+      "originalName": "a",
+      "to": "openChatPanel",
+      "evidence": "Source-purpose review: Passes the panel templates to the routine that opens and lays out the chat panel and selects the available chat prompt.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(BI)V",
+      "originalName": "a",
+      "to": "finishMatch",
+      "evidence": "Source-purpose review: Stores the result index and sets the completed flag that makes subsequent game updates return early.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(I)I",
+      "originalName": "a",
+      "to": "getLocalTilesPainted",
+      "evidence": "Source-purpose review: Returns the number painted by the local player selected by the session. The match information panel displays this value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(II)V",
+      "originalName": "a",
+      "to": "setLevelIndex",
+      "evidence": "Source-purpose review: Stores the level index XORed with the key used by its getter. Called when starting and advancing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(IZ)V",
+      "originalName": "a",
+      "to": "advanceOrReloadLevel",
+      "evidence": "Source-purpose review: Advances the index unless reloading, then resets level-specific player state, loads the level and refreshes the snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(IZI)I",
+      "originalName": "a",
+      "to": "floorDivideByPositive",
+      "evidence": "Source-purpose review: Produces a floor-division quotient for positive divisors. Grid callers use it to retain the correct cell index for negative positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(Lmi;B)V",
+      "originalName": "a",
+      "to": "applySimulationSnapshot",
+      "evidence": "Source-purpose review: Reads a bit-packed snapshot into the live simulation and updates its post-restore state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a([II[Z)V",
+      "originalName": "a",
+      "to": "tickMatch",
+      "evidence": "Source-purpose review: Advances the live level, consumes any level restore request, updates the standings and handles level completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.b(B)I",
+      "originalName": "b",
+      "to": "getWinningPlayerIndex",
+      "evidence": "Source-purpose review: Reads the outcome index. The results renderer selects the winning name for indices zero and one, with a separate draw branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.b(I)I",
+      "originalName": "b",
+      "to": "getLevelIndex",
+      "evidence": "Source-purpose review: Decodes the current level index, which selects an entry from the mode-specific level array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.c(B)Lbh;",
+      "originalName": "c",
+      "to": "copyLevelSimulation",
+      "evidence": "Source-purpose review: Creates a fresh player array and level simulation, fills it from the live simulation and returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.c(I)Z",
+      "originalName": "c",
+      "to": "hasReachedLevelLimit",
+      "evidence": "Source-purpose review: Checks whether the level index has passed the available entries or the configured round count has been reached.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lj.d(I)V",
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.e(I)V",
+      "originalName": "e",
+      "to": "requestLevelRestore",
+      "evidence": "Source-purpose review: Sets the restore flag when the argument matches the encoded mode. The update consumes it by restoring live simulation from its stored snapshot.",
       "confidence": "reviewed"
     },
     {
@@ -4546,6 +5568,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:r.a(IB)Z",
+      "originalName": "a",
+      "to": "tryLoadFlatFile",
+      "evidence": "Source-purpose review: In a one-slot archive uses the supplied ID as a file ID in group zero. Otherwise uses it as a group ID when the group has one addressable file slot. Delegates availability to the numeric file loader. Preserves the division before the final exception.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.a(II)[I",
+      "originalName": "a",
+      "to": "getFileIds",
+      "evidence": "Source-purpose review: Returns stored sparse file IDs or synthesizes zero through file count minus one. A nonzero first int returns null after validating the group.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:r.a(IIB)[B",
       "originalName": "a",
       "to": "getFile",
@@ -4588,10 +5624,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:r.a(Ljava/lang/String;Ljava/lang/String;Z)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. True triggers a bulk load attempt with the original cache byte after group validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.a(ZI)[B",
+      "originalName": "a",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. False sets the instance int to -20 after the single-group branch and before validating the group.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:r.b(I)Z",
       "originalName": "b",
       "to": "ensureIndexLoaded",
       "evidence": "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. Nonzero int invokes r.a(82) before testing the index. Allocate packed cache before file table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.b(IB)I",
+      "originalName": "b",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte at least -27 clears the packed group array after validation.",
       "confidence": "reviewed"
     },
     {
@@ -4616,6 +5673,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:r.b(Ljava/lang/String;I)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. Index guard uses the final int plus one. The final comparison uses the complement of the lookup ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.c(I)I",
+      "originalName": "c",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. Checks readiness with the guard XOR itself.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:r.c(IB)Z",
       "originalName": "c",
       "to": "validateGroupId",
@@ -4627,6 +5698,20 @@
       "originalName": "c",
       "to": "tryLoadGroup",
       "evidence": "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. A miss after the request returns a nested cache boolean when the first int differs from 11321.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.c(Ljava/lang/String;I)Z",
+      "originalName": "c",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Index loading uses int XOR itself. Group-table lookup uses the int plus one and the loader guard adds 11321.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.d(I)I",
+      "originalName": "d",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. Returns 100 when the supplied int equals the complement of the accumulated capacity. All three callers pass -1.",
       "confidence": "reviewed"
     },
     {
@@ -4900,6 +5985,90 @@
       "originalName": "g",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(IB)V",
+      "originalName": "a",
+      "to": "changeTileType",
+      "evidence": "Source-purpose review: Changes the moving tile type while conditionally retaining the movement cycle clock.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(ILsi;)V",
+      "originalName": "a",
+      "to": "playMusicTrackLooped",
+      "evidence": "Source-purpose review: Starts the supplied music track at the standard volume with looping enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(IZ)V",
+      "originalName": "a",
+      "to": "applyTileContactVariant",
+      "evidence": "Source-purpose review: Applies the contact-driven tile variant and retains the cycle clock for timed activation tiles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(I[IZ[BZ)V",
+      "originalName": "a",
+      "to": "drawWithFaceAlpha",
+      "evidence": "Source-purpose review: Draws moving tile meshes and their overlays with the supplied face transparency values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(Lmi;I)V",
+      "originalName": "a",
+      "to": "readMovingTileFromBits",
+      "evidence": "Source-purpose review: Decodes the type, travel settings, timer, coordinates, visibility and velocity from the level snapshot bitstream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(Lrn;I)V",
+      "originalName": "a",
+      "to": "copyMovingTileStateFrom",
+      "evidence": "Source-purpose review: Copies the base tile state and the moving tile’s direction, position and movement bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(Lwo;B)Z",
+      "originalName": "a",
+      "to": "isPlayerWithinContactRange",
+      "evidence": "Source-purpose review: Tests the player against the tile’s centered horizontal footprint and upper contact height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(Z[IZZ)V",
+      "originalName": "a",
+      "to": "drawRenderable",
+      "evidence": "Source-purpose review: Draws an active moving tile using its ordinary face opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.b(B)Z",
+      "originalName": "b",
+      "to": "isTileActive",
+      "evidence": "Source-purpose review: Exposes the activation flag that gates moving tile surface rendering and collision.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.b(I)Z",
+      "originalName": "b",
+      "to": "tickAndCheckExpired",
+      "evidence": "Source-purpose review: Advances the base tile animation and updates the moving tile position, returning the base expiry state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.b(IIIIII)Z",
+      "originalName": "b",
+      "to": "intersectsCollisionBounds",
+      "evidence": "Source-purpose review: Tests the inherited tile bounds when the moving tile is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.d(I)V",
+      "originalName": "d",
+      "to": "initializeMovementSpeed",
+      "evidence": "Source-purpose review: Sets the movement velocity according to the moving tile’s travel mode.",
       "confidence": "reviewed"
     },
     {
@@ -5736,6 +6905,314 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wo.a(B)V",
+      "originalName": "a",
+      "to": "resetPhaseAndJetpack",
+      "evidence": "Source-purpose review: Resets the player phase and jetpack count when the level transitions out of its completion sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(BI)Z",
+      "originalName": "a",
+      "to": "updateMovementInput",
+      "evidence": "Source-purpose review: Stores the current directional bitmask and returns whether it changed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(BZ)V",
+      "originalName": "a",
+      "to": "tickPlayerState",
+      "evidence": "Source-purpose review: Advances phase timers and transitions, applies movement input and gravity, and integrates the position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(I)Z",
+      "originalName": "a",
+      "to": "canApplyTileEffects",
+      "evidence": "Source-purpose review: Separates the death, recovery and game-over phases from states that accept tile effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(II)Z",
+      "originalName": "a",
+      "to": "isOdd",
+      "evidence": "Source-purpose review: Tests whether the supplied integer has its low bit set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(III)I",
+      "originalName": "a",
+      "to": "recordTileContact",
+      "evidence": "Source-purpose review: Appends the tile index to the collision contacts when absent and returns the updated contact count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "beginTeleport",
+      "evidence": "Source-purpose review: Stores the portal destination and starts the delayed position transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(IIIIZI)V",
+      "originalName": "a",
+      "to": "drawPlayerHud",
+      "evidence": "Source-purpose review: Draws lives, power-up inventories, score or match figures, and the respawn countdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(IIZIII)V",
+      "originalName": "a",
+      "to": "appendPlayerMatchStats",
+      "evidence": "Source-purpose review: Appends the decoded player statistics and an outcome ratio to the match statistics arrays, then advances the insertion cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(ILmi;)V",
+      "originalName": "a",
+      "to": "readPlayerSnapshot",
+      "evidence": "Source-purpose review: Reads the compact player-state fields from a bit packet inside simulation snapshot deserialization.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(IZIZII)I",
+      "originalName": "a",
+      "to": "applyContactEffect",
+      "evidence": "Source-purpose review: Applies the effect of a contacted tile or object to player state and returns a replacement type when needed. Includes painting, pickups, surface behavior and death.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(Lwo;I)V",
+      "originalName": "a",
+      "to": "copyPlayerStateFrom",
+      "evidence": "Source-purpose review: Copies mutable position, velocity, lives, phase and event flags from a supplied player state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(Z)Z",
+      "originalName": "a",
+      "to": "consumeCheckpointReached",
+      "evidence": "Source-purpose review: Consumes the flag set on the checkpoint tile. The match responds by refreshing its stored simulation snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(ZI)V",
+      "originalName": "a",
+      "to": "setLives",
+      "evidence": "Source-purpose review: Sets the life count. Retrying a level passes the previous count minus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.a(ZII)V",
+      "originalName": "a",
+      "to": "resolveHorizontalCollision",
+      "evidence": "Source-purpose review: Restores the previous planar position and reverses or damps velocity for one collision branch. The other pushes the player away from the supplied center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.b(B)V",
+      "originalName": "b",
+      "to": "resetPlayerPhase",
+      "evidence": "Source-purpose review: Restores the phase to zero. The alternate-argument path also invokes the original phase helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.b(I)I",
+      "originalName": "b",
+      "to": "getPlayerPhase",
+      "evidence": "Source-purpose review: Returns the phase used by simulation transitions and animation selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.b(II)V",
+      "originalName": "b",
+      "to": "setVerticalVelocity",
+      "evidence": "Source-purpose review: Updates the velocity component along the level height axis except in the guarded player phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.b(Z)V",
+      "originalName": "b",
+      "to": "resetAtSpawn",
+      "evidence": "Source-purpose review: Clears movement and other transient state and restores the three spawn coordinates recorded during level loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.c(B)I",
+      "originalName": "c",
+      "to": "getVerticalVelocity",
+      "evidence": "Source-purpose review: Returns the velocity applied along the height axis. Collision handling uses it to distinguish upward and downward contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.c(I)V",
+      "originalName": "c",
+      "to": "handleJumpPress",
+      "evidence": "Source-purpose review: Handles a jump button press, including the double-tap jetpack path and the ordinary delayed takeoff.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.c(II)V",
+      "originalName": "c",
+      "to": "setFacingAngle",
+      "evidence": "Source-purpose review: Stores the angle derived from planar velocity. The renderer interpolates this angle over the 2048-unit turn.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.c(Z)Z",
+      "originalName": "c",
+      "to": "hasJetpackCharge",
+      "evidence": "Source-purpose review: Tests the jetpack charge count used by the character animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.d(B)V",
+      "originalName": "d",
+      "to": "addLife",
+      "evidence": "Source-purpose review: Adds one life and clamps the count to fifteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.d(I)V",
+      "originalName": "d",
+      "to": "clearSkullMarker",
+      "evidence": "Source-purpose review: Clears the carried skull marker at the point where the simulation places a replacement skull.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.d(Z)V",
+      "originalName": "d",
+      "to": "resetForLevel",
+      "evidence": "Source-purpose review: Clears level-specific counters and restores the accumulated value from its saved field before each level load.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.e(B)V",
+      "originalName": "e",
+      "to": "tryUseDynamite",
+      "evidence": "Source-purpose review: Consumes a dynamite charge when standing in an eligible phase and starts the countdown to detonation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.e(I)V",
+      "originalName": "e",
+      "to": "tryUseJetpack",
+      "evidence": "Source-purpose review: Checks the available jetpack charges and starts powered movement when the phase permits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.e(Z)Z",
+      "originalName": "e",
+      "to": "isInDeathRecovery",
+      "evidence": "Source-purpose review: Tests the recovery phase entered after the death countdown when lives remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.f(B)Z",
+      "originalName": "f",
+      "to": "isGameOver",
+      "evidence": "Source-purpose review: Tests the terminal player phase entered when the death countdown ends and no lives remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.f(I)Z",
+      "originalName": "f",
+      "to": "isMovingDownward",
+      "evidence": "Source-purpose review: Tests whether the height-axis velocity is positive. Positive velocity moves the player toward the lower level boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.g(B)I",
+      "originalName": "g",
+      "to": "getTilesPainted",
+      "evidence": "Source-purpose review: Returns the count incremented by tile painting. The match information panel displays it under Tiles painted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.g(I)V",
+      "originalName": "g",
+      "to": "clearCollisionContacts",
+      "evidence": "Source-purpose review: Fills the dynamic object and tile collision index arrays with the empty sentinel before each simulation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.h(B)Z",
+      "originalName": "h",
+      "to": "isOutOfLives",
+      "evidence": "Source-purpose review: Tests the same life count used for retries. The retry action is available when the test is false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.h(I)I",
+      "originalName": "h",
+      "to": "getMovementInput",
+      "evidence": "Source-purpose review: Returns the directional bitmask consumed by the movement update and the movement animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.i(B)V",
+      "originalName": "i",
+      "to": "clearTileHeightSnapSuppression",
+      "evidence": "Source-purpose review: Clears the one-tick flag that can suppress snapping the player to a contacted tile height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.i(I)Z",
+      "originalName": "i",
+      "to": "consumeDeathEvent",
+      "evidence": "Source-purpose review: Consumes the flag raised when the death timer ends. The level update uses it for the death tally and recovery transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.j(B)Z",
+      "originalName": "j",
+      "to": "consumeDynamiteDetonation",
+      "evidence": "Source-purpose review: Consumes the flag raised when the dynamite countdown reaches its firing tick. The simulation then triggers the positional blast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.j(I)I",
+      "originalName": "j",
+      "to": "getFacingAngle",
+      "evidence": "Source-purpose review: Returns the player angle the renderer turns toward, with wraparound at 2048 units.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.k(B)Z",
+      "originalName": "k",
+      "to": "hasSkullMarker",
+      "evidence": "Source-purpose review: Reads the skull marker set when the player touches a skull-bearing tile. The HUD shows the same skull asset while the marker is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.k(I)V",
+      "originalName": "k",
+      "to": "setPhaseAndClearLives",
+      "evidence": "Source-purpose review: Enters the requested phase and puts the life count in its negative sentinel state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.l(B)V",
+      "originalName": "l",
+      "to": "addJetpackCharge",
+      "evidence": "Source-purpose review: Increments the jetpack inventory up to seven charges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.l(I)I",
+      "originalName": "l",
+      "to": "getLives",
+      "evidence": "Source-purpose review: Returns the count used for spending a life on retry and when restoring a snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.m(I)I",
+      "originalName": "m",
+      "to": "getSignedPaintRemaining",
+      "evidence": "Source-purpose review: Returns the paint charge whose sign selects blue or purple and whose magnitude gives the remaining paint.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wo.n(I)V",
       "originalName": "n",
       "to": "clearStaticReferences",
@@ -5773,7 +7250,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "7561182ec9aa802d64871bd570d4a4986c936dc3ce4ba34b307ffe9c9d7c3586",
+      "vertigo2-names.json": "8085e305a25781ef8edf4de5eddd1041910fe7219c91829cbc8dea65c20a3125",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

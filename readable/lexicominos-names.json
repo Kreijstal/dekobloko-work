@@ -4020,6 +4020,62 @@
       "(II)I",
       "getGroupRequestProgressPercent",
       "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. On a missing request, a final int other than 1215 returns -35."
+    ],
+    [
+      "sh",
+      "a",
+      "(BI)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. Preserves the remainder at entry before group validation."
+    ],
+    [
+      "sh",
+      "a",
+      "(II)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the division immediately before the final exception."
+    ],
+    [
+      "sh",
+      "a",
+      "(Ljava/lang/String;B)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. A byte at least -113 triggers a discarded group-load attempt before index loading. The three compiled callers all pass lower values and the returned result comes from the name table."
+    ],
+    [
+      "sh",
+      "a",
+      "(Ljava/lang/String;I)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Index loading uses int XOR 10842, hashing uses int XOR 1059338, and only guard 10762 forwards the numeric loader result."
+    ],
+    [
+      "sh",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A final int other than -1 assigns a static int between lowercasing the names. Group hashing uses that int XOR -1048577."
+    ],
+    [
+      "sh",
+      "a",
+      "(Z)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. True clears the original packed group slot 1 before iterating."
+    ],
+    [
+      "sh",
+      "b",
+      "(I)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. Preserves the remainder after checking index readiness."
+    ],
+    [
+      "sh",
+      "d",
+      "(Ljava/lang/String;B)Z",
+      "containsNonAsciiAlphanumeric",
+      "Source-purpose review: Checks whether the string contains a character outside ASCII letters and digits. A byte other than 50 changes the static int before scanning."
     ]
   ],
   "fields": [

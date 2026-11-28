@@ -3591,6 +3591,62 @@
       "(Ljava/lang/String;I)I",
       "getGroupIdByName",
       "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. Preserves the remainder after index readiness and before lowercasing."
+    ],
+    [
+      "lj",
+      "a",
+      "(B)Ljava/lang/String;",
+      "getCachedPlayerName",
+      "Source-purpose review: Returns the cached player name from the login response, with an empty string for an absent value. The bound UI caller tries its current name first and falls back to the default Player string if both are empty. A byte above -70 clears the original static reference when a cached name exists."
+    ],
+    [
+      "lj",
+      "a",
+      "(BLjava/lang/String;)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. A first byte other than -39 returns true before lowercasing after a successful index check."
+    ],
+    [
+      "lj",
+      "a",
+      "(II)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final int at least -69 invokes the keyed reader with null keys and discards the result."
+    ],
+    [
+      "lj",
+      "b",
+      "(ILjava/lang/String;)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A first int other than five invokes the named-file loader with two null strings before group hashing."
+    ],
+    [
+      "lj",
+      "b",
+      "(ILjava/lang/String;Ljava/lang/String;)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. After group validation, a first int at least -16 calls the original helper with cache entries."
+    ],
+    [
+      "lj",
+      "c",
+      "(B)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A byte other than 52 returns -128 after checking index readiness."
+    ],
+    [
+      "lj",
+      "c",
+      "(I)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. An int at most 31 returns -78 before checking the index."
+    ],
+    [
+      "lj",
+      "c",
+      "(II)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the division after validating the group and before testing its file slot capacity."
     ]
   ],
   "fields": [

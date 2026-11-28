@@ -4000,6 +4000,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sh.a(BI)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. Preserves the remainder at entry before group validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sh.a(BLjava/lang/String;Ljava/lang/String;)[B",
       "originalName": "a",
       "to": "getFileByName",
@@ -4018,6 +4025,13 @@
       "originalName": "a",
       "to": "tryLoadFile",
       "evidence": "Source-purpose review: Validates the file ID within its group, accepts an already decoded file or cached packed group, and otherwise requests the packed group and rechecks availability. A byte other than 78 triggers the static string helper on a miss after requesting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.a(II)[B",
+      "originalName": "a",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the division immediately before the final exception.",
       "confidence": "reviewed"
     },
     {
@@ -4042,10 +4056,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sh.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A byte at least -113 triggers a discarded group-load attempt before index loading. The three compiled callers all pass lower values and the returned result comes from the name table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Index loading uses int XOR 10842, hashing uses int XOR 1059338, and only guard 10762 forwards the numeric loader result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sh.a(Ljava/lang/String;II)I",
       "originalName": "a",
       "to": "getFileIdByName",
       "evidence": "Source-purpose review: Validates the group, lowercases and hashes a file name, then returns the validated file ID from that group’s name table or the original missing-ID value. A middle int other than -27964 sets an instance int. The hash guard is that int XOR -1076540.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.a(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A final int other than -1 assigns a static int between lowercasing the names. Group hashing uses that int XOR -1048577.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.a(Z)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. True clears the original packed group slot 1 before iterating.",
       "confidence": "reviewed"
     },
     {
@@ -4067,6 +4109,13 @@
       "originalName": "b",
       "to": "getGroupLoadPercent",
       "evidence": "Source-purpose review: Returns zero for invalid group IDs, 100 for cached packed groups, or the archive provider’s request progress for this group. A first byte above -79 returns a nested packed-cache value after validation and before the normal cache check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.b(I)I",
+      "originalName": "b",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. Preserves the remainder after checking index readiness.",
       "confidence": "reviewed"
     },
     {
@@ -4102,6 +4151,13 @@
       "originalName": "c",
       "to": "getGroupIdByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. A final byte other than -89 returns -87 after lookup and before validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.d(Ljava/lang/String;B)Z",
+      "originalName": "d",
+      "to": "containsNonAsciiAlphanumeric",
+      "evidence": "Source-purpose review: Checks whether the string contains a character outside ASCII letters and digits. A byte other than 50 changes the static int before scanning.",
       "confidence": "reviewed"
     },
     {
@@ -4842,7 +4898,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "62e243239604e83c414e66c5d15a23be77a85339e48ed251cd3da6f8d324ff50",
+      "lexicominos-names.json": "aa7d16943bad0996d6e61fdd04628d46af8bf97d1cb4cb9af7431cd3224c5888",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

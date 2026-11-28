@@ -4140,6 +4140,160 @@
       "(II)I",
       "getGroupRequestProgressPercent",
       "Source-purpose review: Gets the progress of the pending request for an archive group."
+    ],
+    [
+      "la",
+      "a",
+      "(B)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After handling zero accumulated capacity, a byte other than -32 returns 35."
+    ],
+    [
+      "la",
+      "a",
+      "(II[II[IIIIII)V",
+      "darkenRgbWithSpriteMask",
+      "Source-purpose review: Darkens the destination RGB pixels according to the low-byte opacity in nonzero sprite pixels. Keeps the row strides, zero-pixel skip and original channel masks, including 16711855."
+    ],
+    [
+      "la",
+      "a",
+      "(IZ)Z",
+      "tryLoadFlatFile",
+      "Source-purpose review: In a one-slot archive uses the supplied ID as a file ID in group zero. Otherwise uses it as a group ID when the group has one addressable file slot. Delegates availability to the numeric file loader. True invokes the keyed named-file reader with null keys after group validation."
+    ],
+    [
+      "la",
+      "a",
+      "(Z)Z",
+      "isClientStartupReady",
+      "Source-purpose review: Reports whether both the startup screen state and asset loading state have reached the original thresholds. False bypasses the checks and returns true."
+    ],
+    [
+      "la",
+      "a",
+      "(ZLjava/lang/String;)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. False repeats the index-readiness call with a nested cached int before group hashing."
+    ],
+    [
+      "la",
+      "b",
+      "(BLjava/lang/String;)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. A first byte at least -7 returns a nested cache boolean after looking up the name."
+    ],
+    [
+      "la",
+      "b",
+      "(IB)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. A final byte below 68 clears a static int array after validating the group."
+    ],
+    [
+      "la",
+      "b",
+      "(ILjava/lang/String;Ljava/lang/String;)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A first int other than zero invokes the keyed name reader with two null strings before lowercasing the file name."
+    ],
+    [
+      "la",
+      "d",
+      "(I)V",
+      "clearStaticReferences",
+      "Source-purpose review: Releases five static resources during Torquing shutdown. A guard below 98 preserves the original helper call between the reference assignments."
+    ],
+    [
+      "hc",
+      "a",
+      "(B)V",
+      "clearLevelGlobals",
+      "Source-purpose review: Clears the shared archive connection text, packet buffer and level text fields at shutdown."
+    ],
+    [
+      "hc",
+      "a",
+      "(D[DBD)V",
+      "collectLevelCollisionContacts",
+      "Source-purpose review: Checks the nearby terrain triangles and level objects around the moving sphere and adds the contact points to the collision solver."
+    ],
+    [
+      "hc",
+      "a",
+      "(I)I",
+      "getTimeLimitMillis",
+      "Source-purpose review: Provides the initial time limit in milliseconds for the level countdown."
+    ],
+    [
+      "hc",
+      "a",
+      "(IIII[DIII)[D",
+      "findTerrainTriangleContact",
+      "Source-purpose review: Projects a point onto the triangle and returns the contact coordinates, distance and normal, falling back to the nearest edge when needed."
+    ],
+    [
+      "hc",
+      "a",
+      "(IZ)Lkh;",
+      "getTerrainModel",
+      "Source-purpose review: Builds and caches the terrain mesh from the elevation grid and materials, including the faces used by collision and rendering."
+    ],
+    [
+      "hc",
+      "a",
+      "(Z)I",
+      "getViewPresetIndex",
+      "Source-purpose review: Provides the preset used for the level view transform, camera offset and HUD treatment."
+    ],
+    [
+      "hc",
+      "a",
+      "(ZZIIZI)Lla;",
+      "openIndexedResourceArchive",
+      "Source-purpose review: Opens the archive for the selected index with its optional disk stores and requests the initial preload when enabled."
+    ],
+    [
+      "hc",
+      "b",
+      "(I)Z",
+      "prepareTerrainSkirtModel",
+      "Source-purpose review: Ensures the terrain skirt is generated and reports whether it was already available for the staged loader."
+    ],
+    [
+      "hc",
+      "c",
+      "(I)Lkh;",
+      "getTerrainSkirtModel",
+      "Source-purpose review: Builds and caches the side mesh by finding terrain edges and subdividing vertical faces down to their edge heights."
+    ],
+    [
+      "hc",
+      "d",
+      "(I)V",
+      "applyTerrainRenderMode",
+      "Source-purpose review: Copies the level render mode into the scene rasterizer, which uses it during terrain face visibility tests."
+    ],
+    [
+      "hc",
+      "e",
+      "(I)Z",
+      "processLevelDecoding",
+      "Source-purpose review: Decodes the level name, grid, heights, objects, time limit and start pose, and advances the loader until the encoded record can be released."
+    ],
+    [
+      "hc",
+      "f",
+      "(I)[D",
+      "getStartPose",
+      "Source-purpose review: Returns the starting transform with the coordinates parsed from the level record."
+    ],
+    [
+      "hc",
+      "g",
+      "(I)Z",
+      "processLevelSceneMeshes",
+      "Source-purpose review: Consumes scene geometry in time-limited batches and prepares the cached mesh groups before releasing the preparation queue."
     ]
   ],
   "fields": [

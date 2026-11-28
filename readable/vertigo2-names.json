@@ -169,6 +169,66 @@
       "ke",
       "HuffmanCodec",
       "Primary instance purpose reviewed from exact constructor, every owned instance method, private fields and selected bound consumers. Build canonical Huffman codewords and a growing decode tree from signed byte code lengths; tree leaves store complemented symbols. Three codecs encode and decode; Dungeon Assault retains only decoding and does not retain the caller byte-length array. Archive resource constructors use the huffman entry; string packet helpers use returned encoded-byte counts to advance cursors. Preserve unrelated static responsibilities and class-initializer order; no complete unrelated-static-body claim. Identifier-only naming; retain primitive domains, array aliases, all allocation/read/write/guard/recursion/partial-effect/exception order, literal values and diagnostics."
+    ],
+    [
+      "wo",
+      "PlayerState",
+      "Holds the per-player position, velocity, phase and lives. The match creates one state per player. The simulation updates it, renders it and reads it from snapshots."
+    ],
+    [
+      "bh",
+      "LevelSimulation",
+      "Owns the players, grid tiles and level objects. Loads a level, advances its simulation, constructs snapshots and supplies the scene renderer."
+    ],
+    [
+      "lj",
+      "MatchSession",
+      "Creates player states, owns the live simulation and its level snapshot, tracks the current level and records the final outcome for the results screen."
+    ],
+    [
+      "am",
+      "LevelRenderer",
+      "Owns the level camera, player render models, visible-object queue, and explosion effects that are drawn each frame."
+    ],
+    [
+      "bg",
+      "LevelRenderable",
+      "Defines shared render entry points and layer information for level tiles, player avatars, and blast fragments."
+    ],
+    [
+      "jg",
+      "LevelTile",
+      "Stores the type, coordinates, discrete grid cell, and animation state of a level tile."
+    ],
+    [
+      "rn",
+      "MovingLevelTile",
+      "Extends a tile with a movement direction, travel limits, and mutable position along the movement axis."
+    ],
+    [
+      "hb",
+      "PlayerAvatarRenderer",
+      "Owns mesh and animation state for a player avatar and updates it from the player simulation."
+    ],
+    [
+      "ho",
+      "BlastDebrisBatch",
+      "Stores an explosion origin, player slot, and a fixed-size list of the affected tile models and their coordinates."
+    ],
+    [
+      "cq",
+      "BlastEffectRenderer",
+      "Owns the blast animation, expanding particle positions, and animated debris models."
+    ],
+    [
+      "hi",
+      "BlastDebrisModel",
+      "Renders one debris model on the blast animation timeline at its stored level coordinates."
+    ],
+    [
+      "cn",
+      "LevelCamera",
+      "Tracks camera heading and zoom and computes the view transform for player-follow and level-overview modes."
     ]
   ],
   "methods": [
@@ -4266,6 +4326,1399 @@
       "(II)I",
       "getGroupRequestProgressPercent",
       "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. A final int other than 57 returns 100 before looking up the request."
+    ],
+    [
+      "r",
+      "a",
+      "(IB)Z",
+      "tryLoadFlatFile",
+      "Source-purpose review: In a one-slot archive uses the supplied ID as a file ID in group zero. Otherwise uses it as a group ID when the group has one addressable file slot. Delegates availability to the numeric file loader. Preserves the division before the final exception."
+    ],
+    [
+      "r",
+      "a",
+      "(II)[I",
+      "getFileIds",
+      "Source-purpose review: Returns stored sparse file IDs or synthesizes zero through file count minus one. A nonzero first int returns null after validating the group."
+    ],
+    [
+      "r",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;Z)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. True triggers a bulk load attempt with the original cache byte after group validation."
+    ],
+    [
+      "r",
+      "a",
+      "(ZI)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. False sets the instance int to -20 after the single-group branch and before validating the group."
+    ],
+    [
+      "r",
+      "b",
+      "(IB)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte at least -27 clears the packed group array after validation."
+    ],
+    [
+      "r",
+      "b",
+      "(Ljava/lang/String;I)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. Index guard uses the final int plus one. The final comparison uses the complement of the lookup ID."
+    ],
+    [
+      "r",
+      "c",
+      "(I)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. Checks readiness with the guard XOR itself."
+    ],
+    [
+      "r",
+      "c",
+      "(Ljava/lang/String;I)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Index loading uses int XOR itself. Group-table lookup uses the int plus one and the loader guard adds 11321."
+    ],
+    [
+      "r",
+      "d",
+      "(I)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. Returns 100 when the supplied int equals the complement of the accumulated capacity. All three callers pass -1."
+    ],
+    [
+      "wo",
+      "a",
+      "(ZI)V",
+      "setLives",
+      "Source-purpose review: Sets the life count. Retrying a level passes the previous count minus one."
+    ],
+    [
+      "wo",
+      "d",
+      "(B)V",
+      "addLife",
+      "Source-purpose review: Adds one life and clamps the count to fifteen."
+    ],
+    [
+      "wo",
+      "h",
+      "(B)Z",
+      "isOutOfLives",
+      "Source-purpose review: Tests the same life count used for retries. The retry action is available when the test is false."
+    ],
+    [
+      "wo",
+      "l",
+      "(I)I",
+      "getLives",
+      "Source-purpose review: Returns the count used for spending a life on retry and when restoring a snapshot."
+    ],
+    [
+      "wo",
+      "b",
+      "(I)I",
+      "getPlayerPhase",
+      "Source-purpose review: Returns the phase used by simulation transitions and animation selection."
+    ],
+    [
+      "wo",
+      "b",
+      "(B)V",
+      "resetPlayerPhase",
+      "Source-purpose review: Restores the phase to zero. The alternate-argument path also invokes the original phase helper."
+    ],
+    [
+      "wo",
+      "d",
+      "(Z)V",
+      "resetForLevel",
+      "Source-purpose review: Clears level-specific counters and restores the accumulated value from its saved field before each level load."
+    ],
+    [
+      "wo",
+      "a",
+      "(Lwo;I)V",
+      "copyPlayerStateFrom",
+      "Source-purpose review: Copies mutable position, velocity, lives, phase and event flags from a supplied player state."
+    ],
+    [
+      "wo",
+      "a",
+      "(ILmi;)V",
+      "readPlayerSnapshot",
+      "Source-purpose review: Reads the compact player-state fields from a bit packet inside simulation snapshot deserialization."
+    ],
+    [
+      "wo",
+      "b",
+      "(Z)V",
+      "resetAtSpawn",
+      "Source-purpose review: Clears movement and other transient state and restores the three spawn coordinates recorded during level loading."
+    ],
+    [
+      "wo",
+      "a",
+      "(II)Z",
+      "isOdd",
+      "Source-purpose review: Tests whether the supplied integer has its low bit set."
+    ],
+    [
+      "wo",
+      "k",
+      "(I)V",
+      "setPhaseAndClearLives",
+      "Source-purpose review: Enters the requested phase and puts the life count in its negative sentinel state."
+    ],
+    [
+      "bh",
+      "c",
+      "(I)[Ljg;",
+      "getLevelTiles",
+      "Source-purpose review: Returns the tile grid consumed by the scene renderer."
+    ],
+    [
+      "bh",
+      "l",
+      "(I)I",
+      "getTileSlotCount",
+      "Source-purpose review: Returns the number of addressable slots in the current tile grid. Empty slots count too."
+    ],
+    [
+      "bh",
+      "m",
+      "(I)[Lrn;",
+      "getLevelObjects",
+      "Source-purpose review: Returns the array of dynamic level objects consumed by the renderer and simulation reconciliation."
+    ],
+    [
+      "bh",
+      "e",
+      "(B)I",
+      "getLevelObjectCount",
+      "Source-purpose review: Returns the length of the populated prefix of the dynamic level object array."
+    ],
+    [
+      "bh",
+      "h",
+      "(I)I",
+      "getSimulationPhase",
+      "Source-purpose review: Returns the phase used by the simulation state machine and by its scene renderer."
+    ],
+    [
+      "bh",
+      "a",
+      "(BIII)Ljg;",
+      "getTileAt",
+      "Source-purpose review: Bounds-checks three grid coordinates, flattens them into a row index and returns the tile or null."
+    ],
+    [
+      "bh",
+      "a",
+      "(BILed;)V",
+      "loadLevel",
+      "Source-purpose review: Reads player spawn coordinates, tile grid and dynamic level objects from the indexed level data."
+    ],
+    [
+      "bh",
+      "a",
+      "(ZLbh;)V",
+      "copySimulationStateFrom",
+      "Source-purpose review: Copies live player, tile, object and phase state from another simulation, reusing destination objects when possible."
+    ],
+    [
+      "bh",
+      "a",
+      "([Lwo;II)V",
+      "copyOtherPlayerStates",
+      "Source-purpose review: Copies each supplied player state except the player at the index to preserve."
+    ],
+    [
+      "bh",
+      "a",
+      "(Lmi;I)V",
+      "readSimulationSnapshot",
+      "Source-purpose review: Reads the timer and phase, restores player snapshots, then conditionally reconstructs the tile grid."
+    ],
+    [
+      "lj",
+      "b",
+      "(I)I",
+      "getLevelIndex",
+      "Source-purpose review: Decodes the current level index, which selects an entry from the mode-specific level array."
+    ],
+    [
+      "lj",
+      "a",
+      "(II)V",
+      "setLevelIndex",
+      "Source-purpose review: Stores the level index XORed with the key used by its getter. Called when starting and advancing."
+    ],
+    [
+      "lj",
+      "a",
+      "(IZ)V",
+      "advanceOrReloadLevel",
+      "Source-purpose review: Advances the index unless reloading, then resets level-specific player state, loads the level and refreshes the snapshot."
+    ],
+    [
+      "lj",
+      "c",
+      "(I)Z",
+      "hasReachedLevelLimit",
+      "Source-purpose review: Checks whether the level index has passed the available entries or the configured round count has been reached."
+    ],
+    [
+      "lj",
+      "c",
+      "(B)Lbh;",
+      "copyLevelSimulation",
+      "Source-purpose review: Creates a fresh player array and level simulation, fills it from the live simulation and returns it."
+    ],
+    [
+      "lj",
+      "a",
+      "(Lmi;B)V",
+      "applySimulationSnapshot",
+      "Source-purpose review: Reads a bit-packed snapshot into the live simulation and updates its post-restore state."
+    ],
+    [
+      "lj",
+      "b",
+      "(B)I",
+      "getWinningPlayerIndex",
+      "Source-purpose review: Reads the outcome index. The results renderer selects the winning name for indices zero and one, with a separate draw branch."
+    ],
+    [
+      "lj",
+      "a",
+      "(BI)V",
+      "finishMatch",
+      "Source-purpose review: Stores the result index and sets the completed flag that makes subsequent game updates return early."
+    ],
+    [
+      "lj",
+      "e",
+      "(I)V",
+      "requestLevelRestore",
+      "Source-purpose review: Sets the restore flag when the argument matches the encoded mode. The update consumes it by restoring live simulation from its stored snapshot."
+    ],
+    [
+      "wo",
+      "a",
+      "(BZ)V",
+      "tickPlayerState",
+      "Source-purpose review: Advances phase timers and transitions, applies movement input and gravity, and integrates the position."
+    ],
+    [
+      "wo",
+      "a",
+      "(BI)Z",
+      "updateMovementInput",
+      "Source-purpose review: Stores the current directional bitmask and returns whether it changed."
+    ],
+    [
+      "wo",
+      "h",
+      "(I)I",
+      "getMovementInput",
+      "Source-purpose review: Returns the directional bitmask consumed by the movement update and the movement animation."
+    ],
+    [
+      "wo",
+      "b",
+      "(II)V",
+      "setVerticalVelocity",
+      "Source-purpose review: Updates the velocity component along the level height axis except in the guarded player phase."
+    ],
+    [
+      "wo",
+      "c",
+      "(B)I",
+      "getVerticalVelocity",
+      "Source-purpose review: Returns the velocity applied along the height axis. Collision handling uses it to distinguish upward and downward contact."
+    ],
+    [
+      "wo",
+      "c",
+      "(II)V",
+      "setFacingAngle",
+      "Source-purpose review: Stores the angle derived from planar velocity. The renderer interpolates this angle over the 2048-unit turn."
+    ],
+    [
+      "wo",
+      "j",
+      "(I)I",
+      "getFacingAngle",
+      "Source-purpose review: Returns the player angle the renderer turns toward, with wraparound at 2048 units."
+    ],
+    [
+      "wo",
+      "g",
+      "(I)V",
+      "clearCollisionContacts",
+      "Source-purpose review: Fills the dynamic object and tile collision index arrays with the empty sentinel before each simulation tick."
+    ],
+    [
+      "wo",
+      "a",
+      "(III)I",
+      "recordTileContact",
+      "Source-purpose review: Appends the tile index to the collision contacts when absent and returns the updated contact count."
+    ],
+    [
+      "wo",
+      "g",
+      "(B)I",
+      "getTilesPainted",
+      "Source-purpose review: Returns the count incremented by tile painting. The match information panel displays it under Tiles painted."
+    ],
+    [
+      "bh",
+      "a",
+      "(IIBI)I",
+      "getTileSlotIndex",
+      "Source-purpose review: Flattens the supplied grid coordinates after bounds checks. The ordinary path returns -1 for a coordinate outside the stored grid."
+    ],
+    [
+      "bh",
+      "a",
+      "(IZ)V",
+      "removeLevelObject",
+      "Source-purpose review: Removes an indexed object, shifts subsequent slots down when present and decrements the object count."
+    ],
+    [
+      "bh",
+      "a",
+      "(B)Lho;",
+      "popParticleEffect",
+      "Source-purpose review: Returns the most recently registered particle effect and decrements the pending count, or returns null when empty."
+    ],
+    [
+      "bh",
+      "a",
+      "(Z)Lho;",
+      "beginParticleEffect",
+      "Source-purpose review: Reserves the next pending effect slot and resets its particle metadata. The full-array branch reuses slot zero."
+    ],
+    [
+      "bh",
+      "d",
+      "(B)I",
+      "updateLevelOutcome",
+      "Source-purpose review: Checks for remaining targets and the level timer, advances end-of-level phases and reports a winning index, draw or pending outcome."
+    ],
+    [
+      "lj",
+      "a",
+      "([II[Z)V",
+      "tickMatch",
+      "Source-purpose review: Advances the live level, consumes any level restore request, updates the standings and handles level completion."
+    ],
+    [
+      "lj",
+      "a",
+      "(I)I",
+      "getLocalTilesPainted",
+      "Source-purpose review: Returns the number painted by the local player selected by the session. The match information panel displays this value."
+    ],
+    [
+      "wo",
+      "a",
+      "(IIIIZI)V",
+      "drawPlayerHud",
+      "Source-purpose review: Draws lives, power-up inventories, score or match figures, and the respawn countdown."
+    ],
+    [
+      "wo",
+      "a",
+      "(IIIIIII)V",
+      "beginTeleport",
+      "Source-purpose review: Stores the portal destination and starts the delayed position transition."
+    ],
+    [
+      "wo",
+      "a",
+      "(ZII)V",
+      "resolveHorizontalCollision",
+      "Source-purpose review: Restores the previous planar position and reverses or damps velocity for one collision branch. The other pushes the player away from the supplied center."
+    ],
+    [
+      "wo",
+      "f",
+      "(I)Z",
+      "isMovingDownward",
+      "Source-purpose review: Tests whether the height-axis velocity is positive. Positive velocity moves the player toward the lower level boundary."
+    ],
+    [
+      "wo",
+      "e",
+      "(I)V",
+      "tryUseJetpack",
+      "Source-purpose review: Checks the available jetpack charges and starts powered movement when the phase permits."
+    ],
+    [
+      "wo",
+      "l",
+      "(B)V",
+      "addJetpackCharge",
+      "Source-purpose review: Increments the jetpack inventory up to seven charges."
+    ],
+    [
+      "wo",
+      "c",
+      "(Z)Z",
+      "hasJetpackCharge",
+      "Source-purpose review: Tests the jetpack charge count used by the character animation."
+    ],
+    [
+      "wo",
+      "e",
+      "(B)V",
+      "tryUseDynamite",
+      "Source-purpose review: Consumes a dynamite charge when standing in an eligible phase and starts the countdown to detonation."
+    ],
+    [
+      "wo",
+      "j",
+      "(B)Z",
+      "consumeDynamiteDetonation",
+      "Source-purpose review: Consumes the flag raised when the dynamite countdown reaches its firing tick. The simulation then triggers the positional blast."
+    ],
+    [
+      "wo",
+      "a",
+      "(Z)Z",
+      "consumeCheckpointReached",
+      "Source-purpose review: Consumes the flag set on the checkpoint tile. The match responds by refreshing its stored simulation snapshot."
+    ],
+    [
+      "bh",
+      "g",
+      "(I)I",
+      "computeSimulationChecksum",
+      "Source-purpose review: Combines player positions and velocities, dynamic object state and tile data into an integer state check."
+    ],
+    [
+      "bh",
+      "c",
+      "(IZ)I",
+      "getPaintedTilePercent",
+      "Source-purpose review: Counts target tiles and objects by color and returns the painted share as a percentage. The HUD passes it to the progress bar."
+    ],
+    [
+      "bh",
+      "a",
+      "(IZIILwo;)V",
+      "applyLevelObjectContact",
+      "Source-purpose review: Applies an indexed object’s contact behavior and any player-driven object type change."
+    ],
+    [
+      "bh",
+      "a",
+      "(IZIZLwo;IIB)V",
+      "applyTileContact",
+      "Source-purpose review: Applies grid tile effects, including portal transport and block responses, then applies the resulting tile type."
+    ],
+    [
+      "wo",
+      "a",
+      "(B)V",
+      "resetPhaseAndJetpack",
+      "Source-purpose review: Resets the player phase and jetpack count when the level transitions out of its completion sequence."
+    ],
+    [
+      "wo",
+      "a",
+      "(I)Z",
+      "canApplyTileEffects",
+      "Source-purpose review: Separates the death, recovery and game-over phases from states that accept tile effects."
+    ],
+    [
+      "wo",
+      "a",
+      "(IIZIII)V",
+      "appendPlayerMatchStats",
+      "Source-purpose review: Appends the decoded player statistics and an outcome ratio to the match statistics arrays, then advances the insertion cursor."
+    ],
+    [
+      "wo",
+      "a",
+      "(IZIZII)I",
+      "applyContactEffect",
+      "Source-purpose review: Applies the effect of a contacted tile or object to player state and returns a replacement type when needed. Includes painting, pickups, surface behavior and death."
+    ],
+    [
+      "wo",
+      "c",
+      "(I)V",
+      "handleJumpPress",
+      "Source-purpose review: Handles a jump button press, including the double-tap jetpack path and the ordinary delayed takeoff."
+    ],
+    [
+      "wo",
+      "d",
+      "(I)V",
+      "clearSkullMarker",
+      "Source-purpose review: Clears the carried skull marker at the point where the simulation places a replacement skull."
+    ],
+    [
+      "wo",
+      "e",
+      "(Z)Z",
+      "isInDeathRecovery",
+      "Source-purpose review: Tests the recovery phase entered after the death countdown when lives remain."
+    ],
+    [
+      "wo",
+      "f",
+      "(B)Z",
+      "isGameOver",
+      "Source-purpose review: Tests the terminal player phase entered when the death countdown ends and no lives remain."
+    ],
+    [
+      "wo",
+      "i",
+      "(B)V",
+      "clearTileHeightSnapSuppression",
+      "Source-purpose review: Clears the one-tick flag that can suppress snapping the player to a contacted tile height."
+    ],
+    [
+      "wo",
+      "i",
+      "(I)Z",
+      "consumeDeathEvent",
+      "Source-purpose review: Consumes the flag raised when the death timer ends. The level update uses it for the death tally and recovery transition."
+    ],
+    [
+      "wo",
+      "k",
+      "(B)Z",
+      "hasSkullMarker",
+      "Source-purpose review: Reads the skull marker set when the player touches a skull-bearing tile. The HUD shows the same skull asset while the marker is set."
+    ],
+    [
+      "wo",
+      "m",
+      "(I)I",
+      "getSignedPaintRemaining",
+      "Source-purpose review: Returns the paint charge whose sign selects blue or purple and whose magnitude gives the remaining paint."
+    ],
+    [
+      "bh",
+      "a",
+      "(II)I",
+      "getDebrisModelIndex",
+      "Source-purpose review: Maps a blasted tile or object type to the model index used when rendering its debris."
+    ],
+    [
+      "bh",
+      "a",
+      "(IIII)V",
+      "updateObjectTravelBounds",
+      "Source-purpose review: Searches along the movement axis from the object’s grid location to update lower and upper travel bounds and their blocking tile indices."
+    ],
+    [
+      "bh",
+      "a",
+      "(IIIIIZ)V",
+      "applyBlast",
+      "Source-purpose review: Removes nearby level objects and tiles around the blast coordinates and records their debris for rendering."
+    ],
+    [
+      "bh",
+      "a",
+      "(III[Ljava/lang/String;ILcc;II[Ljava/lang/String;II[Lfe;I)V",
+      "drawTutorialEntries",
+      "Source-purpose review: Measures the tutorial descriptions, distributes the remaining column height, and draws each icon, heading and description."
+    ],
+    [
+      "bh",
+      "a",
+      "(ILwo;ZB)V",
+      "resolvePlayerCollisions",
+      "Source-purpose review: Updates player collisions against level objects and grid tiles. Handles movable platforms, contact effects, tile-height snapping, and tile visibility marks."
+    ],
+    [
+      "bh",
+      "a",
+      "(IZIZLwo;)I",
+      "applyTileTypeEffect",
+      "Source-purpose review: Applies the effect of a tile type when the simulation and player are eligible, and returns its replacement type or a sentinel."
+    ],
+    [
+      "bh",
+      "a",
+      "(ZB)V",
+      "placeSkullOnPaintedTile",
+      "Source-purpose review: Selects an eligible painted tile, optionally away from both players, and changes it to a skull-bearing variant."
+    ],
+    [
+      "bh",
+      "a",
+      "(Z[ZI[IZ)Z",
+      "tickLevel",
+      "Source-purpose review: Advances the level phase and timer, level objects, player input and collision state. Signals when the recovery sequence requires restoring the level."
+    ],
+    [
+      "bh",
+      "b",
+      "(B)V",
+      "resetToOutcomePlatforms",
+      "Source-purpose review: Clears the active level and positions the players on one or two display platforms used by the outcome scenes."
+    ],
+    [
+      "bh",
+      "b",
+      "(I)Z",
+      "didSecondPlayerDie",
+      "Source-purpose review: Returns the death display flag set for a nonzero player index."
+    ],
+    [
+      "bh",
+      "b",
+      "(IZ)I",
+      "getTileContactMask",
+      "Source-purpose review: Maps tile or object variants to the mask that the player collision pass combines across contacts."
+    ],
+    [
+      "bh",
+      "c",
+      "(B)Z",
+      "canFollowPlayerWithCamera",
+      "Source-purpose review: Allows the renderer to use the player-following view during the level phases that retain that view."
+    ],
+    [
+      "bh",
+      "d",
+      "(I)Z",
+      "isLevelOverviewActive",
+      "Source-purpose review: Returns the overview flag used by the camera to switch from player tracking to fitting the level bounds."
+    ],
+    [
+      "bh",
+      "e",
+      "(I)Z",
+      "shouldSuppressPlayerInput",
+      "Source-purpose review: Tests the overview flag for the simulation’s input path. While active, directional input is replaced with zero and jump dismisses the overview."
+    ],
+    [
+      "bh",
+      "f",
+      "(I)Z",
+      "isLevelActive",
+      "Source-purpose review: Tests the active simulation phase used to gate player input and the match’s active-play counter."
+    ],
+    [
+      "bh",
+      "i",
+      "(I)V",
+      "endOverviewAfterSnapshot",
+      "Source-purpose review: Clears the level overview flag after applying a simulation snapshot."
+    ],
+    [
+      "bh",
+      "j",
+      "(I)V",
+      "exitLevelOverview",
+      "Source-purpose review: Clears the overview flag in response to the jump input."
+    ],
+    [
+      "bh",
+      "k",
+      "(I)Z",
+      "didFirstPlayerDie",
+      "Source-purpose review: Returns the death display flag set for player index zero."
+    ],
+    [
+      "lj",
+      "a",
+      "(B)V",
+      "openChatPanel",
+      "Source-purpose review: Passes the panel templates to the routine that opens and lays out the chat panel and selects the available chat prompt."
+    ],
+    [
+      "lj",
+      "a",
+      "(IZI)I",
+      "floorDivideByPositive",
+      "Source-purpose review: Produces a floor-division quotient for positive divisors. Grid callers use it to retain the correct cell index for negative positions."
+    ],
+    [
+      "am",
+      "a",
+      "(B)I",
+      "getRequestedCameraHeading",
+      "Source-purpose review: Returns the requested camera quadrant. Input uses it to choose level-relative directions."
+    ],
+    [
+      "am",
+      "a",
+      "(BII)V",
+      "startFocusTransition",
+      "Source-purpose review: Stores the old and new focus-player indices and restarts their interpolation."
+    ],
+    [
+      "am",
+      "a",
+      "(I)V",
+      "rotateCameraLeft",
+      "Source-purpose review: Requests the preceding camera quadrant when the last heading request has been accepted."
+    ],
+    [
+      "am",
+      "a",
+      "(III)V",
+      "sortRenderQueueByDepth",
+      "Source-purpose review: Quicksorts the visible renderables and their distance keys in parallel arrays."
+    ],
+    [
+      "am",
+      "a",
+      "(IIIZLbh;IIII)V",
+      "drawMatchFrame",
+      "Source-purpose review: Draws the active match view with camera, scene objects, players, particles, and match overlays."
+    ],
+    [
+      "am",
+      "a",
+      "(IILbh;)V",
+      "drawLevelSelectionPreview",
+      "Source-purpose review: Draws the level-selection preview with the preview camera, player models, and level geometry."
+    ],
+    [
+      "am",
+      "a",
+      "(Lbh;BZI)V",
+      "advanceMatchRenderState",
+      "Source-purpose review: Advances camera and player animation, consumes newly queued blast effects, and updates the renderer from level state."
+    ],
+    [
+      "am",
+      "a",
+      "(Lbh;II)V",
+      "advancePreviewRenderState",
+      "Source-purpose review: Advances the preview camera and updates avatar animation state as the level phase changes."
+    ],
+    [
+      "am",
+      "a",
+      "(Z)Z",
+      "isFocusTransitionActive",
+      "Source-purpose review: Reports whether the previous and target focus-player indices still differ."
+    ],
+    [
+      "am",
+      "a",
+      "(ZILbh;B)V",
+      "drawAlternateLevelPreview",
+      "Source-purpose review: Draws the other level-selection preview, including its optional backdrop and visible level objects."
+    ],
+    [
+      "am",
+      "b",
+      "(B)V",
+      "rotateCameraRight",
+      "Source-purpose review: Requests the next camera quadrant when the last heading request has been accepted."
+    ],
+    [
+      "am",
+      "c",
+      "(B)V",
+      "resetAvatarAndBlastEffects",
+      "Source-purpose review: Resets player rendering state and expires active blast effects."
+    ],
+    [
+      "jg",
+      "a",
+      "(BI)V",
+      "setTileTypeAndAnimation",
+      "Source-purpose review: Updates tile type and derived flags and selects its corresponding animated model when applicable."
+    ],
+    [
+      "jg",
+      "a",
+      "(IIII)I",
+      "getRenderDepthKey",
+      "Source-purpose review: Computes the squared offset from the camera for tile ordering, from the center and vertical offset of the tile."
+    ],
+    [
+      "jg",
+      "a",
+      "(Ljg;I)V",
+      "copyTileStateFrom",
+      "Source-purpose review: Copies tile coordinates, type flags, and animation state from a source tile."
+    ],
+    [
+      "rn",
+      "a",
+      "(Lrn;I)V",
+      "copyMovingTileStateFrom",
+      "Source-purpose review: Copies the base tile state and the moving tile’s direction, position and movement bounds."
+    ],
+    [
+      "ho",
+      "a",
+      "(IIIII)V",
+      "addDebrisModel",
+      "Source-purpose review: Appends a debris model type and its three coordinates if the batch has room."
+    ],
+    [
+      "ho",
+      "a",
+      "(IZ)V",
+      "layoutLobbyPanels",
+      "Source-purpose review: Resizes and arranges the lobby header, player list panels and footer controls for the viewport."
+    ],
+    [
+      "ho",
+      "b",
+      "(I)V",
+      "clearDebrisModels",
+      "Source-purpose review: Clears debris model slots and resets the batch’s entry count."
+    ],
+    [
+      "ho",
+      "c",
+      "(I)V",
+      "clearBlastDebrisBatchGlobals",
+      "Source-purpose review: Releases the shared texts and lookup array during shutdown."
+    ],
+    [
+      "cq",
+      "a",
+      "(B)V",
+      "advanceBlastEffect",
+      "Source-purpose review: Advances the animation clock and particle positions, damping outward velocities as the effect ages."
+    ],
+    [
+      "cq",
+      "a",
+      "(I)V",
+      "expireBlastEffect",
+      "Source-purpose review: Sets the elapsed time to the expiry threshold so its debris stops rendering."
+    ],
+    [
+      "cq",
+      "a",
+      "(IIII[[IB)V",
+      "startBlastEffect",
+      "Source-purpose review: Initializes the blast particles and debris at the supplied coordinates and restarts the animation."
+    ],
+    [
+      "cq",
+      "a",
+      "([II)V",
+      "drawBlastEffect",
+      "Source-purpose review: Draws blast particles and its animated center model using the given camera transform."
+    ],
+    [
+      "cq",
+      "b",
+      "(I)[Lhi;",
+      "getActiveDebrisModels",
+      "Source-purpose review: Returns the debris array while the effect passes the caller’s age limit."
+    ],
+    [
+      "hi",
+      "a",
+      "(BIII)I",
+      "getRenderDepthKey",
+      "Source-purpose review: Returns the squared offset from the camera plus the debris sort bias."
+    ],
+    [
+      "hi",
+      "a",
+      "(BLjava/lang/CharSequence;)Z",
+      "isValidPlayerName",
+      "Source-purpose review: Validates the player-name structure and checks every character against the allowed set."
+    ],
+    [
+      "hi",
+      "a",
+      "(IIIIIIIIII)V",
+      "drawClippedCubicCurve",
+      "Source-purpose review: Draws a cubic curve with a fast in-bounds path and falls back to clipping when a control point is outside the viewport."
+    ],
+    [
+      "hi",
+      "a",
+      "(IIIIILwg;)V",
+      "setDebrisModelAndPosition",
+      "Source-purpose review: Stores the debris model variant, its world coordinates, and the shared blast animation."
+    ],
+    [
+      "hi",
+      "a",
+      "(Lr;I)V",
+      "preloadLogoVorbisAudio",
+      "Source-purpose review: Loads the shared Vorbis headers and preloads the Jagex logo audio."
+    ],
+    [
+      "cn",
+      "a",
+      "(BIIIIII)V",
+      "computeCameraTransform",
+      "Source-purpose review: Fills the translation and rotation components of the camera transform from follow angles or the overview look-at target."
+    ],
+    [
+      "cn",
+      "a",
+      "(BLjava/lang/String;CLjava/lang/String;)Ljava/lang/String;",
+      "replaceCharacterInString",
+      "Source-purpose review: Replaces all occurrences of a character with the supplied string."
+    ],
+    [
+      "cn",
+      "a",
+      "(I)V",
+      "advanceCameraMotion",
+      "Source-purpose review: Moves zoom, heading and pitch toward their requested values and advances the overview orbit."
+    ],
+    [
+      "cn",
+      "a",
+      "(II)V",
+      "setCameraMode",
+      "Source-purpose review: Updates the camera mode and selects the pitch and zoom targets associated with it."
+    ],
+    [
+      "cn",
+      "a",
+      "(IIII)V",
+      "updateViewTransform",
+      "Source-purpose review: Builds the view transform from player tracking coordinates or the stored overview orbit."
+    ],
+    [
+      "cn",
+      "a",
+      "(IIIZIII)V",
+      "startLevelOverview",
+      "Source-purpose review: Enters overview mode and centers its look-at target within the specified world bounds."
+    ],
+    [
+      "cn",
+      "a",
+      "(Led;I)V",
+      "writeRandomDatBytes",
+      "Source-purpose review: Writes the 24-byte random.dat payload used in the login block, handling zero-filled or unreadable data."
+    ],
+    [
+      "cn",
+      "a",
+      "(Z)Z",
+      "hasAcceptedRequestedHeading",
+      "Source-purpose review: Checks whether the requested camera quadrant matches the accepted turn target."
+    ],
+    [
+      "cn",
+      "b",
+      "(I)I",
+      "getPreviousCameraMode",
+      "Source-purpose review: Returns the former camera mode until the transition reaches the new pitch."
+    ],
+    [
+      "cn",
+      "c",
+      "(I)I",
+      "getCameraMode",
+      "Source-purpose review: Returns the active camera mode."
+    ],
+    [
+      "cn",
+      "d",
+      "(I)V",
+      "resetCameraZoomTransition",
+      "Source-purpose review: Sets the zoom target, starts from a quarter of that distance, and resets pitch and heading for the transition."
+    ],
+    [
+      "bg",
+      "a",
+      "(I)I",
+      "getRenderHeight",
+      "Source-purpose review: Defines the height used by the world renderer for depth effects and transparency decisions."
+    ],
+    [
+      "jg",
+      "a",
+      "(I)I",
+      "getRenderHeight",
+      "Source-purpose review: Returns the tile’s world height for the renderer."
+    ],
+    [
+      "hb",
+      "a",
+      "(I)I",
+      "getRenderHeight",
+      "Source-purpose review: Exposes the avatar’s current world height through the shared rendering contract."
+    ],
+    [
+      "hi",
+      "a",
+      "(I)I",
+      "getRenderHeight",
+      "Source-purpose review: Uses a zero height for the blast debris model in the shared rendering height calculation."
+    ],
+    [
+      "bg",
+      "a",
+      "(Z[IZZ)V",
+      "drawRenderable",
+      "Source-purpose review: Defines the ordinary draw pass for all world renderable objects."
+    ],
+    [
+      "jg",
+      "a",
+      "(Z[IZZ)V",
+      "drawRenderable",
+      "Source-purpose review: Draws a tile with its ordinary face opacity and performs optional animation setup."
+    ],
+    [
+      "rn",
+      "a",
+      "(Z[IZZ)V",
+      "drawRenderable",
+      "Source-purpose review: Draws an active moving tile using its ordinary face opacity."
+    ],
+    [
+      "hb",
+      "a",
+      "(Z[IZZ)V",
+      "drawRenderable",
+      "Source-purpose review: Draws the current avatar mesh at its world position with the supplied camera transform."
+    ],
+    [
+      "hi",
+      "a",
+      "(Z[IZZ)V",
+      "drawRenderable",
+      "Source-purpose review: Routes the ordinary render pass through the current animated debris model."
+    ],
+    [
+      "bg",
+      "a",
+      "(I[IZ[BZ)V",
+      "drawWithFaceAlpha",
+      "Source-purpose review: Defines the render pass that accepts a per-face transparency array."
+    ],
+    [
+      "jg",
+      "a",
+      "(I[IZ[BZ)V",
+      "drawWithFaceAlpha",
+      "Source-purpose review: Draws tile geometry and its overlays with the provided face transparency values."
+    ],
+    [
+      "rn",
+      "a",
+      "(I[IZ[BZ)V",
+      "drawWithFaceAlpha",
+      "Source-purpose review: Draws moving tile meshes and their overlays with the supplied face transparency values."
+    ],
+    [
+      "hb",
+      "a",
+      "(I[IZ[BZ)V",
+      "drawWithFaceAlpha",
+      "Source-purpose review: Applies the supplied transparency to eligible avatar faces before drawing its current mesh."
+    ],
+    [
+      "hi",
+      "a",
+      "(I[IZ[BZ)V",
+      "drawWithFaceAlpha",
+      "Source-purpose review: Implements the shared alpha-capable draw entry point by drawing the debris’s animated mesh."
+    ],
+    [
+      "bg",
+      "a",
+      "(Llg;IIB)Lfc;",
+      "buildClippedShadowMesh",
+      "Source-purpose review: Defines optional clipping of a projected avatar shadow to the receiving renderable."
+    ],
+    [
+      "jg",
+      "a",
+      "(Llg;IIB)Lfc;",
+      "buildClippedShadowMesh",
+      "Source-purpose review: Clips the supplied avatar shadow mesh along the tile’s horizontal bounds."
+    ],
+    [
+      "bg",
+      "a",
+      "(Z)I",
+      "getShadowSurfaceHeight",
+      "Source-purpose review: Provides the default surface height used during avatar shadow projection."
+    ],
+    [
+      "jg",
+      "a",
+      "(Z)I",
+      "getShadowSurfaceHeight",
+      "Source-purpose review: Returns this tile’s world height as the receiving shadow plane."
+    ],
+    [
+      "jg",
+      "a",
+      "(IB)V",
+      "changeTileType",
+      "Source-purpose review: Applies a new tile type and resets its derived animation state."
+    ],
+    [
+      "rn",
+      "a",
+      "(IB)V",
+      "changeTileType",
+      "Source-purpose review: Changes the moving tile type while conditionally retaining the movement cycle clock."
+    ],
+    [
+      "jg",
+      "b",
+      "(I)Z",
+      "tickAndCheckExpired",
+      "Source-purpose review: Advances the tile timer and animation and reports when a temporary tile should be removed."
+    ],
+    [
+      "rn",
+      "b",
+      "(I)Z",
+      "tickAndCheckExpired",
+      "Source-purpose review: Advances the base tile animation and updates the moving tile position, returning the base expiry state."
+    ],
+    [
+      "jg",
+      "b",
+      "(IIIIII)Z",
+      "intersectsCollisionBounds",
+      "Source-purpose review: Tests horizontal overlap with the tile and whether the queried height lies in its collision interval."
+    ],
+    [
+      "rn",
+      "b",
+      "(IIIIII)Z",
+      "intersectsCollisionBounds",
+      "Source-purpose review: Tests the inherited tile bounds when the moving tile is active."
+    ],
+    [
+      "bg",
+      "a",
+      "(IIIIII)V",
+      "fillUnclippedRasterRectangle",
+      "Source-purpose review: Fills each row of the rectangle using the unbounded span writer."
+    ],
+    [
+      "jg",
+      "b",
+      "(Z)V",
+      "clearLevelTileGlobals",
+      "Source-purpose review: Clears shared tile text, lookup and panel references during shutdown."
+    ],
+    [
+      "rn",
+      "a",
+      "(Lmi;I)V",
+      "readMovingTileFromBits",
+      "Source-purpose review: Decodes the type, travel settings, timer, coordinates, visibility and velocity from the level snapshot bitstream."
+    ],
+    [
+      "rn",
+      "a",
+      "(IZ)V",
+      "applyTileContactVariant",
+      "Source-purpose review: Applies the contact-driven tile variant and retains the cycle clock for timed activation tiles."
+    ],
+    [
+      "rn",
+      "a",
+      "(Lwo;B)Z",
+      "isPlayerWithinContactRange",
+      "Source-purpose review: Tests the player against the tile’s centered horizontal footprint and upper contact height."
+    ],
+    [
+      "rn",
+      "b",
+      "(B)Z",
+      "isTileActive",
+      "Source-purpose review: Exposes the activation flag that gates moving tile surface rendering and collision."
+    ],
+    [
+      "rn",
+      "d",
+      "(I)V",
+      "initializeMovementSpeed",
+      "Source-purpose review: Sets the movement velocity according to the moving tile’s travel mode."
+    ],
+    [
+      "hb",
+      "a",
+      "(II)V",
+      "setPlayerSlot",
+      "Source-purpose review: Records the player slot used to associate the renderable with its simulation player."
+    ],
+    [
+      "hb",
+      "a",
+      "(IIII)I",
+      "getRenderDepthKey",
+      "Source-purpose review: Returns the squared distance from the tracked avatar origin to the supplied render origin with a fixed avatar-specific bias."
+    ],
+    [
+      "hb",
+      "a",
+      "(ZLwo;)V",
+      "syncPlayerPosition",
+      "Source-purpose review: Copies x, y and height from player simulation state to the avatar renderer."
+    ],
+    [
+      "hb",
+      "b",
+      "(I)I",
+      "getPlayerSlot",
+      "Source-purpose review: Returns the player slot assigned to this avatar renderer."
+    ],
+    [
+      "hb",
+      "b",
+      "(IIIIII)V",
+      "fillClippedRasterRectangle",
+      "Source-purpose review: Clamps horizontal and vertical bounds before filling each visible raster span."
+    ],
+    [
+      "hb",
+      "d",
+      "(I)V",
+      "resetAvatarAnimation",
+      "Source-purpose review: Restarts avatar animation at its initial state and clears transitional flags."
+    ],
+    [
+      "hi",
+      "c",
+      "(B)Z",
+      "isReconnectLoginActive",
+      "Source-purpose review: Returns whether the client is currently attempting to reconnect to an existing login."
+    ],
+    [
+      "cn",
+      "b",
+      "(Z)Z",
+      "isLocalPlayerLobbyHost",
+      "Source-purpose review: Tests whether the lobby’s host player ID matches the local player ID."
+    ],
+    [
+      "bg",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;ZLjava/lang/String;BLmk;)Z",
+      "startAccountCreation",
+      "Source-purpose review: Opens the account-creation progress panel and records the details for the pending request."
+    ],
+    [
+      "jg",
+      "a",
+      "(JI)Lbs;",
+      "findLobbyPlayerById",
+      "Source-purpose review: Looks up the lobby player record keyed by the supplied account identifier."
+    ],
+    [
+      "jg",
+      "c",
+      "(I)V",
+      "startFanStopAnimation",
+      "Source-purpose review: Switches a spinning fan tile to its stop animation when a player moves out of range."
+    ],
+    [
+      "jg",
+      "c",
+      "(Z)V",
+      "startFanAnimationIfIdle",
+      "Source-purpose review: Starts the fan animation when the tile has no active animation."
+    ],
+    [
+      "rn",
+      "a",
+      "(ILsi;)V",
+      "playMusicTrackLooped",
+      "Source-purpose review: Starts the supplied music track at the standard volume with looping enabled."
+    ],
+    [
+      "hb",
+      "a",
+      "(IB)V",
+      "requestAvatarAnimation",
+      "Source-purpose review: Requests an avatar animation and switches when the current animation permits interruption."
+    ],
+    [
+      "hb",
+      "a",
+      "(Lwo;B)V",
+      "advanceAvatarAnimation",
+      "Source-purpose review: Advances avatar and overlay animation clocks and selects poses and models from current player state."
+    ],
+    [
+      "hb",
+      "b",
+      "(B)I",
+      "getMouseIdleTicks",
+      "Source-purpose review: Returns the mouse inactivity counter used by the client’s idle handling."
+    ],
+    [
+      "hb",
+      "b",
+      "(Z)V",
+      "prepareAnimatedAvatarMesh",
+      "Source-purpose review: Rebuilds the dirty avatar mesh, applies the active animation and optional overlay, and transforms the model for drawing."
+    ],
+    [
+      "hb",
+      "c",
+      "(B)Llg;",
+      "createAvatarShadowMesh",
+      "Source-purpose review: Builds the shadow mesh using either the default silhouette or the current avatar mesh with shadow face settings."
+    ],
+    [
+      "hb",
+      "c",
+      "(Z)I",
+      "getAvatarAnimationId",
+      "Source-purpose review: Returns the animation identifier last requested or selected for this avatar."
+    ],
+    [
+      "hb",
+      "e",
+      "(I)V",
+      "releaseStartupFontAndImage",
+      "Source-purpose review: Clears the startup font and image references when the main assets have loaded."
+    ],
+    [
+      "ho",
+      "a",
+      "(I)V",
+      "openStartupLogin",
+      "Source-purpose review: Switches from the startup sequence to the login interface and resets the interface counter."
+    ],
+    [
+      "ho",
+      "a",
+      "(IZI)V",
+      "refreshSocialListPanels",
+      "Source-purpose review: Refreshes the friends and ignore panels and adds the remove-friend action when the friends refresh returns a selected row."
+    ],
+    [
+      "hi",
+      "b",
+      "(B)V",
+      "checkDebrisTickGuard",
+      "Source-purpose review: Evaluates the argument guard at the per-fragment tick call. The shared blast renderer advances the animation."
+    ],
+    [
+      "hi",
+      "b",
+      "(I)Lcr;",
+      "getIgnoreListContent",
+      "Source-purpose review: Returns the content container for the ignore-list rows."
     ]
   ],
   "fields": [

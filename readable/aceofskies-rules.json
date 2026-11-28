@@ -13194,6 +13194,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.a(B)I",
+      "originalName": "a",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A byte below 56 invokes the original helper with a cached byte after checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(I)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. Preserves the division after index readiness and before the accumulators.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a(IB)Z",
       "originalName": "a",
       "to": "validateGroupId",
@@ -13257,6 +13271,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. Preserves the division after lowercasing and before looking up the name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(Ljava/lang/String;ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "hasFileName",
+      "evidence": "Source-purpose review: Checks that both the lowercased group name and file name occur in the archive index. A middle int at least -76 invokes the original helper between the group lookup and negative-ID test.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(Ljava/lang/String;ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Forwards the original boolean to the file-name hash table.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a([IIII)[B",
       "originalName": "a",
       "to": "getFileWithKeys",
@@ -13275,6 +13310,13 @@
       "originalName": "b",
       "to": "tryLoadAllGroups",
       "evidence": "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. The supplied int is the first index of the group-ID iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.b(II)I",
+      "originalName": "b",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final int other than 27912 assigns the decoded-file cache from a nested packed-cache slot after validation.",
       "confidence": "reviewed"
     },
     {
@@ -13303,6 +13345,20 @@
       "originalName": "c",
       "to": "tryLoadGroup",
       "evidence": "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. The second int must be zero for the post-request check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.c(Ljava/lang/String;I)Z",
+      "originalName": "c",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A final int other than -14012 returns false after lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.d(II)[B",
+      "originalName": "d",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. The multi-group branch compares the final guard with the complement of the file capacity. The external caller uses -2 for the one-slot case.",
       "confidence": "reviewed"
     },
     {
@@ -27035,7 +27091,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-aceofskies-rules.mjs": "f144b046334021de717312bcc4655ec2e74a95a9df7e13f2aeb66eacf195148a",
-      "aceofskies-names.json": "38daa20cac6d8b357d41cee123c30e7f6899d2eccf220428f3f1417378b9843d",
+      "aceofskies-names.json": "87552f417d89b4bc4046512e10b937f544ade51d5f722028ebdbffc648636773",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "tests/test-aceofskies-core.mjs": "411552405573a5228962211d3e8ee1d080550c058b6e2505f5ccd939b2122427",

@@ -4469,6 +4469,76 @@
       "(BI)I",
       "getGroupRequestProgressPercent",
       "Source-purpose review: Gets the progress of the pending request for an archive group."
+    ],
+    [
+      "bj",
+      "a",
+      "(I)V",
+      "showPlayerNamePrompt",
+      "Source-purpose review: Closes the preceding screen if present, creates the prompt for choosing a displayed player name, and attaches it when the guard is zero."
+    ],
+    [
+      "bj",
+      "a",
+      "(IIZI)I",
+      "pollAccountScreen",
+      "Source-purpose review: Returns the original account screen action from its polling helper. Preserves the unused-parameter contract and intermediate remainder evaluation before delegation."
+    ],
+    [
+      "bj",
+      "a",
+      "(ILwh;)V",
+      "playMusicTrack",
+      "Source-purpose review: Passes the supplied music track through the original playback helper, which uses volume 256. Keeps the guarded static reference clear and exception wrapping."
+    ],
+    [
+      "bj",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Preserves the final int XOR itself for group hashing and the int plus 16675 for group validation and file hashing."
+    ],
+    [
+      "bj",
+      "a",
+      "(ZLjava/lang/String;)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. True invokes the static helper with a null argument before hashing."
+    ],
+    [
+      "bj",
+      "b",
+      "(B)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A byte other than -71 invokes the original static helper after checking index readiness."
+    ],
+    [
+      "bj",
+      "b",
+      "(II)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. Passes the final int XOR itself as the validator guard."
+    ],
+    [
+      "bj",
+      "b",
+      "(ZLjava/lang/String;)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. True calls the original group ID lookup with null after looking up the supplied name."
+    ],
+    [
+      "bj",
+      "c",
+      "(I)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After accumulation, an int other than -14858 clears the index field before the zero-capacity check."
+    ],
+    [
+      "bj",
+      "e",
+      "(II)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Compares the supplied final int with the file slot capacity in the multi-group branch. The external caller passes one."
     ]
   ],
   "fields": [

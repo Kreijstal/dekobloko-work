@@ -2581,6 +2581,972 @@
       "(II)V",
       "loadPackedGroup",
       "Source-purpose review: Requests the packed group and stores direct or wrapped bytes based on the archive cache mode. Retain the guard call before the provider request."
+    ],
+    [
+      "nq",
+      "a",
+      "(ILgj;)Lad;",
+      "resolveCreatureView",
+      "Source-purpose review: Uses the stored owner and roster slot to retrieve the creature view from the battle screen."
+    ],
+    [
+      "nq",
+      "a",
+      "(ILop;)Laga;",
+      "resolveCreature",
+      "Source-purpose review: Uses the stored owner and roster slot to retrieve the creature from the battle state."
+    ],
+    [
+      "ib",
+      "a",
+      "(B)I",
+      "countRosterCreatures",
+      "Source-purpose review: Counts occupied roster slots, including creatures that are down."
+    ],
+    [
+      "ib",
+      "b",
+      "(B)I",
+      "countLivingCreatures",
+      "Source-purpose review: Counts occupied roster slots whose creature is still alive."
+    ],
+    [
+      "ib",
+      "a",
+      "(BI)Z",
+      "hasLivingCreatureWithStatus",
+      "Source-purpose review: Tests whether a living creature on the roster has the specified status."
+    ],
+    [
+      "ib",
+      "a",
+      "(ILaga;)V",
+      "addCreature",
+      "Source-purpose review: Assigns the creature its next roster slot, adds it to the roster array and advances the slot cursor."
+    ],
+    [
+      "tk",
+      "a",
+      "(IB)I",
+      "getStat",
+      "Source-purpose review: Selects one of the match statistics by index. The comparison screen calls it for each player."
+    ],
+    [
+      "wia",
+      "b",
+      "(B)Z",
+      "hasDurability",
+      "Source-purpose review: Tests whether the tile has positive durability. The damage effect checks it before decrementing."
+    ],
+    [
+      "wia",
+      "d",
+      "(I)I",
+      "computeTileChecksum",
+      "Source-purpose review: Combines tile type, occupancy, object identity and status flags into an integer used by the battle checksum."
+    ],
+    [
+      "wia",
+      "a",
+      "(IILrha;Lop;I)V",
+      "appendTileDebugInfo",
+      "Source-purpose review: Appends the tile type, coordinates, occupant, object, powerup and optional counter to the battle diagnostic text."
+    ],
+    [
+      "wia",
+      "a",
+      "(ILop;I)Z",
+      "shouldIncludeInDebugDump",
+      "Source-purpose review: Identifies changed or occupied tiles and tiles with a powerup or visible counter for the battle diagnostic."
+    ],
+    [
+      "wia",
+      "a",
+      "(Lop;B)Z",
+      "hasTileCounter",
+      "Source-purpose review: Checks whether the tile variant carries a counter. Its result controls whether that counter appears in the diagnostic output."
+    ],
+    [
+      "aga",
+      "g",
+      "(I)I",
+      "computeCreatureChecksum",
+      "Source-purpose review: Combines the creature’s type, position, health, owner and other mutable state into the battle checksum."
+    ],
+    [
+      "wia",
+      "a",
+      "(B)Z",
+      "isUnmarkedBaseTile",
+      "Source-purpose review: Tests for the ordinary base terrain with the map marker clear."
+    ],
+    [
+      "wia",
+      "a",
+      "(I)I",
+      "getPowerupStatusId",
+      "Source-purpose review: Converts the tile powerup subtype to the status applied to the creature."
+    ],
+    [
+      "wia",
+      "a",
+      "(ZB)V",
+      "renderInterfaceLayers",
+      "Source-purpose review: Draws the base interface, optional panel and foreground interface layer."
+    ],
+    [
+      "wia",
+      "a",
+      "(ZLop;)Z",
+      "isCurryBaseTile",
+      "Source-purpose review: Tests whether the battle uses Curry terrain and this is an ordinary unmarked base tile."
+    ],
+    [
+      "wia",
+      "c",
+      "(I)Z",
+      "isStandardPowerupTile",
+      "Source-purpose review: Recognizes the eight terrain variants that the powerup update marks present."
+    ],
+    [
+      "wia",
+      "e",
+      "(I)Z",
+      "isTraversableTerrain",
+      "Source-purpose review: Tests the terrain’s common placement eligibility. Callers check occupancy and mode restrictions separately."
+    ],
+    [
+      "ib",
+      "a",
+      "(Z)I",
+      "pollMenuAction",
+      "Source-purpose review: Processes the menu interface input and returns the action code, including the countdown expiry transition."
+    ],
+    [
+      "wca",
+      "a",
+      "(B)V",
+      "initializeAttackShapeNameIndex",
+      "Source-purpose review: Builds the hash lookup from each named attack shape to its index."
+    ],
+    [
+      "wca",
+      "a",
+      "(ILpd;[Z)I",
+      "findUnlockBranchForFood",
+      "Source-purpose review: Tests the available food requirements and returns the matching ability unlock branch."
+    ],
+    [
+      "wca",
+      "a",
+      "(Lpd;I[Z)I",
+      "findAbilitySlotForFood",
+      "Source-purpose review: Finds an unused ability slot matching the food and checks the corresponding branch prerequisite."
+    ],
+    [
+      "wca",
+      "a",
+      "(ZIIII)V",
+      "drawMoveIcon",
+      "Source-purpose review: Draws the move definition’s icon and adds marks for the applicable move power."
+    ],
+    [
+      "op",
+      "a",
+      "(B)Ljava/lang/String;",
+      "getTerrainThemeName",
+      "Source-purpose review: Returns the terrain theme name selected by the battle."
+    ],
+    [
+      "op",
+      "j",
+      "(B)Ljava/lang/String;",
+      "getBattleModeName",
+      "Source-purpose review: Returns the selected battle mode’s display name."
+    ],
+    [
+      "op",
+      "a",
+      "(ILaga;I)V",
+      "setTerrainAroundCreature",
+      "Source-purpose review: Sets the terrain at the creature and its four orthogonal neighbors within the board, skipping protected terrain cells."
+    ],
+    [
+      "op",
+      "b",
+      "(II)Lsfa;",
+      "getOrderAtTurnOrderIndex",
+      "Source-purpose review: Resolves a turn-order entry to a player and roster slot, then returns the pending order."
+    ],
+    [
+      "op",
+      "h",
+      "(I)V",
+      "buildTurnOrderQueues",
+      "Source-purpose review: Builds the execution queues from pending orders, prioritizing movement orders according to their strength."
+    ],
+    [
+      "op",
+      "a",
+      "(II)[I",
+      "findFlagBaseTile",
+      "Source-purpose review: Finds the tile for the team’s flag base in the board grid and returns its coordinates."
+    ],
+    [
+      "op",
+      "a",
+      "(BIII)Z",
+      "isFlagBaseTile",
+      "Source-purpose review: Tests whether the supplied coordinates match the team’s flag base location."
+    ],
+    [
+      "op",
+      "a",
+      "(IBI)Z",
+      "hasFlagAtTile",
+      "Source-purpose review: During capture the flag, tests whether any tracked flag currently occupies the tile."
+    ],
+    [
+      "op",
+      "a",
+      "(IIIB)Z",
+      "isTeamFlagAtTile",
+      "Source-purpose review: During capture the flag, tests whether the specified team’s tracked flag occupies the tile."
+    ],
+    [
+      "op",
+      "a",
+      "(Laga;III)V",
+      "setRosterCreature",
+      "Source-purpose review: Writes the creature at the supplied player and roster slot."
+    ],
+    [
+      "op",
+      "b",
+      "(ZI)I",
+      "getFlagTeamFromTerrain",
+      "Source-purpose review: Maps the four flag base terrain types to their team indices."
+    ],
+    [
+      "aga",
+      "a",
+      "(IB)Z",
+      "hasStatus",
+      "Source-purpose review: Compares the requested status ID with the creature’s current status."
+    ],
+    [
+      "aga",
+      "a",
+      "(Lrha;B)V",
+      "appendCreatureDebugInfo",
+      "Source-purpose review: Writes the creature’s roster slot, tile, health, statuses, move cooldowns and checksum to the diagnostics."
+    ],
+    [
+      "aga",
+      "b",
+      "(I)Ljava/lang/String;",
+      "describeCreatureIdentity",
+      "Source-purpose review: Formats the owner, roster slot and creature type for debugging an occupied tile."
+    ],
+    [
+      "aga",
+      "b",
+      "(IB)I",
+      "findMoveSlot",
+      "Source-purpose review: Finds the slot storing a move ID and throws when the creature lacks the move."
+    ],
+    [
+      "aga",
+      "f",
+      "(I)V",
+      "applyTileArrival",
+      "Source-purpose review: Registers the creature as the tile occupant, applies tile effects and updates game mode objectives."
+    ],
+    [
+      "aga",
+      "a",
+      "(IIB)V",
+      "moveToTile",
+      "Source-purpose review: Clears the previous occupant slot, records movement distance and places the creature at its destination."
+    ],
+    [
+      "aga",
+      "c",
+      "(BI)Z",
+      "isMoveAllowedByStatus",
+      "Source-purpose review: Checks whether the current status disables the selected move or its move category."
+    ],
+    [
+      "aga",
+      "g",
+      "(B)Z",
+      "isCarryingFlag",
+      "Source-purpose review: Recognizes the four status IDs used while carrying a team’s flag."
+    ],
+    [
+      "aga",
+      "h",
+      "(II)V",
+      "healAndRecord",
+      "Source-purpose review: Adds health up to the creature’s maximum and tracks the effective amount healed."
+    ],
+    [
+      "aga",
+      "i",
+      "(II)Z",
+      "hasAdjacentTerrain",
+      "Source-purpose review: Tests the type of each of the four orthogonal neighbors within the board."
+    ],
+    [
+      "aga",
+      "j",
+      "(II)V",
+      "setCooldownForMoveSlot",
+      "Source-purpose review: Sets the move slot’s cooldown from its move definition."
+    ],
+    [
+      "aga",
+      "d",
+      "(IB)V",
+      "applyMoveCooldown",
+      "Source-purpose review: Updates the selected move cooldown after use, unless the creature’s status suppresses it."
+    ],
+    [
+      "op",
+      "i",
+      "(B)V",
+      "bucketCreaturesForTurnOrder",
+      "Source-purpose review: Places every living creature into an initiative bucket according to its speed and priority flag."
+    ],
+    [
+      "op",
+      "i",
+      "(I)V",
+      "buildCreatureTurnOrder",
+      "Source-purpose review: Collects the speed buckets from highest to lowest and rotates the order of tied creatures with the turn counter."
+    ],
+    [
+      "op",
+      "a",
+      "([Lsfa;Z)I",
+      "countSpecialOrders",
+      "Source-purpose review: Counts pending orders whose move definition is a special move."
+    ],
+    [
+      "op",
+      "a",
+      "(III)I",
+      "findFlagTeamAtTile",
+      "Source-purpose review: Returns the team of the flag currently at the supplied tile, or -1."
+    ],
+    [
+      "op",
+      "a",
+      "(IIB)Z",
+      "isTileTerrainTraversable",
+      "Source-purpose review: Checks that coordinates are within the board and that the terrain allows placement."
+    ],
+    [
+      "op",
+      "b",
+      "(B)Z",
+      "hasConsistentCreatureOccupancy",
+      "Source-purpose review: Checks that living roster creatures occupy their recorded tiles and downed creatures have cleared those tiles."
+    ],
+    [
+      "op",
+      "a",
+      "(ILlu;I)V",
+      "writePlayerRoster",
+      "Source-purpose review: Writes the seven creature slots for the selected player to the battle packet."
+    ],
+    [
+      "op",
+      "a",
+      "(Llu;B)V",
+      "writeAllRosters",
+      "Source-purpose review: Serializes the creature roster of every player."
+    ],
+    [
+      "op",
+      "a",
+      "(IB)V",
+      "returnFlagToBase",
+      "Source-purpose review: Restores the flag to the team’s base tile. If an opposing creature is already there and carries no flag, it receives the flag."
+    ],
+    [
+      "op",
+      "d",
+      "(III)V",
+      "markTileHidden",
+      "Source-purpose review: Sets the tile’s hidden flag, which suppresses its board rendering and selects the covered tile graphic."
+    ],
+    [
+      "op",
+      "b",
+      "(I)V",
+      "advanceTurn",
+      "Source-purpose review: Advances the half-turn counter, switches turn phase and processes the pending orders when applicable."
+    ],
+    [
+      "aga",
+      "c",
+      "(Z)V",
+      "dropCarriedFlag",
+      "Source-purpose review: Drops the flag at the creature’s current position and restores it to base if the tile cannot hold it."
+    ],
+    [
+      "aga",
+      "h",
+      "(I)V",
+      "refreshMaximumHealth",
+      "Source-purpose review: Recalculates maximum health from stamina and clamps current health to the new maximum."
+    ],
+    [
+      "aga",
+      "j",
+      "(I)V",
+      "removeDefeatedCreatureFromTile",
+      "Source-purpose review: Applies defeat effects, including flag drop and Martyr healing, then clears health, occupancy and status."
+    ],
+    [
+      "aga",
+      "a",
+      "(IZ)Z",
+      "canTraverseTerrain",
+      "Source-purpose review: Tests terrain eligibility for this creature, taking flag-base restrictions and Levitate into account."
+    ],
+    [
+      "rk",
+      "a",
+      "(II)Z",
+      "hasEquippedMove",
+      "Source-purpose review: Tests whether one of the equipped move slots maps to the supplied move ID."
+    ],
+    [
+      "rk",
+      "a",
+      "(II[I)Z",
+      "containsMoveFromSlot",
+      "Source-purpose review: Searches the supplied move slot array from the given offset for the requested move."
+    ],
+    [
+      "rk",
+      "b",
+      "(II)Z",
+      "hasUnlockedAbilityBranch",
+      "Source-purpose review: Walks the creature’s food unlock history to find the requested ability branch."
+    ],
+    [
+      "rk",
+      "a",
+      "(Loha;I)D",
+      "getAttackDamageMultiplier",
+      "Source-purpose review: Returns the stat multiplier for melee or ranged attack damage, using 1.0 for non-attack moves."
+    ],
+    [
+      "rk",
+      "a",
+      "(ILlu;)Lpp;",
+      "readSetFriendlyEffect",
+      "Source-purpose review: Reads a creature reference and friendliness value and constructs the corresponding battle effect."
+    ],
+    [
+      "rk",
+      "a",
+      "(Llu;Z)V",
+      "readCreatureProfile",
+      "Source-purpose review: Restores the profile value, food unlock history, unlocked move list and equipped move slots from the packet."
+    ],
+    [
+      "rk",
+      "a",
+      "(BLpd;I)Z",
+      "tryUnlockAbilityWithFood",
+      "Source-purpose review: Checks whether the food meets an unlock requirement, records the unlock and adds the resulting ability to the move list."
+    ],
+    [
+      "rk",
+      "e",
+      "(B)Llna;",
+      "createCreatureModel",
+      "Source-purpose review: Builds the composite creature model from the base food and foods used to unlock its abilities."
+    ],
+    [
+      "rk",
+      "c",
+      "(II)I",
+      "getMoveMaxRange",
+      "Source-purpose review: Returns the move’s maximum grid range, including move-slot bonuses."
+    ],
+    [
+      "rk",
+      "d",
+      "(II)I",
+      "getAttackShape",
+      "Source-purpose review: Returns the attack shape index used to build the affected tile offsets, with the learned override where applicable."
+    ],
+    [
+      "rk",
+      "d",
+      "(B)V",
+      "resetCreatureName",
+      "Source-purpose review: Restores the profile name from the creature type’s name field."
+    ],
+    [
+      "rk",
+      "a",
+      "(BLlu;)V",
+      "writeCreatureData",
+      "Source-purpose review: Writes the creature profile data, including type, food unlock records, unlocked move bits and equipped slots."
+    ],
+    [
+      "aga",
+      "a",
+      "(BLlu;)V",
+      "writeCreatureData",
+      "Source-purpose review: Writes the base creature profile and appends the battle-specific health, position, status and move cooldown fields."
+    ],
+    [
+      "op",
+      "a",
+      "(IIZ)V",
+      "setTurnPhase",
+      "Source-purpose review: Sets the turn counter and phase flag from the incoming battle update."
+    ],
+    [
+      "op",
+      "b",
+      "(Llu;I)V",
+      "readTurnOrder",
+      "Source-purpose review: Allocates the turn order and reads its counted creature references from the packet."
+    ],
+    [
+      "op",
+      "b",
+      "(ILlu;)V",
+      "readBoardState",
+      "Source-purpose review: Reads the map, dimensions, tiles and mode-specific objective state from the battle snapshot."
+    ],
+    [
+      "op",
+      "a",
+      "(IZLlu;)V",
+      "readTurnUpdates",
+      "Source-purpose review: Reads the turn order and reconstructs the battle update queue through the specified packet boundary."
+    ],
+    [
+      "op",
+      "a",
+      "(Llu;I)V",
+      "writeTurnUpdates",
+      "Source-purpose review: Writes turn data followed by every queued battle update and its attached integer."
+    ],
+    [
+      "op",
+      "a",
+      "(I[Lrk;I)V",
+      "initializePlayerRoster",
+      "Source-purpose review: Sorts the player’s creature profiles by speed, constructs a roster and places the creatures on their designated starting tiles."
+    ],
+    [
+      "op",
+      "a",
+      "(ILaga;II)I",
+      "getDirectionalMoveDistance",
+      "Source-purpose review: Scans along the movement direction until the limit, terrain restriction or edge is reached, tracking the last unoccupied destination."
+    ],
+    [
+      "op",
+      "a",
+      "(Laga;Z)V",
+      "addCreatureToTurnOrder",
+      "Source-purpose review: Stores the creature in the first free turn-order slot and records the assigned index."
+    ],
+    [
+      "op",
+      "a",
+      "(Laga;Laga;I)Z",
+      "checkOrSwapCreatureTiles",
+      "Source-purpose review: Checks that both creatures can enter each other’s terrain and swaps their positions when requested."
+    ],
+    [
+      "op",
+      "b",
+      "(Laga;B)Z",
+      "isCreatureAdjacentToOwnFlagBase",
+      "Source-purpose review: Tests for the creature’s flag base terrain among its four neighbors."
+    ],
+    [
+      "op",
+      "b",
+      "(BLaga;)I",
+      "getCarriedFlagTeam",
+      "Source-purpose review: Returns a team index for the carried flag status or -1 if there is no carried flag."
+    ],
+    [
+      "op",
+      "k",
+      "(B)Ljava/lang/String;",
+      "describeBattleState",
+      "Source-purpose review: Builds the battle diagnostic with mode, players, objectives, map, changed tiles, creatures and checksum."
+    ],
+    [
+      "op",
+      "f",
+      "(I)V",
+      "executeTurnOrders",
+      "Source-purpose review: Builds the ordered queue and executes each queued order."
+    ],
+    [
+      "aga",
+      "b",
+      "(Z)Laga;",
+      "splitCreature",
+      "Source-purpose review: Creates a second creature with the same origin and split ID and divides stats and health between the two."
+    ],
+    [
+      "aga",
+      "a",
+      "(ZII)V",
+      "moveInDirection",
+      "Source-purpose review: Moves the creature a specified distance along a board direction and applies the relevant movement status effects."
+    ],
+    [
+      "aga",
+      "a",
+      "(IIZ)V",
+      "placeOnTile",
+      "Source-purpose review: Assigns the destination coordinates and applies arrival effects. The battle uses it when swapping creatures."
+    ],
+    [
+      "aga",
+      "a",
+      "(ZBI)V",
+      "advanceStatusAndCooldowns",
+      "Source-purpose review: Advances the status duration and recovers equipped moves toward their normal cooldown limit."
+    ],
+    [
+      "aga",
+      "k",
+      "(II)Z",
+      "tryApplyStatus",
+      "Source-purpose review: Checks whether the creature can accept the status, sets its duration and applies the immediate stamina buff when applicable."
+    ],
+    [
+      "aga",
+      "b",
+      "(BI)V",
+      "applyStatusAndRefreshTile",
+      "Source-purpose review: Applies the status and refreshes tile arrival after the creature stops levitating."
+    ],
+    [
+      "aga",
+      "a",
+      "(Lwia;I)V",
+      "applyTerrainEffects",
+      "Source-purpose review: Applies the tile’s powerup or hazard, handles powerup consumption and updates capture-the-flag state."
+    ],
+    [
+      "rk",
+      "a",
+      "(BI)V",
+      "clearAdvancedMoveSlots",
+      "Source-purpose review: Clears equipped entries at or above slot index six when the supplied condition permits."
+    ],
+    [
+      "op",
+      "a",
+      "(I)V",
+      "advanceTileCountersAndCreatureTimers",
+      "Source-purpose review: Processes creature timers on occupied tiles and advances counters for Curry terrain, consumed powerups and temporary tiles."
+    ],
+    [
+      "op",
+      "a",
+      "(IIII)Z",
+      "isAdjacentToFlagBase",
+      "Source-purpose review: Tests each orthogonal neighbor to see whether it is the specified team’s flag base."
+    ],
+    [
+      "op",
+      "a",
+      "(ILaga;III)V",
+      "setTerrainInDirection",
+      "Source-purpose review: Sets the terrain at a specified distance and direction from the creature’s tile."
+    ],
+    [
+      "op",
+      "b",
+      "(III)Z",
+      "isFlagBaseInMapTemplate",
+      "Source-purpose review: Tests whether the original map entry represents one of the four flag bases."
+    ],
+    [
+      "op",
+      "d",
+      "(B)V",
+      "clearCreatureOrderExecutionFlags",
+      "Source-purpose review: Clears the executed-order flag for each creature during turn-order setup."
+    ],
+    [
+      "op",
+      "f",
+      "(B)V",
+      "clearTurnBucketsOnAlternateGuard",
+      "Source-purpose review: Clears the turn-order bucket array on the alternate guard path."
+    ],
+    [
+      "aga",
+      "e",
+      "(II)[I",
+      "findAdjacentTerrainTile",
+      "Source-purpose review: Returns the coordinates of the first orthogonal tile with the requested terrain, or null."
+    ],
+    [
+      "aga",
+      "f",
+      "(B)I",
+      "getBaseMovementRange",
+      "Source-purpose review: Returns the base movement range derived from the creature’s speed."
+    ],
+    [
+      "aga",
+      "c",
+      "(IB)V",
+      "rechargeReadyMoveAtIndex",
+      "Source-purpose review: Selects a ready move by its index among eligible moves and adjusts its cooldown counter."
+    ],
+    [
+      "op",
+      "a",
+      "(BI)Z",
+      "hasPlayerOfferedDraw",
+      "Source-purpose review: Tests the player’s bit in the draw-offer mask used by the battle display."
+    ],
+    [
+      "op",
+      "a",
+      "(BLaga;)Laga;",
+      "splitCreatureIntoAdjacentTile",
+      "Source-purpose review: Splits a creature into the first eligible adjacent tile and registers the new creature on the roster and board."
+    ],
+    [
+      "op",
+      "a",
+      "(IIIII)V",
+      "applyAreaDamage",
+      "Source-purpose review: Applies a batch of damage effects to surviving creatures within the supplied square radius."
+    ],
+    [
+      "op",
+      "a",
+      "(IIILaga;)Z",
+      "canCreatureLandInDirection",
+      "Source-purpose review: Offsets the creature’s coordinates by direction and distance and checks the destination tile."
+    ],
+    [
+      "op",
+      "a",
+      "(IIIZ[[II)V",
+      "applyTerrainToTileMask",
+      "Source-purpose review: Writes terrain at the board coordinates selected by a centered 17 by 17 mask, honoring bounds and tile eligibility."
+    ],
+    [
+      "op",
+      "a",
+      "(III[[II)V",
+      "hideTilesInMask",
+      "Source-purpose review: Marks the in-bounds board tiles selected by a centered 17 by 17 mask as hidden."
+    ],
+    [
+      "op",
+      "a",
+      "(IILaga;B)I",
+      "getUnblockedDisplacement",
+      "Source-purpose review: Walks the direction up to the requested count and returns the distance available before a blocked tile or board edge."
+    ],
+    [
+      "op",
+      "a",
+      "(ILaga;ILaga;I)Z",
+      "applyKnockback",
+      "Source-purpose review: Resolves a signed displacement, moves the target and records the source’s terrain knockback statistic."
+    ],
+    [
+      "op",
+      "a",
+      "(I[Laj;IB)V",
+      "setTerrainAtTilePositions",
+      "Source-purpose review: Writes terrain at the supplied position records, skipping out-of-bounds and reserved terrain tiles."
+    ],
+    [
+      "op",
+      "a",
+      "(Laga;B)Laga;",
+      "splitCreatureAndAddToTurnOrder",
+      "Source-purpose review: Splits the creature and, when successful, applies the new creature’s arrival effects and inserts it in the turn order."
+    ],
+    [
+      "op",
+      "a",
+      "(Laga;I)[I",
+      "chooseRageAttackTarget",
+      "Source-purpose review: Chooses the direction and offset for the attack forced by Rage, scanning for the closest reachable target with a random fallback."
+    ],
+    [
+      "op",
+      "a",
+      "(Laga;IIB)Z",
+      "canCreatureOccupyTile",
+      "Source-purpose review: Checks bounds and terrain permission, then allows the creature’s current position or an empty destination."
+    ],
+    [
+      "op",
+      "a",
+      "(Llc;B)V",
+      "updatePlayerEliminations",
+      "Source-purpose review: Marks players without surviving roster creatures as eliminated and appends a board change for each."
+    ],
+    [
+      "op",
+      "a",
+      "(ZLaga;)[I",
+      "chooseFearMovement",
+      "Source-purpose review: Chooses the direction and distance of the Fear movement, preferring a far empty tile and using the battle random stream for ties or fallback."
+    ],
+    [
+      "op",
+      "a",
+      "([Lsfa;IB)V",
+      "submitPlayerOrders",
+      "Source-purpose review: Stores submitted orders by creature slot and replaces orders when Rage or Fear forces an action."
+    ],
+    [
+      "op",
+      "a",
+      "([[IBIIII)V",
+      "setTerrainAtTileCoordinates",
+      "Source-purpose review: Writes terrain at the supplied integer coordinates, skipping out-of-bounds and reserved terrain tiles."
+    ],
+    [
+      "op",
+      "b",
+      "(BI)Z",
+      "hasPlayerResigned",
+      "Source-purpose review: Tests the player’s bit in the resignation mask used by the battle interface."
+    ],
+    [
+      "op",
+      "b",
+      "(Laga;III)I",
+      "getSignedKnockbackDistance",
+      "Source-purpose review: Normalizes a signed knockback request and computes its available travel for the animation."
+    ],
+    [
+      "op",
+      "c",
+      "(I)V",
+      "applyOvertimeDamage",
+      "Source-purpose review: Divides the overtime damage budget across each player’s living creatures and records damage events."
+    ],
+    [
+      "op",
+      "d",
+      "(I)V",
+      "updateObjectiveWinner",
+      "Source-purpose review: Updates the Take and Hold leader and countdown or records a winner once the required flag score is reached."
+    ],
+    [
+      "op",
+      "e",
+      "(I)Llc;",
+      "applyRoundTransition",
+      "Source-purpose review: Refreshes turn order, applies tile and creature effects, updates eliminations and objective scores, and returns the board changes."
+    ],
+    [
+      "op",
+      "g",
+      "(I)V",
+      "guardRosterInitialization",
+      "Source-purpose review: The valid call path has no side effects. The alternate path invokes roster initialization with a null profile array."
+    ],
+    [
+      "aga",
+      "a",
+      "(ILaga;B)Z",
+      "applyDamageAndRecordSource",
+      "Source-purpose review: Records attacker and target statistics, applies damage or healing, and returns whether the target was defeated."
+    ],
+    [
+      "aga",
+      "a",
+      "(Ljava/util/Random;ZLeaa;I)V",
+      "advanceEffectParticles",
+      "Source-purpose review: Updates effect particle lifetime and position and removes expired particles."
+    ],
+    [
+      "aga",
+      "a",
+      "(Lwia;Llc;Leaa;B)V",
+      "applyRoundEffects",
+      "Source-purpose review: Expires statuses, advances move cooldown events, applies terrain and status damage or healing, and records the resulting effects."
+    ],
+    [
+      "aga",
+      "a",
+      "(ZI)Z",
+      "hasJustUsedMove",
+      "Source-purpose review: Tests the cooldown sentinel written by the move-use path to suppress immediate reselection."
+    ],
+    [
+      "aga",
+      "c",
+      "(I)I",
+      "countRechargeEligibleMoves",
+      "Source-purpose review: Counts equipped moves eligible to be chosen by the recharge effect, excluding the protected move category."
+    ],
+    [
+      "aga",
+      "d",
+      "(I)V",
+      "recalculateCreatureStats",
+      "Source-purpose review: Rebuilds stats from the creature type, learned bonuses and current status, clamps the results, then updates health."
+    ],
+    [
+      "aga",
+      "d",
+      "(Z)V",
+      "initializeTutorialPanels",
+      "Source-purpose review: Initializes the contextual tutorial panel and its current lesson panel when a lesson is available."
+    ],
+    [
+      "aga",
+      "e",
+      "(I)V",
+      "updateFlagPickupAndCapture",
+      "Source-purpose review: Picks up a flag on an opponent’s base, records a capture beside the player’s own base, and returns the captured flag."
+    ],
+    [
+      "aga",
+      "f",
+      "(II)Z",
+      "isMoveCoolingDown",
+      "Source-purpose review: Tests the move cooldown configuration and whether its counter has reached the ready sentinel."
+    ],
+    [
+      "aga",
+      "g",
+      "(II)Z",
+      "applyDamageOrHealing",
+      "Source-purpose review: Applies protection and shield rules, heals for negative amounts or removes health, and reports defeat."
+    ],
+    [
+      "rk",
+      "a",
+      "(I)I",
+      "storeUnusedProfileValue",
+      "Source-purpose review: Writes and returns a private profile value. Both constructor callers pass zero and discard the result, and no other declaration reads the field."
     ]
   ],
   "fields": [

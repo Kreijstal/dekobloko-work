@@ -2495,10 +2495,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ki.a(B)I",
+      "originalName": "a",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A byte at most 112 returns 124 after checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(BI)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A first byte below 100 returns 42 after group validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ki.a(BLjava/lang/String;)I",
       "originalName": "a",
       "to": "getGroupLoadPercentByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the numeric group load progress for the looked-up ID. Preserves the division before checking the index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(I)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. An int other than 20147 calls the string helper with null after accumulation and before the zero-capacity check.",
       "confidence": "reviewed"
     },
     {
@@ -2513,6 +2534,20 @@
       "originalName": "a",
       "to": "tryLoadFile",
       "evidence": "Source-purpose review: Validates the file ID within its group, accepts an already decoded file or cached packed group, and otherwise requests the packed group and rechecks availability. A middle int other than 19115 returns a nested cache boolean before requesting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(ILjava/lang/CharSequence;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getAccountNameValidationError",
+      "evidence": "Source-purpose review: Returns the original account-name validation message from the delegate, with null signaling no error. A guard other than -1 first clears the static array. The delegate runs the base checks and validates allowed name characters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(IZ)[B",
+      "originalName": "a",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. False assigns the static int array from the packed cache before group validation. The second delegated read uses the original inverted conditional.",
       "confidence": "reviewed"
     },
     {
@@ -2551,6 +2586,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ki.a(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. The final int XOR zero is the index guard. A final int other than -1 assigns a static string after the file lookup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ki.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2569,6 +2611,13 @@
       "originalName": "b",
       "to": "getGroupLoadPercent",
       "evidence": "Source-purpose review: Returns zero for invalid group IDs, 100 for cached packed groups, or the archive provider’s request progress for this group. On a cache miss, preserves the remainder calculation before the provider call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.b(BLjava/lang/String;)Z",
+      "originalName": "b",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Preserves the remainder expression at entry before checking the index.",
       "confidence": "reviewed"
     },
     {
@@ -2600,10 +2649,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ki.c(BLjava/lang/String;)Z",
+      "originalName": "c",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. Preserves the remainder after lowercasing and before the group lookup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ki.c(I)Z",
       "originalName": "c",
       "to": "tryLoadAllGroups",
       "evidence": "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. The request guard uses int XOR -7726. The result uses the accumulated flag only when the int equals 7715.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.d(I)Z",
+      "originalName": "d",
+      "to": "refreshReconnectDeadline",
+      "evidence": "Source-purpose review: Extends the connection-status deadline through the original helper and returns whether the reconnect state is active. A guard at least -92 clears the original static string before delegation.",
       "confidence": "reviewed"
     },
     {
@@ -4912,7 +4975,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-orbdefence-rules.mjs": "7265f3a9f5e13a3fed5621337395faa83930486229ce2e8682b070f11e4f498e",
-      "orbdefence-names.json": "77b83fd530e7892428de4fbd1bc257503f89369afeae03f994a765cb5a6a17f8",
+      "orbdefence-names.json": "4e01debddfa330562afab43826811a8f10994a297930bf2fc1fd255f43f0446f",
       "reproduce-orbdefence.mjs": "24edd3e6decd14f7af15c46ba33901279428686ce88376fa1945d21ab4b43608",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

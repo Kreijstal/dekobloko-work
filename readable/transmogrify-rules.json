@@ -1704,6 +1704,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.a(BLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Preserves the division before index loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(BLjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A first byte below 17 returns a nested boolean before checking the index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(CI)Z",
+      "originalName": "a",
+      "to": "isAllowedNameCharacter",
+      "evidence": "Source-purpose review: Rejects ISO control characters, accepts the original basic name characters, and searches the two additional allowed-character arrays. The second scan begins at the supplied original index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(I)I",
+      "originalName": "a",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. Preserves the remainder at entry before checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(IB)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte below 71 returns 34 after group validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(IBI)Z",
       "originalName": "a",
       "to": "validateFileId",
@@ -1760,10 +1795,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.a(Z)[I",
+      "originalName": "a",
+      "to": "getGroupIds",
+      "evidence": "Source-purpose review: Loads the archive index and returns its explicit group ID array. True returns null after loading the index. Otherwise returns the original group ID array used by the bulk group loader.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(ZI)I",
       "originalName": "a",
       "to": "getGroupLoadPercent",
       "evidence": "Source-purpose review: Returns zero for invalid group IDs, 100 for cached packed groups, or the archive provider’s request progress for this group. False invokes the original helper with a nested cache boolean before validating the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(BI)[B",
+      "originalName": "b",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the remainder before the final exception.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(BLjava/lang/String;)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A first byte other than -120 returns an original nested cache boolean after lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(I)I",
+      "originalName": "b",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After accumulation, an int other than -22884 calls the string helper with a nested cache byte and null.",
       "confidence": "reviewed"
     },
     {
@@ -5164,7 +5227,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "e5a77b1c477b31a669af17f5b73d919cd4120f0ce1f7d024c2c295450646fb43",
+      "transmogrify-names.json": "23b69cfc6b42d0ad6189095a8cda96436c937f3cb2b23ad4be01b9318831378f",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

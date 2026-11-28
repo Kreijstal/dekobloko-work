@@ -269,6 +269,31 @@
       "ja",
       "HuffmanDecoder",
       "Primary instance purpose reviewed from exact constructor, every owned instance method, private fields and selected bound consumers. Build canonical Huffman codewords and a growing decode tree from signed byte code lengths; tree leaves store complemented symbols. Three codecs encode and decode; Dungeon Assault retains only decoding and does not retain the caller byte-length array. Archive resource constructors use the huffman entry; string packet helpers use returned encoded-byte counts to advance cursors. Preserve unrelated static responsibilities and class-initializer order; no complete unrelated-static-body claim. Identifier-only naming; retain primitive domains, array aliases, all allocation/read/write/guard/recursion/partial-effect/exception order, literal values and diagnostics."
+    ],
+    [
+      "wm",
+      "PackedBitSet",
+      "Stores bits in an int array, with indexed tests, masks, mutation, and copy operations."
+    ],
+    [
+      "ai",
+      "DungeonTileState",
+      "Stores one dungeon grid tile’s type and mutable stats initialized from its tile definition."
+    ],
+    [
+      "wb",
+      "StatusEffectIndicator",
+      "Holds the icon, explanatory text, and colour used to render and describe a combat status or stat change."
+    ],
+    [
+      "h",
+      "RaiderDefinition",
+      "Defines a raider type’s starting statistics and its active and passive abilities."
+    ],
+    [
+      "wd",
+      "SpriteAnimationPlayer",
+      "Tracks the current sprite animation, timing, frame transitions, and fade state."
     ]
   ],
   "methods": [
@@ -4632,6 +4657,580 @@
       "(II)I",
       "getGroupRequestProgressPercent",
       "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. A final int other than 27318 clears an instance field after retrieving the request."
+    ],
+    [
+      "nh",
+      "a",
+      "(BLnh;Lmb;I)V",
+      "initializeLogoAnimation",
+      "Source-purpose review: Sets the original logo animation timing from the supplied duration, starts logo audio, loads the 3D logo and split final image, and prepares the logo raster effects."
+    ],
+    [
+      "nh",
+      "a",
+      "(II)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the original index and delegate guard arithmetic and the cache self-assignment before the final exception when the guard differs from -6635."
+    ],
+    [
+      "nh",
+      "a",
+      "(ILjava/lang/String;Ljava/lang/String;)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Index loading uses int XOR 3479. A first int other than -13703 calls the original file ID lookup with a null name."
+    ],
+    [
+      "nh",
+      "a",
+      "(ZLjava/lang/String;)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. True returns true before lowercasing after the index check. The boolean is forwarded to the numeric loader."
+    ],
+    [
+      "nh",
+      "b",
+      "(I)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. The index check uses the supplied int XOR -14454 and the numerator is multiplied by the supplied value. All three callers pass 100."
+    ],
+    [
+      "nh",
+      "b",
+      "(II)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A nonzero final int writes 119 into a nested packed-cache byte after validating the group."
+    ],
+    [
+      "nh",
+      "b",
+      "(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "hasFileName",
+      "Source-purpose review: Checks that both the lowercased group name and file name occur in the archive index. Index loading uses the final byte minus 14272. A byte other than -82 recursively calls this method with null names between lowercase operations."
+    ],
+    [
+      "nh",
+      "b",
+      "(Z)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. False invokes the original helper with a nested cache value before checking index readiness."
+    ],
+    [
+      "nh",
+      "c",
+      "(Ljava/lang/String;I)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. The original int is both the comparison threshold and part of the hash guard."
+    ],
+    [
+      "nh",
+      "c",
+      "(Z)V",
+      "showAccountCreationForm",
+      "Source-purpose review: Creates the account creation form and attaches it to the original UI parent. False also clears a static string before constructing the form."
+    ],
+    [
+      "wm",
+      "a",
+      "(IB)Z",
+      "isBitSet",
+      "Source-purpose review: Tests the specified bit in its packed word."
+    ],
+    [
+      "wm",
+      "a",
+      "(II)V",
+      "setBit",
+      "Source-purpose review: Sets a bit in its packed word using bitwise OR."
+    ],
+    [
+      "wm",
+      "b",
+      "(II)V",
+      "clearBit",
+      "Source-purpose review: Clears one bit by ANDing its word with the complement of the bit mask."
+    ],
+    [
+      "wm",
+      "a",
+      "(I)V",
+      "clearAllBits",
+      "Source-purpose review: Resets every packed word to zero."
+    ],
+    [
+      "wm",
+      "a",
+      "(BLwm;)Lwm;",
+      "intersectOverlappingWords",
+      "Source-purpose review: Returns a new bit set with an intersection over the shared words and a copy of the larger input’s remaining words."
+    ],
+    [
+      "wm",
+      "a",
+      "(BII)V",
+      "setLayoutCenter",
+      "Source-purpose review: Stores the horizontal and vertical layout center. The viewport helper supplies half-width and a scaled height and widgets offset from these coordinates."
+    ],
+    [
+      "hb",
+      "a",
+      "(BI)[I",
+      "buildGridPathFromParents",
+      "Source-purpose review: Follows the recorded parents to the origin and returns the path in traversal order, excluding the origin."
+    ],
+    [
+      "hb",
+      "a",
+      "(I)V",
+      "markIncapacitated",
+      "Source-purpose review: Sets the incapacitated flag and stores the supplied recovery value."
+    ],
+    [
+      "hb",
+      "a",
+      "(Z)V",
+      "markDead",
+      "Source-purpose review: Clears the incapacitated flag, sets the dead flag and stores the terminal recovery value."
+    ],
+    [
+      "hb",
+      "a",
+      "(ILec;Lqg;I)V",
+      "queueReflectionCheck",
+      "Source-purpose review: Decodes a reflection-check request, records lookup failures, and enqueues the request for later processing."
+    ],
+    [
+      "ai",
+      "a",
+      "(I)V",
+      "measureRaidTutorialPanelWidth",
+      "Source-purpose review: Stores the larger measured width of the death and hoard room tutorial text."
+    ],
+    [
+      "ai",
+      "a",
+      "(ILvh;)V",
+      "preloadMusicTrackSamples",
+      "Source-purpose review: Requests sample preparation for the given music track through the MIDI player and its sample archives."
+    ],
+    [
+      "ai",
+      "a",
+      "(IZLec;)V",
+      "writeTileState",
+      "Source-purpose review: Writes the tile type and current statistics, with an optional second set of state values."
+    ],
+    [
+      "ai",
+      "a",
+      "(Lec;III)Lhb;",
+      "readRaiderFromRaidSave",
+      "Source-purpose review: Reads an indexed raider slot from saved raid data, including an optional recovery byte in newer versions."
+    ],
+    [
+      "ai",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "setPendingLoginPlayerName",
+      "Source-purpose review: Stores the selected player name for the next login packet."
+    ],
+    [
+      "wb",
+      "a",
+      "()Len;",
+      "getTooltip",
+      "Source-purpose review: Creates and caches the tooltip that describes the status icon."
+    ],
+    [
+      "h",
+      "a",
+      "(B)V",
+      "clearRaiderDefinitionGlobals",
+      "Source-purpose review: Releases shared sprite, panel and string references on shutdown."
+    ],
+    [
+      "h",
+      "a",
+      "(I)I",
+      "measureStartupAssetLoadPercent",
+      "Source-purpose review: Returns startup loading percentages for required game archives and common UI groups."
+    ],
+    [
+      "h",
+      "a",
+      "(II)Z",
+      "hasAbility",
+      "Source-purpose review: Tests whether the raider definition has the requested active or passive ability."
+    ],
+    [
+      "h",
+      "a",
+      "(ILnh;Lnh;ZLnh;)V",
+      "initializeGameUiAssets",
+      "Source-purpose review: Initializes shared game graphics and UI resources during startup."
+    ],
+    [
+      "h",
+      "a",
+      "(ZIIZI)V",
+      "drawTiledPanelBorder",
+      "Source-purpose review: Repeats a border sprite down a clipped vertical strip and optionally shades its top and bottom edges."
+    ],
+    [
+      "wd",
+      "a",
+      "(B)V",
+      "prepareNextFrame",
+      "Source-purpose review: Selects the next sprite frame, including loop wrap and a transition to the idle animation."
+    ],
+    [
+      "wd",
+      "a",
+      "(BI)V",
+      "advanceAnimation",
+      "Source-purpose review: Advances sprite timing by the supplied time step or decreases opacity when fading."
+    ],
+    [
+      "wd",
+      "a",
+      "(BILue;)V",
+      "writeQueuedClientPayload",
+      "Source-purpose review: Frames a queued byte payload in the outgoing buffer, records its stream identifier, and backfills the length."
+    ],
+    [
+      "wd",
+      "a",
+      "(I)V",
+      "clearAnimationPlayerGlobals",
+      "Source-purpose review: Releases shared resources held by the animation player during shutdown."
+    ],
+    [
+      "wd",
+      "a",
+      "(IIBII)V",
+      "drawAnimation",
+      "Source-purpose review: Draws the animated sprite in the given rectangle and applies its fade to black."
+    ],
+    [
+      "wd",
+      "a",
+      "(IIIII)V",
+      "drawBlendedFrame",
+      "Source-purpose review: Draws the current sprite frame and overlays the next frame according to the elapsed interval."
+    ],
+    [
+      "wd",
+      "a",
+      "(ILeh;)V",
+      "playOnceThenIdle",
+      "Source-purpose review: Starts the action animation in the mode that returns to the default loop when the sequence ends."
+    ],
+    [
+      "wd",
+      "a",
+      "(ILeh;I)V",
+      "startAnimation",
+      "Source-purpose review: Selects a playback mode and animation and resets index, opacity, duration, and next frame."
+    ],
+    [
+      "wd",
+      "b",
+      "(I)Z",
+      "advanceToNextFrame",
+      "Source-purpose review: Steps to the next frame or ends, loops, or switches to idle as specified by the playback mode."
+    ],
+    [
+      "wm",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "passesAccountPasswordPolicy",
+      "Source-purpose review: Checks password policy rules for a normalized password and compares it with the normalized account name when available."
+    ],
+    [
+      "pj",
+      "a",
+      "(BI)[I",
+      "getConnectedNeighborTiles",
+      "Source-purpose review: Returns adjacent tiles that share a passage with the specified tile."
+    ],
+    [
+      "pj",
+      "a",
+      "(I)V",
+      "resetTargetToCurrentTile",
+      "Source-purpose review: Restores the target tile to the current tile and refreshes the state used for target selection."
+    ],
+    [
+      "pj",
+      "a",
+      "(IB)V",
+      "rebuildReachableTiles",
+      "Source-purpose review: Traverses four-way grid connections from the current tile, rebuilding the reachable and frontier masks."
+    ],
+    [
+      "pj",
+      "a",
+      "(IZ)I",
+      "findReachableApproachTile",
+      "Source-purpose review: Prefers the current tile when adjacent to the target, otherwise returns the first reachable adjacent tile."
+    ],
+    [
+      "pj",
+      "a",
+      "(IZLec;)V",
+      "readCombatState",
+      "Source-purpose review: Reads the grid, passages, tile masks, current and target locations, raiders, and mode-specific combat data."
+    ],
+    [
+      "pj",
+      "a",
+      "(ILec;Lwm;)V",
+      "readGridPassageMask",
+      "Source-purpose review: Reads the packed grid passage mask word by word from the buffer."
+    ],
+    [
+      "pj",
+      "a",
+      "(Lwm;Lec;I)V",
+      "readTileMask",
+      "Source-purpose review: Decodes the compact packet representation of a 49-tile bit mask."
+    ],
+    [
+      "pj",
+      "a",
+      "(Lmd;IIIZ)V",
+      "visitReachableNeighborTile",
+      "Source-purpose review: Marks an adjacent tile reachable through an open passage and either queues it for traversal or records the frontier passage."
+    ],
+    [
+      "pj",
+      "b",
+      "(I)V",
+      "moveCurrentTileToTarget",
+      "Source-purpose review: Moves the current position to the target, clears the previous room’s visitation bit when required, and rebuilds reachability."
+    ],
+    [
+      "pj",
+      "b",
+      "(II)Z",
+      "isTileSelectable",
+      "Source-purpose review: Tests a target tile against the active selection mode and the reachable tile mask."
+    ],
+    [
+      "pj",
+      "b",
+      "(III)D",
+      "calculateDragonWakeRisk",
+      "Source-purpose review: Returns the dragon wake probability for a proposed amount of gold and the current raid state."
+    ],
+    [
+      "pj",
+      "c",
+      "(I)I",
+      "getMaximumHoardGoldToSteal",
+      "Source-purpose review: Caps the allowed hoard withdrawal at the available gold and the active raider stat limit."
+    ],
+    [
+      "pj",
+      "c",
+      "(IIIII)D",
+      "calculateAdjustedDragonWakeRisk",
+      "Source-purpose review: Computes dragon wake probability with the active raiders’ applicable ability contributions."
+    ],
+    [
+      "pj",
+      "d",
+      "(II)I",
+      "getTilePassageFlags",
+      "Source-purpose review: Returns the left, right, up and down passage flags for the specified tile."
+    ],
+    [
+      "pj",
+      "e",
+      "(I)V",
+      "clearCombatStateGlobals",
+      "Source-purpose review: Releases shared combat text, tables and flags on shutdown."
+    ],
+    [
+      "pj",
+      "a",
+      "(B)I",
+      "applyDragonFireToParty",
+      "Source-purpose review: Rolls dragonfire exposure for each active party member with no fire immunity and returns the affected slots as a bit mask."
+    ],
+    [
+      "pj",
+      "a",
+      "(BILjava/lang/String;)Ljava/lang/String;",
+      "formatPlayerNameWithTitle",
+      "Source-purpose review: Applies the template for a known player title, using the default player label when the supplied name is absent."
+    ],
+    [
+      "pj",
+      "a",
+      "(BIZ)V",
+      "applyRoomFailureEffects",
+      "Source-purpose review: Applies room stat penalties to the active raider, updates configured room stats, and applies any party-wide penalty."
+    ],
+    [
+      "pj",
+      "a",
+      "(IBI)Z",
+      "rollOpposedSkillCheck",
+      "Source-purpose review: Rolls a comparison of two skill values, with explicit zero cases and odds based on the difference."
+    ],
+    [
+      "pj",
+      "a",
+      "(II)V",
+      "setRaidOutcome",
+      "Source-purpose review: Records the raid outcome, switches to the end-of-raid mode, and applies loss-specific abilities."
+    ],
+    [
+      "pj",
+      "a",
+      "(III)V",
+      "raiseNearbyMonsterDetection",
+      "Source-purpose review: Raises the Detect stat of uncleared monsters in the eight tiles surrounding the given location."
+    ],
+    [
+      "pj",
+      "a",
+      "(IIIII)Z",
+      "rollDragonWakeCheck",
+      "Source-purpose review: Determines whether the dragon wakes by comparing a random draw to its adjusted wake probability."
+    ],
+    [
+      "pj",
+      "a",
+      "(IILhb;I)V",
+      "reduceRaiderAttackAndDefence",
+      "Source-purpose review: Deducts Attack and Defence, accounting for Dark Arts and marking the raider dead when damage exhausts the required stats."
+    ],
+    [
+      "pj",
+      "a",
+      "(ILai;BZ)Lmo;",
+      "resolveSingleRaiderMonsterEncounter",
+      "Source-purpose review: Runs the alternate single-raider encounter path and encodes the result flags and number of rounds."
+    ],
+    [
+      "pj",
+      "a",
+      "(ILhb;)V",
+      "applyDragonFireToRaider",
+      "Source-purpose review: Applies the raider-specific effects of dragonfire, accounting for protective abilities and recording its outcome."
+    ],
+    [
+      "pj",
+      "a",
+      "(IZI)V",
+      "applyRoomEntryDetectionEffects",
+      "Source-purpose review: Applies the dungeon-wide and local detection increases specified by the room entry effect table."
+    ],
+    [
+      "pj",
+      "a",
+      "(Lhb;I)V",
+      "checkPartyDefeat",
+      "Source-purpose review: Ends the raid in defeat when no raiders remain active."
+    ],
+    [
+      "pj",
+      "a",
+      "(Lhb;Lec;I)Lmo;",
+      "applyRaiderAbility",
+      "Source-purpose review: Applies the selected raider’s ability to its packet-specified targets and constructs the corresponding ability result."
+    ],
+    [
+      "pj",
+      "a",
+      "(Lhb;ZI)V",
+      "enterDungeonRoom",
+      "Source-purpose review: Finds a reachable approach, reveals the target room, and either selects an active raider for an unresolved room or completes movement into a cleared room."
+    ],
+    [
+      "pj",
+      "a",
+      "(Z)V",
+      "clearTargetRoomAndAdvance",
+      "Source-purpose review: Marks the target room cleared, clamps its modified stats to their base limits, and moves the party there."
+    ],
+    [
+      "pj",
+      "a",
+      "(ZI)V",
+      "setCombatMode",
+      "Source-purpose review: Updates the combat mode, clears temporary boost flags when entering movement setup, and recomputes the Intimidate modifier."
+    ],
+    [
+      "pj",
+      "a",
+      "(ZII)V",
+      "applyRoomTriggerDetectionEffects",
+      "Source-purpose review: Applies the detection increases specified for triggering a room’s trap or encounter."
+    ],
+    [
+      "pj",
+      "a",
+      "(ZLai;IB)Lmo;",
+      "resolveMonsterEncounter",
+      "Source-purpose review: Rolls the exchanges against a monster, applies combat abilities and consequences, and returns the encoded encounter result."
+    ],
+    [
+      "pj",
+      "b",
+      "(B)Lwm;",
+      "buildRevealedTilePassageMask",
+      "Source-purpose review: Returns a bit for each potential grid passage that touches at least one revealed tile."
+    ],
+    [
+      "pj",
+      "b",
+      "(BI)Lmo;",
+      "resolveTargetRoomAction",
+      "Source-purpose review: Resolves the selected raider action against the target trap, monster, or guardian and reports the result."
+    ],
+    [
+      "pj",
+      "b",
+      "(IB)[I",
+      "getTilePassageIndices",
+      "Source-purpose review: Returns the passage bit indices that connect the given tile to its neighbors."
+    ],
+    [
+      "pj",
+      "b",
+      "(IIIII)Lmo;",
+      "resolveHoardGoldTheft",
+      "Source-purpose review: Rolls the dragon wake check for the requested gold and encodes either the successful raid or the dragonfire outcome."
+    ],
+    [
+      "pj",
+      "b",
+      "(ILhb;)Z",
+      "canUseRaiderAbility",
+      "Source-purpose review: Checks whether a raider can use its active ability in the current mode and whether any required target exists."
+    ],
+    [
+      "pj",
+      "c",
+      "(II)Lmo;",
+      "resolveSingleRaiderRoomAction",
+      "Source-purpose review: Uses the alternate single-raider path to resolve the active raider’s action in the target room."
+    ],
+    [
+      "pj",
+      "d",
+      "(I)V",
+      "resolveFailedRoomAction",
+      "Source-purpose review: Applies the consequences of a failed room action, including room-specific effects, incapacitation or death, and party defeat when applicable."
+    ],
+    [
+      "pj",
+      "e",
+      "(II)V",
+      "raiseDungeonMonsterDetection",
+      "Source-purpose review: Raises the Detect stat of all uncleared monsters in the dungeon."
     ]
   ],
   "fields": [

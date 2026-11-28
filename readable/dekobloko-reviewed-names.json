@@ -644,7 +644,15 @@
     ["le","a","(II)I","getGroupRequestProgressPercent","Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. Preserves the remainder before looking up the request."],
     ["of","a","(II)I","getGroupRequestProgressPercent","Source-purpose review: Gets the progress of the pending request for an archive group."],
     ["pj","a","(Z)I","getProgressPercent","Source-purpose review: True returns -110. False returns zero before the receive buffer is initialized, then calculates 100 times the received offset divided by the buffer length minus request padding."],
-    ["sf","a","(Z)I","getProgressPercent","Source-purpose review: Abstract request contract shared by disk completion and network transfer progress."]
+    ["sf","a","(Z)I","getProgressPercent","Source-purpose review: Abstract request contract shared by disk completion and network transfer progress."],
+    ["ji","a","(CBLjava/lang/String;)[Ljava/lang/String;","splitOnCharacter","Source-purpose review: Splits the string on the supplied character, retaining empty leading, trailing and interior fields via the original substring bounds. A byte other than 66 returns null."],
+    ["ji","a","(IIZ)V","pollTextEntryDialog","Source-purpose review: Polls the active text-entry dialog and sends a selected action with the current text and option flag. The original pending value keeps the dialog open, cancellation skips submission, and the completed branches release it and refresh the UI."],
+    ["ji","a","(Ljava/lang/String;B)Z","tryLoadGroupByName","Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Preserves the division between lowercasing and name hashing."],
+    ["ji","a","(Ljava/lang/String;I)Z","hasGroupName","Source-purpose review: Checks the lowercased name against the archive group-name table. Compares the looked-up ID to the original int threshold. A compiled caller supplies zero directly."],
+    ["ji","a","(Ljava/lang/String;ZLjava/lang/String;)Z","tryLoadFileByName","Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. False returns true before checking the index."],
+    ["ji","b","(B)I","getArchiveLoadPercent","Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. A byte above -44 invokes the original helper with a nested cache value before iteration."],
+    ["ji","b","(II)I","getFileCapacity","Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A first int other than -5228 returns -48 before group validation."],
+    ["ji","c","(II)V","writeTwoByteCommand","Source-purpose review: Appends the original cipher-adjusted opcode and the two payload bytes, the supplied value followed by the constant three. Keeps the opcode writer guard calculation."]
   ],
   "fields": [
     ["fn","field_h","Ljava/nio/ByteBuffer;","buffer","Sole instance ByteBuffer allocated directly and read/written by bytes operations; preserve nullable/guard states."]

@@ -311,6 +311,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ai",
+      "originalName": "ai",
+      "to": "DungeonTileState",
+      "evidence": "Stores one dungeon grid tile’s type and mutable stats initialized from its tile definition.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ap",
       "originalName": "ap",
       "to": "AbstractAudioSample",
@@ -462,6 +469,13 @@
       "originalName": "gj",
       "to": "FrameTimer",
       "evidence": "FrameTimer source-purpose review: abstract timer contract or concrete System.nanoTime timestamps/sample buffer;all instance operations,typed factories and selected method callers reviewed;preserve existing behavior and full primitive parameter domains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:h",
+      "originalName": "h",
+      "to": "RaiderDefinition",
+      "evidence": "Defines a raider type’s starting statistics and its active and passive abilities.",
       "confidence": "reviewed"
     },
     {
@@ -780,6 +794,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wb",
+      "originalName": "wb",
+      "to": "StatusEffectIndicator",
+      "evidence": "Holds the icon, explanatory text, and colour used to render and describe a combat status or stat change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wd",
+      "originalName": "wd",
+      "to": "SpriteAnimationPlayer",
+      "evidence": "Tracks the current sprite animation, timing, frame transitions, and fade state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wj",
       "originalName": "wj",
       "to": "CipherPacketBuffer",
@@ -791,6 +819,13 @@
       "originalName": "wl",
       "to": "ProxyAuthenticationRequiredException",
       "evidence": "Source-purpose review: final IOException subtype with one String constructor forwarding unchanged to super,and no own instance fields or other instance methods. Both bound throw sites in each game are within HTTP/1.0 or HTTP/1.1 407 proxy-authentication handling:carry parsed proxy-authenticate scheme or empty fallback. Two typed catch paths retain/rethrow and expose getMessage through platform-task result. All22constructors,44throw sites and44catch contexts human read;all class references mechanically bound,unrelated static helpers/fields preserved. Preserve visibility,message payloads,inheritance,exception/guard order and every unselected member name;no implementation repairs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wm",
+      "originalName": "wm",
+      "to": "PackedBitSet",
+      "evidence": "Stores bits in an int array, with indexed tests, masks, mutation, and copy operations.",
       "confidence": "reviewed"
     },
     {
@@ -1176,6 +1211,41 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 dc19cc1bf2d05b990c3dcabdc59a4e1ae8d6ae2a288afaa3911366c0025cf315.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(I)V",
+      "originalName": "a",
+      "to": "measureRaidTutorialPanelWidth",
+      "evidence": "Source-purpose review: Stores the larger measured width of the death and hoard room tutorial text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(ILvh;)V",
+      "originalName": "a",
+      "to": "preloadMusicTrackSamples",
+      "evidence": "Source-purpose review: Requests sample preparation for the given music track through the MIDI player and its sample archives.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(IZLec;)V",
+      "originalName": "a",
+      "to": "writeTileState",
+      "evidence": "Source-purpose review: Writes the tile type and current statistics, with an optional second set of state values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(Lec;III)Lhb;",
+      "originalName": "a",
+      "to": "readRaiderFromRaidSave",
+      "evidence": "Source-purpose review: Reads an indexed raider slot from saved raid data, including an optional recovery byte in newer versions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "setPendingLoginPlayerName",
+      "evidence": "Source-purpose review: Stores the selected player name for the next login packet.",
       "confidence": "reviewed"
     },
     {
@@ -2817,6 +2887,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:h.a(B)V",
+      "originalName": "a",
+      "to": "clearRaiderDefinitionGlobals",
+      "evidence": "Source-purpose review: Releases shared sprite, panel and string references on shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(I)I",
+      "originalName": "a",
+      "to": "measureStartupAssetLoadPercent",
+      "evidence": "Source-purpose review: Returns startup loading percentages for required game archives and common UI groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(II)Z",
+      "originalName": "a",
+      "to": "hasAbility",
+      "evidence": "Source-purpose review: Tests whether the raider definition has the requested active or passive ability.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(ILnh;Lnh;ZLnh;)V",
+      "originalName": "a",
+      "to": "initializeGameUiAssets",
+      "evidence": "Source-purpose review: Initializes shared game graphics and UI resources during startup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(ZIIZI)V",
+      "originalName": "a",
+      "to": "drawTiledPanelBorder",
+      "evidence": "Source-purpose review: Repeats a border sprite down a clipped vertical strip and optionally shades its top and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
@@ -2842,6 +2947,34 @@
       "originalName": "a",
       "to": "encodeCp1252Character",
       "evidence": "Source-purpose review: Encodes a UTF-16 code unit as a signed CP1252 byte for text hashes and byte-indexed glyph lookup. Dungeon Assault reads the game flag and returns 27 for a byte other than -38 before mapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(BI)[I",
+      "originalName": "a",
+      "to": "buildGridPathFromParents",
+      "evidence": "Source-purpose review: Follows the recorded parents to the origin and returns the path in traversal order, excluding the origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(I)V",
+      "originalName": "a",
+      "to": "markIncapacitated",
+      "evidence": "Source-purpose review: Sets the incapacitated flag and stores the supplied recovery value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(ILec;Lqg;I)V",
+      "originalName": "a",
+      "to": "queueReflectionCheck",
+      "evidence": "Source-purpose review: Decodes a reflection-check request, records lookup failures, and enqueues the request for later processing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(Z)V",
+      "originalName": "a",
+      "to": "markDead",
+      "evidence": "Source-purpose review: Clears the incapacitated flag, sets the dead flag and stores the terminal recovery value.",
       "confidence": "reviewed"
     },
     {
@@ -3944,10 +4077,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nh.a(BLnh;Lmb;I)V",
+      "originalName": "a",
+      "to": "initializeLogoAnimation",
+      "evidence": "Source-purpose review: Sets the original logo animation timing from the supplied duration, starts logo audio, loads the 3D logo and split final image, and prepares the logo raster effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nh.a(I)Z",
       "originalName": "a",
       "to": "ensureIndexLoaded",
       "evidence": "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. When index is absent, forward int plus 40892 to the provider. After initialization or a cache hit, int other than -14354 invokes the original helper with a cached value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.a(II)[B",
+      "originalName": "a",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the original index and delegate guard arithmetic and the cache self-assignment before the final exception when the guard differs from -6635.",
       "confidence": "reviewed"
     },
     {
@@ -3969,6 +4116,13 @@
       "originalName": "a",
       "to": "getFileIdByName",
       "evidence": "Source-purpose review: Validates the group, lowercases and hashes a file name, then returns the validated file ID from that group’s name table or the original missing-ID value. A first int other than zero returns 42 before validating the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.a(ILjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Index loading uses int XOR 3479. A first int other than -13703 calls the original file ID lookup with a null name.",
       "confidence": "reviewed"
     },
     {
@@ -4000,6 +4154,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nh.a(ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. True returns true before lowercasing after the index check. The boolean is forwarded to the numeric loader.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nh.a([IIBI)[B",
       "originalName": "a",
       "to": "getFileWithKeys",
@@ -4011,6 +4172,20 @@
       "originalName": "a",
       "to": "unpackGroupFiles",
       "evidence": "Source-purpose review: Unpacks a packed archive group into its per-file cache. Bound calls confirm the group decoder and the separate single-file and all-files chunk copies. Preserve the supplied key path, original cache mutations, the exact byte-copy calls, chunk-table arithmetic, guard behavior, exceptions and return order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.b(I)I",
+      "originalName": "b",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. The index check uses the supplied int XOR -14454 and the numerator is multiplied by the supplied value. All three callers pass 100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.b(II)I",
+      "originalName": "b",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A nonzero final int writes 119 into a nested packed-cache byte after validating the group.",
       "confidence": "reviewed"
     },
     {
@@ -4028,10 +4203,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nh.b(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "originalName": "b",
+      "to": "hasFileName",
+      "evidence": "Source-purpose review: Checks that both the lowercased group name and file name occur in the archive index. Index loading uses the final byte minus 14272. A byte other than -82 recursively calls this method with null names between lowercase operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.b(Z)I",
+      "originalName": "b",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. False invokes the original helper with a nested cache value before checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nh.c(II)I",
       "originalName": "c",
       "to": "getGroupLoadPercent",
       "evidence": "Source-purpose review: Returns zero for invalid group IDs, 100 for cached packed groups, or the archive provider’s request progress for this group. Preserves the remainder expression before validating the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.c(Ljava/lang/String;I)Z",
+      "originalName": "c",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. The original int is both the comparison threshold and part of the hash guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.c(Z)V",
+      "originalName": "c",
+      "to": "showAccountCreationForm",
+      "evidence": "Source-purpose review: Creates the account creation form and attaches it to the original UI parent. False also clears a static string before constructing the form.",
       "confidence": "reviewed"
     },
     {
@@ -4385,10 +4588,297 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pj.a(B)I",
+      "originalName": "a",
+      "to": "applyDragonFireToParty",
+      "evidence": "Source-purpose review: Rolls dragonfire exposure for each active party member with no fire immunity and returns the affected slots as a bit mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(BI)[I",
+      "originalName": "a",
+      "to": "getConnectedNeighborTiles",
+      "evidence": "Source-purpose review: Returns adjacent tiles that share a passage with the specified tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(BILjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatPlayerNameWithTitle",
+      "evidence": "Source-purpose review: Applies the template for a known player title, using the default player label when the supplied name is absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(BIZ)V",
+      "originalName": "a",
+      "to": "applyRoomFailureEffects",
+      "evidence": "Source-purpose review: Applies room stat penalties to the active raider, updates configured room stats, and applies any party-wide penalty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(I)V",
+      "originalName": "a",
+      "to": "resetTargetToCurrentTile",
+      "evidence": "Source-purpose review: Restores the target tile to the current tile and refreshes the state used for target selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(IB)V",
+      "originalName": "a",
+      "to": "rebuildReachableTiles",
+      "evidence": "Source-purpose review: Traverses four-way grid connections from the current tile, rebuilding the reachable and frontier masks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(IBI)Z",
+      "originalName": "a",
+      "to": "rollOpposedSkillCheck",
+      "evidence": "Source-purpose review: Rolls a comparison of two skill values, with explicit zero cases and odds based on the difference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(II)V",
+      "originalName": "a",
+      "to": "setRaidOutcome",
+      "evidence": "Source-purpose review: Records the raid outcome, switches to the end-of-raid mode, and applies loss-specific abilities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(III)V",
+      "originalName": "a",
+      "to": "raiseNearbyMonsterDetection",
+      "evidence": "Source-purpose review: Raises the Detect stat of uncleared monsters in the eight tiles surrounding the given location.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(IIIII)Z",
+      "originalName": "a",
+      "to": "rollDragonWakeCheck",
+      "evidence": "Source-purpose review: Determines whether the dragon wakes by comparing a random draw to its adjusted wake probability.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(IILhb;I)V",
+      "originalName": "a",
+      "to": "reduceRaiderAttackAndDefence",
+      "evidence": "Source-purpose review: Deducts Attack and Defence, accounting for Dark Arts and marking the raider dead when damage exhausts the required stats.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pj.a(IJ)V",
       "originalName": "a",
       "to": "sleepMillis",
       "evidence": "Retain the guarded millisecond delay helper,including the original delay-1 then1 split for multiples of ten where specified. Preserve parameter-derived threshold/modulo behavior,inner helper arguments,all guard effects,early returns and exception wrappers. Complete original-body SHA256 3ccb5e38049a0e883d2cbfeb30baef037fe84afafb0e5bf6e7273d3512dd5b79. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ILai;BZ)Lmo;",
+      "originalName": "a",
+      "to": "resolveSingleRaiderMonsterEncounter",
+      "evidence": "Source-purpose review: Runs the alternate single-raider encounter path and encodes the result flags and number of rounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ILec;Lwm;)V",
+      "originalName": "a",
+      "to": "readGridPassageMask",
+      "evidence": "Source-purpose review: Reads the packed grid passage mask word by word from the buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ILhb;)V",
+      "originalName": "a",
+      "to": "applyDragonFireToRaider",
+      "evidence": "Source-purpose review: Applies the raider-specific effects of dragonfire, accounting for protective abilities and recording its outcome.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(IZ)I",
+      "originalName": "a",
+      "to": "findReachableApproachTile",
+      "evidence": "Source-purpose review: Prefers the current tile when adjacent to the target, otherwise returns the first reachable adjacent tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(IZI)V",
+      "originalName": "a",
+      "to": "applyRoomEntryDetectionEffects",
+      "evidence": "Source-purpose review: Applies the dungeon-wide and local detection increases specified by the room entry effect table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(IZLec;)V",
+      "originalName": "a",
+      "to": "readCombatState",
+      "evidence": "Source-purpose review: Reads the grid, passages, tile masks, current and target locations, raiders, and mode-specific combat data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Lhb;I)V",
+      "originalName": "a",
+      "to": "checkPartyDefeat",
+      "evidence": "Source-purpose review: Ends the raid in defeat when no raiders remain active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Lhb;Lec;I)Lmo;",
+      "originalName": "a",
+      "to": "applyRaiderAbility",
+      "evidence": "Source-purpose review: Applies the selected raider’s ability to its packet-specified targets and constructs the corresponding ability result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Lhb;ZI)V",
+      "originalName": "a",
+      "to": "enterDungeonRoom",
+      "evidence": "Source-purpose review: Finds a reachable approach, reveals the target room, and either selects an active raider for an unresolved room or completes movement into a cleared room.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Lmd;IIIZ)V",
+      "originalName": "a",
+      "to": "visitReachableNeighborTile",
+      "evidence": "Source-purpose review: Marks an adjacent tile reachable through an open passage and either queues it for traversal or records the frontier passage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Lwm;Lec;I)V",
+      "originalName": "a",
+      "to": "readTileMask",
+      "evidence": "Source-purpose review: Decodes the compact packet representation of a 49-tile bit mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Z)V",
+      "originalName": "a",
+      "to": "clearTargetRoomAndAdvance",
+      "evidence": "Source-purpose review: Marks the target room cleared, clamps its modified stats to their base limits, and moves the party there.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ZI)V",
+      "originalName": "a",
+      "to": "setCombatMode",
+      "evidence": "Source-purpose review: Updates the combat mode, clears temporary boost flags when entering movement setup, and recomputes the Intimidate modifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ZII)V",
+      "originalName": "a",
+      "to": "applyRoomTriggerDetectionEffects",
+      "evidence": "Source-purpose review: Applies the detection increases specified for triggering a room’s trap or encounter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ZLai;IB)Lmo;",
+      "originalName": "a",
+      "to": "resolveMonsterEncounter",
+      "evidence": "Source-purpose review: Rolls the exchanges against a monster, applies combat abilities and consequences, and returns the encoded encounter result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(B)Lwm;",
+      "originalName": "b",
+      "to": "buildRevealedTilePassageMask",
+      "evidence": "Source-purpose review: Returns a bit for each potential grid passage that touches at least one revealed tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(BI)Lmo;",
+      "originalName": "b",
+      "to": "resolveTargetRoomAction",
+      "evidence": "Source-purpose review: Resolves the selected raider action against the target trap, monster, or guardian and reports the result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(I)V",
+      "originalName": "b",
+      "to": "moveCurrentTileToTarget",
+      "evidence": "Source-purpose review: Moves the current position to the target, clears the previous room’s visitation bit when required, and rebuilds reachability.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(IB)[I",
+      "originalName": "b",
+      "to": "getTilePassageIndices",
+      "evidence": "Source-purpose review: Returns the passage bit indices that connect the given tile to its neighbors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(II)Z",
+      "originalName": "b",
+      "to": "isTileSelectable",
+      "evidence": "Source-purpose review: Tests a target tile against the active selection mode and the reachable tile mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(III)D",
+      "originalName": "b",
+      "to": "calculateDragonWakeRisk",
+      "evidence": "Source-purpose review: Returns the dragon wake probability for a proposed amount of gold and the current raid state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(IIIII)Lmo;",
+      "originalName": "b",
+      "to": "resolveHoardGoldTheft",
+      "evidence": "Source-purpose review: Rolls the dragon wake check for the requested gold and encodes either the successful raid or the dragonfire outcome.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(ILhb;)Z",
+      "originalName": "b",
+      "to": "canUseRaiderAbility",
+      "evidence": "Source-purpose review: Checks whether a raider can use its active ability in the current mode and whether any required target exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.c(I)I",
+      "originalName": "c",
+      "to": "getMaximumHoardGoldToSteal",
+      "evidence": "Source-purpose review: Caps the allowed hoard withdrawal at the available gold and the active raider stat limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.c(II)Lmo;",
+      "originalName": "c",
+      "to": "resolveSingleRaiderRoomAction",
+      "evidence": "Source-purpose review: Uses the alternate single-raider path to resolve the active raider’s action in the target room.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.c(IIIII)D",
+      "originalName": "c",
+      "to": "calculateAdjustedDragonWakeRisk",
+      "evidence": "Source-purpose review: Computes dragon wake probability with the active raiders’ applicable ability contributions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.d(I)V",
+      "originalName": "d",
+      "to": "resolveFailedRoomAction",
+      "evidence": "Source-purpose review: Applies the consequences of a failed room action, including room-specific effects, incapacitation or death, and party defeat when applicable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.d(II)I",
+      "originalName": "d",
+      "to": "getTilePassageFlags",
+      "evidence": "Source-purpose review: Returns the left, right, up and down passage flags for the specified tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.e(I)V",
+      "originalName": "e",
+      "to": "clearCombatStateGlobals",
+      "evidence": "Source-purpose review: Releases shared combat text, tables and flags on shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.e(II)V",
+      "originalName": "e",
+      "to": "raiseDungeonMonsterDetection",
+      "evidence": "Source-purpose review: Raises the Detect stat of all uncleared monsters in the dungeon.",
       "confidence": "reviewed"
     },
     {
@@ -5449,6 +5939,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wb.a()Len;",
+      "originalName": "a",
+      "to": "getTooltip",
+      "evidence": "Source-purpose review: Creates and caches the tooltip that describes the status icon.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(B)V",
+      "originalName": "a",
+      "to": "prepareNextFrame",
+      "evidence": "Source-purpose review: Selects the next sprite frame, including loop wrap and a transition to the idle animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(BI)V",
+      "originalName": "a",
+      "to": "advanceAnimation",
+      "evidence": "Source-purpose review: Advances sprite timing by the supplied time step or decreases opacity when fading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(BILue;)V",
+      "originalName": "a",
+      "to": "writeQueuedClientPayload",
+      "evidence": "Source-purpose review: Frames a queued byte payload in the outgoing buffer, records its stream identifier, and backfills the length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(I)V",
+      "originalName": "a",
+      "to": "clearAnimationPlayerGlobals",
+      "evidence": "Source-purpose review: Releases shared resources held by the animation player during shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(IIBII)V",
+      "originalName": "a",
+      "to": "drawAnimation",
+      "evidence": "Source-purpose review: Draws the animated sprite in the given rectangle and applies its fade to black.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawBlendedFrame",
+      "evidence": "Source-purpose review: Draws the current sprite frame and overlays the next frame according to the elapsed interval.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(ILeh;)V",
+      "originalName": "a",
+      "to": "playOnceThenIdle",
+      "evidence": "Source-purpose review: Starts the action animation in the mode that returns to the default loop when the sequence ends.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(ILeh;I)V",
+      "originalName": "a",
+      "to": "startAnimation",
+      "evidence": "Source-purpose review: Selects a playback mode and animation and resets index, opacity, duration, and next frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.b(I)Z",
+      "originalName": "b",
+      "to": "advanceToNextFrame",
+      "evidence": "Source-purpose review: Steps to the next frame or ends, loops, or switches to idle as specified by the playback mode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wf.d(B)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -5495,6 +6055,55 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 9 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ca68a22d4c10707a3a652236e530aa2ea46679052d13f073b655545628fa9671.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(BII)V",
+      "originalName": "a",
+      "to": "setLayoutCenter",
+      "evidence": "Source-purpose review: Stores the horizontal and vertical layout center. The viewport helper supplies half-width and a scaled height and widgets offset from these coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(BLwm;)Lwm;",
+      "originalName": "a",
+      "to": "intersectOverlappingWords",
+      "evidence": "Source-purpose review: Returns a new bit set with an intersection over the shared words and a copy of the larger input’s remaining words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(I)V",
+      "originalName": "a",
+      "to": "clearAllBits",
+      "evidence": "Source-purpose review: Resets every packed word to zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(IB)Z",
+      "originalName": "a",
+      "to": "isBitSet",
+      "evidence": "Source-purpose review: Tests the specified bit in its packed word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(II)V",
+      "originalName": "a",
+      "to": "setBit",
+      "evidence": "Source-purpose review: Sets a bit in its packed word using bitwise OR.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "passesAccountPasswordPolicy",
+      "evidence": "Source-purpose review: Checks password policy rules for a normalized password and compares it with the normalized account name when available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.b(II)V",
+      "originalName": "b",
+      "to": "clearBit",
+      "evidence": "Source-purpose review: Clears one bit by ANDing its word with the complement of the bit mask.",
       "confidence": "reviewed"
     },
     {
@@ -5647,7 +6256,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-dungeonassault-rules.mjs": "8eb15e13a50fdc4451ed6ef68e53e6f3481c4d7f58d0976003f9ed284e2452de",
-      "dungeonassault-names.json": "27624578b2a82b7ab8677e76f8eb335a4f11b11a3e93ba69f31102462fe5ef05",
+      "dungeonassault-names.json": "27bc6e68353ea0189d4d440950354acfc3aa0df5d76b4e66684b1f8ada4d1962",
       "reproduce-dungeonassault.mjs": "91cc0426bf614cfc9a70de2a232ea4543d6576e41cf2fec5dad4cf428a0fd8c4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

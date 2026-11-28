@@ -3097,6 +3097,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kk.a(IB)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte other than -91 returns 56 after group validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kk.a(II)I",
       "originalName": "a",
       "to": "getGroupLoadPercent",
@@ -3125,6 +3132,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kk.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A byte above -85 clears the index after lookup and before returning the name check.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kk.a(Ljava/lang/String;I)I",
       "originalName": "a",
       "to": "getGroupLoadPercentByName",
@@ -3146,6 +3160,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kk.a(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A byte other than -45 writes -121L into a nested packed-cache slot. Preserve all original guard calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(Z)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. False assigns a static string from a packed-cache slot before iteration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kk.a(ZII)Z",
       "originalName": "a",
       "to": "validateFileId",
@@ -3164,6 +3192,34 @@
       "originalName": "a",
       "to": "getFileWithKeys",
       "evidence": "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. File ID is third and group ID last. The boolean is passed unchanged to ID validation; preserve it as an actual supplied argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.b(B)Z",
+      "originalName": "b",
+      "to": "isPasswordOnlyLogin",
+      "evidence": "Source-purpose review: Returns the flag that keeps the existing login name fixed and lets the form submit using only the entered password. The rare guard branch preserves the original cleanup call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.b(I)I",
+      "originalName": "b",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A nonzero int clears the static int array before checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.b(II)[B",
+      "originalName": "b",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. A final int other than 20095 returns null after group validation and before testing the file slot capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.b(Ljava/lang/String;B)Z",
+      "originalName": "b",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A byte other than -3 calls the keyed file reader and discards its result before lowercasing.",
       "confidence": "reviewed"
     },
     {
@@ -5437,7 +5493,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "6b91edb245653cebfad3b56faff81fdda4a0a62dc84634edb37a1cb78b7a86ff",
+      "trackcontroller-names.json": "90298b241189f3ec96f26e0b8ea42a0e294037cf48987011ce94685435ab5371",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

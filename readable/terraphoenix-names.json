@@ -3875,6 +3875,62 @@
       "(II)I",
       "getGroupRequestProgressPercent",
       "Source-purpose review: Gets the progress of the pending request for an archive group."
+    ],
+    [
+      "fa",
+      "a",
+      "(B)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. A byte other than 127 invokes the original helper after accumulation and before the zero-capacity check."
+    ],
+    [
+      "fa",
+      "a",
+      "(ILjava/lang/String;)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. The readiness guard is the first int XOR itself."
+    ],
+    [
+      "fa",
+      "a",
+      "(Ljava/lang/String;BLjava/lang/String;)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A byte other than 104 writes false into the original nested cache slot after validating the group."
+    ],
+    [
+      "fa",
+      "b",
+      "(II)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Uses the final int as the index guard and preserves the original adjusted guards for validation and both file reads."
+    ],
+    [
+      "fa",
+      "c",
+      "(I)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. An int other than -1 invokes the original helper with a nested cache value."
+    ],
+    [
+      "fa",
+      "c",
+      "(II)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A first int other than -540 returns -24 after group validation."
+    ],
+    [
+      "fa",
+      "d",
+      "(ILjava/lang/String;)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. Preserves the threshold against the complement of the ID and the original subtraction in the hash guard."
+    ],
+    [
+      "fa",
+      "f",
+      "(II)[Lci;",
+      "createSolidColorSpriteArray",
+      "Source-purpose review: Creates a nine-slot sprite array and fills the supplied slot with a 64-by-64 sprite of the supplied color. Both observed callers select slot four and pass the resulting array to the widget."
     ]
   ],
   "fields": [

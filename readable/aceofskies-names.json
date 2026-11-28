@@ -4743,6 +4743,62 @@
       "(I)I",
       "getProgressPercent",
       "Source-purpose review: Returns zero while the disk request is pending or 100 when completed. A guard other than 21513 invokes the original helper before testing completion."
+    ],
+    [
+      "gk",
+      "a",
+      "(B)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A byte below 56 invokes the original helper with a cached byte after checking index readiness."
+    ],
+    [
+      "gk",
+      "a",
+      "(I)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. Preserves the division after index readiness and before the accumulators."
+    ],
+    [
+      "gk",
+      "a",
+      "(Ljava/lang/String;I)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. Preserves the division after lowercasing and before looking up the name."
+    ],
+    [
+      "gk",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;)Z",
+      "hasFileName",
+      "Source-purpose review: Checks that both the lowercased group name and file name occur in the archive index. A middle int at least -76 invokes the original helper between the group lookup and negative-ID test."
+    ],
+    [
+      "gk",
+      "a",
+      "(Ljava/lang/String;ZLjava/lang/String;)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Forwards the original boolean to the file-name hash table."
+    ],
+    [
+      "gk",
+      "b",
+      "(II)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final int other than 27912 assigns the decoded-file cache from a nested packed-cache slot after validation."
+    ],
+    [
+      "gk",
+      "c",
+      "(Ljava/lang/String;I)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A final int other than -14012 returns false after lowercasing."
+    ],
+    [
+      "gk",
+      "d",
+      "(II)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. The multi-group branch compares the final guard with the complement of the file capacity. The external caller uses -2 for the one-slot case."
     ]
   ],
   "fields": [

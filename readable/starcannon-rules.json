@@ -4147,6 +4147,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ue.a(B)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After checking zero accumulated capacity, a byte at most 37 sets an instance int from a nested cache slot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ue.a(BI)Z",
       "originalName": "a",
       "to": "validateGroupId",
@@ -4189,10 +4196,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ue.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A first int other than -20955 sets an instance int before lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ue.a(IZI)[B",
       "originalName": "a",
       "to": "getFile",
       "evidence": "Source-purpose review: Retrieves a file by group and file ID through the bound keyed reader using null keys. False returns null before delegation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(JI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeBase37DisplayName",
+      "evidence": "Source-purpose review: Decodes a base-37 account identifier into a display name with original case conversion and nonbreaking spaces. Preserves range checks, trailing-zero rejection, and the null result when the final int differs from 16778.",
       "confidence": "reviewed"
     },
     {
@@ -4210,6 +4231,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ue.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A final int other than -9883 returns true before checking the index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A byte other than -17 invokes the original static helper between lowercase operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ue.a(Ljava/lang/String;Z)I",
       "originalName": "a",
       "to": "getGroupIdByName",
@@ -4221,6 +4256,13 @@
       "originalName": "a",
       "to": "getFileIdByName",
       "evidence": "Source-purpose review: Validates the group, lowercases and hashes a file name, then returns the validated file ID from that group’s name table or the original missing-ID value. False invokes the two-string helper with null values before validating the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(Lue;BIILue;)Li;",
+      "originalName": "a",
+      "to": "loadBitmapFont",
+      "evidence": "Source-purpose review: Loads the sprite sheet from the second archive and reads the matching font metrics from the first archive. Returns null if the sprite load fails. Retains the original guard cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -4242,6 +4284,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5954caaa7a1cf233811baba95b02dbb2f20ca3d194a46e07a9f58f824acfd1c9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.b(II)I",
+      "originalName": "b",
+      "to": "cosineFixed16",
+      "evidence": "Source-purpose review: Returns the signed 16.16 cosine for a wrapped 13-bit angle. Uses the quarter-wave table with the original quadrant signs, offsets and -2 guard result.",
       "confidence": "reviewed"
     },
     {
@@ -4555,7 +4604,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "15cbb325f4a715a2cd3a849c09da92dbbaf4e9c9c4ef3f73b3cde95f26becbda",
+      "starcannon-names.json": "649ac9578eb05b36a6c4f84055006602309c8cb21292ddde0c235f28a6d1f2f2",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -3496,6 +3496,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qk.a(I)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After accumulation, a first int other than two assigns the provider from a packed-cache entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.a(IB)V",
       "originalName": "a",
       "to": "loadPackedGroup",
@@ -3552,6 +3559,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qk.a(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Group hashing uses the byte minus seven. A byte other than -44 clears the decoded-file table after both lookups.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.a([IIBI)[B",
       "originalName": "a",
       "to": "getFileWithKeys",
@@ -3580,10 +3594,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qk.b(ILjava/lang/String;)Z",
+      "originalName": "b",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A first int other than four calls the numeric group loader with -13 and a nested cache value before lowercasing and the normal load.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.c(ILjava/lang/String;)Z",
+      "originalName": "c",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. Compares the looked-up ID with the supplied int. Both compiled callers use zero.",
       "confidence": "reviewed"
     },
     {
@@ -4499,7 +4527,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-36cardtrick-rules.mjs": "50dbdca01ccbc37049448a6c5673dcd1f8af792b0cf93f16ef76c7ac2de01d53",
-      "36cardtrick-names.json": "ec2ca23a688e6efb10f2cfba71076dcfa9a447ac1f1ca7867d22d56c2f4097dc",
+      "36cardtrick-names.json": "ecdb4b9499a15454a0f5870f6a8964e7687a514c1590926b7f93a487916be20a",
       "reproduce-36cardtrick.mjs": "d69474327fda28f59b518411a57d253a7dc723b2c7cebec47cdf1a89a48a54b6",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

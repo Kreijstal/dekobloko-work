@@ -2215,6 +2215,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.a(BLjava/applet/Applet;Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeSettingsCookie",
+      "evidence": "Source-purpose review: Stores the original settings string and asks the browser bridge to write the settings cookie. Retains the empty-value expiration, normal expiration, swallowed browser exception, and final applet callback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gb.a(BLjava/lang/String;)I",
       "originalName": "a",
       "to": "getGroupIdByName",
@@ -2243,10 +2250,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.a(IBLp;I)V",
+      "originalName": "a",
+      "to": "drawRotatedEntityEffect",
+      "evidence": "Source-purpose review: Draws the timed effect sprite variants with entity rotation, and the alternate 64-pixel intermediate raster path for effect state 20. Keeps the original bounds and raster restoration sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.a(II)[B",
+      "originalName": "a",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. The multi-group branch compares the final guard to the complemented file capacity. Its caller passes -2 for the one-slot case.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gb.a(IIB)Z",
       "originalName": "a",
       "to": "tryLoadFile",
       "evidence": "Source-purpose review: Validates the file ID within its group, accepts an already decoded file or cached packed group, and otherwise requests the packed group and rechecks availability. A byte at most 65 calls the static canvas helper before requesting a missing group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A first int other than -8088 clears the packed cache after the index check and before lowercasing.",
       "confidence": "reviewed"
     },
     {
@@ -2257,10 +2285,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.a(ILjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A first int above -104 assigns a static int from the packed cache before lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gb.a(I[III)[B",
       "originalName": "a",
       "to": "getFileWithKeys",
       "evidence": "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. Group ID is first and file ID third. On int other than -2 clear the index after ID validation and before unpacking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.a(Lgb;I)V",
+      "originalName": "a",
+      "to": "loadFinalFrameSprites",
+      "evidence": "Source-purpose review: Loads final_frame.jpg and splits it into the top three quarters and remaining bottom sprite. Keeps the raster target changes, early return guard and original lower sprite offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. Preserves the remainder between lookup and the nonnegative-ID test.",
       "confidence": "reviewed"
     },
     {
@@ -2278,10 +2327,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.a(ZLjava/awt/Canvas;Z)V",
+      "originalName": "a",
+      "to": "drawLoadingFrame",
+      "evidence": "Source-purpose review: Selects the original startup progress bar, buffered loading display or fallback clear-and-present path. Uses the caller canvas and keeps the original progress and reset guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gb.a([IIBI)Z",
       "originalName": "a",
       "to": "unpackGroupFiles",
       "evidence": "Source-purpose review: Unpacks a packed archive group into its per-file cache. Bound calls confirm the group decoder and the separate single-file and all-files chunk copies. Preserve the supplied key path, original cache mutations, the exact byte-copy calls, chunk-table arithmetic, guard behavior, exceptions and return order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Clears the static archive, text array, sprite and remaining reference during game shutdown. The off-guard branch retains the call with a null archive between the original clears.",
       "confidence": "reviewed"
     },
     {
@@ -2299,6 +2362,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.c(I)I",
+      "originalName": "c",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. Seeds the denominator with the supplied int and passes that value minus 8102 as the numeric helper guard. All three callers pass zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.c(II)I",
+      "originalName": "c",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A nonzero first int returns a nested int after validating the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.d(I)V",
+      "originalName": "d",
+      "to": "showAccountCreationForm",
+      "evidence": "Source-purpose review: Creates and attaches the original account creation form to its UI parent when the guard is above 14.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gb.d(II)V",
       "originalName": "d",
       "to": "loadPackedGroup",
@@ -2310,6 +2394,13 @@
       "originalName": "e",
       "to": "tryLoadAllGroups",
       "evidence": "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. The supplied int sets the starting offset and is XORed with 20529 for the request guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.f(I)I",
+      "originalName": "f",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. An int at least -111 calls the original helper with a null string before loading the index.",
       "confidence": "reviewed"
     },
     {
@@ -5031,7 +5122,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "21e324ab4b0ff19d4d59522ea6059aba7c88ebccd497398d2c9b5093a71947e1",
+      "hostilespawn_vengeance-names.json": "b532f0600ead7ff9462a0033cb3ba2d6f7613e7ccc6e56d0777c5e82d644b9cf",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

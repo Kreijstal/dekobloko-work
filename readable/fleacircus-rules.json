@@ -3797,6 +3797,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rh.a(B)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. A byte at least -38 returns -101 after checking the index and before the while loop.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rh.a(BI)V",
       "originalName": "a",
       "to": "loadPackedGroup",
@@ -3811,10 +3818,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rh.a(BJ)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeBase37DisplayName",
+      "evidence": "Source-purpose review: Decodes a base-37 account identifier into its display name. Rejects the original out-of-range values and trailing zero digits, turns underscores into nonbreaking spaces and applies the original capitalization. A byte other than -70 clears a static string.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rh.a(I)Z",
       "originalName": "a",
       "to": "tryLoadAllGroups",
       "evidence": "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. The guard above -12 copies a value between the original nested cache slots before iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(IB)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte above -91 invokes the group loader after validating the group.",
       "confidence": "reviewed"
     },
     {
@@ -3825,10 +3846,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rh.a(II)[B",
+      "originalName": "a",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. A nonzero final int clears the decoded-file table immediately before the final exception.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rh.a(III)Z",
       "originalName": "a",
       "to": "validateFileId",
       "evidence": "Source-purpose review: Validates the archive group and file-slot index with the original load, bounds and strict-mode exception branches. Evaluate -7 / ((param0 - 68) / 34) before loading the index and checking group/file IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(IIIIILjava/lang/String;IILce;)V",
+      "originalName": "a",
+      "to": "initializeArchiveNetworkServices",
+      "evidence": "Source-purpose review: Stores the supplied configuration and creates the archive request transport, connection worker and archive provider manager. Keeps the constructor order, parent connection and fallback guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(III[IB)V",
+      "originalName": "a",
+      "to": "blendHalfRgbSpan",
+      "evidence": "Source-purpose review: For each pixel in the supplied contiguous span, halves the packed destination RGB channels and adds the supplied color contribution. Preserves the masked channel arithmetic, decrementing count, offset and fallback guard.",
       "confidence": "reviewed"
     },
     {
@@ -3867,6 +3909,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rh.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A final int above -91 invokes the group validator with nested cache values before index loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Preserves division after group validation and before the second name lookup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rh.a(ZI)Z",
       "originalName": "a",
       "to": "validateGroupId",
@@ -3895,6 +3951,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rh.b(Ljava/lang/String;I)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A final int other than 37 clears a static field before loading the index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rh.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -3906,6 +3969,13 @@
       "originalName": "c",
       "to": "tryLoadGroup",
       "evidence": "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. The post-request result is false when the second int differs from 14969.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.d(B)I",
+      "originalName": "d",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. Preserves the remainder after checking index readiness.",
       "confidence": "reviewed"
     },
     {
@@ -4765,7 +4835,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "c4dcd01593fb4289dde50987ae0eaca19dd907a61fd61e8c4103c07da91c1098",
+      "fleacircus-names.json": "7fa733b3686ca8fdeeb4888d11aaaa920d5b0e3542f4dcdcb4ab60069d74b83b",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

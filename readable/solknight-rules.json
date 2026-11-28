@@ -1228,10 +1228,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:da.a(B)I",
+      "originalName": "a",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. Preserves the division after checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:da.a(BI)Z",
       "originalName": "a",
       "to": "validateGroupId",
       "evidence": "Source-purpose review: Validates a populated archive group index with the original load, bounds and strict-mode exception branches. Evaluate -119 / ((param0 + 33) / 42) after successful index load and before bounds checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(I)V",
+      "originalName": "a",
+      "to": "initializePunctuationKeyMappings",
+      "evidence": "Source-purpose review: Sets punctuation key codes in the table used by the key-event handler. A nonzero guard preserves the recursive call partway through the original assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IB)[B",
+      "originalName": "a",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the remainder before checking index readiness.",
       "confidence": "reviewed"
     },
     {
@@ -1246,6 +1267,20 @@
       "originalName": "a",
       "to": "tryLoadFile",
       "evidence": "Source-purpose review: Validates the file ID within its group, accepts an already decoded file or cached packed group, and otherwise requests the packed group and rechecks availability. A first int other than 100 writes into a nested cache value on a miss after requesting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(II[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blendHalfRgbGradientSpan",
+      "evidence": "Source-purpose review: Fills a destination span by halving its existing packed RGB values and adding per-pixel color contributions stepped by the original three increments. Preserves the original integer masks and guard cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. The group-table guard is the first int XOR itself.",
       "confidence": "reviewed"
     },
     {
@@ -1277,10 +1312,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:da.a(Ljava/lang/String;Ljava/lang/String;Z)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. False invokes the original static helper with a nested cache boolean between lowercase operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(Z)V",
+      "originalName": "a",
+      "to": "showLoginForm",
+      "evidence": "Source-purpose review: Opens the original login form after the readiness check. Stores the supplied login mode flag and resets the associated input state after creating the form.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(Z[B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeCp1252",
+      "evidence": "Source-purpose review: With a true guard, decodes the complete byte array using the original CP1252 routine. The delegate skips zero bytes and substitutes question marks for missing extension-table entries. False returns null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:da.a([IIII)[B",
       "originalName": "a",
       "to": "getFileWithKeys",
       "evidence": "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. Group ID is second and file ID last. Evaluate 91 / ((param2 - 50) / 45) in both original return paths after conversion and any eviction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.b(B)I",
+      "originalName": "b",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. A byte other than -66 returns 45 before checking index readiness.",
       "confidence": "reviewed"
     },
     {
@@ -1291,10 +1354,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:da.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Clears the three static reference fields from the game shutdown path. A guard above -121 first invokes the original static helper with true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.b(II)I",
+      "originalName": "b",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A first int below five calls the group unpacker with a cached array and discards the result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:da.b(III)[B",
       "originalName": "b",
       "to": "getFile",
       "evidence": "Source-purpose review: Retrieves a file by group and file ID through the bound keyed reader using null keys. Middle int other than 12257 returns null before delegation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.b(ILjava/lang/String;)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. Preserves the division after checking index readiness and before lowercasing.",
       "confidence": "reviewed"
     },
     {
@@ -4793,7 +4877,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-solknight-rules.mjs": "d510dd3c5215d127be812bd794c1668890712739b676d0f83f2bf4b4a34f49d6",
-      "solknight-names.json": "674cdbfb708f8473ad4770333fb77ca80851f0fb987f71b94b409df11a0301ea",
+      "solknight-names.json": "4b0e9a21726fa4fae05471cefab6a505593efadeacb588e1cc50ea28965fd800",
       "reproduce-solknight.mjs": "13b4e70cdbc3799ce0c256f7eb4afa61bbdd6dd18b17fd5cfda8475d81e10fc3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

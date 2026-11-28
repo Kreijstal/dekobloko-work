@@ -3538,6 +3538,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pf.a(I)V",
+      "originalName": "a",
+      "to": "releaseStaticDeque",
+      "evidence": "Source-purpose review: Drops the static IntrusiveDeque reference during shutdown. A guard other than 30300 first calls the original error printer with null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pf.a(IB)Z",
       "originalName": "a",
       "to": "tryLoadGroup",
@@ -3573,6 +3580,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pf.a(ILha;)Ln;",
+      "originalName": "a",
+      "to": "decodeLogoMesh",
+      "evidence": "Source-purpose review: Decodes one logo mesh from the bit stream. Preserves the version check, mandatory arrays, flag-controlled optional arrays and final maximum-index calculation for the byte data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "printDecodedError",
+      "evidence": "Source-purpose review: Prints an Error line to System.out. The bound string helper replaces the %0a token with a line break. A guard other than 17651 invokes the original cleanup helper after printing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pf.a(ILjava/lang/String;B)I",
       "originalName": "a",
       "to": "getFileIdByName",
@@ -3580,10 +3601,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pf.a(Ljava/applet/Applet;B)V",
+      "originalName": "a",
+      "to": "clearSessionAndReloadPage",
+      "evidence": "Source-purpose review: Clears the browser session value and invokes the page reload helper. A byte other than 123 first invokes the original numeric parser with a null sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.a(Ljava/lang/CharSequence;B)I",
+      "originalName": "a",
+      "to": "parseDecimalInt",
+      "evidence": "Source-purpose review: Parses a signed decimal integer with the original overflow checks and optional leading plus accepted by the bound parser. A byte other than 125 returns -69.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. The name table guard is byte minus 17. A byte other than -109 clears the index after lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.a(Ljava/lang/String;BLjava/lang/String;Lpf;)[Lpb;",
+      "originalName": "a",
+      "to": "loadSpriteArrayByName",
+      "evidence": "Source-purpose review: Resolves the group name and file name in the archive, then delegates loading the sprite array from those IDs. Preserves its preliminary division and the original specialized loader.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pf.a(Ljava/lang/String;Ljava/lang/String;B)[B",
       "originalName": "a",
       "to": "getFileByName",
       "evidence": "Source-purpose review: Ensures the archive index is ready, lowercases both names, hashes the group name and validates the looked-up ID, then looks up the file name within that group and returns bytes from the unkeyed reader. A final byte other than -12 calls the original two-string helper between group lookup and validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.b(B)I",
+      "originalName": "b",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. A byte other than one calls the packed-group loader before iteration. The numeric helper guard is that byte XOR one.",
       "confidence": "reviewed"
     },
     {
@@ -3615,6 +3671,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pf.b(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "originalName": "b",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A byte other than 42 returns a nested cache boolean after normalizing the group. The byte-derived lookup and validation guards stay exact.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pf.c(B)Z",
       "originalName": "c",
       "to": "tryLoadAllGroups",
@@ -3626,6 +3689,13 @@
       "originalName": "c",
       "to": "validateFileId",
       "evidence": "Source-purpose review: Validates the archive group and file-slot index with the original load, bounds and strict-mode exception branches. Third int other than -21293 returns true before index loading and validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.c(Ljava/lang/String;B)Z",
+      "originalName": "c",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A nonnegative ID succeeds. A byte other than -116 repeats the index-readiness call before returning true.",
       "confidence": "reviewed"
     },
     {
@@ -4611,7 +4681,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "029350a8d0ddeca846981d466837776671c5f136e617f53249aad82f91a29667",
+      "stellarshard-names.json": "acfdf042e3f13ac2799a9b95c45cc2565a38cce2f37b02fecdf86c722e3bd695",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -199,6 +199,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ah",
+      "originalName": "ah",
+      "to": "AcceleratingProjectile",
+      "evidence": "Advances a projectile along its orientation with acceleration and damping, retires it after a fixed lifespan, and preserves its owner affiliation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bc",
       "originalName": "bc",
       "to": "PlatformTask",
@@ -248,10 +255,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cl",
+      "originalName": "cl",
+      "to": "PowerUpPickup",
+      "evidence": "Selects an available power-up, draws its icon, and applies the selected effect when the player ship touches it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:df",
       "originalName": "df",
       "to": "PlatformTaskDispatcher",
       "evidence": "Complete constructor,run loop,private FIFO enqueue routine and all instance request/shutdown/capability wrappers reviewed. Constructor discovers JVM/OS,optionally opens cache files and owned reflected fullscreen/cursor controllers,then starts daemon priority10 worker. Worker waits on queue,dispatches request kinds,sets volatile status1/2 and notifies request monitor; ThreadDeath is rethrown. Preserve every permission/vendor branch,reflection literal,task payload/identity,queue ordering,monitors,shutdown/resource order and guard/failure behavior. Unrelated static methods/fields remain unchanged. No owned/type-use native declarations or exact quoted owned class-name literals. Identifier-only rename.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dj",
+      "originalName": "dj",
+      "to": "PlayerShip",
+      "evidence": "Holds the player ship’s weapon and movement state, lives, audio, and attached wing pods.",
       "confidence": "reviewed"
     },
     {
@@ -280,6 +301,13 @@
       "originalName": "ed",
       "to": "VorbisCodebook",
       "evidence": "Vorbis codebook: constructor consumes24bits without validating them,reads dimensions/entry count and ordered/sparse code lengths,builds a canonical Huffman tree,and reads quantized lookup vectors. Scalar bit traversal returns complemented tree leaf;vector decoding returns the retained vector row by alias;lookup1 uses the original integer-power helper. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ee",
+      "originalName": "ee",
+      "to": "MovingTunnelEntity",
+      "evidence": "This motion-aware base entity adds three velocity components and reflects velocity along a tunnel wall contact normal.",
       "confidence": "reviewed"
     },
     {
@@ -332,6 +360,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:h",
+      "originalName": "h",
+      "to": "WingPod",
+      "evidence": "Holds the player ship wing-pod slot and removes itself from the corresponding slot when destroyed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hb",
       "originalName": "hb",
       "to": "CipherPacketBuffer",
@@ -339,10 +374,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hf",
+      "originalName": "hf",
+      "to": "HomingProjectile",
+      "evidence": "Base projectile with an owner, optional target, retargeting logic, and steering that runs before motion integration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hg",
       "originalName": "hg",
       "to": "JavaSoundAudioOutput",
       "evidence": "JavaSound-backed signed16-bit PCM output: SourceDataLine lifecycle,mono/stereo byte conversion,queued-frame count,guarded capacity retry and vendor-workaround flush when present. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hm",
+      "originalName": "hm",
+      "to": "LightningArc",
+      "evidence": "This beam finds a nearby target and renders an arc with randomly perturbed midpoint offsets, reused by the ship and wing pods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hn",
+      "originalName": "hn",
+      "to": "GameSession",
+      "evidence": "Owns and updates the player ship, camera, tunnel, level progression, scene entities, and game audio.",
       "confidence": "reviewed"
     },
     {
@@ -357,6 +413,13 @@
       "originalName": "ig",
       "to": "DirectByteStorage",
       "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:il",
+      "originalName": "il",
+      "to": "ExpandingPulseProjectile",
+      "evidence": "A charged projectile that expands during travel and applies damage and velocity changes to entities that overlap it.",
       "confidence": "reviewed"
     },
     {
@@ -402,10 +465,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kh",
+      "originalName": "kh",
+      "to": "ProjectileRay",
+      "evidence": "The projectile follows a ray, selects the first intersected target and records the hit distance and point used by the session.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kk",
       "originalName": "kk",
       "to": "ProxyAuthenticationRequiredException",
       "evidence": "Source-purpose review: final IOException subtype with one String constructor forwarding unchanged to super,and no own instance fields or other instance methods. Both bound throw sites in each game are within HTTP/1.0 or HTTP/1.1 407 proxy-authentication handling:carry parsed proxy-authenticate scheme or empty fallback. Two typed catch paths retain/rethrow and expose getMessage through platform-task result. All22constructors,44throw sites and44catch contexts human read;all class references mechanically bound,unrelated static helpers/fields preserved. Preserve visibility,message payloads,inheritance,exception/guard order and every unselected member name;no implementation repairs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lc",
+      "originalName": "lc",
+      "to": "TunnelMesh",
+      "evidence": "Maintains a scrolling sequence of tunnel cross sections and provides geometry for collision tests and rendering.",
       "confidence": "reviewed"
     },
     {
@@ -427,6 +504,13 @@
       "originalName": "ln",
       "to": "GzipDecompressor",
       "evidence": "Complete owned inflater method, constructors and fields reviewed: gzip magic31/139, lazy raw Inflater, caller-supplied output, original input bounds and reset/error paths. Preserve caller offset/length adjustments, bad-guard calls and reset skips, exception wrappers and unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mb",
+      "originalName": "mb",
+      "to": "ShockwaveBlast",
+      "evidence": "A radial blast emitted by a projectile on destruction, applying damage and an outward impulse based on overlap and age.",
       "confidence": "reviewed"
     },
     {
@@ -479,6 +563,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oi",
+      "originalName": "oi",
+      "to": "DynamicLight",
+      "evidence": "A render light associated with an entity. The emitter sets position and strength, and the session derives a radius for rendering.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pc",
       "originalName": "pc",
       "to": "DiskCacheWorker",
@@ -507,6 +598,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pm",
+      "originalName": "pm",
+      "to": "TunnelEntity",
+      "evidence": "This common session entity stores the world position, collision radius, despawn flag and neighboring entity used by the collision sweep.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:q",
       "originalName": "q",
       "to": "NanoFrameTimer",
@@ -528,6 +626,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ql",
+      "originalName": "ql",
+      "to": "StageDirector",
+      "evidence": "Configures each stage and controls tunnel progression, enemy spawning, bosses, and power-up availability.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rb",
       "originalName": "rb",
       "to": "AwtRasterBuffer",
@@ -546,6 +651,13 @@
       "originalName": "rl",
       "to": "ArchiveRequest",
       "evidence": "Source-purpose review: Abstract shared request root owns three booleans including the volatile pending flag initialized true,and declares payload/progress operations implemented by both disk and network requests. Full root/child constructors,getters,abstract signatures/storage and complete override families reviewed. Preserve inheritance,visibility,volatile modifier,parameter widths,guard domains and all unrelated helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sa",
+      "originalName": "sa",
+      "to": "DampedProjectile",
+      "evidence": "Base for projectiles that inherit the firing entity affiliation, lose speed each tick, and damage a target upon collision.",
       "confidence": "reviewed"
     },
     {
@@ -612,6 +724,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vb",
+      "originalName": "vb",
+      "to": "DequeCursor",
+      "evidence": "Provides an independent forward or reverse traversal cursor over a primary node deque.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vc",
       "originalName": "vc",
       "to": "RawPcmStream",
@@ -630,6 +749,13 @@
       "originalName": "ve",
       "to": "AccountRequestState",
       "evidence": "Complete instance contract reviewed: final Object subclass, no instance fields or declared constructor, one toString override that throws IllegalStateException (Orb Defence retains RuntimeException context), exactly three shared instances across five static fields. Full cached username-query contract was reviewed at888c; current7de query/file independently inverse-restores to identical original input. Those identities encode request lifecycle, not labels or unrelated static utility roles. All typed field declarations/initializations reviewed, no native owned/type-use declarations. Preserve default constructors, identity/null aliases, state transitions and every unrelated static method/field; same-spelling non-class literals explicitly pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vg",
+      "originalName": "vg",
+      "to": "TunnelCamera",
+      "evidence": "Tracks the ship with a smoothed position and orientation and exposes the view transform used for drawing the tunnel and entities.",
       "confidence": "reviewed"
     },
     {
@@ -885,6 +1011,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:af.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:af.i(B)V",
       "originalName": "i",
       "to": "clearStaticReferences",
@@ -899,10 +1039,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ah.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ah.a([BIIB)I",
       "originalName": "a",
       "to": "computeCrc32",
       "evidence": "Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8. Complement result; retain range and guard side effects/arithmetic timing. Preserve exception wrappers and all helper behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
       "confidence": "reviewed"
     },
     {
@@ -1144,6 +1396,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cf.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cf.n(I)V",
       "originalName": "n",
       "to": "releaseDeclaredStaticReferences",
@@ -1193,10 +1480,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cl.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cl.c(Z)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 d0070ce0171e7dcf3074c9040d95409c9b6a54c40dbf1e2c8632b5f47fcc85ae.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
       "confidence": "reviewed"
     },
     {
@@ -1368,6 +1767,174 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dj.a(DBDD)V",
+      "originalName": "a",
+      "to": "shiftWorldOrigin",
+      "evidence": "Source-purpose review: Rebases the ship position and its stored motion estimate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.c(Z)V",
+      "originalName": "c",
+      "to": "advanceShipRespawn",
+      "evidence": "Source-purpose review: Moves a destroyed ship toward the tunnel center and resets movement and weapon state when the respawn timer ends.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.d(Z)V",
+      "originalName": "d",
+      "to": "scheduleRespawnOrGameOver",
+      "evidence": "Source-purpose review: Starts the respawn countdown if lives remain or signals game over after the final life.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.e(I)[D",
+      "originalName": "e",
+      "to": "getPositionAndVelocity",
+      "evidence": "Source-purpose review: Returns the player ship’s motion estimate for consumers that track or lead it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.h(B)V",
+      "originalName": "h",
+      "to": "resetShipWeaponState",
+      "evidence": "Source-purpose review: Resets the ship weapon controller, weapon timers, and charge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.i(B)Ljava/lang/Boolean;",
+      "originalName": "i",
+      "to": "consumeLoginResponseFlag",
+      "evidence": "Source-purpose review: Returns and clears the pending login result boolean before the client applies it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.i(I)Z",
+      "originalName": "i",
+      "to": "participatesInTunnelCollisions",
+      "evidence": "Source-purpose review: This predicate gates the tunnel wall collision pass. The ship and companion variants also test their position against the end of the tunnel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.l(I)Z",
+      "originalName": "l",
+      "to": "hasFreeWingPodSlot",
+      "evidence": "Source-purpose review: Checks whether the ship has an empty slot for an attached wing pod.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.m(I)V",
+      "originalName": "m",
+      "to": "dropPowerUpsOnShipLoss",
+      "evidence": "Source-purpose review: Samples held upgrades to drop as pickups, reduces the corresponding inventory, and clears temporary effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.n(I)V",
+      "originalName": "n",
+      "to": "clearPlayerShipGlobals",
+      "evidence": "Source-purpose review: Releases the shared player ship text references during shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.o(I)Z",
+      "originalName": "o",
+      "to": "attachWingPod",
+      "evidence": "Source-purpose review: Creates a wing pod in the first free slot and records stage achievements when all slots are filled.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a()V",
       "originalName": "a",
       "to": "closeDevice",
@@ -1533,6 +2100,125 @@
       "originalName": "c",
       "to": "decodeVector",
       "evidence": "Decode one scalar entry and return its stored float vector row directly,retaining shared mutable alias and all null/index failures. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 b2b1432dfd0bb64c14cf51c4006176fb93f3e38c637d670da3c604466b1cc687. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(Lhm;Z)V",
+      "originalName": "a",
+      "to": "onLightningArcContact",
+      "evidence": "Source-purpose review: The arc calls this on its selected target. Moving targets apply its damage, and the wing pod handler may launch additional arcs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "onProjectileHit",
+      "evidence": "Source-purpose review: This target callback is invoked for the projectile selected by the session ray sweep. Moving entities consume its damage value, while nonreactive targets implement a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.e(I)[D",
+      "originalName": "e",
+      "to": "getPositionAndVelocity",
+      "evidence": "Source-purpose review: Returns the moving entity’s current coordinates followed by its velocity components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.g(B)Z",
+      "originalName": "g",
+      "to": "participatesInEntityCollisions",
+      "evidence": "Source-purpose review: The session uses this predicate to include or exclude an entity in its sorted pairwise collision sweep.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.i(I)Z",
+      "originalName": "i",
+      "to": "participatesInTunnelCollisions",
+      "evidence": "Source-purpose review: This predicate gates the tunnel wall collision pass. The ship and companion variants also test their position against the end of the tunnel.",
       "confidence": "reviewed"
     },
     {
@@ -2026,6 +2712,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gi.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gj.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2047,6 +2754,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gm.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gm.m(I)V",
       "originalName": "m",
       "to": "clearDeclaredStaticReferences",
@@ -2065,6 +2800,104 @@
       "originalName": "a",
       "to": "initialize",
       "evidence": "Source-purpose review: Initialize inherited raster dimensions/pixels/AWT image with the original Component-backed BufferedImage or ImageProducer implementation. Entire26override families/78members,52concrete bodies and26abstract signatures reviewed with all46incoming contexts. Preserve all three member names consistently,visibility/finality,all original parameter permutations/primitive domains,guards,partial assignments,monitors,allocation/call/exception order and diagnostics. Lexicominos supplied premultiplication boolean and all per-game exceptional branches retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(DBDD)V",
+      "originalName": "a",
+      "to": "shiftWorldOrigin",
+      "evidence": "Source-purpose review: Rebases the wing pod and its cached motion sample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.e(I)[D",
+      "originalName": "e",
+      "to": "getPositionAndVelocity",
+      "evidence": "Source-purpose review: Returns the motion sample tracked for the wing pod.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.i(I)Z",
+      "originalName": "i",
+      "to": "participatesInTunnelCollisions",
+      "evidence": "Source-purpose review: This predicate gates the tunnel wall collision pass. The ship and companion variants also test their position against the end of the tunnel.",
       "confidence": "reviewed"
     },
     {
@@ -2093,6 +2926,118 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
       "confidence": "reviewed"
     },
     {
@@ -2166,6 +3111,195 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hn.a(B)Lwd;",
+      "originalName": "a",
+      "to": "buildEntityQueueByNearDepth",
+      "evidence": "Source-purpose review: Sorts entities by their near depth bounds and returns a secondary queue for the collision sweep.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(BD)D",
+      "originalName": "a",
+      "to": "attenuateBrightnessThroughShockwave",
+      "evidence": "Source-purpose review: Applies the shockwave attenuation over its full depth span.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(BI)V",
+      "originalName": "a",
+      "to": "addScore",
+      "evidence": "Source-purpose review: Adds points to the session score and total earned score when scoring is enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(BLmn;)V",
+      "originalName": "a",
+      "to": "assignLightRangesToEntities",
+      "evidence": "Source-purpose review: Orders the light volumes and records which ones may overlap each scene entity by depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(DI)D",
+      "originalName": "a",
+      "to": "attenuateBrightnessWithinShockwave",
+      "evidence": "Source-purpose review: Applies the fade from the active shockwave using a maximum local path length of seven units.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(DIB)V",
+      "originalName": "a",
+      "to": "drawShockwaveCrossSection",
+      "evidence": "Source-purpose review: Projects the active shockwave ring through the tunnel cross section and draws the layered distortion sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(DID)D",
+      "originalName": "a",
+      "to": "attenuateBrightnessToDepth",
+      "evidence": "Source-purpose review: Scales brightness by the distance travelled inside the shockwave up to the given depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(I)V",
+      "originalName": "a",
+      "to": "resolveForwardProjectileCollisions",
+      "evidence": "Source-purpose review: Sweeps forward-moving projectiles against candidate scene entities and tunnel sections.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(Z)Lmn;",
+      "originalName": "a",
+      "to": "collectSceneLights",
+      "evidence": "Source-purpose review: Collects lights emitted by objects and effects, calculates their radius, and assigns entity light ranges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(ZZDZ)V",
+      "originalName": "a",
+      "to": "drawEffectsThroughDepth",
+      "evidence": "Source-purpose review: Moves pending effects into the active draw queue and renders the appropriate slice for the current depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.b(B)V",
+      "originalName": "b",
+      "to": "sortEntitiesByFarDepth",
+      "evidence": "Source-purpose review: Orders scene entities by their far depth bounds for overlap searches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.b(I)V",
+      "originalName": "b",
+      "to": "resolveTunnelWallCollisions",
+      "evidence": "Source-purpose review: Computes entity intersections against the interpolated tunnel walls and supplies the collision normal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.c(B)V",
+      "originalName": "c",
+      "to": "drawGameScene",
+      "evidence": "Source-purpose review: Draws tunnel sections, entities, shockwave layers, and displayed unlocks in depth order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.c(I)V",
+      "originalName": "c",
+      "to": "stopSceneSoundSources",
+      "evidence": "Source-purpose review: Stops and removes the current scene sound sources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.d(B)V",
+      "originalName": "d",
+      "to": "indexDepthOverlapCandidates",
+      "evidence": "Source-purpose review: Builds near- and far-depth queues, associates overlapping entities, and indexes candidates by tunnel section.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.d(I)I",
+      "originalName": "d",
+      "to": "getDialogContentWidth",
+      "evidence": "Source-purpose review: Returns the current horizontal span used to size the centered dialog backdrop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.e(I)V",
+      "originalName": "e",
+      "to": "clearGameSessionGlobals",
+      "evidence": "Source-purpose review: Clears shared game session text, lookup, and resource references at shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.f(I)V",
+      "originalName": "f",
+      "to": "tickGameSession",
+      "evidence": "Source-purpose review: Advances game entities, collisions, the shockwave, tunnel progression, and scene sounds for one frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.g(I)I",
+      "originalName": "g",
+      "to": "pollLobbyConnection",
+      "evidence": "Source-purpose review: Ticks the current lobby connection or advances the handshake when the lobby is not ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.h(I)V",
+      "originalName": "h",
+      "to": "prepareEffectDrawQueue",
+      "evidence": "Source-purpose review: Updates visible projectile and particle effects and merges them into a depth-ordered draw queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.i(I)V",
+      "originalName": "i",
+      "to": "resolveProjectileCollisions",
+      "evidence": "Source-purpose review: Sorts projectiles by depth and runs the forward and backward collision passes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.j(I)V",
+      "originalName": "j",
+      "to": "refreshSceneSoundState",
+      "evidence": "Source-purpose review: Refreshes the underlying sound state for the current scene sources and the active shockwave sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.k(I)V",
+      "originalName": "k",
+      "to": "sortEntitiesByWorldDepth",
+      "evidence": "Source-purpose review: Orders scene entities by their longitudinal world positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.l(I)V",
+      "originalName": "l",
+      "to": "resolveEntityPairCollisions",
+      "evidence": "Source-purpose review: Tests potentially overlapping scene entities in the depth sweep.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.m(I)V",
+      "originalName": "m",
+      "to": "sortProjectilesByDepth",
+      "evidence": "Source-purpose review: Reorders the projectile queue by its longitudinal coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.n(I)V",
+      "originalName": "n",
+      "to": "sortEntitiesByCameraDepth",
+      "evidence": "Source-purpose review: Orders scene entities by projected depth along the camera’s forward axis.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.o(I)V",
+      "originalName": "o",
+      "to": "resolveBackwardProjectileCollisions",
+      "evidence": "Source-purpose review: Sweeps backward-moving projectiles against entities and earlier tunnel sections.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ib.h(B)V",
       "originalName": "h",
       "to": "clearStaticReferences",
@@ -2177,6 +3311,76 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f91da6f3ffa4932511f9061df2021cd058f923df97a0b87f862345a916aef3ae.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(DBDD)V",
+      "originalName": "a",
+      "to": "shiftWorldOrigin",
+      "evidence": "Source-purpose review: Rebases the scene entity and its stored motion estimate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.e(I)[D",
+      "originalName": "e",
+      "to": "getPositionAndVelocity",
+      "evidence": "Source-purpose review: Returns the tracked position and velocity for this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
       "confidence": "reviewed"
     },
     {
@@ -2208,10 +3412,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ik.c(Z)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4518a755b469f2d237727b49c5a144e1bc2a0c6cbe8fd15c6b6d1f99511cca45.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
       "confidence": "reviewed"
     },
     {
@@ -2401,6 +3717,146 @@
       "originalName": "d",
       "to": "nextScanlineSpan",
       "evidence": "Source-purpose review: Advance active edges and scanlines, insert eligible edges, remove expired edges, sort intersections and yield the next paired left/right/Y span. Preserve sentinels, fixed-point arithmetic, bounds and state updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Lhm;Z)V",
+      "originalName": "a",
+      "to": "onLightningArcContact",
+      "evidence": "Source-purpose review: The arc calls this on its selected target. Moving targets apply its damage, and the wing pod handler may launch additional arcs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "onProjectileHit",
+      "evidence": "Source-purpose review: This target callback is invoked for the projectile selected by the session ray sweep. Moving entities consume its damage value, while nonreactive targets implement a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.g(B)Z",
+      "originalName": "g",
+      "to": "participatesInEntityCollisions",
+      "evidence": "Source-purpose review: The session uses this predicate to include or exclude an entity in its sorted pairwise collision sweep.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.i(I)Z",
+      "originalName": "i",
+      "to": "participatesInTunnelCollisions",
+      "evidence": "Source-purpose review: This predicate gates the tunnel wall collision pass. The ship and companion variants also test their position against the end of the tunnel.",
       "confidence": "reviewed"
     },
     {
@@ -2719,6 +4175,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kl.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Lhm;Z)V",
+      "originalName": "a",
+      "to": "onLightningArcContact",
+      "evidence": "Source-purpose review: The arc calls this on its selected target. Moving targets apply its damage, and the wing pod handler may launch additional arcs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "onProjectileHit",
+      "evidence": "Source-purpose review: This target callback is invoked for the projectile selected by the session ray sweep. Moving entities consume its damage value, while nonreactive targets implement a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.g(B)Z",
+      "originalName": "g",
+      "to": "participatesInEntityCollisions",
+      "evidence": "Source-purpose review: The session uses this predicate to include or exclude an entity in its sorted pairwise collision sweep.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.i(I)Z",
+      "originalName": "i",
+      "to": "participatesInTunnelCollisions",
+      "evidence": "Source-purpose review: This predicate gates the tunnel wall collision pass. The ship and companion variants also test their position against the end of the tunnel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kl.k(I)V",
       "originalName": "k",
       "to": "clearStaticReferences",
@@ -2775,10 +4364,136 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lc.a(B)V",
+      "originalName": "a",
+      "to": "clearTunnelMeshGlobals",
+      "evidence": "Source-purpose review: Clears shared tunnel mesh resource references at shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(BD)D",
+      "originalName": "a",
+      "to": "getMinimumRadiusAfterClearance",
+      "evidence": "Source-purpose review: Calculates the minimum tunnel radius under its current deformation and subtracts the requested clearance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(BDI)V",
+      "originalName": "a",
+      "to": "generateTunnelSection",
+      "evidence": "Source-purpose review: Builds the tunnel polygon at a given depth and advances the deformation phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(BLql;)V",
+      "originalName": "a",
+      "to": "applyStageTunnelShape",
+      "evidence": "Source-purpose review: Chooses tunnel shape and deformation parameters for the new stage and adjusts the center offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(DDBI)Z",
+      "originalName": "a",
+      "to": "isPointOutsideTunnelSection",
+      "evidence": "Source-purpose review: Tests a point against each edge of the convex tunnel cross section.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(DDDI)V",
+      "originalName": "a",
+      "to": "shiftTunnelOrigin",
+      "evidence": "Source-purpose review: Translates all stored sections by subtracting the supplied world-space coordinate offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(DDII)V",
+      "originalName": "a",
+      "to": "sampleTunnelInteriorPoint",
+      "evidence": "Source-purpose review: Chooses a random point inside the interpolated cross section after insetting the outer edge by a clearance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(DIIID)V",
+      "originalName": "a",
+      "to": "setTunnelTransitionShape",
+      "evidence": "Source-purpose review: Supplies the target radius, side count and deformation, preserving existing sections during the transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(I)V",
+      "originalName": "a",
+      "to": "dropLeadingTunnelSection",
+      "evidence": "Source-purpose review: Removes the first stored cross section and shifts the remaining sections toward the front.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(IID)V",
+      "originalName": "a",
+      "to": "interpolateCrossSectionVertices",
+      "evidence": "Source-purpose review: Interpolates tunnel polygon vertices at a depth between two stored cross sections.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(IIIII)V",
+      "originalName": "a",
+      "to": "pushAndIntersectRasterClip",
+      "evidence": "Source-purpose review: Saves the current raster clip and intersects it with the supplied rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(ILvg;I)V",
+      "originalName": "a",
+      "to": "drawTunnelSegment",
+      "evidence": "Source-purpose review: Draws the strip of wall quads between adjacent cross sections with projected coordinates and shading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(Ljava/lang/CharSequence;I)Z",
+      "originalName": "a",
+      "to": "isValidPlayerName",
+      "evidence": "Source-purpose review: Applies the shared player-name format and character checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(ZDLmn;Lvg;)V",
+      "originalName": "a",
+      "to": "projectAndLightTunnelSections",
+      "evidence": "Source-purpose review: Accumulates scene lighting and prepares camera-space positions for all visible tunnel sections.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "containsNonAsciiAlphanumeric",
+      "evidence": "Source-purpose review: Returns true if the string contains any character outside A–Z, a–z, and 0–9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(Z[B)V",
+      "originalName": "a",
+      "to": "decodeIndexedSpriteGroup",
+      "evidence": "Source-purpose review: Decodes the sprite atlas dimensions, palette, offsets and per-sprite pixel and alpha data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lc.b(B)Lin;",
       "originalName": "b",
       "to": "pollAccountCreationResult",
       "evidence": "Complete declaration/body and account-creation UI caller source-reviewed. Throws IllegalStateException for idle request state; returns null while pending; on completed state resets to idle before returning cached account-service result. Preserve guard-triggered cleanup/arithmetic exceptions, state comparisons/write order, exact cached object identity and all exception paths. No implementation edits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.b(IID)V",
+      "originalName": "b",
+      "to": "interpolateCrossSectionCenter",
+      "evidence": "Source-purpose review: Interpolates the horizontal center of a tunnel section at the requested depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.c(B)V",
+      "originalName": "c",
+      "to": "scrollAndExtendTunnel",
+      "evidence": "Source-purpose review: Recycles the leading cross section, settles pending shape transitions, and adds a new section at the far end.",
       "confidence": "reviewed"
     },
     {
@@ -2894,6 +4609,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mb.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.g(B)Z",
+      "originalName": "g",
+      "to": "participatesInEntityCollisions",
+      "evidence": "Source-purpose review: The session uses this predicate to include or exclude an entity in its sorted pairwise collision sweep.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mc.a(B)V",
       "originalName": "a",
       "to": "resetStaticState",
@@ -2936,6 +4714,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.a(BI)[I",
+      "originalName": "a",
+      "to": "getFileIds",
+      "evidence": "Source-purpose review: Returns stored sparse file IDs or synthesizes zero through file count minus one. A first byte at least -39 returns null before validating the group.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mi.a(BII)[B",
       "originalName": "a",
       "to": "getFile",
@@ -2947,6 +4732,13 @@
       "originalName": "a",
       "to": "tryLoadAllGroups",
       "evidence": "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. A guard other than 25057 calls the original helper before iteration and the request guard is computed from that int.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a(IB)Z",
+      "originalName": "a",
+      "to": "tryLoadFlatFile",
+      "evidence": "Source-purpose review: In a one-slot archive uses the supplied ID as a file ID in group zero. Otherwise uses it as a group ID when the group has one addressable file slot. Delegates availability to the numeric file loader. Index loading uses byte plus 37 and the first delegate guard is byte XOR -37. A byte other than -37 invokes the numeric progress helper after group validation.",
       "confidence": "reviewed"
     },
     {
@@ -2999,6 +4791,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Forwards the final int unchanged to the index check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Index loading uses the supplied int XOR itself.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mi.b(I)Z",
       "originalName": "b",
       "to": "ensureIndexLoaded",
@@ -3034,10 +4840,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.b(Ljava/lang/String;I)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A final int other than -4308 invokes the file ID helper with a null name before lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.c(I)I",
+      "originalName": "c",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. An int above -121 clears an original nested cache entry before iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.c(IB)[B",
+      "originalName": "c",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. A final byte below 24 writes -56 into a nested cache int before comparing group capacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mi.c(II)V",
       "originalName": "c",
       "to": "loadPackedGroup",
       "evidence": "Source-purpose review: Fetches a packed group from its archive provider and stores raw or wrapped bytes according to the supplied cache policy. Request and store packed bytes before the signed remainder -45 % ((-19 - param1) / 57).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.d(IB)I",
+      "originalName": "d",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte above -70 invokes the original group-name lookup with a cached string before validation.",
       "confidence": "reviewed"
     },
     {
@@ -3073,6 +4907,41 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ae88c2e25689591edf72999d7405c58f95073ec243fc98132b670655729ed0a3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
       "confidence": "reviewed"
     },
     {
@@ -3727,10 +5596,178 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pm.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(DBDD)V",
+      "originalName": "a",
+      "to": "shiftWorldOrigin",
+      "evidence": "Source-purpose review: Subtracts three world-axis offsets from the entity position during a scene rebase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(Lhm;Z)V",
+      "originalName": "a",
+      "to": "onLightningArcContact",
+      "evidence": "Source-purpose review: The arc calls this on its selected target. Moving targets apply its damage, and the wing pod handler may launch additional arcs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "onProjectileHit",
+      "evidence": "Source-purpose review: This target callback is invoked for the projectile selected by the session ray sweep. Moving entities consume its damage value, while nonreactive targets implement a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pm.e(B)V",
       "originalName": "e",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 4 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.e(I)[D",
+      "originalName": "e",
+      "to": "getPositionAndVelocity",
+      "evidence": "Source-purpose review: Returns the entity’s current position and default zero velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.g(B)Z",
+      "originalName": "g",
+      "to": "participatesInEntityCollisions",
+      "evidence": "Source-purpose review: The session uses this predicate to include or exclude an entity in its sorted pairwise collision sweep.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.i(I)Z",
+      "originalName": "i",
+      "to": "participatesInTunnelCollisions",
+      "evidence": "Source-purpose review: This predicate gates the tunnel wall collision pass. The ship and companion variants also test their position against the end of the tunnel.",
       "confidence": "reviewed"
     },
     {
@@ -3853,10 +5890,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ql.a(BD)V",
+      "originalName": "a",
+      "to": "advanceStageSpawns",
+      "evidence": "Source-purpose review: Advances the spawn schedule as the tunnel scrolls and starts the next stage or boss encounter at the boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(DIDDZILu;IIILrd;Z[Z)Lrd;",
+      "originalName": "a",
+      "to": "createStageEnemy",
+      "evidence": "Source-purpose review: Constructs an enemy using the stage flags, enemy type and placement. The spawn scheduler inserts the result into the scene.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(I)I",
+      "originalName": "a",
+      "to": "getTargetWeaponTier",
+      "evidence": "Source-purpose review: Returns the weapon tier used for pickup balance, advancing it once per four stages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(II)Z",
+      "originalName": "a",
+      "to": "canSpawnPowerUp",
+      "evidence": "Source-purpose review: Checks whether a power-up can appear based on stage, inventory, score, and prior spawns.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(ILkg;IBI)V",
+      "originalName": "a",
+      "to": "writeConnectionHandshakeHeader",
+      "evidence": "Source-purpose review: Writes the header shared by the game’s connection and request packets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(IZ)V",
+      "originalName": "a",
+      "to": "configureCurrentStage",
+      "evidence": "Source-purpose review: Configures the stage’s music, tunnel parameters, spawn limits and end-of-game transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(Ljava/lang/String;BLjava/lang/String;Lmi;)[Lbm;",
+      "originalName": "a",
+      "to": "loadIndexedSpriteGroup",
+      "evidence": "Source-purpose review: Resolves a named archive group and file and decodes the indexed sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(Z)V",
+      "originalName": "a",
+      "to": "clearIndexedSpriteDecodeBuffers",
+      "evidence": "Source-purpose review: Releases the temporary indexed sprite arrays after sprite objects have been constructed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ql.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 47e201b16a57c2817f982f8fd4dae20cfa29c0908d6b4d71b36c3543633aee2f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.b(II)V",
+      "originalName": "b",
+      "to": "recordPowerUpSpawn",
+      "evidence": "Source-purpose review: Updates the stage director’s counters and rescheduling flags for a newly spawned power-up.",
       "confidence": "reviewed"
     },
     {
@@ -3913,6 +6013,34 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8792bb75f786782eb6229e6122ec9ea23698b7ddb4a352f011e0577f484e7fe1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
       "confidence": "reviewed"
     },
     {
@@ -4011,6 +6139,118 @@
       "originalName": "g",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
       "confidence": "reviewed"
     },
     {
@@ -4231,6 +6471,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:th.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:th.m(I)V",
       "originalName": "m",
       "to": "clearDeclaredStaticReferences",
@@ -4308,10 +6569,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:u.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.a(IZD)D",
+      "originalName": "a",
+      "to": "applyDamage",
+      "evidence": "Source-purpose review: The hit and radial damage callers pass a damage amount. Implementations absorb, reduce or pass through damage, and return the remaining amount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:u.h(B)V",
       "originalName": "h",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 54106c6593bf9533e419651febe65570d0cec67d5589bf550b86ef9e6ee39dea.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
       "confidence": "reviewed"
     },
     {
@@ -4434,10 +6765,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vb.a(B)Lrk;",
+      "originalName": "a",
+      "to": "startFromTail",
+      "evidence": "Source-purpose review: Returns the deque’s last element and positions the reverse cursor on its predecessor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(BC)Z",
+      "originalName": "a",
+      "to": "isAllowedPlayerNameCharacter",
+      "evidence": "Source-purpose review: Rejects control characters and accepts letters, digits, and the configured name-character sets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(I)Lrk;",
+      "originalName": "a",
+      "to": "nextNode",
+      "evidence": "Source-purpose review: Returns the current cursor node and advances along forward links until the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(Lrk;I)Lrk;",
+      "originalName": "a",
+      "to": "startForwardAt",
+      "evidence": "Source-purpose review: Starts forward traversal at the supplied node or the deque’s first node.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.a(ZILjava/lang/Object;)[B",
       "originalName": "a",
       "to": "extractBytes",
       "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Clone helper guard194 precedes input dereference. Wrapper large-array branch precedes guard124; extraction invalid-type path may clear static int[] before IllegalArgumentException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.b(B)V",
+      "originalName": "b",
+      "to": "openStartupLogin",
+      "evidence": "Source-purpose review: Opens the login flow after startup and resets its event counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.b(I)Lrk;",
+      "originalName": "b",
+      "to": "previousNode",
+      "evidence": "Source-purpose review: Returns the current cursor node and advances along reverse links until the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.b(Lrk;I)Lrk;",
+      "originalName": "b",
+      "to": "startBackwardAt",
+      "evidence": "Source-purpose review: Starts reverse traversal at the supplied node or the deque’s last node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.c(I)Lrk;",
+      "originalName": "c",
+      "to": "startFromHead",
+      "evidence": "Source-purpose review: Returns the deque’s first element and positions the forward cursor on its successor.",
       "confidence": "reviewed"
     },
     {
@@ -4588,6 +6975,202 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vg.a(BLpm;)V",
+      "originalName": "a",
+      "to": "resolveCameraOverlap",
+      "evidence": "Source-purpose review: Moves the camera out of an intersecting entity’s bounding sphere.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(BLsa;)V",
+      "originalName": "a",
+      "to": "onDampedProjectileContact",
+      "evidence": "Source-purpose review: Handles a DampedProjectile in double dispatch. The collision often delegates back to the projectile, which can apply the impact to a moving entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(DBDD)V",
+      "originalName": "a",
+      "to": "shiftWorldOrigin",
+      "evidence": "Source-purpose review: Rebases the camera entity and its effective view origin by the same offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(IDDDDDD)V",
+      "originalName": "a",
+      "to": "resolveTunnelWallContact",
+      "evidence": "Source-purpose review: The session passes a wall contact point and normal. Implementations reposition, reflect velocity, resize, despawn, or ignore the contact as appropriate to the entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(IILom;)V",
+      "originalName": "a",
+      "to": "writeQueuedRecordRequest",
+      "evidence": "Source-purpose review: Writes the pending record request, including its type, identifiers and payload, to the outgoing packet buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ILah;)V",
+      "originalName": "a",
+      "to": "onAcceleratingProjectileContact",
+      "evidence": "Source-purpose review: Handles an AcceleratingProjectile contact, where the receiver may dispatch to a more specific collision handler or suppress contact during launch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ILhf;)V",
+      "originalName": "a",
+      "to": "onHomingProjectileContact",
+      "evidence": "Source-purpose review: Handles collision with a HomingProjectile. The relevant moving-entity implementations forward the collision to the projectile reaction for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ILmb;)V",
+      "originalName": "a",
+      "to": "onShockwaveContact",
+      "evidence": "Source-purpose review: Handles the shockwave-specific collision dispatch, forwarding it to the blast for types affected by its damage and impulse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ILvg;)V",
+      "originalName": "a",
+      "to": "onCameraContact",
+      "evidence": "Source-purpose review: Handles the camera-specific branch of entity collision dispatch. Active implementations delegate the reaction back to the camera, while inert entities ignore contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(IZ)[I",
+      "originalName": "a",
+      "to": "getFixedPointViewTransform",
+      "evidence": "Source-purpose review: Returns camera translation at the requested scale and fixed-point orientation components for the renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "onPowerUpContact",
+      "evidence": "Source-purpose review: Handles a power-up pickup in the collision dispatch. The ship receives its effect and a wing-pod contact redirects the effect to the player ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Lhm;Z)V",
+      "originalName": "a",
+      "to": "onLightningArcContact",
+      "evidence": "Source-purpose review: The arc calls this on its selected target. Moving targets apply its damage, and the wing pod handler may launch additional arcs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Ljava/lang/String;ZILjava/awt/Color;Z)V",
+      "originalName": "a",
+      "to": "drawLoadingProgressBar",
+      "evidence": "Source-purpose review: Draws the centered loading progress bar with its message and optional background clear.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "onProjectileHit",
+      "evidence": "Source-purpose review: This target callback is invoked for the projectile selected by the session ray sweep. Moving entities consume its damage value, while nonreactive targets implement a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Lpm;I)V",
+      "originalName": "a",
+      "to": "dispatchEntityCollision",
+      "evidence": "Source-purpose review: Called after the distance-based sphere checks report overlap. Dispatches contact based on the concrete type of this entity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZLil;)V",
+      "originalName": "a",
+      "to": "onExpandingPulseContact",
+      "evidence": "Source-purpose review: Handles contact with the expanding pulse projectile, which applies damage and velocity changes through its collision response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZLoc;)V",
+      "originalName": "a",
+      "to": "addChatMessageIfNew",
+      "evidence": "Source-purpose review: Adds the decoded chat entry unless a matching message ID is already present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZLpm;)Z",
+      "originalName": "a",
+      "to": "canBeTargetedBy",
+      "evidence": "Source-purpose review: The target-selection sweep calls this on each candidate before inserting it into the nearest-target list. Some entities reject targets on their side or during an inactive phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.c(I)Z",
+      "originalName": "c",
+      "to": "canBeHitByProjectileRay",
+      "evidence": "Source-purpose review: The projectile ray invokes this eligibility test on a prospective target before solving the ray-sphere intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.f(I)Z",
+      "originalName": "f",
+      "to": "isAlliedWithPlayer",
+      "evidence": "Source-purpose review: The ship and companion return true, spawned pieces inherit their source affiliation, and target selection uses this flag to distinguish the player side from the opposing side.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.g(B)Z",
+      "originalName": "g",
+      "to": "participatesInEntityCollisions",
+      "evidence": "Source-purpose review: The session uses this predicate to include or exclude an entity in its sorted pairwise collision sweep.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.i(I)Z",
+      "originalName": "i",
+      "to": "participatesInTunnelCollisions",
+      "evidence": "Source-purpose review: This predicate gates the tunnel wall collision pass. The ship and companion variants also test their position against the end of the tunnel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.k(I)V",
+      "originalName": "k",
+      "to": "updateCameraFollowTransform",
+      "evidence": "Source-purpose review: Smooths the camera toward the ship and updates the camera orientation and basis vectors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.l(I)V",
+      "originalName": "l",
+      "to": "clearTunnelCameraGlobals",
+      "evidence": "Source-purpose review: Releases shared camera rendering and interface references at shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.m(I)V",
+      "originalName": "m",
+      "to": "updateEffectiveViewOrigin",
+      "evidence": "Source-purpose review: Sets the render origin to the camera or to the ship-relative viewpoint with its configured offset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vh.b(Z)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -4616,6 +7199,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vm.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vm.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vm.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vm.c(Z)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -4623,10 +7227,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vm.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:w.k(I)V",
       "originalName": "k",
       "to": "releaseDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a(ZLee;)V",
+      "originalName": "a",
+      "to": "onMovingEntityContact",
+      "evidence": "Source-purpose review: Handles collision with a moving tunnel entity. Overrides apply impulses, damage, or specialized contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
       "confidence": "reviewed"
     },
     {
@@ -4672,6 +7311,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wm.a(II)V",
+      "originalName": "a",
+      "to": "updateForTunnelSegment",
+      "evidence": "Source-purpose review: Updates one entity for the current simulation tick with the tunnel segment containing its longitudinal position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(Lhm;Z)V",
+      "originalName": "a",
+      "to": "onLightningArcContact",
+      "evidence": "Source-purpose review: The arc calls this on its selected target. Moving targets apply its damage, and the wing pod handler may launch additional arcs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(Lmn;B)V",
+      "originalName": "a",
+      "to": "collectEntityLights",
+      "evidence": "Source-purpose review: Appends the dynamic lights emitted by this entity to the scene light list, updating their intensity and positions first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(Lmn;DILvg;Loi;)V",
+      "originalName": "a",
+      "to": "drawInTunnel",
+      "evidence": "Source-purpose review: Draws the entity using the camera, projection scale and nearby scene lights. Entities without visible geometry supply a no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(Lpm;B)Z",
+      "originalName": "a",
+      "to": "canBeHitByLightningArcFrom",
+      "evidence": "Source-purpose review: Filters candidates during lightning target selection based on the arc source, affiliation and each entity eligibility rule.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.g(I)V",
+      "originalName": "g",
+      "to": "handleDestruction",
+      "evidence": "Source-purpose review: Runs the entity destruction callback. Overrides can remove attachments, spawn collision effects, or update ship and level state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wm.n(I)V",
       "originalName": "n",
       "to": "releaseDeclaredStaticReferences",
@@ -4695,7 +7376,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "853603bd04268e6742cb21e02bce2d5d7e791e5b0b57f96793817cd963165a72",
+      "confined-names.json": "1e9d4d7f898853ec6445718c5ad393e9d310aec79ade507eb546e6ead2f006ba",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -1291,6 +1291,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.a(I)V",
+      "originalName": "a",
+      "to": "showPlayerNamePrompt",
+      "evidence": "Source-purpose review: Closes the preceding screen if present, creates the prompt for choosing a displayed player name, and attaches it when the guard is zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bj.a(II)Z",
       "originalName": "a",
       "to": "validateGroupId",
@@ -1312,10 +1319,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.a(IIZI)I",
+      "originalName": "a",
+      "to": "pollAccountScreen",
+      "evidence": "Source-purpose review: Returns the original account screen action from its polling helper. Preserves the unused-parameter contract and intermediate remainder evaluation before delegation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bj.a(ILjava/lang/String;)I",
       "originalName": "a",
       "to": "getGroupIdByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. Preserves the remainder after checking index readiness and before lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.a(ILwh;)V",
+      "originalName": "a",
+      "to": "playMusicTrack",
+      "evidence": "Source-purpose review: Passes the supplied music track through the original playback helper, which uses volume 256. Keeps the guarded static reference clear and exception wrapping.",
       "confidence": "reviewed"
     },
     {
@@ -1347,10 +1368,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.a(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Preserves the final int XOR itself for group hashing and the int plus 16675 for group validation and file hashing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bj.a(ZII)[B",
       "originalName": "a",
       "to": "getFile",
       "evidence": "Source-purpose review: Retrieves a file by group and file ID through the bound keyed reader using null keys. True calls the original helper before delegation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.a(ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. True invokes the static helper with a null argument before hashing.",
       "confidence": "reviewed"
     },
     {
@@ -1361,10 +1396,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.b(B)I",
+      "originalName": "b",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A byte other than -71 invokes the original static helper after checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bj.b(I)Z",
       "originalName": "b",
       "to": "tryLoadAllGroups",
       "evidence": "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. A guard other than -1 calls the original string helper with null before index loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.b(II)I",
+      "originalName": "b",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. Passes the final int XOR itself as the validator guard.",
       "confidence": "reviewed"
     },
     {
@@ -1375,10 +1424,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.b(ZLjava/lang/String;)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. True calls the original group ID lookup with null after looking up the supplied name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bj.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.c(I)I",
+      "originalName": "c",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After accumulation, an int other than -14858 clears the index field before the zero-capacity check.",
       "confidence": "reviewed"
     },
     {
@@ -1393,6 +1456,13 @@
       "originalName": "d",
       "to": "tryLoadGroup",
       "evidence": "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. Forwards both original ints to group validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.e(II)[B",
+      "originalName": "e",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Compares the supplied final int with the file slot capacity in the multi-group branch. The external caller passes one.",
       "confidence": "reviewed"
     },
     {
@@ -5311,7 +5381,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "dcde4868b7ba8ae2a068645b202bb459410bf57337eadf1c361aba9317a8e219",
+      "minerdisturbance-names.json": "471ada4cd108693a5052c4e8e20dc0bc4f386a72743e9755699bc29e0f0ce220",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

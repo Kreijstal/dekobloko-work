@@ -4567,10 +4567,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:um.a(B)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. A byte above -53 calls the original helper with nested cache values before iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(BI)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A first byte at least -49 clears the index after validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:um.a(BII)Z",
       "originalName": "a",
       "to": "tryLoadFile",
       "evidence": "Source-purpose review: Validates the file ID within its group, accepts an already decoded file or cached packed group, and otherwise requests the packed group and rechecks availability. Preserves the remainder expression between ID validation and the decoded-file lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(I)V",
+      "originalName": "a",
+      "to": "dismissMessageDialog",
+      "evidence": "Source-purpose review: Clears the message-dialog active flag that the dialog setup sets and the main loop tests. A guard other than five also clears the static sprite reference.",
       "confidence": "reviewed"
     },
     {
@@ -4595,6 +4616,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:um.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A first int other than four returns false after the index check.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:um.a(Ljava/lang/String;I)I",
       "originalName": "a",
       "to": "getGroupIdByName",
@@ -4613,6 +4641,20 @@
       "originalName": "a",
       "to": "getFileByName",
       "evidence": "Source-purpose review: Ensures the archive index is ready, lowercases both names, hashes the group name and validates the looked-up ID, then looks up the file name within that group and returns bytes from the unkeyed reader. A middle int other than 30045 returns null before normalizing the names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A byte other than -78 calls the original file ID helper with nested cache values between the lowercase operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(Z)I",
+      "originalName": "a",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. True clears a static field before checking index readiness.",
       "confidence": "reviewed"
     },
     {
@@ -4637,6 +4679,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:um.b(BI)[B",
+      "originalName": "b",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. A first byte other than -74 writes -41L into a nested packed-cache entry before the final exception. The first delegated read guard adds 5921.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.b(I)V",
+      "originalName": "b",
+      "to": "initializeChessWidgets",
+      "evidence": "Source-purpose review: Constructs the two configured widgets and the five action widgets, sets the viewport dimensions from the original font metrics, and preserves the guard cleanup between the assignments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:um.b(II)Z",
       "originalName": "b",
       "to": "validateGroupId",
@@ -4648,6 +4704,13 @@
       "originalName": "b",
       "to": "validateFileId",
       "evidence": "Source-purpose review: Validates the archive group and file-slot index with the original load, bounds and strict-mode exception branches. The final int is the actual lower bound for the group ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.b(Ljava/lang/String;I)Z",
+      "originalName": "b",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A final int other than 100 returns true after index loading and before lowercasing.",
       "confidence": "reviewed"
     },
     {
@@ -4669,6 +4732,13 @@
       "originalName": "c",
       "to": "getGroupLoadPercentByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the numeric group load progress for the looked-up ID. A nonzero final int invokes the original helper after lowercasing. The numeric progress guard subtracts 47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.d(B)V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Releases six static references during Chess shutdown. The fallback for a byte other than 73 invokes the original helper between the first and subsequent clears.",
       "confidence": "reviewed"
     },
     {
@@ -5381,7 +5451,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-chess-rules.mjs": "96e89726e9752b6c32c9c36b36b5bed50f637c08bf0e2c3963477590a7927127",
-      "chess-names.json": "aa8be45cb42cc5175d88f5e0fe57f3ac09344e82fe5494a5bb0e8030a2ea1cb8",
+      "chess-names.json": "d4bc4b0872002f288c1c23feacbaa3f670fc1338aa2072f0253b3c2bd004dbb2",
       "reproduce-chess.mjs": "83586202a6788e331bbadf9d01041fd32d100e7110eccafcbf80b4a91364ad46",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

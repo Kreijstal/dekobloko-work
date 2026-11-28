@@ -3384,10 +3384,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lj.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getCachedPlayerName",
+      "evidence": "Source-purpose review: Returns the cached player name from the login response, with an empty string for an absent value. The bound UI caller tries its current name first and falls back to the default Player string if both are empty. A byte above -70 clears the original static reference when a cached name exists.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lj.a(BI)Z",
       "originalName": "a",
       "to": "validateGroupId",
       "evidence": "Source-purpose review: Validates a populated archive group index with the original load, bounds and strict-mode exception branches. Pass byte minus 7984 into index loading, then byte other than 27 returns true before group validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(BLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A first byte other than -39 returns true before lowercasing after a successful index check.",
       "confidence": "reviewed"
     },
     {
@@ -3409,6 +3423,13 @@
       "originalName": "a",
       "to": "unpackGroupFiles",
       "evidence": "Source-purpose review: Unpacks a packed archive group into its per-file cache. Bound calls confirm the group decoder and the separate single-file and all-files chunk copies. Preserve the supplied key path, original cache mutations, the exact byte-copy calls, chunk-table arithmetic, guard behavior, exceptions and return order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(II)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final int at least -69 invokes the keyed reader with null keys and discards the result.",
       "confidence": "reviewed"
     },
     {
@@ -3486,6 +3507,41 @@
       "originalName": "b",
       "to": "validateFileId",
       "evidence": "Source-purpose review: Validates the archive group and file-slot index with the original load, bounds and strict-mode exception branches. Third int at least -68 invokes the group unpacker with the original cache values after successful index loading and before validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.b(ILjava/lang/String;)Z",
+      "originalName": "b",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A first int other than five invokes the named-file loader with two null strings before group hashing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.b(ILjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "b",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. After group validation, a first int at least -16 calls the original helper with cache entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.c(B)I",
+      "originalName": "c",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A byte other than 52 returns -128 after checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.c(I)I",
+      "originalName": "c",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. An int at most 31 returns -78 before checking the index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.c(II)[B",
+      "originalName": "c",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the division after validating the group and before testing its file slot capacity.",
       "confidence": "reviewed"
     },
     {
@@ -5500,7 +5556,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c042d4e7793d93c469822e85fad602baebb74bd01aac6bf321d09ca5452e99fc",
-      "torchallenge-names.json": "f8b8a6e8c774aa372b04e9c35231479185a5458ea61f01a085820ba0d50bf504",
+      "torchallenge-names.json": "747d904f2e33d03add5f2d2ce702919d6a1148c7c76808e8a3312ca7bd5457b8",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

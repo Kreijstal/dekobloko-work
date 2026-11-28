@@ -2915,6 +2915,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fa.a(B)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. A byte other than 127 invokes the original helper after accumulation and before the zero-capacity check.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fa.a(BI)I",
       "originalName": "a",
       "to": "getGroupLoadPercent",
@@ -2950,10 +2957,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fa.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. The readiness guard is the first int XOR itself.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fa.a(IZ[II)Z",
       "originalName": "a",
       "to": "unpackGroupFiles",
       "evidence": "Source-purpose review: Unpacks a packed archive group into its per-file cache. Bound calls confirm the group decoder and the separate single-file and all-files chunk copies. Preserve the supplied key path, original cache mutations, the exact byte-copy calls, chunk-table arithmetic, guard behavior, exceptions and return order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(Ljava/lang/String;BLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A byte other than 104 writes false into the original nested cache slot after validating the group.",
       "confidence": "reviewed"
     },
     {
@@ -2992,6 +3013,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fa.b(II)[B",
+      "originalName": "b",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Uses the final int as the index guard and preserves the original adjusted guards for validation and both file reads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fa.b(III)[B",
       "originalName": "b",
       "to": "getFile",
@@ -3003,6 +3031,20 @@
       "originalName": "b",
       "to": "getGroupLoadPercentByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the numeric group load progress for the looked-up ID. Preserves the remainder expression between the group-name lookup and the progress delegate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.c(I)I",
+      "originalName": "c",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. An int other than -1 invokes the original helper with a nested cache value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.c(II)I",
+      "originalName": "c",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A first int other than -540 returns -24 after group validation.",
       "confidence": "reviewed"
     },
     {
@@ -3020,10 +3062,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fa.d(ILjava/lang/String;)Z",
+      "originalName": "d",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. Preserves the threshold against the complement of the ID and the original subtraction in the hash guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fa.e(II)Z",
       "originalName": "e",
       "to": "tryLoadGroup",
       "evidence": "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. A miss after the request calls the original string helper with null when the second int differs from 4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.f(II)[Lci;",
+      "originalName": "f",
+      "to": "createSolidColorSpriteArray",
+      "evidence": "Source-purpose review: Creates a nine-slot sprite array and fills the supplied slot with a 64-by-64 sprite of the supplied color. Both observed callers select slot four and pass the resulting array to the widget.",
       "confidence": "reviewed"
     },
     {
@@ -6361,7 +6417,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-terraphoenix-rules.mjs": "2b9ef0307d7e8ad8295f9a6d9e8e1d74cc01f0b1d1f8bbcad95b45bfce2e3b38",
-      "terraphoenix-names.json": "c927ac289c02edb4a64bc9e29e51e46fec8743ef5bae3af6c18c744d7e7caf7d",
+      "terraphoenix-names.json": "b014926f19f6be6fa3b889ca94eeb3cb9dc31a25fe274373bd3f0c0427b8c312",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -3713,6 +3713,62 @@
       "(II)I",
       "getGroupRequestProgressPercent",
       "Source-purpose review: Gets the progress of the pending request for an archive group."
+    ],
+    [
+      "kk",
+      "a",
+      "(IB)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte other than -91 returns 56 after group validation."
+    ],
+    [
+      "kk",
+      "a",
+      "(Ljava/lang/String;B)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. A byte above -85 clears the index after lookup and before returning the name check."
+    ],
+    [
+      "kk",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;B)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A byte other than -45 writes -121L into a nested packed-cache slot. Preserve all original guard calculations."
+    ],
+    [
+      "kk",
+      "a",
+      "(Z)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. False assigns a static string from a packed-cache slot before iteration."
+    ],
+    [
+      "kk",
+      "b",
+      "(B)Z",
+      "isPasswordOnlyLogin",
+      "Source-purpose review: Returns the flag that keeps the existing login name fixed and lets the form submit using only the entered password. The rare guard branch preserves the original cleanup call."
+    ],
+    [
+      "kk",
+      "b",
+      "(I)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. A nonzero int clears the static int array before checking index readiness."
+    ],
+    [
+      "kk",
+      "b",
+      "(II)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. A final int other than 20095 returns null after group validation and before testing the file slot capacity."
+    ],
+    [
+      "kk",
+      "b",
+      "(Ljava/lang/String;B)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. A byte other than -3 calls the keyed file reader and discards its result before lowercasing."
     ]
   ],
   "fields": [

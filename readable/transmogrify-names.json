@@ -3948,6 +3948,69 @@
       "(II)I",
       "getGroupRequestProgressPercent",
       "Source-purpose review: Gets the progress of the pending request for an archive group."
+    ],
+    [
+      "ci",
+      "a",
+      "(BLjava/lang/String;)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. Preserves the division before index loading."
+    ],
+    [
+      "ci",
+      "a",
+      "(BLjava/lang/String;Ljava/lang/String;)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A first byte below 17 returns a nested boolean before checking the index."
+    ],
+    [
+      "ci",
+      "a",
+      "(CI)Z",
+      "isAllowedNameCharacter",
+      "Source-purpose review: Rejects ISO control characters, accepts the original basic name characters, and searches the two additional allowed-character arrays. The second scan begins at the supplied original index."
+    ],
+    [
+      "ci",
+      "a",
+      "(I)I",
+      "getGroupCapacity",
+      "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. Preserves the remainder at entry before checking index readiness."
+    ],
+    [
+      "ci",
+      "a",
+      "(IB)I",
+      "getFileCapacity",
+      "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A final byte below 71 returns 34 after group validation."
+    ],
+    [
+      "ci",
+      "a",
+      "(Z)[I",
+      "getGroupIds",
+      "Source-purpose review: Loads the archive index and returns its explicit group ID array. True returns null after loading the index. Otherwise returns the original group ID array used by the bulk group loader."
+    ],
+    [
+      "ci",
+      "b",
+      "(BI)[B",
+      "getFlatFile",
+      "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. Preserves the remainder before the final exception."
+    ],
+    [
+      "ci",
+      "b",
+      "(BLjava/lang/String;)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks the lowercased name against the archive group-name table. A first byte other than -120 returns an original nested cache boolean after lowercasing."
+    ],
+    [
+      "ci",
+      "b",
+      "(I)I",
+      "getArchiveLoadPercent",
+      "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After accumulation, an int other than -22884 calls the string helper with a nested cache byte and null."
     ]
   ],
   "fields": [

@@ -2516,6 +2516,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hc.a(B)V",
+      "originalName": "a",
+      "to": "clearLevelGlobals",
+      "evidence": "Source-purpose review: Clears the shared archive connection text, packet buffer and level text fields at shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(D[DBD)V",
+      "originalName": "a",
+      "to": "collectLevelCollisionContacts",
+      "evidence": "Source-purpose review: Checks the nearby terrain triangles and level objects around the moving sphere and adds the contact points to the collision solver.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(I)I",
+      "originalName": "a",
+      "to": "getTimeLimitMillis",
+      "evidence": "Source-purpose review: Provides the initial time limit in milliseconds for the level countdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(IIII[DIII)[D",
+      "originalName": "a",
+      "to": "findTerrainTriangleContact",
+      "evidence": "Source-purpose review: Projects a point onto the triangle and returns the contact coordinates, distance and normal, falling back to the nearest edge when needed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(IZ)Lkh;",
+      "originalName": "a",
+      "to": "getTerrainModel",
+      "evidence": "Source-purpose review: Builds and caches the terrain mesh from the elevation grid and materials, including the faces used by collision and rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(Z)I",
+      "originalName": "a",
+      "to": "getViewPresetIndex",
+      "evidence": "Source-purpose review: Provides the preset used for the level view transform, camera offset and HUD treatment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(ZZIIZI)Lla;",
+      "originalName": "a",
+      "to": "openIndexedResourceArchive",
+      "evidence": "Source-purpose review: Opens the archive for the selected index with its optional disk stores and requests the initial preload when enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.b(I)Z",
+      "originalName": "b",
+      "to": "prepareTerrainSkirtModel",
+      "evidence": "Source-purpose review: Ensures the terrain skirt is generated and reports whether it was already available for the staged loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.c(I)Lkh;",
+      "originalName": "c",
+      "to": "getTerrainSkirtModel",
+      "evidence": "Source-purpose review: Builds and caches the side mesh by finding terrain edges and subdividing vertical faces down to their edge heights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.d(I)V",
+      "originalName": "d",
+      "to": "applyTerrainRenderMode",
+      "evidence": "Source-purpose review: Copies the level render mode into the scene rasterizer, which uses it during terrain face visibility tests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.e(I)Z",
+      "originalName": "e",
+      "to": "processLevelDecoding",
+      "evidence": "Source-purpose review: Decodes the level name, grid, heights, objects, time limit and start pose, and advances the loader until the encoded record can be released.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.f(I)[D",
+      "originalName": "f",
+      "to": "getStartPose",
+      "evidence": "Source-purpose review: Returns the starting transform with the coordinates parsed from the level record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.g(I)Z",
+      "originalName": "g",
+      "to": "processLevelSceneMeshes",
+      "evidence": "Source-purpose review: Consumes scene geometry in time-limited batches and prepares the cached mesh groups before releasing the preparation queue.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:he.a(ILjava/lang/String;)Ldn;",
       "originalName": "a",
       "to": "pollAccountNameCheck",
@@ -3041,6 +3132,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(B)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. After handling zero accumulated capacity, a byte other than -32 returns 35.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(BI)Z",
       "originalName": "a",
       "to": "tryLoadGroup",
@@ -3090,6 +3188,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(II[II[IIIIII)V",
+      "originalName": "a",
+      "to": "darkenRgbWithSpriteMask",
+      "evidence": "Source-purpose review: Darkens the destination RGB pixels according to the low-byte opacity in nonzero sprite pixels. Keeps the row strides, zero-pixel skip and original channel masks, including 16711855.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(ILjava/lang/String;)I",
       "originalName": "a",
       "to": "getGroupIdByName",
@@ -3104,10 +3209,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(IZ)Z",
+      "originalName": "a",
+      "to": "tryLoadFlatFile",
+      "evidence": "Source-purpose review: In a one-slot archive uses the supplied ID as a file ID in group zero. Otherwise uses it as a group ID when the group has one addressable file slot. Delegates availability to the numeric file loader. True invokes the keyed named-file reader with null keys after group validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(Ljava/lang/String;II)I",
       "originalName": "a",
       "to": "getFileIdByName",
       "evidence": "Source-purpose review: Validates the group, lowercases and hashes a file name, then returns the validated file ID from that group’s name table or the original missing-ID value. After file ID validation, returns the looked-up ID when the middle int is at most -98 and returns 11 otherwise.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(Z)Z",
+      "originalName": "a",
+      "to": "isClientStartupReady",
+      "evidence": "Source-purpose review: Reports whether both the startup screen state and asset loading state have reached the original thresholds. False bypasses the checks and returns true.",
       "confidence": "reviewed"
     },
     {
@@ -3122,6 +3241,13 @@
       "originalName": "a",
       "to": "validateFileId",
       "evidence": "Source-purpose review: Validates the archive group and file-slot index with the original load, bounds and strict-mode exception branches. False invokes the original static helper before index loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. False repeats the index-readiness call with a nested cached int before group hashing.",
       "confidence": "reviewed"
     },
     {
@@ -3146,6 +3272,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(BLjava/lang/String;)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A first byte at least -7 returns a nested cache boolean after looking up the name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.b(I)Lvc;",
       "originalName": "b",
       "to": "createMouseWheelInput",
@@ -3153,10 +3286,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(IB)[B",
+      "originalName": "b",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. A final byte below 68 clears a static int array after validating the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.b(ILjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "b",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. A first int other than zero invokes the keyed name reader with two null strings before lowercasing the file name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.c(I)Z",
       "originalName": "c",
       "to": "tryLoadAllGroups",
       "evidence": "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. A guard other than -19375 clears a static int array before iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.d(I)V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Releases five static resources during Torquing shutdown. A guard below 98 preserves the original helper call between the reference assignments.",
       "confidence": "reviewed"
     },
     {
@@ -5542,7 +5696,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "8da598367c03f04c9e534a68a3861682d35d37834f3f17cf0207e7991dc70176",
-      "torquing-names.json": "55aa1c821d32729aa750491ac1b6b37d5c186a813221bd4acf07defefaa9bbef",
+      "torquing-names.json": "5a75dc4060e895e361b58c69a28af1c76f7e7f925f7d36ababc1a27ebce25536",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

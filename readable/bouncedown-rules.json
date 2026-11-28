@@ -1942,10 +1942,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.a(BI)I",
+      "originalName": "a",
+      "to": "getFileCapacity",
+      "evidence": "Source-purpose review: Returns the addressable file slot count after validating the group ID, including gaps in sparse file IDs. A first byte other than 47 returns a nested cache int before validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a(BII[I)[B",
       "originalName": "a",
       "to": "getFileWithKeys",
       "evidence": "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. Uses second and third arguments as group and file. Byte other than 121 writes to the nested packed-cache value after conversion and before decoded-cache eviction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(I)I",
+      "originalName": "a",
+      "to": "getArchiveLoadPercent",
+      "evidence": "Source-purpose review: Combines per-group loading progress across nonempty groups after the archive index is ready. The numerator is multiplied by the supplied int. All three original callers pass 100.",
       "confidence": "reviewed"
     },
     {
@@ -1970,6 +1984,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.a(II[Ltg;II)V",
+      "originalName": "a",
+      "to": "drawTiledSpriteStrip",
+      "evidence": "Source-purpose review: Draws the left and right sprites at the strip ends, then repeats the middle sprite within the temporary clip. Preserves the height selector, saved clip, position arithmetic and original exception wrapper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "updateTooltipState",
+      "evidence": "Source-purpose review: Updates the hovered tooltip text, its position and the display timer. Retains the fade and reset branches and the original shutdown helper guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a(ILjava/lang/String;I)I",
       "originalName": "a",
       "to": "getFileIdByName",
@@ -1991,10 +2019,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks the lowercased name against the archive group-name table. A byte other than -16 writes 78 into an original packed-cache byte before hashing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Checks index readiness and resolves the lowercased group and file names in their respective tables. Delegates the IDs to the numeric file loader. Group lookup uses the original XOR and subtraction. A final int other than 16484 returns a cached boolean after group validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a(Ljava/lang/String;Z)I",
       "originalName": "a",
       "to": "getGroupIdByName",
       "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. Forwards the exact boolean to validation of the looked-up group ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(Z)I",
+      "originalName": "a",
+      "to": "getGroupCapacity",
+      "evidence": "Source-purpose review: Returns the addressable group slot count after loading the index, including gaps between group IDs. False returns -115 after checking index readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.b(I)Z",
+      "originalName": "b",
+      "to": "ensureArchiveMasterIndexLoaded",
+      "evidence": "Source-purpose review: Returns the bound archive master index readiness result. The original loader requests the master index when needed, validates it and retains the resulting reader. A guard below 110 clears the original static byte table before delegation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.b(II)V",
+      "originalName": "b",
+      "to": "updateLogoPartRotation",
+      "evidence": "Source-purpose review: Computes the animation angle and orientation signs for the selected logo part, then stores its fixed-point rotation transform. Preserves the original phase ranges, orientation cases and applet clearing guard.",
       "confidence": "reviewed"
     },
     {
@@ -2019,10 +2082,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.b(Ljava/lang/String;Z)Z",
+      "originalName": "b",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Checks index readiness, resolves the lowercased group name to an ID, and returns the numeric group loader result. True assigns a static byte-array table from the packed cache after the group lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.b(Z)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Releases six static references during game shutdown. True then invokes the original two-int helper; both normal callers pass false.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.c(I)Z",
       "originalName": "c",
       "to": "ensureIndexLoaded",
       "evidence": "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. Allocate packed cache before file cache, then evaluate 110 % ((-19 - param0) / 57) on a successful normal path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.c(II)[B",
+      "originalName": "c",
+      "to": "getFlatFile",
+      "evidence": "Source-purpose review: Uses the supplied ID as a file ID in group zero for a one-slot archive, or as a group ID for a single-file-slot group. Delegates both branches to the numeric reader and preserves the original rejection paths. A first int at most 118 clears the static string after validating the group.",
       "confidence": "reviewed"
     },
     {
@@ -4527,7 +4611,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "7b8c4e04dfca204fa06059c91a137d385b4182c717934b56e1cc16663c28301c",
+      "bouncedown-names.json": "d1c915448b029e7bbcd8bd9422354b2f1ecdc1c445fb2818f504f44f83f92c1c",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
