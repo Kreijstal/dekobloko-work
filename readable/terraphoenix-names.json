@@ -224,6 +224,16 @@
       "di",
       "TextFieldValidator",
       "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."
+    ],
+    [
+      "qj",
+      "CoverageBitmapFont",
+      "Converts a glyph palette to byte coverage and blends glyph pixels by that coverage."
+    ],
+    [
+      "ud",
+      "BinaryBitmapFont",
+      "Uses byte masks to decide which glyph pixels receive the supplied colour."
     ]
   ],
   "methods": [
@@ -4356,6 +4366,601 @@
       "(I)Ljava/lang/String;",
       "evaluateValidationMessage",
       "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "pk",
+      "a",
+      "(C)I",
+      "charWidth",
+      "Source-purpose review: Reads the advance of the character’s encoded glyph."
+    ],
+    [
+      "pk",
+      "b",
+      "(Ljava/lang/String;)I",
+      "stringWidth",
+      "Source-purpose review: Measures the rendered width of tagged text using glyph advances, kerning, and images."
+    ],
+    [
+      "pk",
+      "a",
+      "(Ljava/lang/String;[I[Ljava/lang/String;)I",
+      "wrapText",
+      "Source-purpose review: Breaks tagged text into an output line array using the supplied width limits."
+    ],
+    [
+      "pk",
+      "b",
+      "(II)V",
+      "setColours",
+      "Source-purpose review: Resets text markup state with the supplied text and shadow colours and full opacity."
+    ],
+    [
+      "pk",
+      "a",
+      "(III)V",
+      "setColoursAlpha",
+      "Source-purpose review: Resets text markup state with the supplied text colour, shadow colour, and opacity."
+    ],
+    [
+      "pk",
+      "a",
+      "(Ljava/lang/String;)V",
+      "applyTag",
+      "Source-purpose review: Updates text rendering state for colour, opacity, shadow, underline, strikethrough, or reset markup."
+    ],
+    [
+      "pk",
+      "a",
+      "([[B[[B[I[I[III)I",
+      "computeKerning",
+      "Source-purpose review: Measures the gap where two glyph edge profiles overlap to derive their kerning adjustment."
+    ],
+    [
+      "pk",
+      "a",
+      "([B)V",
+      "decodeMetrics",
+      "Source-purpose review: Reads glyph advances, baseline, and the optional kerning data from the metrics bytes."
+    ],
+    [
+      "pk",
+      "b",
+      "(Ljava/lang/String;I)V",
+      "computeJustifySpacing",
+      "Source-purpose review: Counts spaces outside markup and divides the extra width among them in fixed-point units."
+    ],
+    [
+      "pk",
+      "a",
+      "(IIIIIIZ)V",
+      "drawGlyph",
+      "Source-purpose review: Draws a glyph at a specified position with its dimensions and colour. The boolean denotes a shadow pass."
+    ],
+    [
+      "pk",
+      "a",
+      "(IIIIIIIZ)V",
+      "drawGlyphAlpha",
+      "Source-purpose review: Draws a glyph with the supplied opacity. The boolean denotes a shadow pass."
+    ],
+    [
+      "pk",
+      "b",
+      "(Ljava/lang/String;II)V",
+      "drawTextRun",
+      "Source-purpose review: Draws a text run with glyphs, inline images, and markup-controlled styling."
+    ],
+    [
+      "pk",
+      "a",
+      "(Ljava/lang/String;IIIIIIIIII)I",
+      "drawParagraphAlpha",
+      "Source-purpose review: Wraps and aligns text inside a rectangle at the supplied opacity and line spacing."
+    ],
+    [
+      "pk",
+      "a",
+      "(Ljava/lang/String;IIIIIIIII)I",
+      "drawParagraph",
+      "Source-purpose review: Draws wrapped, aligned text with the default full opacity."
+    ],
+    [
+      "pk",
+      "a",
+      "(Ljava/lang/String;II)I",
+      "textHeight",
+      "Source-purpose review: Computes the height of a wrapped text block from ascent, descent, and line spacing."
+    ],
+    [
+      "pk",
+      "a",
+      "(Ljava/lang/String;I)I",
+      "maxLineWidth",
+      "Source-purpose review: Returns the widest line after wrapping the text within the given width."
+    ],
+    [
+      "pk",
+      "c",
+      "(Ljava/lang/String;I)I",
+      "lineCount",
+      "Source-purpose review: Returns the number of lines produced by wrapping text at the specified width."
+    ],
+    [
+      "pk",
+      "a",
+      "(Ljava/lang/String;IIII)V",
+      "drawRightAligned",
+      "Source-purpose review: Draws text with its right edge at the supplied x coordinate."
+    ],
+    [
+      "pk",
+      "b",
+      "(Ljava/lang/String;IIII)V",
+      "drawString",
+      "Source-purpose review: Draws text from the supplied x coordinate using the given colours."
+    ],
+    [
+      "pk",
+      "c",
+      "(Ljava/lang/String;IIII)V",
+      "drawCentred",
+      "Source-purpose review: Draws text centred on the supplied x coordinate."
+    ],
+    [
+      "pk",
+      "a",
+      "(Ljava/lang/String;IIIII)V",
+      "drawStringAlpha",
+      "Source-purpose review: Draws text from the supplied x coordinate using the given colours. Uses the supplied opacity."
+    ],
+    [
+      "pk",
+      "b",
+      "(Ljava/lang/String;IIIII)V",
+      "drawCentredAlpha",
+      "Source-purpose review: Draws text centred on the supplied x coordinate. Uses the supplied opacity."
+    ],
+    [
+      "pk",
+      "c",
+      "(Ljava/lang/String;IIIII)V",
+      "drawRightAlignedAlpha",
+      "Source-purpose review: Draws text with its right edge at the supplied x coordinate. Uses the supplied opacity."
+    ],
+    [
+      "pk",
+      "a",
+      "([Ltd;[I)V",
+      "setInlineSprites",
+      "Source-purpose review: Stores the sprites and baseline offsets used by inline image markup."
+    ],
+    [
+      "qj",
+      "a",
+      "(IIIIIIIZ)V",
+      "drawGlyphAlpha",
+      "Source-purpose review: Draws a glyph with the supplied opacity. The boolean denotes a shadow pass."
+    ],
+    [
+      "qj",
+      "a",
+      "(IIIIIIZ)V",
+      "drawGlyph",
+      "Source-purpose review: Draws a glyph at a specified position with its dimensions and colour. The boolean denotes a shadow pass."
+    ],
+    [
+      "qj",
+      "a",
+      "([I[BIIIIIII)V",
+      "blitGlyphRows",
+      "Source-purpose review: Blends glyph pixels using each byte as per-pixel coverage."
+    ],
+    [
+      "qj",
+      "a",
+      "([I[BIIIIIIII)V",
+      "blitGlyphAlphaRows",
+      "Source-purpose review: Scales per-pixel glyph coverage by the supplied uniform opacity when blending."
+    ],
+    [
+      "qj",
+      "a",
+      "([I[[B)[[B",
+      "convertPaletteToCoverage",
+      "Source-purpose review: Converts the glyph palette to coverage values and substitutes them into each glyph mask."
+    ],
+    [
+      "ud",
+      "a",
+      "(IIIIIIIZ)V",
+      "drawGlyphAlpha",
+      "Source-purpose review: Draws a glyph with the supplied opacity. The boolean denotes a shadow pass."
+    ],
+    [
+      "ud",
+      "a",
+      "(IIIIIIZ)V",
+      "drawGlyph",
+      "Source-purpose review: Draws a glyph at a specified position with its dimensions and colour. The boolean denotes a shadow pass."
+    ],
+    [
+      "ud",
+      "a",
+      "([I[BIIIIIII)V",
+      "blitGlyphRows",
+      "Source-purpose review: Writes the supplied colour at nonzero glyph mask positions."
+    ],
+    [
+      "ud",
+      "a",
+      "([I[BIIIIIIII)V",
+      "blitGlyphAlphaRows",
+      "Source-purpose review: Blends nonzero glyph mask positions at the supplied uniform opacity."
+    ],
+    [
+      "ud",
+      "a",
+      "([I[BIIIIIIIII[I[I)V",
+      "blitGlyphClippedRows",
+      "Source-purpose review: Clips the glyph writes to each row’s permitted offset and width."
+    ],
+    [
+      "ej",
+      "a",
+      "(BI)V",
+      "moveCaret",
+      "Source-purpose review: Moves the caret and retains the selection anchor when Shift is held."
+    ],
+    [
+      "ej",
+      "o",
+      "(I)I",
+      "findNextWordBoundary",
+      "Source-purpose review: Scans forward from the caret for the next space or end of text."
+    ],
+    [
+      "ej",
+      "l",
+      "(I)I",
+      "findPreviousWordBoundary",
+      "Source-purpose review: Scans backward from the caret for the preceding space or start of text."
+    ],
+    [
+      "ej",
+      "a",
+      "(ZBLjava/lang/String;)V",
+      "setText",
+      "Source-purpose review: Replaces the editor value, enforces its length limit, and updates the caret and selection."
+    ],
+    [
+      "ej",
+      "k",
+      "(I)V",
+      "clearText",
+      "Source-purpose review: Clears the editor value, resets the selection, and notifies the edit listener."
+    ],
+    [
+      "ej",
+      "j",
+      "(B)V",
+      "scrollCaretIntoView",
+      "Source-purpose review: Updates the horizontal text offset to keep the caret inside the field."
+    ],
+    [
+      "ib",
+      "a",
+      "(Lrc;I)V",
+      "setFieldValidator",
+      "Source-purpose review: Stores the optional validator used by the attached text field."
+    ],
+    [
+      "eh",
+      "f",
+      "(I)V",
+      "initializeClient",
+      "Source-purpose review: Initializes the client before the applet starts its main update and render loop."
+    ],
+    [
+      "Terraphoenix",
+      "f",
+      "(I)V",
+      "initializeClient",
+      "Source-purpose review: Initializes the client before the applet starts its main update and render loop."
+    ],
+    [
+      "eh",
+      "a",
+      "(Z)V",
+      "updateClient",
+      "Source-purpose review: Advances the game by one client tick after the applet copies its input focus state."
+    ],
+    [
+      "Terraphoenix",
+      "a",
+      "(Z)V",
+      "updateClient",
+      "Source-purpose review: Advances the game by one client tick after the applet copies its input focus state."
+    ],
+    [
+      "eh",
+      "a",
+      "(B)V",
+      "renderClientFrame",
+      "Source-purpose review: Draws the current client frame after the applet updates the drawing canvas."
+    ],
+    [
+      "Terraphoenix",
+      "a",
+      "(B)V",
+      "renderClientFrame",
+      "Source-purpose review: Draws the current client frame after the applet updates the drawing canvas."
+    ],
+    [
+      "eh",
+      "b",
+      "(B)V",
+      "disposeClient",
+      "Source-purpose review: Releases the client’s running resources before the applet detaches listeners and its canvas."
+    ],
+    [
+      "Terraphoenix",
+      "b",
+      "(B)V",
+      "disposeClient",
+      "Source-purpose review: Releases the client’s running resources before the applet detaches listeners and its canvas."
+    ],
+    [
+      "eh",
+      "a",
+      "(I)V",
+      "clearClientResources",
+      "Source-purpose review: Clears remaining client resources after applet shutdown has detached the window components."
+    ],
+    [
+      "Terraphoenix",
+      "a",
+      "(I)V",
+      "clearClientResources",
+      "Source-purpose review: Clears remaining client resources after applet shutdown has detached the window components."
+    ],
+    [
+      "eh",
+      "a",
+      "(ZZ)V",
+      "shutdownApplet",
+      "Source-purpose review: Shuts down the applet and platform services, detaches the canvas, and clears client resources."
+    ],
+    [
+      "eh",
+      "e",
+      "(I)V",
+      "processClientTick",
+      "Source-purpose review: Records tick timing and copies synchronized focus state before updating the client."
+    ],
+    [
+      "eh",
+      "b",
+      "(I)V",
+      "renderAppletFrame",
+      "Source-purpose review: Records frame timing, refreshes the canvas size and position, and calls the client frame renderer."
+    ],
+    [
+      "lh",
+      "b",
+      "(I[B[IIIIIIIILlh;)I",
+      "mixReverseStereoAligned",
+      "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples at steady gain."
+    ],
+    [
+      "lh",
+      "a",
+      "([B[IIIIIIILlh;)I",
+      "mixReverseMonoAligned",
+      "Source-purpose review: The reverse playback dispatcher selects this mono mixer for aligned samples at steady gain."
+    ],
+    [
+      "lh",
+      "a",
+      "(II[B[IIIIIIIILlh;II)I",
+      "mixReverseStereoInterpolated",
+      "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation at steady gain."
+    ],
+    [
+      "lh",
+      "b",
+      "(II[B[IIIIIIILlh;II)I",
+      "mixReverseMonoInterpolated",
+      "Source-purpose review: The reverse playback dispatcher selects this mono mixer for linear interpolation at steady gain."
+    ],
+    [
+      "lh",
+      "a",
+      "([B[IIIIIIIILlh;)I",
+      "mixReverseMonoAlignedRamp",
+      "Source-purpose review: The reverse playback dispatcher selects this mono mixer for aligned samples during a gain ramp."
+    ],
+    [
+      "lh",
+      "a",
+      "(I[B[IIIIIIIIIILlh;)I",
+      "mixReverseStereoAlignedRamp",
+      "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples during a gain ramp."
+    ],
+    [
+      "lh",
+      "d",
+      "(II[B[IIIIIIIILlh;II)I",
+      "mixReverseMonoInterpolatedRamp",
+      "Source-purpose review: The reverse playback dispatcher selects this mono mixer for linear interpolation during a gain ramp."
+    ],
+    [
+      "lh",
+      "a",
+      "(II[B[IIIIIIIIIILlh;II)I",
+      "mixReverseStereoInterpolatedRamp",
+      "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation during a gain ramp."
+    ],
+    [
+      "lh",
+      "a",
+      "(I[B[IIIIIIIILlh;)I",
+      "mixForwardStereoAligned",
+      "Source-purpose review: The forward playback dispatcher selects this stereo mixer for aligned samples at steady gain."
+    ],
+    [
+      "lh",
+      "b",
+      "([B[IIIIIIILlh;)I",
+      "mixForwardMonoAligned",
+      "Source-purpose review: The forward playback dispatcher selects this mono mixer for aligned samples at steady gain."
+    ],
+    [
+      "lh",
+      "b",
+      "(II[B[IIIIIIIILlh;II)I",
+      "mixForwardStereoInterpolated",
+      "Source-purpose review: The forward playback dispatcher selects this stereo mixer for linear interpolation at steady gain."
+    ],
+    [
+      "lh",
+      "a",
+      "(II[B[IIIIIIILlh;II)I",
+      "mixForwardMonoInterpolated",
+      "Source-purpose review: The forward playback dispatcher selects this mono mixer for linear interpolation at steady gain."
+    ],
+    [
+      "lh",
+      "b",
+      "([B[IIIIIIIILlh;)I",
+      "mixForwardMonoAlignedRamp",
+      "Source-purpose review: The forward playback dispatcher selects this mono mixer for aligned samples during a gain ramp."
+    ],
+    [
+      "lh",
+      "b",
+      "(I[B[IIIIIIIIIILlh;)I",
+      "mixForwardStereoAlignedRamp",
+      "Source-purpose review: The forward playback dispatcher selects this stereo mixer for aligned samples during a gain ramp."
+    ],
+    [
+      "lh",
+      "c",
+      "(II[B[IIIIIIIILlh;II)I",
+      "mixForwardMonoInterpolatedRamp",
+      "Source-purpose review: The forward playback dispatcher selects this mono mixer for linear interpolation during a gain ramp."
+    ],
+    [
+      "lh",
+      "b",
+      "(II[B[IIIIIIIIIILlh;II)I",
+      "mixForwardStereoInterpolatedRamp",
+      "Source-purpose review: The forward playback dispatcher selects this stereo mixer for linear interpolation during a gain ramp."
+    ],
+    [
+      "lh",
+      "a",
+      "(III)V",
+      "rampVolumeAndPan",
+      "Source-purpose review: Updates the target volume and pan over the requested number of frames and calculates per-frame gain steps."
+    ],
+    [
+      "lh",
+      "a",
+      "(Lgg;III)Llh;",
+      "createForSampleStep",
+      "Source-purpose review: Creates a playback stream with an explicit sample step, target volume and pan."
+    ],
+    [
+      "lh",
+      "a",
+      "(Z)V",
+      "setReversePlayback",
+      "Source-purpose review: Updates the sign of the sample step to reverse playback direction."
+    ],
+    [
+      "lh",
+      "b",
+      "(II)V",
+      "setVolumeAndPan",
+      "Source-purpose review: Sets the target volume and pan immediately, clears the current ramp, and updates the channel gains."
+    ],
+    [
+      "lh",
+      "c",
+      "(II)I",
+      "computeRightVolume",
+      "Source-purpose review: Computes the right-channel gain from volume and pan."
+    ],
+    [
+      "lh",
+      "d",
+      "(I)V",
+      "setSamplePositionFixed",
+      "Source-purpose review: Sets the fixed-point read position after clamping it to the sample bounds."
+    ],
+    [
+      "lh",
+      "d",
+      "(II)I",
+      "computeLeftVolume",
+      "Source-purpose review: Computes the left-channel gain from volume and pan."
+    ],
+    [
+      "lh",
+      "e",
+      "(I)V",
+      "setVolume",
+      "Source-purpose review: Converts the supplied volume to internal units and applies it using the current pan."
+    ],
+    [
+      "lh",
+      "e",
+      "(II)V",
+      "rampVolume",
+      "Source-purpose review: Schedules a volume ramp while preserving the current pan."
+    ],
+    [
+      "lh",
+      "f",
+      "(I)V",
+      "setSampleStepMagnitude",
+      "Source-purpose review: Changes the magnitude of the sample step while preserving its current direction."
+    ],
+    [
+      "lh",
+      "g",
+      "()I",
+      "getPan",
+      "Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel."
+    ],
+    [
+      "lh",
+      "h",
+      "()I",
+      "getTargetVolume",
+      "Source-purpose review: Returns the target volume, treating the pending fade-out sentinel as zero volume."
+    ],
+    [
+      "lh",
+      "i",
+      "()Z",
+      "isSamplePositionOutOfRange",
+      "Source-purpose review: Reports whether the fixed-point playback position is outside the available data."
+    ],
+    [
+      "lh",
+      "k",
+      "()Z",
+      "hasRemainingRampFrames",
+      "Source-purpose review: Reports whether the gain ramp still has frames remaining."
+    ],
+    [
+      "lh",
+      "l",
+      "()I",
+      "getSampleStepMagnitude",
+      "Source-purpose review: Returns the unsigned magnitude of the current fixed-point sample step."
     ]
   ],
   "fields": [

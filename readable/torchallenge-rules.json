@@ -787,6 +787,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nf",
+      "originalName": "nf",
+      "to": "BinaryBitmapFont",
+      "evidence": "Uses byte masks to decide which glyph pixels receive the supplied colour.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nl",
       "originalName": "nl",
       "to": "Bzip2Decompressor",
@@ -864,6 +871,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qj",
+      "originalName": "qj",
+      "to": "CoverageBitmapFont",
+      "evidence": "Converts a glyph palette to byte coverage and blends glyph pixels by that coverage.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rb",
       "originalName": "rb",
       "to": "DiskCacheWorker",
@@ -875,6 +889,13 @@
       "originalName": "rf",
       "to": "ValidatedTextField",
       "evidence": "Extends the editable field with an attached validator and forwards text changes to the validator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rh",
+      "originalName": "rh",
+      "to": "PalettedBitmapFont",
+      "evidence": "Looks up a colour palette using each nonzero glyph byte and uses binary rendering for shadows.",
       "confidence": "reviewed"
     },
     {
@@ -1480,6 +1501,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:TorChallenge.b(B)V",
+      "originalName": "b",
+      "to": "clearClientResources",
+      "evidence": "Source-purpose review: Clears remaining client resources after applet shutdown has detached the window components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TorChallenge.b(I)V",
+      "originalName": "b",
+      "to": "disposeClient",
+      "evidence": "Source-purpose review: Releases the client’s running resources before the applet detaches listeners and its canvas.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:TorChallenge.d(B)V",
       "originalName": "d",
       "to": "tickGame",
@@ -1977,6 +2012,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dj.a(II)V",
+      "originalName": "a",
+      "to": "moveCaret",
+      "evidence": "Source-purpose review: Moves the caret and retains the selection anchor when Shift is held.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dj.a(Ljava/lang/String;I)V",
       "originalName": "a",
       "to": "insertTextAtCaret",
@@ -1984,10 +2026,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dj.a(Ljava/lang/String;ZB)V",
+      "originalName": "a",
+      "to": "setText",
+      "evidence": "Source-purpose review: Replaces the editor value, enforces its length limit, and updates the caret and selection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dj.c(B)Log;",
       "originalName": "c",
       "to": "createMouseWheelInput",
       "evidence": "Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.d(B)V",
+      "originalName": "d",
+      "to": "scrollCaretIntoView",
+      "evidence": "Source-purpose review: Updates the horizontal text offset to keep the caret inside the field.",
       "confidence": "reviewed"
     },
     {
@@ -2002,6 +2058,13 @@
       "originalName": "e",
       "to": "pasteClipboardText",
       "evidence": "Source-purpose review: Reads text from the system clipboard and pastes it at the editor caret.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.e(Z)I",
+      "originalName": "e",
+      "to": "findNextWordBoundary",
+      "evidence": "Source-purpose review: Scans forward from the caret for the next space or end of text.",
       "confidence": "reviewed"
     },
     {
@@ -2023,6 +2086,20 @@
       "originalName": "h",
       "to": "submitText",
       "evidence": "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.h(I)I",
+      "originalName": "h",
+      "to": "findPreviousWordBoundary",
+      "evidence": "Source-purpose review: Scans backward from the caret for the preceding space or start of text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.i(I)V",
+      "originalName": "i",
+      "to": "clearText",
+      "evidence": "Source-purpose review: Clears the editor value, resets the selection, and notifies the edit listener.",
       "confidence": "reviewed"
     },
     {
@@ -2121,6 +2198,153 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 371d8c1a0c9ebe83811ca38fbc6cc324dd8edba98a4d71ce051907a9c6c522e0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(C)I",
+      "originalName": "a",
+      "to": "charWidth",
+      "evidence": "Source-purpose review: Reads the advance of the character’s encoded glyph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(II)V",
+      "originalName": "a",
+      "to": "setColours",
+      "evidence": "Source-purpose review: Resets text markup state with the supplied text and shadow colours and full opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(III)V",
+      "originalName": "a",
+      "to": "setColoursAlpha",
+      "evidence": "Source-purpose review: Resets text markup state with the supplied text colour, shadow colour, and opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "Source-purpose review: Draws a glyph with the supplied opacity. The boolean denotes a shadow pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "Source-purpose review: Draws a glyph at a specified position with its dimensions and colour. The boolean denotes a shadow pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "stringWidth",
+      "evidence": "Source-purpose review: Measures the rendered width of tagged text using glyph advances, kerning, and images.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "lineCount",
+      "evidence": "Source-purpose review: Returns the number of lines produced by wrapping text at the specified width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/lang/String;II)V",
+      "originalName": "a",
+      "to": "drawTextRun",
+      "evidence": "Source-purpose review: Draws a text run with glyphs, inline images, and markup-controlled styling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/lang/String;IIII)V",
+      "originalName": "a",
+      "to": "drawCentred",
+      "evidence": "Source-purpose review: Draws text centred on the supplied x coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/lang/String;IIIIIIIII)I",
+      "originalName": "a",
+      "to": "drawParagraph",
+      "evidence": "Source-purpose review: Draws wrapped, aligned text with the default full opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/lang/String;IIIIIIIIII)I",
+      "originalName": "a",
+      "to": "drawParagraphAlpha",
+      "evidence": "Source-purpose review: Wraps and aligns text inside a rectangle at the supplied opacity and line spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/lang/String;[I[Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "wrapText",
+      "evidence": "Source-purpose review: Breaks tagged text into an output line array using the supplied width limits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a([B)V",
+      "originalName": "a",
+      "to": "decodeMetrics",
+      "evidence": "Source-purpose review: Reads glyph advances, baseline, and the optional kerning data from the metrics bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a([Ljc;[I)V",
+      "originalName": "a",
+      "to": "setInlineSprites",
+      "evidence": "Source-purpose review: Stores the sprites and baseline offsets used by inline image markup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a([[B[[B[I[I[III)I",
+      "originalName": "a",
+      "to": "computeKerning",
+      "evidence": "Source-purpose review: Measures the gap where two glyph edge profiles overlap to derive their kerning adjustment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.b(Ljava/lang/String;)V",
+      "originalName": "b",
+      "to": "applyTag",
+      "evidence": "Source-purpose review: Updates text rendering state for colour, opacity, shadow, underline, strikethrough, or reset markup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.b(Ljava/lang/String;I)I",
+      "originalName": "b",
+      "to": "maxLineWidth",
+      "evidence": "Source-purpose review: Returns the widest line after wrapping the text within the given width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.b(Ljava/lang/String;II)I",
+      "originalName": "b",
+      "to": "textHeight",
+      "evidence": "Source-purpose review: Computes the height of a wrapped text block from ascent, descent, and line spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.b(Ljava/lang/String;IIII)V",
+      "originalName": "b",
+      "to": "drawRightAligned",
+      "evidence": "Source-purpose review: Draws text with its right edge at the supplied x coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.c(Ljava/lang/String;I)V",
+      "originalName": "c",
+      "to": "computeJustifySpacing",
+      "evidence": "Source-purpose review: Counts spaces outside markup and divides the extra width among them in fixed-point units.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.c(Ljava/lang/String;IIII)V",
+      "originalName": "c",
+      "to": "drawString",
+      "evidence": "Source-purpose review: Draws text from the supplied x coordinate using the given colours.",
       "confidence": "reviewed"
     },
     {
@@ -4028,6 +4252,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.a(II)V",
+      "originalName": "a",
+      "to": "rampVolume",
+      "evidence": "Source-purpose review: Schedules a volume ramp while preserving the current pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(III)V",
+      "originalName": "a",
+      "to": "rampVolumeAndPan",
+      "evidence": "Source-purpose review: Updates the target volume and pan over the requested number of frames and calculates per-frame gain steps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(II[B[IIIIIIIIIILnc;II)I",
+      "originalName": "a",
+      "to": "mixReverseStereoInterpolatedRamp",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(II[B[IIIIIIIILnc;II)I",
+      "originalName": "a",
+      "to": "mixForwardMonoInterpolatedRamp",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this mono mixer for linear interpolation during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(II[B[IIIIIIILnc;II)I",
+      "originalName": "a",
+      "to": "mixForwardMonoInterpolated",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this mono mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(I[B[IIIIIIIIIILnc;)I",
+      "originalName": "a",
+      "to": "mixReverseStereoAlignedRamp",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(I[B[IIIIIIIILnc;)I",
+      "originalName": "a",
+      "to": "mixReverseStereoAligned",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(Lfe;II)Lnc;",
+      "originalName": "a",
+      "to": "createForPlaybackRate",
+      "evidence": "Source-purpose review: Creates a sample playback stream whose step is scaled for the requested rate and current output sample rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a([B[IIIIIIIILnc;)I",
+      "originalName": "a",
+      "to": "mixForwardMonoAlignedRamp",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this mono mixer for aligned samples during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a([B[IIIIIIILnc;)I",
+      "originalName": "a",
+      "to": "mixReverseMonoAligned",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this mono mixer for aligned samples at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nc.a([IIIII)I",
       "originalName": "a",
       "to": "mixForwardSegment",
@@ -4039,6 +4333,76 @@
       "originalName": "b",
       "to": "nextSubstream",
       "evidence": "PcmStreamMixer returns the next child. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(II)I",
+      "originalName": "b",
+      "to": "computeLeftVolume",
+      "evidence": "Source-purpose review: Computes the left-channel gain from volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(II[B[IIIIIIIIIILnc;II)I",
+      "originalName": "b",
+      "to": "mixForwardStereoInterpolatedRamp",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this stereo mixer for linear interpolation during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(II[B[IIIIIIIILnc;II)I",
+      "originalName": "b",
+      "to": "mixForwardStereoInterpolated",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this stereo mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(II[B[IIIIIIILnc;II)I",
+      "originalName": "b",
+      "to": "mixReverseMonoInterpolated",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this mono mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(I[B[IIIIIIIIIILnc;)I",
+      "originalName": "b",
+      "to": "mixForwardStereoAlignedRamp",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this stereo mixer for aligned samples during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(I[B[IIIIIIIILnc;)I",
+      "originalName": "b",
+      "to": "mixForwardStereoAligned",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this stereo mixer for aligned samples at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(Lfe;III)Lnc;",
+      "originalName": "b",
+      "to": "createForSampleStep",
+      "evidence": "Source-purpose review: Creates a playback stream with an explicit sample step, target volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(Z)V",
+      "originalName": "b",
+      "to": "setReversePlayback",
+      "evidence": "Source-purpose review: Updates the sign of the sample step to reverse playback direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b([B[IIIIIIIILnc;)I",
+      "originalName": "b",
+      "to": "mixReverseMonoAlignedRamp",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this mono mixer for aligned samples during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b([B[IIIIIIILnc;)I",
+      "originalName": "b",
+      "to": "mixForwardMonoAligned",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this mono mixer for aligned samples at steady gain.",
       "confidence": "reviewed"
     },
     {
@@ -4063,10 +4427,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.c(I)V",
+      "originalName": "c",
+      "to": "setSampleStepMagnitude",
+      "evidence": "Source-purpose review: Changes the magnitude of the sample step while preserving its current direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.c(II)V",
+      "originalName": "c",
+      "to": "setVolumeAndPan",
+      "evidence": "Source-purpose review: Sets the target volume and pan immediately, clears the current ramp, and updates the channel gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.c(II[B[IIIIIIIILnc;II)I",
+      "originalName": "c",
+      "to": "mixReverseMonoInterpolatedRamp",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this mono mixer for linear interpolation during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nc.d()I",
       "originalName": "d",
       "to": "priority",
       "evidence": "The base stream returns 255. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.d(II)I",
+      "originalName": "d",
+      "to": "computeRightVolume",
+      "evidence": "Source-purpose review: Computes the right-channel gain from volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.d(II[B[IIIIIIIILnc;II)I",
+      "originalName": "d",
+      "to": "mixReverseStereoInterpolated",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.e()I",
+      "originalName": "e",
+      "to": "getSampleStepMagnitude",
+      "evidence": "Source-purpose review: Returns the unsigned magnitude of the current fixed-point sample step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.f()I",
+      "originalName": "f",
+      "to": "getTargetVolume",
+      "evidence": "Source-purpose review: Returns the target volume, treating the pending fade-out sentinel as zero volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.f(I)V",
+      "originalName": "f",
+      "to": "setVolume",
+      "evidence": "Source-purpose review: Converts the supplied volume to internal units and applies it using the current pan.",
       "confidence": "reviewed"
     },
     {
@@ -4077,10 +4497,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.i()I",
+      "originalName": "i",
+      "to": "getPan",
+      "evidence": "Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nc.k()V",
       "originalName": "k",
       "to": "recomputeGains",
       "evidence": "Copy target volume into current mono gain,then evaluate and store left and right panning gains through the two exact original static helpers in their retained order. Complete original-body SHA256 db797759033ef1362340b6e5d4b358c260925ff696c9f71bbc6c2309589ad66c. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.l()Z",
+      "originalName": "l",
+      "to": "hasRemainingRampFrames",
+      "evidence": "Source-purpose review: Reports whether the gain ramp still has frames remaining.",
       "confidence": "reviewed"
     },
     {
@@ -4137,6 +4571,41 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ee5c69ba969eaffc077e5f55ec989909bbc5b92bc536203d18dd02f743f76cbb.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "Source-purpose review: Draws a glyph with the supplied opacity. The boolean denotes a shadow pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "Source-purpose review: Draws a glyph at a specified position with its dimensions and colour. The boolean denotes a shadow pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a([I[BIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphRows",
+      "evidence": "Source-purpose review: Writes the supplied colour at nonzero glyph mask positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a([I[BIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphAlphaRows",
+      "evidence": "Source-purpose review: Blends nonzero glyph mask positions at the supplied uniform opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a([I[BIIIIIIIII[I[I)V",
+      "originalName": "a",
+      "to": "blitGlyphClippedRows",
+      "evidence": "Source-purpose review: Clips the glyph writes to each row’s permitted offset and width.",
       "confidence": "reviewed"
     },
     {
@@ -4784,6 +5253,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "Source-purpose review: Draws a glyph with the supplied opacity. The boolean denotes a shadow pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "Source-purpose review: Draws a glyph at a specified position with its dimensions and colour. The boolean denotes a shadow pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a([I[BIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphRows",
+      "evidence": "Source-purpose review: Blends glyph pixels using each byte as per-pixel coverage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a([I[BIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphAlphaRows",
+      "evidence": "Source-purpose review: Scales per-pixel glyph coverage by the supplied uniform opacity when blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a([I[[B)[[B",
+      "originalName": "a",
+      "to": "convertPaletteToCoverage",
+      "evidence": "Source-purpose review: Converts the glyph palette to coverage values and substitutes them into each glyph mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.c(Z)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -4882,6 +5386,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rf.a(ILwd;)V",
+      "originalName": "a",
+      "to": "setFieldValidator",
+      "evidence": "Source-purpose review: Stores the optional validator used by the attached text field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rf.i(B)V",
       "originalName": "i",
       "to": "resetStaticState",
@@ -4893,6 +5404,34 @@
       "originalName": "k",
       "to": "notifyTextChanged",
       "evidence": "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "Source-purpose review: Draws a glyph with the supplied opacity. The boolean denotes a shadow pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "Source-purpose review: Draws a glyph at a specified position with its dimensions and colour. The boolean denotes a shadow pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(I[I[B[IIIIIII)V",
+      "originalName": "a",
+      "to": "blitPalettedGlyph",
+      "evidence": "Source-purpose review: Looks up glyph colour using the mask byte as a palette index and leaves zero-index pixels alone.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(I[I[B[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitPalettedGlyphWithAlpha",
+      "evidence": "Source-purpose review: Blends palette colours at the supplied opacity, preserving zero-index transparency.",
       "confidence": "reviewed"
     },
     {
@@ -5575,6 +6114,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(IZ)V",
+      "originalName": "a",
+      "to": "shutdownApplet",
+      "evidence": "Source-purpose review: Shuts down the applet and platform services, detaches the canvas, and clears client resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.b(B)V",
+      "originalName": "b",
+      "to": "clearClientResources",
+      "evidence": "Source-purpose review: Clears remaining client resources after applet shutdown has detached the window components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.b(I)V",
+      "originalName": "b",
+      "to": "disposeClient",
+      "evidence": "Source-purpose review: Releases the client’s running resources before the applet detaches listeners and its canvas.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ug.c(I)V",
       "originalName": "c",
       "to": "runTick",
@@ -6004,7 +6564,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c696ff6221c68e3b0e602236621fbd79c0e8903c027337dfc07ecd80a8291783",
-      "torchallenge-names.json": "5c55c40cc0e9edf41bc8e3c76056076468e73e45f608a42a3e8f5790c62475e7",
+      "torchallenge-names.json": "7f76e7ea117489f6be18122e934a0a0ae5c5a5688c1f8aef8eb1c9b52c2f06b5",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
