@@ -4478,6 +4478,160 @@
       "([B[BBIII)I",
       "decompress",
       "Source-purpose review: Exact Huffman source-purpose/body and bound caller review: Traverse the existing decode tree using signed-byte bit7 then masks64/32/16/8/4/2/1. Preserve every negative-leaf complement/cast/store, output-index postincrement before array access, per-bit exit and reset, source-index increment only after a full byte, and consumed-encoded-byte return. Retain supplied count/offset/array domains, zero/negative/overflow counts, every guard and recursive/static effect, partial writes and diagnostic/exception order. Do not normalize loops, byte masks or guard positions. Wrong byte!=-88 self-recurses with byte93/null arrays before zero-count return. Preserve repeated global reads and StackOverflowError behavior, including zero-length calls. Class primary instance role is decoding only; proposed readable class role is HuffmanDecoder."
+    ],
+    [
+      "hb",
+      "a",
+      "(BC)B",
+      "encodeCp1252Character",
+      "Source-purpose review: Encodes a UTF-16 code unit as a signed CP1252 byte for text hashes and byte-indexed glyph lookup. Dungeon Assault reads the game flag and returns 27 for a byte other than -38 before mapping."
+    ],
+    [
+      "n",
+      "a",
+      "(Ljava/lang/CharSequence;I)[B",
+      "encodeCp1252Bytes",
+      "Source-purpose review: Encodes a character sequence into a newly allocated CP1252 byte array used by text and stream writers. Always read length,allocate and encode the complete sequence BEFORE wrong int!=-14553 returns null. Preserve every custom CharSequence charAt effect/failure even when the result is discarded."
+    ],
+    [
+      "lg",
+      "a",
+      "(BI)C",
+      "decodeCp1252Byte",
+      "Source-purpose review: Converts a byte to a character, using the CP1252 extension table for values 128 through 159 and 63 for undefined entries. After lookup, int at most 92 calls lg.a(-80) before returning."
+    ],
+    [
+      "mk",
+      "a",
+      "(B[BII)Ljava/lang/String;",
+      "decodeCp1252String",
+      "Source-purpose review: Decodes a supplied byte span using the CP1252 extension table and compacts the output by skipping zero bytes on the normal path. Allocate before returning null for byte other than -24."
+    ],
+    [
+      "oh",
+      "a",
+      "(IC)Z",
+      "isSupportedCp1252KeyCharacter",
+      "Source-purpose review: Filters typed characters for the keyboard event buffer using direct ranges and a linear lookup of the CP1252 extension characters. After the range and table checks fail, return false for -161 and true for other supplied ints."
+    ],
+    [
+      "nh",
+      "a",
+      "(I)Z",
+      "ensureIndexLoaded",
+      "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. When index is absent, forward int plus 40892 to the provider. After initialization or a cache hit, int other than -14354 invokes the original helper with a cached value."
+    ],
+    [
+      "nh",
+      "a",
+      "([IIBI)[B",
+      "getFileWithKeys",
+      "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. Group ID is second and file ID last. Evaluate -116 / ((-47 - param2) / 63) before any ID validation or cache access."
+    ],
+    [
+      "nh",
+      "d",
+      "(II)V",
+      "loadPackedGroup",
+      "Source-purpose review: Fetches a packed group from its archive provider and stores raw or wrapped bytes according to the supplied cache policy. Store packed bytes first. Int other than -23889 calls the original helper with false and -26 before returning."
+    ],
+    [
+      "nh",
+      "a",
+      "([IIII)Z",
+      "unpackGroupFiles",
+      "Source-purpose review: Unpacks a packed archive group into its per-file cache. Bound calls confirm the group decoder and the separate single-file and all-files chunk copies. Preserve the supplied key path, original cache mutations, the exact byte-copy calls, chunk-table arithmetic, guard behavior, exceptions and return order."
+    ],
+    [
+      "nh",
+      "a",
+      "(B)Z",
+      "tryLoadAllGroups",
+      "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. The request guard uses byte XOR -23916. A byte other than 59 calls the original helper after the loop."
+    ],
+    [
+      "nh",
+      "a",
+      "(IIB)Z",
+      "validateFileId",
+      "Source-purpose review: Validates the archive group and file-slot index with the original load, bounds and strict-mode exception branches. After validating IDs, byte at least -100 invokes the original name-based helper with a packed-cache value."
+    ],
+    [
+      "nh",
+      "a",
+      "(III)Z",
+      "tryLoadFile",
+      "Source-purpose review: Validates the file ID within its group, accepts an already decoded file or cached packed group, and otherwise requests the packed group and rechecks availability. A middle int other than 2 sets a static string before validation."
+    ],
+    [
+      "nh",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;B)[B",
+      "getFileByName",
+      "Source-purpose review: Ensures the archive index is ready, lowercases both names, hashes the group name and validates the looked-up ID, then looks up the file name within that group and returns bytes from the unkeyed reader. A final byte at least -106 clears the packed array between the lowercase operations."
+    ],
+    [
+      "nh",
+      "a",
+      "(ZI)Z",
+      "tryLoadGroup",
+      "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. True forces a false result after requesting a missing group."
+    ],
+    [
+      "nh",
+      "b",
+      "(III)[B",
+      "getFile",
+      "Source-purpose review: Retrieves a file by group and file ID through the bound keyed reader using null keys. First int other than 5 clears field_b before delegation."
+    ],
+    [
+      "nh",
+      "e",
+      "(II)Z",
+      "validateGroupId",
+      "Source-purpose review: Validates a populated archive group index with the original load, bounds and strict-mode exception branches. The first int is compared with the complemented group ID. Preserve the full supplied bound in addition to the upper slot check."
+    ],
+    [
+      "nh",
+      "a",
+      "(ILjava/lang/String;I)I",
+      "getFileIdByName",
+      "Source-purpose review: Validates the group, lowercases and hashes a file name, then returns the validated file ID from that group’s name table or the original missing-ID value. A first int other than zero returns 42 before validating the group."
+    ],
+    [
+      "nh",
+      "a",
+      "(Ljava/lang/String;I)I",
+      "getGroupIdByName",
+      "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. Preserves the supplied int minus 1119, its XOR with -1001, and the static helper call after validation when it differs from 1000."
+    ],
+    [
+      "nh",
+      "b",
+      "(Ljava/lang/String;I)I",
+      "getGroupLoadPercentByName",
+      "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the numeric group load progress for the looked-up ID. Preserves the index and progress guard XOR expressions. A final int other than -1 returns a nested cache value before hashing."
+    ],
+    [
+      "nh",
+      "c",
+      "(II)I",
+      "getGroupLoadPercent",
+      "Source-purpose review: Returns zero for invalid group IDs, 100 for cached packed groups, or the archive provider’s request progress for this group. Preserves the remainder expression before validating the group."
+    ],
+    [
+      "qa",
+      "b",
+      "(II)I",
+      "getGroupRequestProgressPercent",
+      "Source-purpose review: Gets the progress of the pending request for an archive group."
+    ],
+    [
+      "ti",
+      "b",
+      "(II)I",
+      "getGroupRequestProgressPercent",
+      "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. A final int other than 27318 clears an instance field after retrieving the request."
     ]
   ],
   "fields": [

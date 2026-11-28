@@ -1802,6 +1802,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:di.a(II)I",
+      "originalName": "a",
+      "to": "getGroupRequestProgressPercent",
+      "evidence": "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. A nonzero first int calls the original helper after lookup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:di.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2488,6 +2495,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.a(BI)C",
+      "originalName": "a",
+      "to": "decodeCp1252Byte",
+      "evidence": "Source-purpose review: Converts a byte to a character, using the CP1252 extension table for values 128 through 159 and 63 for undefined entries. After lookup, int other than -11721 self-calls with its fixed byte and int before returning.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.g(I)V",
       "originalName": "g",
       "to": "clearDeclaredStaticReferences",
@@ -2597,6 +2611,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.a(BC)Z",
+      "originalName": "a",
+      "to": "isSupportedCp1252KeyCharacter",
+      "evidence": "Source-purpose review: Filters typed characters for the keyboard event buffer using direct ranges and a linear lookup of the CP1252 extension characters. After all checks fail, byte above 82 returns false and other values return true.",
       "confidence": "reviewed"
     },
     {
@@ -3237,6 +3258,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kl.a(II)I",
+      "originalName": "a",
+      "to": "getGroupRequestProgressPercent",
+      "evidence": "Source-purpose review: Gets the progress of the pending request for an archive group.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:l.a()Z",
       "originalName": "a",
       "to": "decodeFloor",
@@ -3356,10 +3384,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lj.a(BI)Z",
+      "originalName": "a",
+      "to": "validateGroupId",
+      "evidence": "Source-purpose review: Validates a populated archive group index with the original load, bounds and strict-mode exception branches. Pass byte minus 7984 into index loading, then byte other than 27 returns true before group validation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lj.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 10 null writes to 9 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 dfb9fe6437530a23618d1f090574a0a9e773c52866c71cacf7b3594fdcf8c62b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(IB)I",
+      "originalName": "a",
+      "to": "getGroupLoadPercent",
+      "evidence": "Source-purpose review: Returns zero for invalid group IDs, 100 for cached packed groups, or the archive provider’s request progress for this group. A second byte other than 12 returns -38 before validating the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(IB[II)Z",
+      "originalName": "a",
+      "to": "unpackGroupFiles",
+      "evidence": "Source-purpose review: Unpacks a packed archive group into its per-file cache. Bound calls confirm the group decoder and the separate single-file and all-files chunk copies. Preserve the supplied key path, original cache mutations, the exact byte-copy calls, chunk-table arithmetic, guard behavior, exceptions and return order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(III)Z",
+      "originalName": "a",
+      "to": "tryLoadFile",
+      "evidence": "Source-purpose review: Validates the file ID within its group, accepts an already decoded file or cached packed group, and otherwise requests the packed group and rechecks availability. Preserves the remainder expression before requesting a missing group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(ILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "getGroupLoadPercentByName",
+      "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the numeric group load progress for the looked-up ID. A first int below 99 calls the original static helper after the name lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(ILjava/lang/String;B)I",
+      "originalName": "a",
+      "to": "getFileIdByName",
+      "evidence": "Source-purpose review: Validates the group, lowercases and hashes a file name, then returns the validated file ID from that group’s name table or the original missing-ID value. A final byte below 81 calls the original helper after lookup and before file ID validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(ILjava/lang/String;Ljava/lang/String;)[B",
+      "originalName": "a",
+      "to": "getFileByName",
+      "evidence": "Source-purpose review: Ensures the archive index is ready, lowercases both names, hashes the group name and validates the looked-up ID, then looks up the file name within that group and returns bytes from the unkeyed reader. Index loading uses the first int minus 7955. A first int other than -2 then returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "getGroupIdByName",
+      "evidence": "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. Preserves the remainder after index readiness and before lowercasing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(ZI)Z",
+      "originalName": "a",
+      "to": "tryLoadGroup",
+      "evidence": "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. False short-circuits before ID validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a([IIII)[B",
+      "originalName": "a",
+      "to": "getFileWithKeys",
+      "evidence": "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. Group ID is second and file ID last. Int above -22 returns packed-cache entry 14 after ID validation and before any unpack attempt.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.b(B)Z",
+      "originalName": "b",
+      "to": "tryLoadAllGroups",
+      "evidence": "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. A byte other than 79 assigns the static field from the packed cache after iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.b(I)Z",
+      "originalName": "b",
+      "to": "ensureIndexLoaded",
+      "evidence": "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. Int other than -7957 invokes the helper with original cached values before testing the index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.b(II)V",
+      "originalName": "b",
+      "to": "loadPackedGroup",
+      "evidence": "Source-purpose review: Fetches a packed group from its archive provider and stores raw or wrapped bytes according to the supplied cache policy. Evaluate -73 / ((-26 - param1) / 43) after the request and store.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.b(III)Z",
+      "originalName": "b",
+      "to": "validateFileId",
+      "evidence": "Source-purpose review: Validates the archive group and file-slot index with the original load, bounds and strict-mode exception branches. Third int at least -68 invokes the group unpacker with the original cache values after successful index loading and before validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.c(III)[B",
+      "originalName": "c",
+      "to": "getFile",
+      "evidence": "Source-purpose review: Retrieves a file by group and file ID through the bound keyed reader using null keys. Last int other than zero calls the original helper with nested packed-cache value before delegating.",
       "confidence": "reviewed"
     },
     {
@@ -3916,6 +4049,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pi.a(Ljava/lang/CharSequence;I)[B",
+      "originalName": "a",
+      "to": "encodeCp1252Bytes",
+      "evidence": "Source-purpose review: Encodes a character sequence into a newly allocated CP1252 byte array used by text and stream writers. Read length and allocate before wrong int!=353 invokes pi.b(byte125),then loop. Empty input still calls the helper;negative allocation failure does not.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pk.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4242,6 +4382,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 fa6cb99dcb7ff547a1e544ef54258f96a3452b69b824b6b196a541311240678b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.a(II[BB)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeCp1252String",
+      "evidence": "Source-purpose review: Decodes a supplied byte span using the CP1252 extension table and compacts the output by skipping zero bytes on the normal path. After copying, byte other than 8 triggers the original self-call with negative length and null input before constructing the string.",
       "confidence": "reviewed"
     },
     {
@@ -5246,6 +5393,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wc.a(BILjava/lang/CharSequence;[BII)I",
+      "originalName": "a",
+      "to": "encodeCp1252Subsequence",
+      "evidence": "Source-purpose review: Encodes a range of a character sequence into a supplied byte array at its destination offset. After all writes, byte >= -1 self-calls with a negative length and a byte that bypasses the guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:we.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
@@ -5257,6 +5411,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 9 null writes to 9 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a1f4aba6aa719df2e9b7d98a9e6cd424cec1011cab71822498263d10a9c4272e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(BC)B",
+      "originalName": "a",
+      "to": "encodeCp1252Character",
+      "evidence": "Source-purpose review: Encodes a UTF-16 code unit as a signed CP1252 byte for text hashes and byte-indexed glyph lookup. Tor Challenge reads the flag. Byte -126 takes a separate decision tree, and the alternate branch clears field_i before mapping.",
       "confidence": "reviewed"
     },
     {
@@ -5339,7 +5500,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c042d4e7793d93c469822e85fad602baebb74bd01aac6bf321d09ca5452e99fc",
-      "torchallenge-names.json": "7d28483ee6f66b9bdc895af3151bb77eef6b1cdb30c8ac62f88e4725c05474e6",
+      "torchallenge-names.json": "f8b8a6e8c774aa372b04e9c35231479185a5458ea61f01a085820ba0d50bf504",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

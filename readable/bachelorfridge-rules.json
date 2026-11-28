@@ -2607,6 +2607,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vr",
+      "originalName": "vr",
+      "to": "ResourceArchive",
+      "evidence": "Loads a resource index and uses it to allocate caches for packed archive groups and decoded files per group. Retrieves file bytes by group and file ID and evicts according to the supplied mode. Constructor retains the initial null index, provider and cache options, validates the mode from 0 through 2, and preserves exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wc",
       "originalName": "wc",
       "to": "HazmatSpecial",
@@ -3335,6 +3342,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aca.a(CI)B",
+      "originalName": "a",
+      "to": "encodeCp1252Character",
+      "evidence": "Source-purpose review: Encodes a UTF-16 code unit as a signed CP1252 byte for text hashes and byte-indexed glyph lookup. Bachelor Fridge reads field_y once. The label exits depend on zero versus nonzero flag, so keep every conditional break and fallback overwrite. Int other than 8220 invokes aca.a with the original char literal and 108 before the return, including inside the nested branch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aca.c(I)V",
       "originalName": "c",
       "to": "resetStaticState",
@@ -3965,6 +3979,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bv.a(ILjava/lang/CharSequence;)[B",
+      "originalName": "a",
+      "to": "encodeCp1252Bytes",
+      "evidence": "Source-purpose review: Encodes a character sequence into a newly allocated CP1252 byte array used by text and stream writers. Read the game flag before try;read length before wrong int!=18019 calls bv.b(-42);allocate only after that helper. Null input fails before the helper;retain its failure/effect order even for empty input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bw.a(B)Z",
       "originalName": "a",
       "to": "isLinked",
@@ -4067,6 +4088,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cga.a(IC)Z",
+      "originalName": "a",
+      "to": "isSupportedCp1252KeyCharacter",
+      "evidence": "Source-purpose review: Filters typed characters for the keyboard event buffer using direct ranges and a linear lookup of the CP1252 extension characters. After checking the direct ranges, int other than 255 returns true before the table scan.",
       "confidence": "reviewed"
     },
     {
@@ -6079,6 +6107,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gt.a(I[BBI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeCp1252String",
+      "evidence": "Source-purpose review: Decodes a supplied byte span using the CP1252 extension table and compacts the output by skipping zero bytes on the normal path. The byte guard comes after allocation and can recurse with null input and its original arguments before the loop.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gt.d(I)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -6510,6 +6545,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hs.a(CI)Z",
+      "originalName": "a",
+      "to": "isAcceptedTextInputCharacter",
+      "evidence": "Source-purpose review: Checks the printable character ranges and extension entries accepted by the typed-input loop. Filters typed characters before appending to the input buffer with its 80-character cap. ASCII32..126 returns true before the int guard;wrong int!=376 returns false before testing Latin1/extension characters. Keep this position and complete int domain.",
       "confidence": "reviewed"
     },
     {
@@ -7441,6 +7483,13 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.a(IIILjava/lang/CharSequence;[BI)I",
+      "originalName": "a",
+      "to": "encodeCp1252Subsequence",
+      "evidence": "Source-purpose review: Encodes a range of a character sequence into a supplied byte array at its destination offset. After subtraction, int > -46 clears field_l before any read/write.",
       "confidence": "reviewed"
     },
     {
@@ -12722,6 +12771,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vja.a(BB)C",
+      "originalName": "a",
+      "to": "decodeCp1252Byte",
+      "evidence": "Source-purpose review: Converts a byte to a character, using the CP1252 extension table for values 128 through 159 and 63 for undefined entries. Throws for zero before the byte guard. Byte greater than -31 calls vja.a before lookup in its separate branch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vja.a(ILgj;)Lat;",
       "originalName": "a",
       "to": "createAnimation",
@@ -12820,10 +12876,185 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vr.a(B)I",
+      "originalName": "a",
+      "to": "getGroupSlotCount",
+      "evidence": "Source-purpose review: Byte other than 20 returns -79. Otherwise returns -1 if the index cannot load and uses the group slot array length when it can.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(BI)V",
+      "originalName": "a",
+      "to": "resendLeaderboardRequests",
+      "evidence": "Source-purpose review: Iterates the pending leaderboard request deque and writes each request with the supplied opcode. Byte other than 75 writes the original guard field before iterating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(BILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "getFileId",
+      "evidence": "Source-purpose review: Validates the group, lowercases and hashes the file name, then returns the ID only if validated against the group. Retain the byte-dependent index clear between lowercasing and lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(BLjava/lang/String;Ljava/lang/String;)[B",
+      "originalName": "a",
+      "to": "getFileByName",
+      "evidence": "Source-purpose review: Loads the index and lowercases the group name before testing the byte guard. Resolves group then file hashes and returns bytes through the ID-based reader. Preserve wrapper and original argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(I)Z",
+      "originalName": "a",
+      "to": "ensureIndexLoaded",
+      "evidence": "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. Nonzero int invokes the original helper before checking the index. Allocate packed cache before file cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(IB)Z",
+      "originalName": "a",
+      "to": "validateGroupId",
+      "evidence": "Source-purpose review: Loads the index and checks group bounds and nonzero slots. Preserve the optional exception for invalid IDs and the additional call with original array accesses on the byte mismatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(II)Z",
+      "originalName": "a",
+      "to": "tryLoadSingleFile",
+      "evidence": "Source-purpose review: Resolves a single ID as file in a one-group archive or group containing one file. Preserve original validation, forwarding arithmetic and exception when neither case applies.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(III)Z",
+      "originalName": "a",
+      "to": "tryLoadFile",
+      "evidence": "Source-purpose review: Validates both IDs and tests decoded file and packed group caches before asking the provider for a missing group. Retain the alternate first-int branch that directly accesses a stored array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(ILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "getGroupLoadPercentByName",
+      "evidence": "Source-purpose review: Returns zero if the index cannot load, else lowercases and hashes the supplied name before querying the group percentage. Preserve original int forwarding and exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(ILpo;III[Lkv;ILpo;IIZ[Lkv;III)V",
+      "originalName": "a",
+      "to": "configureClientUi",
+      "evidence": "Source-purpose review: Forwards fonts, dimensions and sprite sets into the client UI setup and follows it with display setup. Preserve order, global reads and original exception text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(I[III)[B",
+      "originalName": "a",
+      "to": "getFileWithKeys",
+      "evidence": "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. Validates the first and last argument as group and file. Third int other than -3 returns null before consulting the decoded file cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "tryLoadGroupByName",
+      "evidence": "Source-purpose review: Runs the original int-dependent index checks, lowercases and hashes the name, and attempts to load the selected group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(Ljava/lang/String;Z)I",
+      "originalName": "a",
+      "to": "getGroupId",
+      "evidence": "Source-purpose review: Returns the validated group ID for a lowercased name or -1. The true guard calls the file retrieval overload after name lookup and before validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(Ljava/lang/String;ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "tryLoadFileByName",
+      "evidence": "Source-purpose review: Resolves lowercased group and file names and checks availability by ID. Retain the true-guard cache access before normal lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(Z)I",
+      "originalName": "a",
+      "to": "getLoadPercent",
+      "evidence": "Source-purpose review: Averages the load percentages of nonempty groups. Preserve original 0, 1, and 100 early cases and signed accumulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(ZII)Z",
+      "originalName": "a",
+      "to": "validateFileId",
+      "evidence": "Source-purpose review: Loads the index and checks both IDs and the group slot bound. Retain the optional helper call after successful bounds checks and strict invalid-ID exception behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a([IBII)Z",
+      "originalName": "a",
+      "to": "unpackGroupFiles",
+      "evidence": "Source-purpose review: Unpacks a cached group, optionally decrypting its packed bytes before decompression. Splits the chunk table into all files or the selected file according to cache policy. Preserve locks, guards, diagnostics, offset arithmetic, partial writes, and packed cache clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.b(B)Z",
+      "originalName": "b",
+      "to": "tryLoadAllGroups",
+      "evidence": "Source-purpose review: Requests each absent packed group, continuing through the full list and returning whether every group was available. The byte guard may invoke the original request helper before the loop.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vr.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.b(IB)I",
+      "originalName": "b",
+      "to": "getGroupLoadPercent",
+      "evidence": "Source-purpose review: Returns 0 for an invalid group, 100 for a packed group present in cache, or the provider percentage. Retain the byte mismatch index check before validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.b(II)[B",
+      "originalName": "b",
+      "to": "getSingleFile",
+      "evidence": "Source-purpose review: Reads by file ID in a one-group archive or by group ID when it contains a single file. Preserves argument arithmetic, null paths, and rejection of other shapes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.b(III)[B",
+      "originalName": "b",
+      "to": "getFile",
+      "evidence": "Source-purpose review: Evaluates signed remainder and delegates to file retrieval with null keys. Retain exact group and file argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.b(Ljava/lang/String;Z)Z",
+      "originalName": "b",
+      "to": "hasGroupName",
+      "evidence": "Source-purpose review: Checks whether the lowercased name maps to a nonnegative ID. Retain the optional guard-dependent call that uses the original cached object.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.c(II)Z",
+      "originalName": "c",
+      "to": "tryLoadGroup",
+      "evidence": "Source-purpose review: Validates the group, optionally clears the provider, then tests or requests its packed bytes. Retain side effects and missing group handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.d(II)I",
+      "originalName": "d",
+      "to": "getGroupFileSlotCount",
+      "evidence": "Source-purpose review: Returns zero for invalid group or the capacity of the file slots for a valid group. The second int guard preserves its original UI configuration call and argument evaluations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.e(II)V",
+      "originalName": "e",
+      "to": "loadPackedGroup",
+      "evidence": "Source-purpose review: Requests the packed group and stores direct or wrapped bytes based on the archive cache mode. Retain the guard call before the provider request.",
       "confidence": "reviewed"
     },
     {
@@ -13214,7 +13445,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "8137e006ef2e7f369e9ec1a46b94e9dca775347767c71d8a3b0a34043645f30c",
+      "bachelorfridge-names.json": "4ec1d583b7f8d9ee8d4581d8ffd2bd2923a762ab045fbdeabbe0c669c8e21719",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

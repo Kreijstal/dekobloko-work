@@ -144,6 +144,11 @@
       "ih",
       "Bzip2Decompressor",
       "Whole source-purpose review: final static Bzip2 decompression utility; one private typed state singleton allocated at class initialization; synchronized byte-array entry, bit/byte readers, used-symbol map, canonical Huffman tables, move-to-front block decoding, inverse-BWT/run output and retained cleanup all individually read or linked to exact earlier human-read bodies. All incoming selected helper references lie inside exact reviewed bodies. Keep the state allocation and class-init behavior, shared table ownership, locks, source/output/index/count/cast domains, array aliasing, partial writes, evaluation/exception order and all literals. Rename identifiers only; add no format checks, repairs, CRC handling or guards."
+    ],
+    [
+      "uc",
+      "BitPacketBuffer",
+      "Direct PacketBuffer subclass with a distinct bit cursor, byte-to-bit initialization, masked bit reading across bytes, and conversion back to byte access."
     ]
   ],
   "methods": [
@@ -3625,6 +3630,251 @@
       "(I)V",
       "initializeState",
       "Source-purpose review: Exact source/body and bound caller review: Initialize the ISAAC instance from its seed/result table through the original two mixing passes, generation and count update. Keep eight golden-ratio local values, four initial mixes, seed-backed and memory-backed passes, exact per-game array reads/stores and int arithmetic order, final generation and remaining-count writes. Retain full supplied primitive domains, every global flag read, early return, guard, recursion, unrelated helper, static clear, interim write, allocation/failure and partial-effect order. Do not replace a body with a canonical ISAAC implementation or remove guards; Torquing supplies an actual second-pass start index. Wrong int!=-1 nulls result field_i before mixing; preserve partial mutations and failures. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only."
+    ],
+    [
+      "ed",
+      "a",
+      "(IBLjava/lang/CharSequence;[BII)I",
+      "encodeCp1252Subsequence",
+      "Source-purpose review: Encodes a range of a character sequence into a supplied byte array at its destination offset. Evaluate 8 % ((param1 - 48) / 51) before subtraction and the loop."
+    ],
+    [
+      "ma",
+      "a",
+      "(ILjava/lang/CharSequence;)[B",
+      "encodeCp1252Bytes",
+      "Source-purpose review: Encodes a character sequence into a newly allocated CP1252 byte array used by text and stream writers. Wrong int!=-32396 calls ma.a(nullUc,byte-48) BEFORE length;retain helper arguments,prior game-flag read and failure order."
+    ],
+    [
+      "vb",
+      "a",
+      "(BC)B",
+      "encodeCp1252Character",
+      "Source-purpose review: Encodes a UTF-16 code unit as a signed CP1252 byte for text hashes and byte-indexed glyph lookup. Terra Phoenix reads the flag and returns -25 before mapping for byte other than -128."
+    ],
+    [
+      "im",
+      "a",
+      "(BI)C",
+      "decodeCp1252Byte",
+      "Source-purpose review: Converts a byte to a character, using the CP1252 extension table for values 128 through 159 and 63 for undefined entries. Masks first, then int other than -24538 calls im.a(95, true) before the zero test and separate mapping branch."
+    ],
+    [
+      "re",
+      "a",
+      "(IC)Z",
+      "isSupportedCp1252KeyCharacter",
+      "Source-purpose review: Filters typed characters for the keyboard event buffer using direct ranges and a linear lookup of the CP1252 extension characters. After the direct ranges, int other than -10152 returns true before the table check."
+    ],
+    [
+      "tc",
+      "a",
+      "(B[BII)Ljava/lang/String;",
+      "decodeCp1252String",
+      "Source-purpose review: Decodes a supplied byte span using the CP1252 extension table and compacts the output by skipping zero bytes on the normal path. Allocate before clearing field_b for byte other than -114."
+    ],
+    [
+      "uc",
+      "a",
+      "(ZI)I",
+      "readBits",
+      "Source-purpose review: Reads masked bits across bytes and advances the bit cursor. True clears the string after obtaining the byte index and before the bit offset and advance."
+    ],
+    [
+      "uc",
+      "k",
+      "(I)V",
+      "beginBitAccess",
+      "Source-purpose review: Sets the bit cursor from the inherited byte position. Int other than -1694261224 returns before setting the bit position."
+    ],
+    [
+      "uc",
+      "n",
+      "(I)V",
+      "endBitAccess",
+      "Source-purpose review: Converts back to the inherited byte cursor. Use the actual int divisor after adding seven."
+    ],
+    [
+      "uc",
+      "a",
+      "(Z)I",
+      "readCipheredByte",
+      "Source-purpose review: True returns 72 without advancing or accessing the cipher."
+    ],
+    [
+      "uc",
+      "a",
+      "([II)V",
+      "setCipherSeed",
+      "Source-purpose review: Int other than 16888 returns before creating and installing the cipher."
+    ],
+    [
+      "uc",
+      "b",
+      "(ILjava/lang/String;)V",
+      "setLoginRequestToken",
+      "Source-purpose review: Stores the optional text serialized by the login request before evaluating signed division. Preserve the caller value and exception wrapping."
+    ],
+    [
+      "uc",
+      "b",
+      "(I[BII)V",
+      "readCipheredBytes",
+      "Source-purpose review: Uses the supplied starting and exclusive ending loop indexes with a separate destination base offset. Each iteration advances the byte cursor and subtracts a cipher word."
+    ],
+    [
+      "uc",
+      "j",
+      "(B)I",
+      "getTicksPerSecond",
+      "Source-purpose review: Converts the configured nanosecond tick interval to ticks per second. Byte above -124 clears field_p before conversion."
+    ],
+    [
+      "uc",
+      "k",
+      "(II)V",
+      "writeCipheredByte",
+      "Source-purpose review: First int other than -17410 returns before cursor advancement and the ciphered write."
+    ],
+    [
+      "uc",
+      "l",
+      "(I)[Lci;",
+      "createSpritesFromDecodedSheet",
+      "Source-purpose review: Builds plain or alpha sprites from shared decoded sheet dimensions, palette indexes and optional alpha bytes. Uses the supplied starting index and releases sheet data after the loop."
+    ],
+    [
+      "uc",
+      "l",
+      "(II)V",
+      "pumpClientUi",
+      "Source-purpose review: Runs the client UI input and update helper, discards its result, then clears field_q if the first int differs from 3795."
+    ],
+    [
+      "uc",
+      "o",
+      "(I)[Lbg;",
+      "createIndexedSpritesFromDecodedSheet",
+      "Source-purpose review: Builds indexed sprites directly from sheet dimensions, index buffers and shared palette. Int other than -28336 resets the optional login text before releasing sheet data."
+    ],
+    [
+      "fa",
+      "a",
+      "(I)Z",
+      "ensureIndexLoaded",
+      "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. Nonzero int writes into a nested packed-cache value before testing the index. Retain file-table-first initialization."
+    ],
+    [
+      "fa",
+      "a",
+      "([IBII)[B",
+      "getFileWithKeys",
+      "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. File ID is third and group ID last. Byte below 75 returns packed-cache entry 10 after file conversion and before eviction."
+    ],
+    [
+      "fa",
+      "a",
+      "(II)V",
+      "loadPackedGroup",
+      "Source-purpose review: Fetches a packed group from its archive provider and stores raw or wrapped bytes according to the supplied cache policy. The wrapped branch forwards int minus 3979 to the provider. Int other than 3864 clears the decoded file table after the store."
+    ],
+    [
+      "fa",
+      "a",
+      "(IZ[II)Z",
+      "unpackGroupFiles",
+      "Source-purpose review: Unpacks a packed archive group into its per-file cache. Bound calls confirm the group decoder and the separate single-file and all-files chunk copies. Preserve the supplied key path, original cache mutations, the exact byte-copy calls, chunk-table arithmetic, guard behavior, exceptions and return order."
+    ],
+    [
+      "fa",
+      "a",
+      "(III)Z",
+      "validateFileId",
+      "Source-purpose review: Validates the archive group and file-slot index with the original load, bounds and strict-mode exception branches. First int other than -12432 writes to the original nested packed-cache value before index loading."
+    ],
+    [
+      "fa",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;I)[B",
+      "getFileByName",
+      "Source-purpose review: Ensures the archive index is ready, lowercases both names, hashes the group name and validates the looked-up ID, then looks up the file name within that group and returns bytes from the unkeyed reader. Preserves the int XOR itself for index loading and the int plus 21565 for retrieval."
+    ],
+    [
+      "fa",
+      "a",
+      "(ZII)Z",
+      "tryLoadFile",
+      "Source-purpose review: Validates the file ID within its group, accepts an already decoded file or cached packed group, and otherwise requests the packed group and rechecks availability. True invokes the original helper on a decoded-file miss before consulting the packed cache."
+    ],
+    [
+      "fa",
+      "b",
+      "(B)Z",
+      "tryLoadAllGroups",
+      "Source-purpose review: Ensures the index is ready and iterates the indexed group IDs, requesting each missing packed group. The accumulated flag reports whether the checked groups became available. A byte at least -127 clears the decoded-file table before the while loop."
+    ],
+    [
+      "fa",
+      "b",
+      "(III)[B",
+      "getFile",
+      "Source-purpose review: Retrieves a file by group and file ID through the bound keyed reader using null keys. Evaluate 5 / ((param1 - 84) / 32) before forwarding."
+    ],
+    [
+      "fa",
+      "d",
+      "(II)Z",
+      "validateGroupId",
+      "Source-purpose review: Validates a populated archive group index with the original load, bounds and strict-mode exception branches. For a valid group, evaluate -115 / ((53 - param1) / 32) before returning true."
+    ],
+    [
+      "fa",
+      "e",
+      "(II)Z",
+      "tryLoadGroup",
+      "Source-purpose review: Validates the group ID, returns true if packed bytes are cached, or requests the group and checks whether packed bytes arrived. A miss after the request calls the original string helper with null when the second int differs from 4."
+    ],
+    [
+      "fa",
+      "a",
+      "(BI)I",
+      "getGroupLoadPercent",
+      "Source-purpose review: Returns zero for invalid group IDs, 100 for cached packed groups, or the archive provider’s request progress for this group. Preserves the remainder expression after validation and before the cache check."
+    ],
+    [
+      "fa",
+      "a",
+      "(IILjava/lang/String;)I",
+      "getFileIdByName",
+      "Source-purpose review: Validates the group, lowercases and hashes a file name, then returns the validated file ID from that group’s name table or the original missing-ID value. A first int at least -75 writes -101L into a packed-cache slot after the file ID was validated."
+    ],
+    [
+      "fa",
+      "b",
+      "(ILjava/lang/String;)I",
+      "getGroupLoadPercentByName",
+      "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the numeric group load progress for the looked-up ID. Preserves the remainder expression between the group-name lookup and the progress delegate."
+    ],
+    [
+      "fa",
+      "c",
+      "(ILjava/lang/String;)I",
+      "getGroupIdByName",
+      "Source-purpose review: Loads the index, lowercases and hashes a group name, then returns the validated group ID or the original missing-ID value. Index readiness uses the first int plus one and validation uses XOR 101. A first int other than -1 invokes the original helper and discards its result."
+    ],
+    [
+      "tb",
+      "b",
+      "(II)I",
+      "getGroupRequestProgressPercent",
+      "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. A nonzero first int returns -22 after lookup."
+    ],
+    [
+      "uj",
+      "b",
+      "(II)I",
+      "getGroupRequestProgressPercent",
+      "Source-purpose review: Gets the progress of the pending request for an archive group."
     ]
   ],
   "fields": [

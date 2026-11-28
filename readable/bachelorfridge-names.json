@@ -89,6 +89,11 @@
       "il",
       "HuffmanCodec",
       "Primary instance purpose reviewed from exact constructor, every owned instance method, private fields and selected bound consumers. Build canonical Huffman codewords and a growing decode tree from signed byte code lengths; tree leaves store complemented symbols. Three codecs encode and decode; Dungeon Assault retains only decoding and does not retain the caller byte-length array. Archive resource constructors use the huffman entry; string packet helpers use returned encoded-byte counts to advance cursors. Preserve unrelated static responsibilities and class-initializer order; no complete unrelated-static-body claim. Identifier-only naming; retain primitive domains, array aliases, all allocation/read/write/guard/recursion/partial-effect/exception order, literal values and diagnostics."
+    ],
+    [
+      "vr",
+      "ResourceArchive",
+      "Loads a resource index and uses it to allocate caches for packed archive groups and decoded files per group. Retrieves file bytes by group and file ID and evicts according to the supplied mode. Constructor retains the initial null index, provider and cache options, validates the mode from 0 through 2, and preserves exception wrapping."
     ]
   ],
   "methods": [
@@ -2352,6 +2357,230 @@
       "([BII[BII)I",
       "compress",
       "Source-purpose review: Exact Huffman source-purpose/body and bound caller review: Emit source bytes as the existing high-bit-first Huffman codewords using the retained length-array alias and codeword table. Keep all full int/byte/boolean domains, guards, global flag reads, source/destination array aliasing, bit-position overflow, signed shifts and byte casts; preserve exact unrolled up-to-five-byte write order, zero-code-length RuntimeException text, output-byte-count return, and diagnostic evaluation/wrapping. No new validation or library codec substitution. Add input length to param4, compute output bit position, then wrong param2!=20857 nulls field_f before testing empty input. Preserve that state change even when the loop is skipped."
+    ],
+    [
+      "aca",
+      "a",
+      "(CI)B",
+      "encodeCp1252Character",
+      "Source-purpose review: Encodes a UTF-16 code unit as a signed CP1252 byte for text hashes and byte-indexed glyph lookup. Bachelor Fridge reads field_y once. The label exits depend on zero versus nonzero flag, so keep every conditional break and fallback overwrite. Int other than 8220 invokes aca.a with the original char literal and 108 before the return, including inside the nested branch."
+    ],
+    [
+      "bv",
+      "a",
+      "(ILjava/lang/CharSequence;)[B",
+      "encodeCp1252Bytes",
+      "Source-purpose review: Encodes a character sequence into a newly allocated CP1252 byte array used by text and stream writers. Read the game flag before try;read length before wrong int!=18019 calls bv.b(-42);allocate only after that helper. Null input fails before the helper;retain its failure/effect order even for empty input."
+    ],
+    [
+      "hs",
+      "a",
+      "(CI)Z",
+      "isAcceptedTextInputCharacter",
+      "Source-purpose review: Checks the printable character ranges and extension entries accepted by the typed-input loop. Filters typed characters before appending to the input buffer with its 80-character cap. ASCII32..126 returns true before the int guard;wrong int!=376 returns false before testing Latin1/extension characters. Keep this position and complete int domain."
+    ],
+    [
+      "jm",
+      "a",
+      "(IIILjava/lang/CharSequence;[BI)I",
+      "encodeCp1252Subsequence",
+      "Source-purpose review: Encodes a range of a character sequence into a supplied byte array at its destination offset. After subtraction, int > -46 clears field_l before any read/write."
+    ],
+    [
+      "cga",
+      "a",
+      "(IC)Z",
+      "isSupportedCp1252KeyCharacter",
+      "Source-purpose review: Filters typed characters for the keyboard event buffer using direct ranges and a linear lookup of the CP1252 extension characters. After checking the direct ranges, int other than 255 returns true before the table scan."
+    ],
+    [
+      "gt",
+      "a",
+      "(I[BBI)Ljava/lang/String;",
+      "decodeCp1252String",
+      "Source-purpose review: Decodes a supplied byte span using the CP1252 extension table and compacts the output by skipping zero bytes on the normal path. The byte guard comes after allocation and can recurse with null input and its original arguments before the loop."
+    ],
+    [
+      "vja",
+      "a",
+      "(BB)C",
+      "decodeCp1252Byte",
+      "Source-purpose review: Converts a byte to a character, using the CP1252 extension table for values 128 through 159 and 63 for undefined entries. Throws for zero before the byte guard. Byte greater than -31 calls vja.a before lookup in its separate branch."
+    ],
+    [
+      "vr",
+      "a",
+      "(I)Z",
+      "ensureIndexLoaded",
+      "Source-purpose review: Loads the archive index when needed and allocates the packed group cache and per-group file table. Nonzero int invokes the original helper before checking the index. Allocate packed cache before file cache."
+    ],
+    [
+      "vr",
+      "a",
+      "(I[III)[B",
+      "getFileWithKeys",
+      "Source-purpose review: Retrieves the decoded file by group and file ID, optionally unpacking with the supplied keys and retrying after a group request. Preserves the existing cache modes, absent-group handling, and exception diagnostics. Validates the first and last argument as group and file. Third int other than -3 returns null before consulting the decoded file cache."
+    ],
+    [
+      "vr",
+      "a",
+      "(B)I",
+      "getGroupSlotCount",
+      "Source-purpose review: Byte other than 20 returns -79. Otherwise returns -1 if the index cannot load and uses the group slot array length when it can."
+    ],
+    [
+      "vr",
+      "a",
+      "(BI)V",
+      "resendLeaderboardRequests",
+      "Source-purpose review: Iterates the pending leaderboard request deque and writes each request with the supplied opcode. Byte other than 75 writes the original guard field before iterating."
+    ],
+    [
+      "vr",
+      "a",
+      "(BILjava/lang/String;)I",
+      "getFileId",
+      "Source-purpose review: Validates the group, lowercases and hashes the file name, then returns the ID only if validated against the group. Retain the byte-dependent index clear between lowercasing and lookup."
+    ],
+    [
+      "vr",
+      "a",
+      "(BLjava/lang/String;Ljava/lang/String;)[B",
+      "getFileByName",
+      "Source-purpose review: Loads the index and lowercases the group name before testing the byte guard. Resolves group then file hashes and returns bytes through the ID-based reader. Preserve wrapper and original argument order."
+    ],
+    [
+      "vr",
+      "a",
+      "(IB)Z",
+      "validateGroupId",
+      "Source-purpose review: Loads the index and checks group bounds and nonzero slots. Preserve the optional exception for invalid IDs and the additional call with original array accesses on the byte mismatch."
+    ],
+    [
+      "vr",
+      "a",
+      "(II)Z",
+      "tryLoadSingleFile",
+      "Source-purpose review: Resolves a single ID as file in a one-group archive or group containing one file. Preserve original validation, forwarding arithmetic and exception when neither case applies."
+    ],
+    [
+      "vr",
+      "a",
+      "(III)Z",
+      "tryLoadFile",
+      "Source-purpose review: Validates both IDs and tests decoded file and packed group caches before asking the provider for a missing group. Retain the alternate first-int branch that directly accesses a stored array."
+    ],
+    [
+      "vr",
+      "a",
+      "(ILjava/lang/String;)I",
+      "getGroupLoadPercentByName",
+      "Source-purpose review: Returns zero if the index cannot load, else lowercases and hashes the supplied name before querying the group percentage. Preserve original int forwarding and exception wrapping."
+    ],
+    [
+      "vr",
+      "a",
+      "(ILpo;III[Lkv;ILpo;IIZ[Lkv;III)V",
+      "configureClientUi",
+      "Source-purpose review: Forwards fonts, dimensions and sprite sets into the client UI setup and follows it with display setup. Preserve order, global reads and original exception text."
+    ],
+    [
+      "vr",
+      "a",
+      "(Ljava/lang/String;I)Z",
+      "tryLoadGroupByName",
+      "Source-purpose review: Runs the original int-dependent index checks, lowercases and hashes the name, and attempts to load the selected group."
+    ],
+    [
+      "vr",
+      "a",
+      "(Ljava/lang/String;Z)I",
+      "getGroupId",
+      "Source-purpose review: Returns the validated group ID for a lowercased name or -1. The true guard calls the file retrieval overload after name lookup and before validation."
+    ],
+    [
+      "vr",
+      "a",
+      "(Ljava/lang/String;ZLjava/lang/String;)Z",
+      "tryLoadFileByName",
+      "Source-purpose review: Resolves lowercased group and file names and checks availability by ID. Retain the true-guard cache access before normal lookup."
+    ],
+    [
+      "vr",
+      "a",
+      "(Z)I",
+      "getLoadPercent",
+      "Source-purpose review: Averages the load percentages of nonempty groups. Preserve original 0, 1, and 100 early cases and signed accumulation."
+    ],
+    [
+      "vr",
+      "a",
+      "(ZII)Z",
+      "validateFileId",
+      "Source-purpose review: Loads the index and checks both IDs and the group slot bound. Retain the optional helper call after successful bounds checks and strict invalid-ID exception behavior."
+    ],
+    [
+      "vr",
+      "a",
+      "([IBII)Z",
+      "unpackGroupFiles",
+      "Source-purpose review: Unpacks a cached group, optionally decrypting its packed bytes before decompression. Splits the chunk table into all files or the selected file according to cache policy. Preserve locks, guards, diagnostics, offset arithmetic, partial writes, and packed cache clearing."
+    ],
+    [
+      "vr",
+      "b",
+      "(B)Z",
+      "tryLoadAllGroups",
+      "Source-purpose review: Requests each absent packed group, continuing through the full list and returning whether every group was available. The byte guard may invoke the original request helper before the loop."
+    ],
+    [
+      "vr",
+      "b",
+      "(IB)I",
+      "getGroupLoadPercent",
+      "Source-purpose review: Returns 0 for an invalid group, 100 for a packed group present in cache, or the provider percentage. Retain the byte mismatch index check before validation."
+    ],
+    [
+      "vr",
+      "b",
+      "(II)[B",
+      "getSingleFile",
+      "Source-purpose review: Reads by file ID in a one-group archive or by group ID when it contains a single file. Preserves argument arithmetic, null paths, and rejection of other shapes."
+    ],
+    [
+      "vr",
+      "b",
+      "(III)[B",
+      "getFile",
+      "Source-purpose review: Evaluates signed remainder and delegates to file retrieval with null keys. Retain exact group and file argument order."
+    ],
+    [
+      "vr",
+      "b",
+      "(Ljava/lang/String;Z)Z",
+      "hasGroupName",
+      "Source-purpose review: Checks whether the lowercased name maps to a nonnegative ID. Retain the optional guard-dependent call that uses the original cached object."
+    ],
+    [
+      "vr",
+      "c",
+      "(II)Z",
+      "tryLoadGroup",
+      "Source-purpose review: Validates the group, optionally clears the provider, then tests or requests its packed bytes. Retain side effects and missing group handling."
+    ],
+    [
+      "vr",
+      "d",
+      "(II)I",
+      "getGroupFileSlotCount",
+      "Source-purpose review: Returns zero for invalid group or the capacity of the file slots for a valid group. The second int guard preserves its original UI configuration call and argument evaluations."
+    ],
+    [
+      "vr",
+      "e",
+      "(II)V",
+      "loadPackedGroup",
+      "Source-purpose review: Requests the packed group and stores direct or wrapped bytes based on the archive cache mode. Retain the guard call before the provider request."
     ]
   ],
   "fields": [
