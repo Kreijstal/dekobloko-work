@@ -264,6 +264,46 @@
       "ng",
       "InteractiveWidget",
       "Interactive control that tracks pointer and keyboard input and forwards its activation to the registered listener. The account forms use this control for their buttons and suggestion choices."
+    ],
+    [
+      "tl",
+      "TextHotspotListener",
+      "Receives activation of a tagged link within a text widget and uses its tag ID to choose the intended action."
+    ],
+    [
+      "df",
+      "RichTextWidget",
+      "Displays formatted text with tagged hotspots, tracks the bounds of each hotspot across wrapped lines, and dispatches the selected hotspot."
+    ],
+    [
+      "ia",
+      "TextHotspotBounds",
+      "Stores the tag ID and one line’s rectangular hotspot bounds. Additional rectangles are linked for hotspots that span multiple rendered lines."
+    ],
+    [
+      "lg",
+      "TextLayout",
+      "Stores the wrapped lines of a widget’s text and maps between text offsets and rendered positions."
+    ],
+    [
+      "qi",
+      "TextLineMetrics",
+      "Stores the horizontal positions of character boundaries and vertical bounds for one rendered line."
+    ],
+    [
+      "gd",
+      "TextWidgetRenderer",
+      "Defines text layout, widget sizing, input hit testing, and caret and selection painting for text widgets."
+    ],
+    [
+      "bc",
+      "DefaultTextWidgetRenderer",
+      "Implements the text widget renderer using the bound bitmap font, padding and alignment fields, and cached wrapped layout."
+    ],
+    [
+      "fa",
+      "RichTextLayout",
+      "Concrete text layout that wraps and aligns formatted text with the selected bitmap font, caches its inputs, and records per-line caret positions."
     ]
   ],
   "methods": [
@@ -5110,6 +5150,321 @@
       "(IIII)V",
       "activateFromInput",
       "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "tl",
+      "a",
+      "(Ldf;IIZ)V",
+      "onTextHotspotActivated",
+      "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action."
+    ],
+    [
+      "dg",
+      "a",
+      "(Ldf;IIZ)V",
+      "onTextHotspotActivated",
+      "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action."
+    ],
+    [
+      "qh",
+      "a",
+      "(Ldf;IIZ)V",
+      "onTextHotspotActivated",
+      "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action."
+    ],
+    [
+      "df",
+      "d",
+      "(Z)V",
+      "rebuildHotspotBounds",
+      "Source-purpose review: Scans the formatted text for hotspot tags and constructs the rendered rectangles for each covered line of the text layout."
+    ],
+    [
+      "df",
+      "b",
+      "(III)Lia;",
+      "findHotspotAt",
+      "Source-purpose review: Finds the first tagged hotspot whose linked rectangles contain the tested widget position."
+    ],
+    [
+      "df",
+      "b",
+      "(Z)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "ee",
+      "b",
+      "(Z)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "dh",
+      "b",
+      "(Z)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "bg",
+      "b",
+      "(Z)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "ic",
+      "b",
+      "(Z)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "kj",
+      "b",
+      "(Z)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "rf",
+      "b",
+      "(Z)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "tk",
+      "b",
+      "(Z)Ljava/lang/String;",
+      "getTooltipText",
+      "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation."
+    ],
+    [
+      "lg",
+      "a",
+      "(II)I",
+      "getXForTextOffset",
+      "Source-purpose review: Walks the wrapped lines, then reads the horizontal character position at the remaining offset in that line."
+    ],
+    [
+      "lg",
+      "a",
+      "(BI)I",
+      "getLineIndexForTextOffset",
+      "Source-purpose review: Walks the wrapped lines, subtracting their text lengths, to find the line for the supplied text offset."
+    ],
+    [
+      "qi",
+      "a",
+      "(II)I",
+      "findNearestCharacterIndex",
+      "Source-purpose review: Compares the supplied X coordinate with each adjacent pair’s midpoint to find the nearest character boundary."
+    ],
+    [
+      "qi",
+      "b",
+      "(B)I",
+      "getRightX",
+      "Source-purpose review: Returns the final horizontal character position for the line."
+    ],
+    [
+      "lg",
+      "a",
+      "(IBI)I",
+      "getTextOffsetAt",
+      "Source-purpose review: Finds the line covering the supplied Y coordinate, resolves the nearest character boundary at X, and adds the lengths of preceding lines."
+    ],
+    [
+      "lg",
+      "b",
+      "(B)I",
+      "getMaxLineRightX",
+      "Source-purpose review: Returns the greatest right-hand character position across the nonempty wrapped lines."
+    ],
+    [
+      "lg",
+      "a",
+      "(B)I",
+      "getLayoutHeight",
+      "Source-purpose review: Returns the distance from the first line’s top to the last line’s bottom."
+    ],
+    [
+      "gd",
+      "a",
+      "(ILee;)Llg;",
+      "getTextLayout",
+      "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget."
+    ],
+    [
+      "bc",
+      "a",
+      "(ILee;)Llg;",
+      "getTextLayout",
+      "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget."
+    ],
+    [
+      "gd",
+      "a",
+      "(BIIIILee;)V",
+      "paintSelection",
+      "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line."
+    ],
+    [
+      "bc",
+      "a",
+      "(BIIIILee;)V",
+      "paintSelection",
+      "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line."
+    ],
+    [
+      "gd",
+      "a",
+      "(I)I",
+      "getFontLineHeight",
+      "Source-purpose review: Returns the sum of the bitmap font’s vertical metrics."
+    ],
+    [
+      "bc",
+      "a",
+      "(I)I",
+      "getFontLineHeight",
+      "Source-purpose review: Returns the sum of the bitmap font’s vertical metrics."
+    ],
+    [
+      "gd",
+      "a",
+      "(IILee;BII)I",
+      "findTextOffsetAtScreenPosition",
+      "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout."
+    ],
+    [
+      "bc",
+      "a",
+      "(IILee;BII)I",
+      "findTextOffsetAtScreenPosition",
+      "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout."
+    ],
+    [
+      "gd",
+      "a",
+      "(IILee;IB)V",
+      "paintCaret",
+      "Source-purpose review: Resolves the caret’s line and column through the text layout and paints the vertical caret at that position."
+    ],
+    [
+      "bc",
+      "a",
+      "(IILee;IB)V",
+      "paintCaret",
+      "Source-purpose review: Resolves the caret’s line and column through the text layout and paints the vertical caret at that position."
+    ],
+    [
+      "gd",
+      "a",
+      "(ILee;Z)I",
+      "getTextOriginX",
+      "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions."
+    ],
+    [
+      "bc",
+      "a",
+      "(ILee;Z)I",
+      "getTextOriginX",
+      "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions."
+    ],
+    [
+      "gd",
+      "a",
+      "(Lee;B)I",
+      "getTextAreaWidth",
+      "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text."
+    ],
+    [
+      "bc",
+      "a",
+      "(Lee;B)I",
+      "getTextAreaWidth",
+      "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text."
+    ],
+    [
+      "gd",
+      "a",
+      "(Lee;II)I",
+      "getTextOriginY",
+      "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting."
+    ],
+    [
+      "bc",
+      "a",
+      "(Lee;II)I",
+      "getTextOriginY",
+      "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting."
+    ],
+    [
+      "gd",
+      "b",
+      "(Lee;B)I",
+      "getPreferredHeight",
+      "Source-purpose review: Gets the wrapped text height and adds the widget’s vertical padding."
+    ],
+    [
+      "bc",
+      "b",
+      "(Lee;B)I",
+      "getPreferredHeight",
+      "Source-purpose review: Gets the wrapped text height and adds the widget’s vertical padding."
+    ],
+    [
+      "gd",
+      "c",
+      "(Lee;B)I",
+      "getPreferredWidth",
+      "Source-purpose review: Gets the layout’s farthest line position and adds the widget’s horizontal padding."
+    ],
+    [
+      "bc",
+      "c",
+      "(Lee;B)I",
+      "getPreferredWidth",
+      "Source-purpose review: Gets the layout’s farthest line position and adds the widget’s horizontal padding."
+    ],
+    [
+      "fa",
+      "a",
+      "(IIILjava/lang/String;Leg;III)V",
+      "layoutWrappedText",
+      "Source-purpose review: Wraps text within the available width and populates each line’s dimensions and character positions, with horizontal and vertical alignment."
+    ],
+    [
+      "fa",
+      "a",
+      "(ILjava/lang/String;ILeg;)Lqi;",
+      "initializeSingleLineMetrics",
+      "Source-purpose review: Allocates metrics for one line using the font’s vertical dimensions and the input text length, and stores that line as the current layout."
+    ],
+    [
+      "fa",
+      "a",
+      "(Leg;Ljava/lang/String;IBI)V",
+      "layoutSingleLineRightAligned",
+      "Source-purpose review: Subtracts the measured text width from the supplied right edge to obtain the line start."
+    ],
+    [
+      "fa",
+      "a",
+      "(Leg;Ljava/lang/String;III)V",
+      "layoutSingleLineCentered",
+      "Source-purpose review: Places the line’s bounds one half-width to either side of the supplied center coordinate."
+    ],
+    [
+      "fa",
+      "b",
+      "(Leg;Ljava/lang/String;III)V",
+      "layoutSingleLineLeftAligned",
+      "Source-purpose review: Uses the supplied X coordinate as the line’s starting edge and measures the text to determine the right edge."
     ]
   ],
   "fields": [

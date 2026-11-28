@@ -192,6 +192,20 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:a",
+      "originalName": "a",
+      "to": "DefaultTextWidgetRenderer",
+      "evidence": "Implements the text widget renderer using the bound bitmap font, padding and alignment fields, and cached wrapped layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:aa",
+      "originalName": "aa",
+      "to": "TextLayout",
+      "evidence": "Stores the wrapped lines of a widget’s text and maps between text offsets and rendered positions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ab",
       "originalName": "ab",
       "to": "DirectByteStorage",
@@ -234,6 +248,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:be",
+      "originalName": "be",
+      "to": "TextLineMetrics",
+      "evidence": "Stores the horizontal positions of character boundaries and vertical bounds for one rendered line.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bf",
       "originalName": "bf",
       "to": "DualLinkNode",
@@ -245,6 +266,13 @@
       "originalName": "bg",
       "to": "AccountRegistrationPanel",
       "evidence": "Builds the six named registration fields, attaches the corresponding validators, and submits the account form.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bl",
+      "originalName": "bl",
+      "to": "TextHotspotBounds",
+      "evidence": "Stores the tag ID and one line’s rectangular hotspot bounds. Additional rectangles are linked for hotspots that span multiple rendered lines.",
       "confidence": "reviewed"
     },
     {
@@ -465,6 +493,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jj",
+      "originalName": "jj",
+      "to": "RichTextWidget",
+      "evidence": "Displays formatted text with tagged hotspots, tracks the bounds of each hotspot across wrapped lines, and dispatches the selected hotspot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jl",
       "originalName": "jl",
       "to": "AbstractAudioSample",
@@ -668,6 +703,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sb",
+      "originalName": "sb",
+      "to": "RichTextLayout",
+      "evidence": "Concrete text layout that wraps and aligns formatted text with the selected bitmap font, caches its inputs, and records per-line caret positions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sh",
       "originalName": "sh",
       "to": "NameSuggestionListener",
@@ -731,6 +773,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:u",
+      "originalName": "u",
+      "to": "TextHotspotListener",
+      "evidence": "Receives activation of a tagged link within a text widget and uses its tag ID to choose the intended action.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ua",
       "originalName": "ua",
       "to": "WidgetContainer",
@@ -749,6 +798,13 @@
       "originalName": "ug",
       "to": "IntrusiveNode",
       "evidence": "Long key plus two reciprocal links and unlink, the shared intrusive node role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ui",
+      "originalName": "ui",
+      "to": "TextWidgetRenderer",
+      "evidence": "Defines text layout, widget sizing, input hit testing, and caret and selection painting for text widgets.",
       "confidence": "reviewed"
     },
     {
@@ -1074,10 +1130,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:a.a(I)I",
+      "originalName": "a",
+      "to": "getFontLineHeight",
+      "evidence": "Source-purpose review: Returns the sum of the bitmap font’s vertical metrics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(IBLwe;)I",
+      "originalName": "a",
+      "to": "getTextOriginX",
+      "evidence": "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(IILwe;IZI)I",
+      "originalName": "a",
+      "to": "findTextOffsetAtScreenPosition",
+      "evidence": "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(ILwe;)Laa;",
+      "originalName": "a",
+      "to": "getTextLayout",
+      "evidence": "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(ILwe;IIII)V",
+      "originalName": "a",
+      "to": "paintSelection",
+      "evidence": "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(Lwe;B)I",
+      "originalName": "a",
+      "to": "getPreferredWidth",
+      "evidence": "Source-purpose review: Gets the layout’s farthest line position and adds the widget’s horizontal padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(Lwe;II)I",
+      "originalName": "a",
+      "to": "getTextOriginY",
+      "evidence": "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(Lwe;IIII)V",
+      "originalName": "a",
+      "to": "paintCaret",
+      "evidence": "Source-purpose review: Resolves the caret’s line and column through the text layout and paints the vertical caret at that position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(Lwe;Z)I",
+      "originalName": "a",
+      "to": "getPreferredHeight",
+      "evidence": "Source-purpose review: Gets the wrapped text height and adds the widget’s vertical padding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:a.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f0e18e4ef214fe6f2fea8aaac42dabe8ad0a1fee97b2573c3f1ed1c8ef72c487.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.b(Lwe;Z)I",
+      "originalName": "b",
+      "to": "getTextAreaWidth",
+      "evidence": "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(II)I",
+      "originalName": "a",
+      "to": "getXForTextOffset",
+      "evidence": "Source-purpose review: Walks the wrapped lines, then reads the horizontal character position at the remaining offset in that line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(III)I",
+      "originalName": "a",
+      "to": "getTextOffsetAt",
+      "evidence": "Source-purpose review: Finds the line covering the supplied Y coordinate, resolves the nearest character boundary at X, and adds the lengths of preceding lines.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(Z)I",
+      "originalName": "a",
+      "to": "getMaxLineRightX",
+      "evidence": "Source-purpose review: Returns the greatest right-hand character position across the nonempty wrapped lines.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.b(I)I",
+      "originalName": "b",
+      "to": "getLayoutHeight",
+      "evidence": "Source-purpose review: Returns the distance from the first line’s top to the last line’s bottom.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.b(II)I",
+      "originalName": "b",
+      "to": "getLineIndexForTextOffset",
+      "evidence": "Source-purpose review: Walks the wrapped lines, subtracting their text lengths, to find the line for the supplied text offset.",
       "confidence": "reviewed"
     },
     {
@@ -1515,6 +1676,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:be.a(I)I",
+      "originalName": "a",
+      "to": "getRightX",
+      "evidence": "Source-purpose review: Returns the final horizontal character position for the line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.a(II)I",
+      "originalName": "a",
+      "to": "findNearestCharacterIndex",
+      "evidence": "Source-purpose review: Compares the supplied X coordinate with each adjacent pair’s midpoint to find the nearest character boundary.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:be.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1540,6 +1715,13 @@
       "originalName": "a",
       "to": "onWidgetActivated",
       "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(IILjj;I)V",
+      "originalName": "a",
+      "to": "onTextHotspotActivated",
+      "evidence": "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action.",
       "confidence": "reviewed"
     },
     {
@@ -3132,6 +3314,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ja.a(IILjj;I)V",
+      "originalName": "a",
+      "to": "onTextHotspotActivated",
+      "evidence": "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ja.b(Z)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -3188,6 +3377,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jj.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getTooltipText",
+      "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.a(Z)V",
+      "originalName": "a",
+      "to": "rebuildHotspotBounds",
+      "evidence": "Source-purpose review: Scans the formatted text for hotspot tags and constructs the rendered rectangles for each covered line of the text layout.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jj.a([Ljava/lang/String;Z)Lcj;",
       "originalName": "a",
       "to": "createAccountSuggestionsResult",
@@ -3195,10 +3398,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jj.b(III)Lbl;",
+      "originalName": "b",
+      "to": "findHotspotAt",
+      "evidence": "Source-purpose review: Finds the first tagged hotspot whose linked rectangles contain the tested widget position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jj.b(IIII)V",
       "originalName": "b",
       "to": "activateFromInput",
       "evidence": "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getTooltipText",
+      "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
       "confidence": "reviewed"
     },
     {
@@ -4168,6 +4385,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mh.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getTooltipText",
+      "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mh.d(B)V",
       "originalName": "d",
       "to": "clearDeclaredStaticReferences",
@@ -4819,6 +5043,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qc.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getTooltipText",
+      "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qc.a(I)Lkf;",
       "originalName": "a",
       "to": "getFieldValidator",
@@ -5166,6 +5397,41 @@
       "originalName": "q",
       "to": "releaseDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(BLta;Ljava/lang/String;II)V",
+      "originalName": "a",
+      "to": "layoutSingleLineRightAligned",
+      "evidence": "Source-purpose review: Subtracts the measured text width from the supplied right edge to obtain the line start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(IILjava/lang/String;ILta;III)V",
+      "originalName": "a",
+      "to": "layoutWrappedText",
+      "evidence": "Source-purpose review: Wraps text within the available width and populates each line’s dimensions and character positions, with horizontal and vertical alignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(Ljava/lang/String;IILta;B)V",
+      "originalName": "a",
+      "to": "layoutSingleLineLeftAligned",
+      "evidence": "Source-purpose review: Uses the supplied X coordinate as the line’s starting edge and measures the text to determine the right edge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(Ljava/lang/String;IILta;I)V",
+      "originalName": "a",
+      "to": "layoutSingleLineCentered",
+      "evidence": "Source-purpose review: Places the line’s bounds one half-width to either side of the supplied center coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(Lta;IILjava/lang/String;)Lbe;",
+      "originalName": "a",
+      "to": "initializeSingleLineMetrics",
+      "evidence": "Source-purpose review: Allocates metrics for one line using the font’s vertical dimensions and the input text length, and stores that line as the current layout.",
       "confidence": "reviewed"
     },
     {
@@ -5617,6 +5883,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:u.a(IILjj;I)V",
+      "originalName": "a",
+      "to": "onTextHotspotActivated",
+      "evidence": "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getTooltipText",
+      "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ua.j(I)V",
       "originalName": "j",
       "to": "clearDeclaredStaticReferences",
@@ -5705,6 +5985,76 @@
       "originalName": "d",
       "to": "isLinked",
       "evidence": "IntrusiveNode link fields and unlink bodies; callers splice nodes in deques and tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(I)I",
+      "originalName": "a",
+      "to": "getFontLineHeight",
+      "evidence": "Source-purpose review: Returns the sum of the bitmap font’s vertical metrics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(IBLwe;)I",
+      "originalName": "a",
+      "to": "getTextOriginX",
+      "evidence": "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(IILwe;IZI)I",
+      "originalName": "a",
+      "to": "findTextOffsetAtScreenPosition",
+      "evidence": "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(ILwe;)Laa;",
+      "originalName": "a",
+      "to": "getTextLayout",
+      "evidence": "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(ILwe;IIII)V",
+      "originalName": "a",
+      "to": "paintSelection",
+      "evidence": "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(Lwe;B)I",
+      "originalName": "a",
+      "to": "getPreferredWidth",
+      "evidence": "Source-purpose review: Gets the layout’s farthest line position and adds the widget’s horizontal padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(Lwe;II)I",
+      "originalName": "a",
+      "to": "getTextOriginY",
+      "evidence": "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(Lwe;IIII)V",
+      "originalName": "a",
+      "to": "paintCaret",
+      "evidence": "Source-purpose review: Resolves the caret’s line and column through the text layout and paints the vertical caret at that position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(Lwe;Z)I",
+      "originalName": "a",
+      "to": "getPreferredHeight",
+      "evidence": "Source-purpose review: Gets the wrapped text height and adds the widget’s vertical padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.b(Lwe;Z)I",
+      "originalName": "b",
+      "to": "getTextAreaWidth",
+      "evidence": "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text.",
       "confidence": "reviewed"
     },
     {
@@ -5932,10 +6282,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vg.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getTooltipText",
+      "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vg.k(I)V",
       "originalName": "k",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getTooltipText",
+      "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
       "confidence": "reviewed"
     },
     {
@@ -6041,6 +6405,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 15836bac3dde3b9845332e1b82c41a600ef27dec5f38831c48d7d8d279ff845b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getTooltipText",
+      "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
       "confidence": "reviewed"
     },
     {
@@ -6221,7 +6592,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "b38c8a0f08610afc211faa4ed26a2b2fc06301c8e3ad8f816a29327a69a779b2",
+      "monkeypuzzle2-names.json": "510c22245ec2076f3d56ced51ab9b3b55c99f88c799ed50d2e62a3716bc88c30",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

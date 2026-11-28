@@ -612,6 +612,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bm",
+      "originalName": "bm",
+      "to": "SetTileTerrainEffect",
+      "evidence": "Calls the battle state’s setTerrain method with its stored terrain ID and tile coordinates. Airstrike and attack orders construct it with specific terrain IDs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bna",
       "originalName": "bna",
       "to": "DisableAnimation",
@@ -780,6 +787,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dh",
+      "originalName": "dh",
+      "to": "ArmPetAttackEffect",
+      "evidence": "The Pet Attack special queues this effect to set the pending pet-attack flag. BattleCreature checks that flag when evaluating creatures on the edge of the board.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dk",
       "originalName": "dk",
       "to": "IncomingSpecial",
@@ -906,6 +920,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ela",
+      "originalName": "ela",
+      "to": "DisableMoveSlotEffect",
+      "evidence": "DisableSpecial queues this effect with a creature and a selected move slot. Applying it starts the cooldown on a ready move in that slot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:en",
       "originalName": "en",
       "to": "ProxyAuthenticationRequiredException",
@@ -966,6 +987,13 @@
       "originalName": "fd",
       "to": "AirstrikeAnimation",
       "evidence": "bca subclass AirstrikeEvent builds this ana animation in a(int,gj).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fda",
+      "originalName": "fda",
+      "to": "RemoveDefeatedCreatureEffect",
+      "evidence": "Resolves the target, clears its remaining-carcass flag, and calls removeDefeatedCreatureFromTile.",
       "confidence": "reviewed"
     },
     {
@@ -1263,6 +1291,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ic",
+      "originalName": "ic",
+      "to": "ClearPendingPetAttackEffect",
+      "evidence": "Clears the battle-state flag set by ArmPetAttackEffect. The batch decoder reads this effect as its own record type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ica",
       "originalName": "ica",
       "to": "SauceOfFlameEvent",
@@ -1407,6 +1442,13 @@
       "originalName": "jja",
       "to": "MusicPatchPcmStream",
       "evidence": "PCM mixer for the parent MIDI synthesizer musical patch voices,with intrusive voice deque and auxiliary stream mixer for fading/retriggered streams. Constructor allocates deque then mixer and retains the parent with original exception wrapping;mix/skip preserve per-voice countdown,envelope update and retrigger crossfades. Reviewed constructor SHA256s 984d1fb530cde63cb38178d01ce1e6156e409310fbcb0dfe3066374f7b0ceb78. Naming only. Complete owning PCM API and directly supporting bodies,all91 candidate constructor bodies and independent selected native/class-name-literal scans reviewed. Preserve original fields and default/declaration state,constructor chaining,all JVM widths/domains,guards,literals,overflow,FP/casts,aliases,partial writes,allocation/call/exception ordering,visibility/modifiers and native/override binding identities. No intentional literal/native edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jk",
+      "originalName": "jk",
+      "to": "CreaturePoseAnimation",
+      "evidence": "Plays one of two creature animation IDs depending on the serialized pose flag, skipping defeated targets and waiting for a fixed frame count.",
       "confidence": "reviewed"
     },
     {
@@ -1564,6 +1606,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kq",
+      "originalName": "kq",
+      "to": "StopFloodEffect",
+      "evidence": "Clears the same battle-state flood flag that FloodSpecial sets through StartFloodEffect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ks",
+      "originalName": "ks",
+      "to": "ClearCreatureStatusEffect",
+      "evidence": "RefreshingSpecial queues the effect. It sets the target’s status to zero and recalculates the creature’s derived stats.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kt",
+      "originalName": "kt",
+      "to": "SetMoveSlotCooldownEffect",
+      "evidence": "Resolves its target and calls setCooldownForMoveSlot with its stored slot index. The effect animation uses that same index to show the affected move name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ku",
       "originalName": "ku",
       "to": "FloodEvent",
@@ -1624,6 +1687,13 @@
       "originalName": "lea",
       "to": "PcmMixerListener",
       "evidence": "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lia",
+      "originalName": "lia",
+      "to": "ChangeHealthAndStatusEffect",
+      "evidence": "Applies a signed health change to the target and, when the optional status ID is set and the creature survives, updates its status.",
       "confidence": "reviewed"
     },
     {
@@ -1725,10 +1795,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mh",
+      "originalName": "mh",
+      "to": "CreaturePoseEffect",
+      "evidence": "Serializes a target creature and a Boolean. The presentation layer reads the Boolean to select which creature pose animation to start.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mja",
       "originalName": "mja",
       "to": "StampedeSpecial",
       "evidence": "SPECIAL_STAMPEDE is index 118 in the rf move-name table and td.a(op,int) maps id 118 to this td subclass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mla",
+      "originalName": "mla",
+      "to": "TextLineMetrics",
+      "evidence": "Stores the horizontal positions of character boundaries and vertical bounds for one rendered line.",
       "confidence": "reviewed"
     },
     {
@@ -1879,6 +1963,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:o",
+      "originalName": "o",
+      "to": "ChangeAllCreaturesHealthEffect",
+      "evidence": "Visits every occupied tile and applies its signed health change to each creature. AttackOrder uses it for an attack that affects the whole board.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:od",
       "originalName": "od",
       "to": "BuffVendorAnimation",
@@ -1970,10 +2061,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pc",
+      "originalName": "pc",
+      "to": "TextHotspotListener",
+      "evidence": "Receives activation of a tagged link within a text widget and uses its tag ID to choose the intended action.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pca",
       "originalName": "pca",
       "to": "Bzip2Decoder",
       "evidence": "Reads bits, builds symbol maps and Huffman tables and emits bzip2 blocks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pea",
+      "originalName": "pea",
+      "to": "ConsumeCreatureRemainsEffect",
+      "evidence": "ScavengerSpecial queues the effect after healing from a defeated creature’s remains. Applying it clears the flag that ScavengerSpecial checks before consuming those remains.",
       "confidence": "reviewed"
     },
     {
@@ -2149,6 +2254,13 @@
       "originalName": "qp",
       "to": "MicrosoftDisplayController",
       "evidence": "Implements IEnumModesCallback and collects Microsoft JVM display modes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qq",
+      "originalName": "qq",
+      "to": "ChangeCreatureStatOrHealthEffect",
+      "evidence": "Subtracts the effect amount from an indexed creature stat when a stat index is present. Otherwise it applies the signed health change and records the source for damage.",
       "confidence": "reviewed"
     },
     {
@@ -2425,6 +2537,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tfa",
+      "originalName": "tfa",
+      "to": "StartFloodEffect",
+      "evidence": "FloodSpecial queues this effect to enable flooding and reset the number of turns since it started.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tg",
       "originalName": "tg",
       "to": "SuperSpeedSpecial",
@@ -2485,6 +2604,13 @@
       "originalName": "tp",
       "to": "StickyAnimation",
       "evidence": "bca subclass StickyEvent builds this ana animation in a(int,gj).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tq",
+      "originalName": "tq",
+      "to": "RichTextLayout",
+      "evidence": "Concrete text layout that wraps and aligns formatted text with the selected bitmap font, caches its inputs, and records per-line caret positions.",
       "confidence": "reviewed"
     },
     {
@@ -2723,6 +2849,13 @@
       "originalName": "vr",
       "to": "ResourceArchive",
       "evidence": "Loads a resource index and uses it to allocate caches for packed archive groups and decoded files per group. Retrieves file bytes by group and file ID and evicts according to the supplied mode. Constructor retains the initial null index, provider and cache options, validates the mode from 0 through 2, and preserves exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vv",
+      "originalName": "vv",
+      "to": "TextLayout",
+      "evidence": "Stores the wrapped lines of a widget’s text and maps between text offsets and rendered positions.",
       "confidence": "reviewed"
     },
     {
@@ -3524,6 +3657,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ad.b(II)V",
+      "originalName": "b",
+      "to": "playAnimation",
+      "evidence": "Source-purpose review: Passes the creature’s animation set and the requested animation ID to its animation player. The pose animation and other battle animations call it to start specific poses.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ad.c(Z)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -3853,6 +3993,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aha.a(I)V",
+      "originalName": "a",
+      "to": "rebuildHotspotBounds",
+      "evidence": "Source-purpose review: Scans the formatted text for hotspot tags and constructs the rendered rectangles for each covered line of the text layout.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aha.a(IILwj;I)V",
       "originalName": "a",
       "to": "updateMouseOver",
@@ -3871,6 +4018,13 @@
       "originalName": "a",
       "to": "acquireFocus",
       "evidence": "UiWidget virtual whose base body or hf override shows the widget protocol. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aha.b(III)Laia;",
+      "originalName": "b",
+      "to": "findHotspotAt",
+      "evidence": "Source-purpose review: Finds the first tagged hotspot whose linked rectangles contain the tested widget position.",
       "confidence": "reviewed"
     },
     {
@@ -3990,6 +4144,13 @@
       "originalName": "a",
       "to": "handleKey",
       "evidence": "UiWidget virtual whose base body or hf override shows the widget protocol. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ar.a(ILaha;IB)V",
+      "originalName": "a",
+      "to": "onTextHotspotActivated",
+      "evidence": "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action.",
       "confidence": "reviewed"
     },
     {
@@ -4189,6 +4350,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bg.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bg.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -4249,6 +4417,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bja.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bja.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
       "confidence": "reviewed"
     },
     {
@@ -5841,10 +6023,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.b(Llu;B)V",
+      "originalName": "b",
+      "to": "writePayload",
+      "evidence": "Source-purpose review: Writes the payload of a board change after its type byte. Changes with no extra data inherit the empty implementation.",
       "confidence": "reviewed"
     },
     {
@@ -6212,6 +6415,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fi.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.b(Llu;B)V",
+      "originalName": "b",
+      "to": "writePayload",
+      "evidence": "Source-purpose review: Writes the payload of a board change after its type byte. Changes with no extra data inherit the empty implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fi.d(B)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -6566,6 +6790,76 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(BILwj;II)V",
+      "originalName": "a",
+      "to": "paintCaret",
+      "evidence": "Source-purpose review: Resolves the caret’s line and column through the text layout and paints the vertical caret at that position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(I)I",
+      "originalName": "a",
+      "to": "getFontLineHeight",
+      "evidence": "Source-purpose review: Returns the sum of the bitmap font’s vertical metrics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(IIIIILwj;)V",
+      "originalName": "a",
+      "to": "paintSelection",
+      "evidence": "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(IILwj;)I",
+      "originalName": "a",
+      "to": "getTextOriginX",
+      "evidence": "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(ILwj;)I",
+      "originalName": "a",
+      "to": "getPreferredWidth",
+      "evidence": "Source-purpose review: Gets the layout’s farthest line position and adds the widget’s horizontal padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(Lwj;IB)I",
+      "originalName": "a",
+      "to": "getTextOriginY",
+      "evidence": "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(Lwj;IIIIB)I",
+      "originalName": "a",
+      "to": "findTextOffsetAtScreenPosition",
+      "evidence": "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(Lwj;Z)I",
+      "originalName": "a",
+      "to": "getTextAreaWidth",
+      "evidence": "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.b(Lwj;Z)Lvv;",
+      "originalName": "b",
+      "to": "getTextLayout",
+      "evidence": "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.c(Lwj;Z)I",
+      "originalName": "c",
+      "to": "getPreferredHeight",
+      "evidence": "Source-purpose review: Gets the wrapped text height and adds the widget’s vertical padding.",
       "confidence": "reviewed"
     },
     {
@@ -7584,6 +7878,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:iia.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iia.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iia.b(Llu;B)V",
+      "originalName": "b",
+      "to": "writePayload",
+      "evidence": "Source-purpose review: Writes the payload of a board change after its type byte. Changes with no extra data inherit the empty implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ij.d(B)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -8365,6 +8680,34 @@
       "originalName": "a",
       "to": "encodeCp1252Subsequence",
       "evidence": "Source-purpose review: Encodes a range of a character sequence into a supplied byte array at its destination offset. After subtraction, int > -46 clears field_l before any read/write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.a(Llu;B)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Source-purpose review: Writes the board change discriminator byte and then dispatches to the concrete payload writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.b(Llu;B)V",
+      "originalName": "b",
+      "to": "writePayload",
+      "evidence": "Source-purpose review: Writes the payload of a board change after its type byte. Changes with no extra data inherit the empty implementation.",
       "confidence": "reviewed"
     },
     {
@@ -10349,6 +10692,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mla.a(I)I",
+      "originalName": "a",
+      "to": "getRightX",
+      "evidence": "Source-purpose review: Returns the final horizontal character position for the line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mla.a(II)I",
+      "originalName": "a",
+      "to": "findNearestCharacterIndex",
+      "evidence": "Source-purpose review: Compares the supplied X coordinate with each adjacent pair’s midpoint to find the nearest character boundary.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mm.c(B)Z",
       "originalName": "c",
       "to": "isFinished",
@@ -10755,6 +11112,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ns.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ns.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ns.b(Llu;B)V",
+      "originalName": "b",
+      "to": "writePayload",
+      "evidence": "Source-purpose review: Writes the payload of a board change after its type byte. Changes with no extra data inherit the empty implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nt.c(B)Z",
       "originalName": "c",
       "to": "isFinished",
@@ -10850,6 +11228,27 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oca.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oca.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oca.b(Llu;B)V",
+      "originalName": "b",
+      "to": "writePayload",
+      "evidence": "Source-purpose review: Writes the payload of a board change after its type byte. Changes with no extra data inherit the empty implementation.",
       "confidence": "reviewed"
     },
     {
@@ -11595,6 +11994,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ow.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.b(Llu;B)V",
+      "originalName": "b",
+      "to": "writePayload",
+      "evidence": "Source-purpose review: Writes the payload of a board change after its type byte. Changes with no extra data inherit the empty implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -11893,6 +12313,13 @@
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pc.a(ILaha;IB)V",
+      "originalName": "a",
+      "to": "onTextHotspotActivated",
+      "evidence": "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action.",
       "confidence": "reviewed"
     },
     {
@@ -12705,6 +13132,76 @@
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(BILwj;II)V",
+      "originalName": "a",
+      "to": "paintCaret",
+      "evidence": "Source-purpose review: Resolves the caret’s line and column through the text layout and paints the vertical caret at that position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(I)I",
+      "originalName": "a",
+      "to": "getFontLineHeight",
+      "evidence": "Source-purpose review: Returns the sum of the bitmap font’s vertical metrics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(IIIIILwj;)V",
+      "originalName": "a",
+      "to": "paintSelection",
+      "evidence": "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(IILwj;)I",
+      "originalName": "a",
+      "to": "getTextOriginX",
+      "evidence": "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(ILwj;)I",
+      "originalName": "a",
+      "to": "getPreferredWidth",
+      "evidence": "Source-purpose review: Gets the layout’s farthest line position and adds the widget’s horizontal padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(Lwj;IB)I",
+      "originalName": "a",
+      "to": "getTextOriginY",
+      "evidence": "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(Lwj;IIIIB)I",
+      "originalName": "a",
+      "to": "findTextOffsetAtScreenPosition",
+      "evidence": "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(Lwj;Z)I",
+      "originalName": "a",
+      "to": "getTextAreaWidth",
+      "evidence": "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.b(Lwj;Z)Lvv;",
+      "originalName": "b",
+      "to": "getTextLayout",
+      "evidence": "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.c(Lwj;Z)I",
+      "originalName": "c",
+      "to": "getPreferredHeight",
+      "evidence": "Source-purpose review: Gets the wrapped text height and adds the widget’s vertical padding.",
       "confidence": "reviewed"
     },
     {
@@ -13919,6 +14416,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tga.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tga.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tga.b(Llu;B)V",
+      "originalName": "b",
+      "to": "writePayload",
+      "evidence": "Source-purpose review: Writes the payload of a board change after its type byte. Changes with no extra data inherit the empty implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:th.a(II)V",
       "originalName": "a",
       "to": "draw",
@@ -14063,6 +14581,41 @@
       "originalName": "e",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(IILpo;Ljava/lang/String;)Lmla;",
+      "originalName": "a",
+      "to": "initializeSingleLineMetrics",
+      "evidence": "Source-purpose review: Allocates metrics for one line using the font’s vertical dimensions and the input text length, and stores that line as the current layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(IILpo;Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "layoutSingleLineCentered",
+      "evidence": "Source-purpose review: Places the line’s bounds one half-width to either side of the supplied center coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(ILjava/lang/String;Lpo;II)V",
+      "originalName": "a",
+      "to": "layoutSingleLineLeftAligned",
+      "evidence": "Source-purpose review: Uses the supplied X coordinate as the line’s starting edge and measures the text to determine the right edge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(Lpo;IIILjava/lang/String;III)V",
+      "originalName": "a",
+      "to": "layoutWrappedText",
+      "evidence": "Source-purpose review: Wraps text within the available width and populates each line’s dimensions and character positions, with horizontal and vertical alignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(Lpo;Ljava/lang/String;III)V",
+      "originalName": "a",
+      "to": "layoutSingleLineRightAligned",
+      "evidence": "Source-purpose review: Subtracts the measured text width from the supplied right edge to obtain the line start.",
       "confidence": "reviewed"
     },
     {
@@ -14245,6 +14798,13 @@
       "originalName": "a",
       "to": "updateMouseOver",
       "evidence": "UiWidget virtual whose base body or hf override shows the widget protocol. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(ILaha;IB)V",
+      "originalName": "a",
+      "to": "onTextHotspotActivated",
+      "evidence": "Source-purpose review: Handles activation of a tagged hotspot in the supplied text widget, using the hotspot ID to choose the associated action.",
       "confidence": "reviewed"
     },
     {
@@ -15165,6 +15725,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vv.a(IB)I",
+      "originalName": "a",
+      "to": "getXForTextOffset",
+      "evidence": "Source-purpose review: Walks the wrapped lines, then reads the horizontal character position at the remaining offset in that line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vv.a(II)I",
+      "originalName": "a",
+      "to": "getLineIndexForTextOffset",
+      "evidence": "Source-purpose review: Walks the wrapped lines, subtracting their text lengths, to find the line for the supplied text offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vv.a(III)I",
+      "originalName": "a",
+      "to": "getTextOffsetAt",
+      "evidence": "Source-purpose review: Finds the line covering the supplied Y coordinate, resolves the nearest character boundary at X, and adds the lengths of preceding lines.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vv.a(Z)I",
+      "originalName": "a",
+      "to": "getLayoutHeight",
+      "evidence": "Source-purpose review: Returns the distance from the first line’s top to the last line’s bottom.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vv.b(B)I",
+      "originalName": "b",
+      "to": "getMaxLineRightX",
+      "evidence": "Source-purpose review: Returns the greatest right-hand character position across the nonempty wrapped lines.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vv.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -15564,6 +16159,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wp.a(Lub;I)V",
+      "originalName": "a",
+      "to": "applyForAnimation",
+      "evidence": "Source-purpose review: Called by BoardChangeAnimation after advancing battle timers. The base implementation applies the change immediately, while overrides can schedule child animations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(ZLop;)V",
+      "originalName": "a",
+      "to": "applyToBattle",
+      "evidence": "Source-purpose review: Applies the board change to the battle state. The batch replay calls this for each change with its replay flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wp.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -15650,7 +16259,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "7a445d45b091c3747ad623bf8486f152189a9d31bf3aedffeef132681553bf05",
+      "bachelorfridge-names.json": "3cebedef993dd6f8e993ef974dbf31301b8c856de4b85c54b422d50c004c6aa4",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",
