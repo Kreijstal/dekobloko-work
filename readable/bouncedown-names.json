@@ -173,7 +173,13 @@
     ["bl","ChatMessage","Captures the decoded chat sender, message contents, visibility attributes and linked Quick Chat phrases."],
     ["d","MarkerSliderWidget","Stores integer markers on a bounded slider and adds or removes the marker nearest to a pointer press."],
     ["we","IndexedSprite","Stores indexed pixels and a colour palette and draws the image into the clipped raster."],
-    ["li","IndexedSpriteState","Holds the image dimensions and offsets and declares the drawing methods implemented by the indexed sprite."]
+    ["li","IndexedSpriteState","Holds the image dimensions and offsets and declares the drawing methods implemented by the indexed sprite."],
+    ["ng","LoginCredentials","Base type for login credentials that report their form and serialize their contents into the login packet."],
+    ["qe","EmailLoginCredentials","Serializes an email address and password for email login."],
+    ["ji","UsernameLoginCredentials","Serializes a username encoded as a long and the accompanying password."],
+    ["ek","AlternateUsernameLoginCredentials","Uses the username credential body with a distinct protocol credential type."],
+    ["sb","LoginCredentialType","Wraps the numeric credential type written in the login handshake."],
+    ["jl","LoginCredentialsFactory","Dispatches credential creation by selecting the email or encoded username representation."]
   ],
   "methods": [
     ["ab","b","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 100b3a6a165e64b3ded080ec0f696f75a382f92c59f7b42efe45ddbfcda5b071."],
@@ -1473,7 +1479,26 @@
     ["jd","a","(II)Leh;","findQuickChatCommandType","Source-purpose review: Scans the command registry for the requested ID and returns the matching command type."],
     ["jd","a","(ILgk;II)Lwe;","loadIndexedSprite","Source-purpose review: Loads a sprite group and file from the archive, then constructs the first decoded indexed sprite when present."],
     ["jd","a","(ILjava/applet/Applet;Ljava/lang/String;)V","persistSettingsCookie","Source-purpose review: Updates the local settings value and writes or expires the browser cookie derived from the applet settings."],
-    ["jd","a","(I[ILwe;)Lwe;","copyIndexedSpriteWithPalette","Source-purpose review: Copies the sprite dimensions and offsets, reuses the pixel indices and substitutes the supplied palette."]
+    ["jd","a","(I[ILwe;)Lwe;","copyIndexedSpriteWithPalette","Source-purpose review: Copies the sprite dimensions and offsets, reuses the pixel indices and substitutes the supplied palette."],
+    ["ng","a","(B)[Ltg;","createDecodedSpriteFrames","Source-purpose review: Builds each RGB sprite frame by expanding decoded palette indices and releases the decode state."],
+    ["ng","a","(BC)Z","isAllowedDisplayNameCharacter","Source-purpose review: Checks the permitted display-name characters, including alphanumerics and the configured punctuation lists."],
+    ["ng","a","(I)Z","shouldShowFullscreenFocusAdvice","Source-purpose review: Checks the fullscreen controller condition that selects the focus troubleshooting text."],
+    ["ng","a","(III)V","preparePlayerResultsBuffers","Source-purpose review: Allocates per-player scratch arrays and resets counters and bounds for the next result packet."],
+    ["ng","a","(ZLwi;)V","writeToPacket","Source-purpose review: Declares serialization of the credential contents into the login packet."],
+    ["ng","b","(B)Lsb;","getType","Source-purpose review: Declares the protocol type selector for a login credential."],
+    ["qe","a","(BI)V","updateDialogInput","Source-purpose review: Advances the client dialog and processes its input, with the returned action discarded at this call site."],
+    ["qe","a","(IBI)I","findMenuActionAt","Source-purpose review: Hit-tests the menu entries using their label widths and returns the selected action or minus one."],
+    ["qe","a","(ILgk;IILgk;)Lie;","loadBinaryBitmapFont","Source-purpose review: Loads the font glyph layout and reads the font data used to construct the binary bitmap font."],
+    ["qe","a","(ILjava/lang/String;)Llj;","validateEmailDomain","Source-purpose review: Validates email domain labels and the final domain component, returning the first validation result."],
+    ["qe","a","(ZLwi;)V","writeToPacket","Source-purpose review: Writes the email address and password fields to the login packet."],
+    ["qe","b","(B)Lsb;","getType","Source-purpose review: Returns the protocol type used by email credentials."],
+    ["qe","c","(I)V","clearAwtFontAndImage","Source-purpose review: Releases the cached AWT font and image."],
+    ["ji","a","(ZLwi;)V","writeToPacket","Source-purpose review: Writes the encoded username and password fields to the login packet."],
+    ["ji","b","(B)Lsb;","getType","Source-purpose review: Returns the standard username credential protocol type."],
+    ["ek","a","(I[IIIIIIIIZIIIIIII)V","rasterizeBlendedRgbTriangle","Source-purpose review: Interpolates three colour channels along triangle edges and passes the resulting clipped spans to the blend routine."],
+    ["ek","b","(B)Lsb;","getType","Source-purpose review: Returns the distinct protocol type for the alternate username credential."],
+    ["sb","a","(Lwi;B)V","writeClientRandomSeed","Source-purpose review: Reads the 24-byte seed from the random data file and appends it to the packet, using the defined fallback on a read failure."],
+    ["jl","a","(Ljava/lang/String;ZILjava/lang/String;)Lng;","createCredentials","Source-purpose review: Recognizes an email address or encodes a username before creating the requested credential variant."]
   ],
   "fields": [
     ["wi","field_i","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],

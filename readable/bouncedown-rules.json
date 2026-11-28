@@ -549,6 +549,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ek",
+      "originalName": "ek",
+      "to": "AlternateUsernameLoginCredentials",
+      "evidence": "Uses the username credential body with a distinct protocol credential type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:el",
       "originalName": "el",
       "to": "NanoFrameTimer",
@@ -759,6 +766,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ji",
+      "originalName": "ji",
+      "to": "UsernameLoginCredentials",
+      "evidence": "Serializes a username encoded as a long and the accompanying password.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jj",
       "originalName": "jj",
       "to": "ByteArrayPoolSupport",
@@ -770,6 +784,13 @@
       "originalName": "jk",
       "to": "LogoMesh",
       "evidence": "Holds vertex coordinates, indexed faces and cached bounds for the login logo parts passed to the software rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jl",
+      "originalName": "jl",
+      "to": "LoginCredentialsFactory",
+      "evidence": "Dispatches credential creation by selecting the email or encoded username representation.",
       "confidence": "reviewed"
     },
     {
@@ -990,6 +1011,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ng",
+      "originalName": "ng",
+      "to": "LoginCredentials",
+      "evidence": "Base type for login credentials that report their form and serialize their contents into the login packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nh",
       "originalName": "nh",
       "to": "FullscreenStatusDialog",
@@ -1130,6 +1158,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qe",
+      "originalName": "qe",
+      "to": "EmailLoginCredentials",
+      "evidence": "Serializes an email address and password for email login.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qh",
       "originalName": "qh",
       "to": "NameCheckRequest",
@@ -1211,6 +1246,13 @@
       "originalName": "s",
       "to": "ValidationStatusWidget",
       "evidence": "Renders a validator message or fallback text together with a status sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sb",
+      "originalName": "sb",
+      "to": "LoginCredentialType",
+      "evidence": "Wraps the numeric credential type written in the login handshake.",
       "confidence": "reviewed"
     },
     {
@@ -3755,6 +3797,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ek.a(I[IIIIIIIIZIIIIIII)V",
+      "originalName": "a",
+      "to": "rasterizeBlendedRgbTriangle",
+      "evidence": "Source-purpose review: Interpolates three colour channels along triangle edges and passes the resulting clipped spans to the blend routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.b(B)Lsb;",
+      "originalName": "b",
+      "to": "getType",
+      "evidence": "Source-purpose review: Returns the distinct protocol type for the alternate username credential.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ek.c(I)Lkf;",
       "originalName": "c",
       "to": "createMouseWheelInput",
@@ -5288,6 +5344,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ji.a(ZLwi;)V",
+      "originalName": "a",
+      "to": "writeToPacket",
+      "evidence": "Source-purpose review: Writes the encoded username and password fields to the login packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ji.b(B)Lsb;",
+      "originalName": "b",
+      "to": "getType",
+      "evidence": "Source-purpose review: Returns the standard username credential protocol type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ji.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -5362,6 +5432,13 @@
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 12 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jl.a(Ljava/lang/String;ZILjava/lang/String;)Lng;",
+      "originalName": "a",
+      "to": "createCredentials",
+      "evidence": "Source-purpose review: Recognizes an email address or encodes a username before creating the requested credential variant.",
       "confidence": "reviewed"
     },
     {
@@ -6863,6 +6940,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ng.a(B)[Ltg;",
+      "originalName": "a",
+      "to": "createDecodedSpriteFrames",
+      "evidence": "Source-purpose review: Builds each RGB sprite frame by expanding decoded palette indices and releases the decode state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(BC)Z",
+      "originalName": "a",
+      "to": "isAllowedDisplayNameCharacter",
+      "evidence": "Source-purpose review: Checks the permitted display-name characters, including alphanumerics and the configured punctuation lists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(I)Z",
+      "originalName": "a",
+      "to": "shouldShowFullscreenFocusAdvice",
+      "evidence": "Source-purpose review: Checks the fullscreen controller condition that selects the focus troubleshooting text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(III)V",
+      "originalName": "a",
+      "to": "preparePlayerResultsBuffers",
+      "evidence": "Source-purpose review: Allocates per-player scratch arrays and resets counters and bounds for the next result packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(ZLwi;)V",
+      "originalName": "a",
+      "to": "writeToPacket",
+      "evidence": "Source-purpose review: Declares serialization of the credential contents into the login packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.b(B)Lsb;",
+      "originalName": "b",
+      "to": "getType",
+      "evidence": "Source-purpose review: Declares the protocol type selector for a login credential.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ng.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -8361,10 +8480,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.a(BI)V",
+      "originalName": "a",
+      "to": "updateDialogInput",
+      "evidence": "Source-purpose review: Advances the client dialog and processes its input, with the returned action discarded at this call site.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(IBI)I",
+      "originalName": "a",
+      "to": "findMenuActionAt",
+      "evidence": "Source-purpose review: Hit-tests the menu entries using their label widths and returns the selected action or minus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(ILgk;IILgk;)Lie;",
+      "originalName": "a",
+      "to": "loadBinaryBitmapFont",
+      "evidence": "Source-purpose review: Loads the font glyph layout and reads the font data used to construct the binary bitmap font.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(ILjava/lang/String;)Llj;",
+      "originalName": "a",
+      "to": "validateEmailDomain",
+      "evidence": "Source-purpose review: Validates email domain labels and the final domain component, returning the first validation result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(ZLwi;)V",
+      "originalName": "a",
+      "to": "writeToPacket",
+      "evidence": "Source-purpose review: Writes the email address and password fields to the login packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.b(B)Lsb;",
+      "originalName": "b",
+      "to": "getType",
+      "evidence": "Source-purpose review: Returns the protocol type used by email credentials.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qe.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 a0bdce7874c885fe11224ec0199bd3107aeaf90cdf6f074c1aad26f9d8fdd672.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.c(I)V",
+      "originalName": "c",
+      "to": "clearAwtFontAndImage",
+      "evidence": "Source-purpose review: Releases the cached AWT font and image.",
       "confidence": "reviewed"
     },
     {
@@ -8813,6 +8981,13 @@
       "originalName": "a",
       "to": "clearCp1252ExtensionTable",
       "evidence": "Source-purpose review: Clears the CP1252 extension table during game cleanup. False invokes the string-taking overload first with its original arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(Lwi;B)V",
+      "originalName": "a",
+      "to": "writeClientRandomSeed",
+      "evidence": "Source-purpose review: Reads the 24-byte seed from the random data file and appends it to the packet, using the defined fallback on a read failure.",
       "confidence": "reviewed"
     },
     {
@@ -10869,7 +11044,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "761f80e7c62313eef76a7629626652562d384af71325c512df7a7d95bc63a8c5",
+      "bouncedown-names.json": "938eb7c52246ebb2942919866db9ee2712dba25f29e16e35a3fac3699ada4da0",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
