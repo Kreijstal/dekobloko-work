@@ -521,6 +521,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eh",
+      "originalName": "eh",
+      "to": "QuickChatCommandType",
+      "evidence": "Represents a Quick Chat command ID and the number of definition arguments used to decode its phrase.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ei",
       "originalName": "ei",
       "to": "SynthesizedSoundEffect",
@@ -941,6 +948,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ne",
+      "originalName": "ne",
+      "to": "QuickChatPhraseDefinition",
+      "evidence": "Holds the decoded Quick Chat phrase segments, linked phrase IDs and command arguments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nf",
       "originalName": "nf",
       "to": "KeyboardInputHandler",
@@ -1001,6 +1015,13 @@
       "originalName": "oe",
       "to": "MidiFileReader",
       "evidence": "Reads MIDI track chunks and tracks the cursor, tick and running status of each track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oh",
+      "originalName": "oh",
+      "to": "NineSliceSprite",
+      "evidence": "Owns the sprite tiles used to paint resizable panel borders and interiors.",
       "confidence": "reviewed"
     },
     {
@@ -3563,6 +3584,41 @@
       "originalName": "e",
       "to": "getValue",
       "evidence": "Source-purpose review: Abstract operation used by the cache before it refreshes or evicts an entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticHashTablesAndText",
+      "evidence": "Source-purpose review: Releases the hash lookup and round tables along with the static text array during teardown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(I)[I",
+      "originalName": "a",
+      "to": "createResponseValueArray",
+      "evidence": "Source-purpose review: Allocates the eight-slot array that holds the integer values in the inbound response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "queueBrowserPage",
+      "evidence": "Source-purpose review: Stores a page path and queues the client action that opens that page in the browser.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(Ljk;IIIIIII)V",
+      "originalName": "a",
+      "to": "shadeAndRasterizeLogoMesh",
+      "evidence": "Source-purpose review: Computes lighting from transformed normal vectors and draws the mesh triangles with interpolated vertex colours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(Z)V",
+      "originalName": "a",
+      "to": "exitFullscreenAndRestoreFocus",
+      "evidence": "Source-purpose review: Leaves the fullscreen window, restores canvas handling and requests keyboard focus for the active canvas.",
       "confidence": "reviewed"
     },
     {
@@ -6576,6 +6632,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ne.a(BLwi;I)V",
+      "originalName": "a",
+      "to": "decodePhraseField",
+      "evidence": "Source-purpose review: Decodes one phrase field from an opcode: text segments, linked phrase IDs or command arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(II[SLii;)[S",
+      "originalName": "a",
+      "to": "readPackedShortArray",
+      "evidence": "Source-purpose review: Reads the element count, a shared base and a bit width, then expands the packed values into a short array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(ILwi;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads phrase opcodes and dispatches each field until the zero terminator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(Ljava/lang/CharSequence;ZB)Z",
+      "originalName": "a",
+      "to": "hasValidDisplayNameFormat",
+      "evidence": "Source-purpose review: Checks the name length and separator placement, using the flag to control repeated separators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(Z)Ltg;",
+      "originalName": "a",
+      "to": "createFirstDecodedSprite",
+      "evidence": "Source-purpose review: Expands the first decoded indexed sprite with the palette and releases the temporary decode state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.c(B)V",
+      "originalName": "c",
+      "to": "clearStaticResources",
+      "evidence": "Source-purpose review: Releases the class static text, audio, numeric buffer and queue references during teardown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.d(I)V",
+      "originalName": "d",
+      "to": "markLinkedPhrasesAsExtended",
+      "evidence": "Source-purpose review: Sets the extended-archive bit on all linked phrase IDs for definitions loaded from the second archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.e(I)Ljava/lang/String;",
+      "originalName": "e",
+      "to": "formatPhrasePreview",
+      "evidence": "Source-purpose review: Joins the decoded phrase segments with ellipses to display the expandable phrase text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.f(I)Lve;",
+      "originalName": "f",
+      "to": "createLoginNameInput",
+      "evidence": "Source-purpose review: Builds the login request name input from the active name and the name-entry state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nf.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -6951,6 +7070,55 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 9b1b70c02429f87a12c20d10ed14299d1364791140021eb26cb2ceb3a46db488.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticText",
+      "evidence": "Source-purpose review: Releases the static achievement label and membership benefits text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.a(B[Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "updateNameSuggestions",
+      "evidence": "Source-purpose review: Sets the available name suggestions on both active account screens when they exist.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.a(I)V",
+      "originalName": "a",
+      "to": "detectMaxHeapMegabytes",
+      "evidence": "Source-purpose review: Reads the JVM maximum heap size and stores it in megabytes for client initialization.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.a(II)V",
+      "originalName": "a",
+      "to": "setPendingClientAction",
+      "evidence": "Source-purpose review: Stores the action code that the client dispatcher consumes and resets after polling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawNineSlice",
+      "evidence": "Source-purpose review: Passes the stored panel tiles and destination geometry to the nine-slice renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.a(Z)V",
+      "originalName": "a",
+      "to": "clearActiveFeatureFlags",
+      "evidence": "Source-purpose review: Clears the client feature mask before applying flags for the next active state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.b(Z)V",
+      "originalName": "b",
+      "to": "showGuestPlayConfirmation",
+      "evidence": "Source-purpose review: Replaces the dialog content with the guest play confirmation form.",
       "confidence": "reviewed"
     },
     {
@@ -10505,7 +10673,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "3b04f6c4aa0004c2b4f7b20cabace1f140cd8a4b046c4b7dcdd959fb03e512c7",
+      "bouncedown-names.json": "09eba32e25af874c0da47b5fb5ae307054ab08abf39d7adf527c626b1572df13",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

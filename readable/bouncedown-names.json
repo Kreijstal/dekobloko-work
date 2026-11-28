@@ -164,7 +164,10 @@
     ["kg","LayeredWidgetStyle","Carries frame sprites, an icon, text styling, and offsets. It can paint a widget or apply its defined values over another layer."],
     ["qi","LayeredButtonRenderer","Selects style overlays from widget state and paints the combined layer with the text renderer settings."],
     ["fe","WidgetTheme","Initializes shared widget renderers and fonts, and paints single-line and wrapped tooltip backgrounds and text."],
-    ["qh","NameCheckRequest","A name with separate completion and result flags. The client starts another request when the completed name differs from current input."]
+    ["qh","NameCheckRequest","A name with separate completion and result flags. The client starts another request when the completed name differs from current input."],
+    ["ne","QuickChatPhraseDefinition","Holds the decoded Quick Chat phrase segments, linked phrase IDs and command arguments."],
+    ["eh","QuickChatCommandType","Represents a Quick Chat command ID and the number of definition arguments used to decode its phrase."],
+    ["oh","NineSliceSprite","Owns the sprite tiles used to paint resizable panel borders and interiors."]
   ],
   "methods": [
     ["ab","b","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 100b3a6a165e64b3ded080ec0f696f75a382f92c59f7b42efe45ddbfcda5b071."],
@@ -1421,7 +1424,28 @@
     ["qb","a","(II)Z","pollIncomingPacketBytes","Source-purpose review: Reads available socket bytes into the shared inbound packet buffer and reports whether the requested count has arrived."],
     ["qb","a","(ILjava/lang/String;Ljava/lang/String;)Z","passesPasswordRestrictions","Source-purpose review: Checks the proposed password against basic restrictions and restrictions involving the account name."],
     ["qb","a","(Z)I","chooseRandomPlatformType","Source-purpose review: Chooses a platform type to spawn from a distribution that can depend on the current game mode."],
-    ["qb","a","(ZI)V","showLoginDialog","Source-purpose review: Opens the login panel with the supplied mode flag through the shared dialog setup."]
+    ["qb","a","(ZI)V","showLoginDialog","Source-purpose review: Opens the login panel with the supplied mode flag through the shared dialog setup."],
+    ["ne","a","(BLwi;I)V","decodePhraseField","Source-purpose review: Decodes one phrase field from an opcode: text segments, linked phrase IDs or command arguments."],
+    ["ne","a","(II[SLii;)[S","readPackedShortArray","Source-purpose review: Reads the element count, a shared base and a bit width, then expands the packed values into a short array."],
+    ["ne","a","(ILwi;)V","decode","Source-purpose review: Reads phrase opcodes and dispatches each field until the zero terminator."],
+    ["ne","a","(Ljava/lang/CharSequence;ZB)Z","hasValidDisplayNameFormat","Source-purpose review: Checks the name length and separator placement, using the flag to control repeated separators."],
+    ["ne","a","(Z)Ltg;","createFirstDecodedSprite","Source-purpose review: Expands the first decoded indexed sprite with the palette and releases the temporary decode state."],
+    ["ne","c","(B)V","clearStaticResources","Source-purpose review: Releases the class static text, audio, numeric buffer and queue references during teardown."],
+    ["ne","d","(I)V","markLinkedPhrasesAsExtended","Source-purpose review: Sets the extended-archive bit on all linked phrase IDs for definitions loaded from the second archive."],
+    ["ne","e","(I)Ljava/lang/String;","formatPhrasePreview","Source-purpose review: Joins the decoded phrase segments with ellipses to display the expandable phrase text."],
+    ["ne","f","(I)Lve;","createLoginNameInput","Source-purpose review: Builds the login request name input from the active name and the name-entry state."],
+    ["eh","a","(B)V","clearStaticHashTablesAndText","Source-purpose review: Releases the hash lookup and round tables along with the static text array during teardown."],
+    ["eh","a","(I)[I","createResponseValueArray","Source-purpose review: Allocates the eight-slot array that holds the integer values in the inbound response."],
+    ["eh","a","(Ljava/lang/String;B)V","queueBrowserPage","Source-purpose review: Stores a page path and queues the client action that opens that page in the browser."],
+    ["eh","a","(Ljk;IIIIIII)V","shadeAndRasterizeLogoMesh","Source-purpose review: Computes lighting from transformed normal vectors and draws the mesh triangles with interpolated vertex colours."],
+    ["eh","a","(Z)V","exitFullscreenAndRestoreFocus","Source-purpose review: Leaves the fullscreen window, restores canvas handling and requests keyboard focus for the active canvas."],
+    ["oh","a","(B)V","clearStaticText","Source-purpose review: Releases the static achievement label and membership benefits text."],
+    ["oh","a","(B[Ljava/lang/String;)V","updateNameSuggestions","Source-purpose review: Sets the available name suggestions on both active account screens when they exist."],
+    ["oh","a","(I)V","detectMaxHeapMegabytes","Source-purpose review: Reads the JVM maximum heap size and stores it in megabytes for client initialization."],
+    ["oh","a","(II)V","setPendingClientAction","Source-purpose review: Stores the action code that the client dispatcher consumes and resets after polling."],
+    ["oh","a","(IIIII)V","drawNineSlice","Source-purpose review: Passes the stored panel tiles and destination geometry to the nine-slice renderer."],
+    ["oh","a","(Z)V","clearActiveFeatureFlags","Source-purpose review: Clears the client feature mask before applying flags for the next active state."],
+    ["oh","b","(Z)V","showGuestPlayConfirmation","Source-purpose review: Replaces the dialog content with the guest play confirmation form."]
   ],
   "fields": [
     ["wi","field_i","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],
