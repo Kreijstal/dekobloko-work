@@ -244,6 +244,26 @@
       "rh",
       "PalettedBitmapFont",
       "Looks up a colour palette using each nonzero glyph byte and uses binary rendering for shadows."
+    ],
+    [
+      "tb",
+      "NameSuggestionListener",
+      "Defines callbacks for selecting a suggested name and requesting another set of suggestions. Both the registration form and the display-name form implement the callbacks."
+    ],
+    [
+      "li",
+      "NameSuggestionsPanel",
+      "Holds the normalized suggested names and their buttons. It forwards a selected suggestion or a request for more suggestions to the form that owns the panel."
+    ],
+    [
+      "sg",
+      "WidgetActivationListener",
+      "Declares the callback that receives an activated widget and its input context. Account forms and other panels implement it to act on the triggering control."
+    ],
+    [
+      "ng",
+      "InteractiveWidget",
+      "Interactive control that tracks pointer and keyboard input and forwards its activation to the registered listener. The account forms use this control for their buttons and suggestion choices."
     ]
   ],
   "methods": [
@@ -4817,6 +4837,279 @@
       "(Lqd;)V",
       "removeChildStream",
       "Source-purpose review: Unlinks a PCM child from its intrusive playback queue."
+    ],
+    [
+      "ka",
+      "a",
+      "()V",
+      "flipHorizontal",
+      "Source-purpose review: Reverses the pixels across each row, updates the backing array, and mirrors the horizontal placement offset."
+    ],
+    [
+      "ka",
+      "b",
+      "(IIII)V",
+      "drawRotated",
+      "Source-purpose review: Uses the logical canvas center as the source pivot, converts the destination to sixteenths of a pixel, and delegates to the rotation and scale renderer."
+    ],
+    [
+      "ka",
+      "b",
+      "(IIIIII)V",
+      "drawRotatedAbout",
+      "Source-purpose review: Uses a turn divided into 65,536 angle steps and a fixed-point scale to rotate about an explicit source pivot. Clips and resamples into the destination raster."
+    ],
+    [
+      "ka",
+      "c",
+      "()Lka;",
+      "copy",
+      "Source-purpose review: Creates a new sprite, copies the geometry and pixel array contents, and returns the independent copy."
+    ],
+    [
+      "ka",
+      "d",
+      "(IIIII)V",
+      "drawScaledAdditive",
+      "Source-purpose review: Clips and scales the sprite, then adds the resampled RGB channels to the destination with saturation."
+    ],
+    [
+      "ka",
+      "e",
+      "()V",
+      "flipVertically",
+      "Source-purpose review: Reverses the order of source rows, updates the backing array, and mirrors the vertical placement offset."
+    ],
+    [
+      "ka",
+      "f",
+      "()V",
+      "rotateClockwise",
+      "Source-purpose review: Transposes the sprite’s columns into rows while reversing the source Y direction, then swaps dimensions and transforms the offsets."
+    ],
+    [
+      "ka",
+      "g",
+      "()V",
+      "normalizeCanvas",
+      "Source-purpose review: Expands the backing pixel array to the full logical canvas and places the trimmed sprite at its prior offset."
+    ],
+    [
+      "ka",
+      "h",
+      "()V",
+      "trimTransparentBorders",
+      "Source-purpose review: Finds the bounds of nontransparent pixels and copies only the bounded rectangle while preserving the canvas offsets."
+    ],
+    [
+      "ka",
+      "i",
+      "()Lka;",
+      "copyMirroredHorizontally",
+      "Source-purpose review: Creates a new sprite by copying each row in reverse order and adjusting the horizontal offset within the logical canvas."
+    ],
+    [
+      "ka",
+      "c",
+      "(IIII)V",
+      "drawDownscaledAreaAveraged",
+      "Source-purpose review: Rejects upscaling, computes each output pixel’s coverage in source coordinates, and averages colors with subpixel area weights."
+    ],
+    [
+      "ka",
+      "c",
+      "(IIIII)V",
+      "writeBilinearPixel",
+      "Source-purpose review: Computes the weighted color of the four source pixels around a sample position, using the low twelve coordinate bits as interpolation fractions, and writes the result to the destination raster."
+    ],
+    [
+      "ka",
+      "d",
+      "()V",
+      "bindAsRenderTarget",
+      "Source-purpose review: Passes the sprite’s pixel buffer, width, and height to the software raster target setter."
+    ],
+    [
+      "bb",
+      "a",
+      "(I)Ljava/lang/String;",
+      "readStringFromPacketBuffer",
+      "Source-purpose review: Reads a string from the bound shared packet buffer."
+    ],
+    [
+      "bb",
+      "a",
+      "(IZIBZZ)Llj;",
+      "createResourceArchiveWithDiskCache",
+      "Source-purpose review: Opens the optional index and archive cache files and constructs a resource archive with those stores."
+    ],
+    [
+      "bb",
+      "b",
+      "(I)V",
+      "clearStaticReferences",
+      "Source-purpose review: Clears static tables and references during client teardown."
+    ],
+    [
+      "ka",
+      "a",
+      "(IIII)V",
+      "drawBlendedTowardColor",
+      "Source-purpose review: Mixes the visible source pixels with the supplied flat color before drawing."
+    ],
+    [
+      "tb",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "dg",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "ib",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "tb",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "dg",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "ib",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "li",
+      "a",
+      "(I[Ljava/lang/String;)V",
+      "setNameSuggestions",
+      "Source-purpose review: Rebuilds the suggestion buttons from the supplied names, normalizes display spacing, and adds the extra button for requesting more suggestions."
+    ],
+    [
+      "i",
+      "f",
+      "(I)V",
+      "invalidateCheckedName",
+      "Source-purpose review: Clears the cached checked name so the validator rechecks the current input even when its text has stayed the same."
+    ],
+    [
+      "sg",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "dg",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "fg",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ib",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ih",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "li",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "nh",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "qh",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "sj",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ta",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "wa",
+      "a",
+      "(Lng;IIIZ)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ng",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "df",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "hc",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
     ]
   ],
   "fields": [

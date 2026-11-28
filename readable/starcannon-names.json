@@ -304,6 +304,26 @@
       "oa",
       "PcmMixerListener",
       "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
+    ],
+    [
+      "qk",
+      "NameSuggestionListener",
+      "Defines callbacks for selecting a suggested name and requesting another set of suggestions. Both the registration form and the display-name form implement the callbacks."
+    ],
+    [
+      "kd",
+      "NameSuggestionsPanel",
+      "Holds the normalized suggested names and their buttons. It forwards a selected suggestion or a request for more suggestions to the form that owns the panel."
+    ],
+    [
+      "ga",
+      "WidgetActivationListener",
+      "Declares the callback that receives an activated widget and its input context. Account forms and other panels implement it to act on the triggering control."
+    ],
+    [
+      "dk",
+      "InteractiveWidget",
+      "Interactive control that tracks pointer and keyboard input and forwards its activation to the registered listener. The account forms use this control for their buttons and suggestion choices."
     ]
   ],
   "methods": [
@@ -4968,6 +4988,461 @@
       "()V",
       "onAddedToMixer",
       "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams."
+    ],
+    [
+      "hl",
+      "a",
+      "()V",
+      "rotateClockwise",
+      "Source-purpose review: Transposes the sprite’s columns into rows while reversing the source Y direction, then swaps dimensions and transforms the offsets."
+    ],
+    [
+      "hl",
+      "a",
+      "(II)V",
+      "drawHalfSize",
+      "Source-purpose review: Clips half-sized bounds and combines adjacent source pixels to render at half scale."
+    ],
+    [
+      "pj",
+      "a",
+      "(II)V",
+      "drawHalfSize",
+      "Source-purpose review: Clips half-sized bounds and combines adjacent source pixels to render at half scale."
+    ],
+    [
+      "hl",
+      "a",
+      "(III)V",
+      "drawTintedGray",
+      "Source-purpose review: Passes the clip rectangle and tint color to the kernel that maps grayscale values through a black, tint, and white ramp while retaining colored pixels."
+    ],
+    [
+      "pj",
+      "a",
+      "(III)V",
+      "drawTintedGray",
+      "Source-purpose review: Passes the clip rectangle and tint color to the kernel that maps grayscale values through a black, tint, and white ramp while retaining colored pixels."
+    ],
+    [
+      "hl",
+      "a",
+      "(IIII)V",
+      "drawScaled",
+      "Source-purpose review: Clips a destination rectangle and resamples the sprite using horizontal and vertical fixed-point source increments."
+    ],
+    [
+      "pj",
+      "a",
+      "(IIII)V",
+      "drawScaled",
+      "Source-purpose review: Clips a destination rectangle and resamples the sprite using horizontal and vertical fixed-point source increments."
+    ],
+    [
+      "hl",
+      "b",
+      "(II)V",
+      "drawFlippedVertical",
+      "Source-purpose review: Clips the mirrored rectangle and draws from the final visible source row upward."
+    ],
+    [
+      "pj",
+      "b",
+      "(II)V",
+      "drawFlippedVertical",
+      "Source-purpose review: Clips the mirrored rectangle and draws from the final visible source row upward."
+    ],
+    [
+      "hl",
+      "b",
+      "(III)V",
+      "drawSilhouette",
+      "Source-purpose review: Fills the clipped nontransparent shape of the sprite with the supplied replacement color."
+    ],
+    [
+      "hl",
+      "b",
+      "(IIII)V",
+      "drawRotated",
+      "Source-purpose review: Uses the logical canvas center as the source pivot, converts the destination to sixteenths of a pixel, and delegates to the rotation and scale renderer."
+    ],
+    [
+      "hl",
+      "b",
+      "(IIIII)V",
+      "drawScaledAdditive",
+      "Source-purpose review: Clips and scales the sprite, then adds the resampled RGB channels to the destination with saturation."
+    ],
+    [
+      "hl",
+      "c",
+      "()Lhl;",
+      "copy",
+      "Source-purpose review: Creates a new sprite, copies the geometry and pixel array contents, and returns the independent copy."
+    ],
+    [
+      "hl",
+      "c",
+      "(III)V",
+      "drawGrayModulated",
+      "Source-purpose review: Passes the clipped rectangle and color multipliers to the kernel that recolors grayscale pixels while retaining colored pixels."
+    ],
+    [
+      "pj",
+      "c",
+      "(III)V",
+      "drawGrayModulated",
+      "Source-purpose review: Passes the clipped rectangle and color multipliers to the kernel that recolors grayscale pixels while retaining colored pixels."
+    ],
+    [
+      "hl",
+      "d",
+      "()V",
+      "trimTransparentBorders",
+      "Source-purpose review: Finds the bounds of nontransparent pixels and copies only the bounded rectangle while preserving the canvas offsets."
+    ],
+    [
+      "hl",
+      "d",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Clips the sprite rectangle to the raster. The base blit copies all visible pixels including zeros. The ARGB override composites using each pixel’s alpha."
+    ],
+    [
+      "pj",
+      "d",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Clips the sprite rectangle to the raster. The base blit copies all visible pixels including zeros. The ARGB override composites using each pixel’s alpha."
+    ],
+    [
+      "hl",
+      "d",
+      "(IIIII)V",
+      "drawScaledAlpha",
+      "Source-purpose review: Scales and clips the visible rectangle, then blends the resampled pixels using the supplied opacity."
+    ],
+    [
+      "pj",
+      "d",
+      "(IIIII)V",
+      "drawScaledAlpha",
+      "Source-purpose review: Scales and clips the visible rectangle, then blends the resampled pixels using the supplied opacity."
+    ],
+    [
+      "hl",
+      "e",
+      "()V",
+      "bindAsRenderTarget",
+      "Source-purpose review: Passes the sprite’s pixel buffer, width, and height to the software raster target setter."
+    ],
+    [
+      "hl",
+      "e",
+      "(II)V",
+      "draw",
+      "Source-purpose review: Clips the sprite rectangle to the raster and draws the visible pixels using the source transparency convention."
+    ],
+    [
+      "pj",
+      "e",
+      "(II)V",
+      "draw",
+      "Source-purpose review: Clips the sprite rectangle to the raster and draws the visible pixels using the source transparency convention."
+    ],
+    [
+      "hl",
+      "e",
+      "(III)V",
+      "drawWithOpacity",
+      "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity."
+    ],
+    [
+      "pj",
+      "e",
+      "(III)V",
+      "drawWithOpacity",
+      "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity."
+    ],
+    [
+      "hl",
+      "f",
+      "()V",
+      "normalizeCanvas",
+      "Source-purpose review: Expands the backing pixel array to the full logical canvas and places the trimmed sprite at its prior offset."
+    ],
+    [
+      "hl",
+      "f",
+      "(II)V",
+      "drawMultiply",
+      "Source-purpose review: Clips the draw rectangle and multiplies the destination color channels by the corresponding sprite channels."
+    ],
+    [
+      "hl",
+      "f",
+      "(III)V",
+      "drawAdditive",
+      "Source-purpose review: Clips the destination rectangle and adds the source RGB channels to corresponding destination channels with saturation."
+    ],
+    [
+      "pj",
+      "f",
+      "(III)V",
+      "drawAdditive",
+      "Source-purpose review: Clips the destination rectangle and adds the source RGB channels to corresponding destination channels with saturation."
+    ],
+    [
+      "hl",
+      "g",
+      "()Lhl;",
+      "copyMirroredHorizontally",
+      "Source-purpose review: Creates a new sprite by copying each row in reverse order and adjusting the horizontal offset within the logical canvas."
+    ],
+    [
+      "hl",
+      "a",
+      "(IIIIII)V",
+      "drawRotatedAboutNearest",
+      "Source-purpose review: Resamples the clipped sprite around an explicit source pivot by directly looking up the nearest source pixels."
+    ],
+    [
+      "ui",
+      "a",
+      "(IIIIII)V",
+      "drawRotatedAboutNearest",
+      "Source-purpose review: Resamples the clipped sprite around an explicit source pivot by directly looking up the nearest source pixels."
+    ],
+    [
+      "pj",
+      "a",
+      "(IIIIII)V",
+      "drawRotatedAboutNearest",
+      "Source-purpose review: Resamples the clipped sprite around an explicit source pivot by directly looking up the nearest source pixels."
+    ],
+    [
+      "hl",
+      "b",
+      "(IIIIII)V",
+      "drawRotatedAboutBilinear",
+      "Source-purpose review: Resamples the clipped sprite around an explicit source pivot and uses bilinear interpolation at the destination pixels."
+    ],
+    [
+      "hl",
+      "c",
+      "(II)V",
+      "drawQuarterSizeAveraged",
+      "Source-purpose review: Draws at one quarter of the sprite width and height by averaging source pixels within each visible four-by-four cell."
+    ],
+    [
+      "pj",
+      "c",
+      "(II)V",
+      "drawQuarterSizeAveraged",
+      "Source-purpose review: Draws at one quarter of the sprite width and height by averaging source pixels within each visible four-by-four cell."
+    ],
+    [
+      "hl",
+      "c",
+      "(IIIII)V",
+      "writeBilinearPixel",
+      "Source-purpose review: Computes the weighted color of the four source pixels around a sample position, using the low twelve coordinate bits as interpolation fractions, and writes the result to the destination raster."
+    ],
+    [
+      "hl",
+      "d",
+      "(IIII)V",
+      "drawDownscaledAreaAveraged",
+      "Source-purpose review: Rejects upscaling, computes each output pixel’s coverage in source coordinates, and averages colors with subpixel area weights."
+    ],
+    [
+      "ck",
+      "a",
+      "(Z)V",
+      "clearStaticReferences",
+      "Source-purpose review: Clears the static references retained by this class."
+    ],
+    [
+      "hl",
+      "d",
+      "(III)V",
+      "drawWithIntensity",
+      "Source-purpose review: Scales the RGB brightness of visible pixels by the requested fixed-point intensity."
+    ],
+    [
+      "hl",
+      "g",
+      "(II)V",
+      "drawFlippedHorizontal",
+      "Source-purpose review: Draws the clipped sprite with the source pixel order reversed within each row."
+    ],
+    [
+      "pj",
+      "d",
+      "(III)V",
+      "drawWithIntensity",
+      "Source-purpose review: Scales the RGB brightness and composites the result by source alpha."
+    ],
+    [
+      "pj",
+      "g",
+      "(II)V",
+      "drawFlippedHorizontal",
+      "Source-purpose review: Draws mirrored source columns and composites visible pixels by their source alpha."
+    ],
+    [
+      "qk",
+      "a",
+      "(Ljava/lang/String;B)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "hg",
+      "a",
+      "(Ljava/lang/String;B)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "kh",
+      "a",
+      "(Ljava/lang/String;B)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "qk",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "hg",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "kh",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "kd",
+      "a",
+      "(I[Ljava/lang/String;)V",
+      "setNameSuggestions",
+      "Source-purpose review: Rebuilds the suggestion buttons from the supplied names, normalizes display spacing, and adds the extra button for requesting more suggestions."
+    ],
+    [
+      "nd",
+      "f",
+      "(I)V",
+      "invalidateCheckedName",
+      "Source-purpose review: Clears the cached checked name so the validator rechecks the current input even when its text has stayed the same."
+    ],
+    [
+      "ga",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "db",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "hg",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "jj",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "kd",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "kh",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "kj",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ok",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ph",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "rg",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "vj",
+      "a",
+      "(Ldk;IZII)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "dk",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "ab",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "gh",
+      "a",
+      "(IIII)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
     ]
   ],
   "fields": [

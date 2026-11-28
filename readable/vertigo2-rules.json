@@ -388,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:d",
+      "originalName": "d",
+      "to": "InteractiveWidget",
+      "evidence": "Interactive control that tracks pointer and keyboard input and forwards its activation to the registered listener. The account forms use this control for their buttons and suggestion choices.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:da",
       "originalName": "da",
       "to": "TextFieldValidator",
@@ -612,6 +619,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ij",
+      "originalName": "ij",
+      "to": "WidgetActivationListener",
+      "evidence": "Declares the callback that receives an activated widget and its input context. Account forms and other panels implement it to act on the triggering control.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ik",
       "originalName": "ik",
       "to": "FieldValidatorProvider",
@@ -759,6 +773,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nc",
+      "originalName": "nc",
+      "to": "NameSuggestionListener",
+      "evidence": "Defines callbacks for selecting a suggested name and requesting another set of suggestions. Both the registration form and the display-name form implement the callbacks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ne",
       "originalName": "ne",
       "to": "DisplayNameSelectionPanel",
@@ -833,6 +854,13 @@
       "originalName": "oh",
       "to": "WidgetWrapper",
       "evidence": "UiWidget holding one child widget that it forwards drawing and input to.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oj",
+      "originalName": "oj",
+      "to": "NameSuggestionsPanel",
+      "evidence": "Holds the normalized suggested names and their buttons. It forwards a selected suggestion or a request for more suggestions to the form that owns the panel.",
       "confidence": "reviewed"
     },
     {
@@ -2656,6 +2684,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ck.a(IIBI)V",
+      "originalName": "a",
+      "to": "activateFromInput",
+      "evidence": "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ck.b(Z)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2835,6 +2870,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(IIBI)V",
+      "originalName": "a",
+      "to": "activateFromInput",
+      "evidence": "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link.",
       "confidence": "reviewed"
     },
     {
@@ -3713,6 +3755,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:er.a()Ler;",
+      "originalName": "a",
+      "to": "copyMirroredHorizontally",
+      "evidence": "Source-purpose review: Creates a new sprite by copying each row in reverse order and adjusting the horizontal offset within the logical canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(III)V",
+      "originalName": "a",
+      "to": "drawTintedGray",
+      "evidence": "Source-purpose review: Passes the clip rectangle and tint color to the kernel that maps grayscale values through a black, tint, and white ramp while retaining colored pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(IIII)V",
+      "originalName": "a",
+      "to": "drawScaled",
+      "evidence": "Source-purpose review: Clips a destination rectangle and resamples the sprite using horizontal and vertical fixed-point source increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawScaledAlpha",
+      "evidence": "Source-purpose review: Scales and clips the visible rectangle, then blends the resampled pixels using the supplied opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(IIIIII)V",
+      "originalName": "a",
+      "to": "drawRotatedAbout",
+      "evidence": "Source-purpose review: Uses a turn divided into 65,536 angle steps and a fixed-point scale to rotate about an explicit source pivot. Clips and resamples into the destination raster.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:er.a(III[I[IIIIIIIII)V",
       "originalName": "a",
       "to": "blitAdditive",
@@ -3776,6 +3853,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:er.b()V",
+      "originalName": "b",
+      "to": "rotateClockwise",
+      "evidence": "Source-purpose review: Transposes the sprite’s columns into rows while reversing the source Y direction, then swaps dimensions and transforms the offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.b(II)V",
+      "originalName": "b",
+      "to": "drawHalfSize",
+      "evidence": "Source-purpose review: Clips half-sized bounds and combines adjacent source pixels to render at half scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.b(III)V",
+      "originalName": "b",
+      "to": "drawSilhouette",
+      "evidence": "Source-purpose review: Fills the clipped nontransparent shape of the sprite with the supplied replacement color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.b(IIII)V",
+      "originalName": "b",
+      "to": "drawDownscaledAreaAveraged",
+      "evidence": "Source-purpose review: Rejects upscaling, computes each output pixel’s coverage in source coordinates, and averages colors with subpixel area weights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.b(IIIII)V",
+      "originalName": "b",
+      "to": "writeBilinearPixel",
+      "evidence": "Source-purpose review: Computes the weighted color of the four source pixels around a sample position, using the low twelve coordinate bits as interpolation fractions, and writes the result to the destination raster.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:er.b([I[IIIIIIII)V",
       "originalName": "b",
       "to": "blitSilhouette",
@@ -3787,6 +3899,69 @@
       "originalName": "b",
       "to": "blitGrayTinted",
       "evidence": "Source-purpose review: Skip source0;for grayscale RGB use supplied tint at level128,black below andwhite above with exact signed-shift arithmetic;non-grayscale source colors copy unchanged. Original body SHA256 0c188f0eb690efe3493bf9ea9ccebae722055438a84183c6fb3b7d2e62548513. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.c()Ler;",
+      "originalName": "c",
+      "to": "copy",
+      "evidence": "Source-purpose review: Creates a new sprite, copies the geometry and pixel array contents, and returns the independent copy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.c(II)V",
+      "originalName": "c",
+      "to": "drawOpaque",
+      "evidence": "Source-purpose review: Clips the sprite rectangle to the raster. The base blit copies all visible pixels including zeros. The ARGB override composites using each pixel’s alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.c(III)V",
+      "originalName": "c",
+      "to": "drawWithOpacity",
+      "evidence": "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.d()V",
+      "originalName": "d",
+      "to": "bindAsRenderTarget",
+      "evidence": "Source-purpose review: Passes the sprite’s pixel buffer, width, and height to the software raster target setter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.d(II)V",
+      "originalName": "d",
+      "to": "drawQuarterSizeAveraged",
+      "evidence": "Source-purpose review: Draws at one quarter of the sprite width and height by averaging source pixels within each visible four-by-four cell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.d(III)V",
+      "originalName": "d",
+      "to": "drawAdditive",
+      "evidence": "Source-purpose review: Clips the destination rectangle and adds the source RGB channels to corresponding destination channels with saturation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.e(II)V",
+      "originalName": "e",
+      "to": "draw",
+      "evidence": "Source-purpose review: Clips the sprite rectangle to the raster and draws the visible pixels using the source transparency convention.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.f(II)V",
+      "originalName": "f",
+      "to": "drawMultiply",
+      "evidence": "Source-purpose review: Clips the draw rectangle and multiplies the destination color channels by the corresponding sprite channels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.g(II)V",
+      "originalName": "g",
+      "to": "drawFlippedVertical",
+      "evidence": "Source-purpose review: Clips the mirrored rectangle and draws from the final visible source row upward.",
       "confidence": "reviewed"
     },
     {
@@ -3804,6 +3979,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fb.a(IIII)V",
+      "originalName": "a",
+      "to": "drawScaled",
+      "evidence": "Source-purpose review: Clips a destination rectangle and resamples the sprite using horizontal and vertical fixed-point source increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawScaledAlpha",
+      "evidence": "Source-purpose review: Scales and clips the visible rectangle, then blends the resampled pixels using the supplied opacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fc.d()V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -3815,6 +4004,34 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(III)V",
+      "originalName": "a",
+      "to": "drawTintedGray",
+      "evidence": "Source-purpose review: Passes the clip rectangle and tint color to the kernel that maps grayscale values through a black, tint, and white ramp while retaining colored pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(IIII)V",
+      "originalName": "a",
+      "to": "drawScaled",
+      "evidence": "Source-purpose review: Clips a destination rectangle and resamples the sprite using horizontal and vertical fixed-point source increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawScaledAlpha",
+      "evidence": "Source-purpose review: Scales and clips the visible rectangle, then blends the resampled pixels using the supplied opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.b(II)V",
+      "originalName": "b",
+      "to": "drawHalfSize",
+      "evidence": "Source-purpose review: Clips half-sized bounds and combines adjacent source pixels to render at half scale.",
       "confidence": "reviewed"
     },
     {
@@ -3839,6 +4056,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fe.c(II)V",
+      "originalName": "c",
+      "to": "drawOpaque",
+      "evidence": "Source-purpose review: Clips the sprite rectangle to the raster. The base blit copies all visible pixels including zeros. The ARGB override composites using each pixel’s alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.c(III)V",
+      "originalName": "c",
+      "to": "drawWithOpacity",
+      "evidence": "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fe.c([I[IIIIIIII)V",
       "originalName": "c",
       "to": "blitArgb",
@@ -3853,10 +4084,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fe.d(II)V",
+      "originalName": "d",
+      "to": "drawQuarterSizeAveraged",
+      "evidence": "Source-purpose review: Draws at one quarter of the sprite width and height by averaging source pixels within each visible four-by-four cell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.d(III)V",
+      "originalName": "d",
+      "to": "drawAdditive",
+      "evidence": "Source-purpose review: Clips the destination rectangle and adds the source RGB channels to corresponding destination channels with saturation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fe.d([I[IIIIIIIII)V",
       "originalName": "d",
       "to": "blitArgbAlpha",
       "evidence": "Source-purpose review: Unconditionally read/write each destination;effective alpha=(sourceHighByte*suppliedAlpha)>>8,then packed RGB blend with inverse256 and unsigned result shift. Original body SHA256 c273a2163fdcfb07fc1b08ec7c491cfc7d347c9705a3f29537658de88146643f. Naming only;preserve full JVM integer domains,parameter slots,array aliases,packed RGB/alpha arithmetic,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.e(II)V",
+      "originalName": "e",
+      "to": "draw",
+      "evidence": "Source-purpose review: Clips the sprite rectangle to the raster and draws the visible pixels using the source transparency convention.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.g(II)V",
+      "originalName": "g",
+      "to": "drawFlippedVertical",
+      "evidence": "Source-purpose review: Clips the mirrored rectangle and draws from the final visible source row upward.",
       "confidence": "reviewed"
     },
     {
@@ -3920,6 +4179,13 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
       "confidence": "reviewed"
     },
     {
@@ -4287,6 +4553,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gr.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gr.g(B)V",
       "originalName": "g",
       "to": "clearStaticReferences",
@@ -4546,6 +4819,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hk.h(I)V",
+      "originalName": "h",
+      "to": "invalidateCheckedName",
+      "evidence": "Source-purpose review: Clears the cached checked name so the validator rechecks the current input even when its text has stayed the same.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hl.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4704,6 +4984,13 @@
       "originalName": "g",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
       "confidence": "reviewed"
     },
     {
@@ -5159,6 +5446,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jr.a(BCLjava/lang/String;)[Ljava/lang/String;",
+      "originalName": "a",
+      "to": "splitStringOnCharacter",
+      "evidence": "Source-purpose review: Splits a string at every occurrence of a delimiter character and retains the final segment.",
       "confidence": "reviewed"
     },
     {
@@ -5757,10 +6051,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mk.a(I)V",
+      "originalName": "a",
+      "to": "onNameSuggestionsRefreshRequested",
+      "evidence": "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mk.a(Lik;I)Z",
       "originalName": "a",
       "to": "isFieldReadyForRegistration",
       "evidence": "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "onNameSuggestionSelected",
+      "evidence": "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field.",
       "confidence": "reviewed"
     },
     {
@@ -5855,6 +6170,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nc.a(I)V",
+      "originalName": "a",
+      "to": "onNameSuggestionsRefreshRequested",
+      "evidence": "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "onNameSuggestionSelected",
+      "evidence": "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nd.d(I)V",
       "originalName": "d",
       "to": "clearDeclaredStaticReferences",
@@ -5862,10 +6191,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ne.a(I)V",
+      "originalName": "a",
+      "to": "onNameSuggestionsRefreshRequested",
+      "evidence": "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ne.a(Lik;Z)Z",
       "originalName": "a",
       "to": "isFieldValid",
       "evidence": "Source-purpose review: Returns whether the display-name control reports an acceptable validation status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "onNameSuggestionSelected",
+      "evidence": "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field.",
       "confidence": "reviewed"
     },
     {
@@ -6114,6 +6464,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ob.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ob.a(ILkp;)V",
       "originalName": "a",
       "to": "onTextChanged",
@@ -6132,6 +6489,13 @@
       "originalName": "k",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
       "confidence": "reviewed"
     },
     {
@@ -6268,6 +6632,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oj.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a([Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "setNameSuggestions",
+      "evidence": "Source-purpose review: Rebuilds the suggestion buttons from the supplied names, normalizes display spacing, and adds the extra button for requesting more suggestions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ok.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -6377,6 +6755,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.a(IIBI)V",
+      "originalName": "a",
+      "to": "activateFromInput",
+      "evidence": "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link.",
       "confidence": "reviewed"
     },
     {
@@ -6513,6 +6898,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ql.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ql.j(I)V",
       "originalName": "j",
       "to": "releaseDeclaredStaticReferences",
@@ -6524,6 +6916,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qm.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
       "confidence": "reviewed"
     },
     {
@@ -7171,6 +7570,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rh.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ri.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -7756,6 +8162,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 5 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(ILd;BII)V",
+      "originalName": "a",
+      "to": "onWidgetActivated",
+      "evidence": "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel.",
       "confidence": "reviewed"
     },
     {
@@ -8545,7 +8958,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "dd160fa1eac4ac1d71dc9d1df9e364498095451789a965937e0659a198f6cbf9",
+      "vertigo2-names.json": "11266f0f6645afa72060d2bd1c4f692dffdfdc37fd6dc99dc0f09ca26633e4f1",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

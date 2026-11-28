@@ -169,6 +169,16 @@
       "lea",
       "PcmMixerListener",
       "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
+    ],
+    [
+      "uja",
+      "NameSuggestionListener",
+      "Defines callbacks for selecting a suggested name and requesting another set of suggestions. Both the registration form and the display-name form implement the callbacks."
+    ],
+    [
+      "dd",
+      "NameSuggestionsPanel",
+      "Holds the normalized suggested names and their buttons. It forwards a selected suggestion or a request for more suggestions to the form that owns the panel."
     ]
   ],
   "methods": [
@@ -4427,6 +4437,321 @@
       "()V",
       "onRemovedFromMixer",
       "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "ee",
+      "a",
+      "(IIII)V",
+      "drawScaled",
+      "Source-purpose review: Clips a destination rectangle and resamples the sprite using horizontal and vertical fixed-point source increments."
+    ],
+    [
+      "ee",
+      "a",
+      "(IIIIII)V",
+      "drawRotatedAbout",
+      "Source-purpose review: Uses a turn divided into 65,536 angle steps and a fixed-point scale to rotate about an explicit source pivot. Clips and resamples into the destination raster."
+    ],
+    [
+      "ee",
+      "b",
+      "(III)V",
+      "drawTinted",
+      "Source-purpose review: Clips the draw region and delegates to the bound kernel that tints visible source pixels using the supplied color."
+    ],
+    [
+      "kv",
+      "b",
+      "(IIIIII)V",
+      "drawRotatedAbout",
+      "Source-purpose review: Uses a turn divided into 65,536 angle steps and a fixed-point scale to rotate about an explicit source pivot. Clips and resamples into the destination raster."
+    ],
+    [
+      "kv",
+      "d",
+      "(IIII)V",
+      "drawRotated",
+      "Source-purpose review: Uses the logical canvas center as the source pivot, converts the destination to sixteenths of a pixel, and delegates to the rotation and scale renderer."
+    ],
+    [
+      "kv",
+      "e",
+      "(IIIII)V",
+      "drawScaledAdditive",
+      "Source-purpose review: Clips and scales the sprite, then adds the resampled RGB channels to the destination with saturation."
+    ],
+    [
+      "ee",
+      "a",
+      "(II)V",
+      "draw",
+      "Source-purpose review: Clips the sprite rectangle to the raster and draws the visible pixels using the source transparency convention."
+    ],
+    [
+      "th",
+      "a",
+      "(II)V",
+      "draw",
+      "Source-purpose review: Clips the sprite rectangle to the raster and draws the visible pixels using the source transparency convention."
+    ],
+    [
+      "ee",
+      "a",
+      "(III)V",
+      "drawWithOpacity",
+      "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity."
+    ],
+    [
+      "th",
+      "a",
+      "(III)V",
+      "drawWithOpacity",
+      "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity."
+    ],
+    [
+      "ee",
+      "b",
+      "(II)V",
+      "drawHalfSize",
+      "Source-purpose review: Clips half-sized bounds and combines adjacent source pixels to render at half scale."
+    ],
+    [
+      "kv",
+      "a",
+      "(III)V",
+      "drawWithOpacity",
+      "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity."
+    ],
+    [
+      "pa",
+      "a",
+      "(III)V",
+      "drawWithOpacity",
+      "Source-purpose review: Clips the sprite rectangle and blends the visible pixels into the raster using the supplied opacity."
+    ],
+    [
+      "kv",
+      "b",
+      "()V",
+      "bindAsRenderTarget",
+      "Source-purpose review: Passes the sprite’s pixel buffer, width, and height to the software raster target setter."
+    ],
+    [
+      "kv",
+      "b",
+      "(IIII)V",
+      "drawDownscaledAreaAveraged",
+      "Source-purpose review: Rejects upscaling, computes each output pixel’s coverage in source coordinates, and averages colors with subpixel area weights."
+    ],
+    [
+      "ee",
+      "c",
+      "(II)V",
+      "drawFlippedHorizontal",
+      "Source-purpose review: Draws the indexed sprite with transparent palette index zero and the columns reversed."
+    ],
+    [
+      "ee",
+      "d",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Copies the clipped visible palette rows including palette index zero."
+    ],
+    [
+      "kv",
+      "c",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Draws the fully clipped sprite rectangle using the opaque base blit."
+    ],
+    [
+      "kv",
+      "e",
+      "(III)V",
+      "drawGrayRampTinted",
+      "Source-purpose review: Draws the clipped sprite with the supplied color ramp applied to grayscale pixels."
+    ],
+    [
+      "kv",
+      "g",
+      "(I)V",
+      "padWithinCanvas",
+      "Source-purpose review: Adds border padding up to the logical canvas bounds and adjusts the stored placement offsets."
+    ],
+    [
+      "pa",
+      "c",
+      "(II)V",
+      "drawOpaque",
+      "Source-purpose review: Overrides the base sprite draw with a clipped ARGB compositing blit."
+    ],
+    [
+      "pa",
+      "e",
+      "(III)V",
+      "drawGrayRampTinted",
+      "Source-purpose review: Applies the grayscale color ramp while compositing the resulting pixels with their source alpha."
+    ],
+    [
+      "uja",
+      "a",
+      "(Ljava/lang/String;B)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "gda",
+      "a",
+      "(Ljava/lang/String;B)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "ue",
+      "a",
+      "(Ljava/lang/String;B)V",
+      "onNameSuggestionSelected",
+      "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field."
+    ],
+    [
+      "uja",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "gda",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "ue",
+      "a",
+      "(I)V",
+      "onNameSuggestionsRefreshRequested",
+      "Source-purpose review: Responds to the refresh button by invalidating the validator’s cached name so it can request a fresh availability result and suggestions."
+    ],
+    [
+      "dd",
+      "a",
+      "([Ljava/lang/String;B)V",
+      "setNameSuggestions",
+      "Source-purpose review: Rebuilds the suggestion buttons from the supplied names, normalizes display spacing, and adds the extra button for requesting more suggestions."
+    ],
+    [
+      "tt",
+      "d",
+      "(I)V",
+      "invalidateCheckedName",
+      "Source-purpose review: Clears the cached checked name so the validator rechecks the current input even when its text has stayed the same."
+    ],
+    [
+      "lja",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ar",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "d",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "dd",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "dka",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "em",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "gda",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "hc",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "mf",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ph",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "tea",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "ue",
+      "a",
+      "(ILhf;IBI)V",
+      "onWidgetActivated",
+      "Source-purpose review: Handles activation of the supplied interactive widget in the context of the receiving panel."
+    ],
+    [
+      "hf",
+      "a",
+      "(IIZI)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "aha",
+      "a",
+      "(IIZI)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
+    ],
+    [
+      "dia",
+      "a",
+      "(IIZI)V",
+      "activateFromInput",
+      "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link."
     ]
   ],
   "fields": [

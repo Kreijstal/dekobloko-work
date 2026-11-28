@@ -17,7 +17,6 @@ const classes = {
   fe: ['KeyboardInput', 'KeyListener/FocusListener that records key press, release and typed events and clears them on focus loss.'],
   aj: ['MouseInput', 'Synchronized Mouse/MouseMotion/Focus listener recording pointer position and button state.'],
   j: ['LevelSession', 'Large gameplay class whose debug overlay prints the level number and fps, and which shows the Cheating! and Bonus: texts.'],
-  jd: ['LoginMenuScreen', 'Screen holding the login, account creation, JS5 error, ticketing and chat-mode message keys and handling their flow.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
