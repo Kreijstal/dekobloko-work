@@ -325,6 +325,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bl",
+      "originalName": "bl",
+      "to": "ChatMessage",
+      "evidence": "Captures the decoded chat sender, message contents, visibility attributes and linked Quick Chat phrases.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ca",
       "originalName": "ca",
       "to": "SlimeCollisionSupport",
@@ -399,6 +406,13 @@
       "originalName": "cl",
       "to": "ConfirmedEmailAvailabilityValidator",
       "evidence": "Checks that the confirmation matches the email input, then obtains and caches the email availability result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:d",
+      "originalName": "d",
+      "to": "MarkerSliderWidget",
+      "evidence": "Stores integer markers on a bounded slider and adds or removes the marker nearest to a pointer press.",
       "confidence": "reviewed"
     },
     {
@@ -787,6 +801,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kh",
+      "originalName": "kh",
+      "to": "QuickChatPhraseCache",
+      "evidence": "Looks up and caches Quick Chat phrase definitions from the standard and extended archives.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ki",
       "originalName": "ki",
       "to": "TextHotspotListener",
@@ -840,6 +861,13 @@
       "originalName": "lg",
       "to": "FullscreenNoticeType",
       "evidence": "Distinguishes the status messages selected by the fullscreen notice dialog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:li",
+      "originalName": "li",
+      "to": "IndexedSpriteState",
+      "evidence": "Holds the image dimensions and offsets and declares the drawing methods implemented by the indexed sprite.",
       "confidence": "reviewed"
     },
     {
@@ -1389,6 +1417,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vg",
+      "originalName": "vg",
+      "to": "MarkerSliderRenderer",
+      "evidence": "Paints the slider track, scaled marker positions and caption using its configured colours and font.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vh",
       "originalName": "vh",
       "to": "SectorCacheStore",
@@ -1421,6 +1456,13 @@
       "originalName": "wd",
       "to": "InteractiveWidget",
       "evidence": "Interactive control that tracks pointer and keyboard input and forwards its activation to the registered listener. The account forms use this control for their buttons and suggestion choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:we",
+      "originalName": "we",
+      "to": "IndexedSprite",
+      "evidence": "Stores indexed pixels and a colour palette and draws the image into the clipped raster.",
       "confidence": "reviewed"
     },
     {
@@ -2705,10 +2747,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bl.a(B)I",
+      "originalName": "a",
+      "to": "getVisibilityLevel",
+      "evidence": "Source-purpose review: Computes the message visibility tier from the sender identity, chat mode and message flags.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getLoginPassword",
+      "evidence": "Source-purpose review: Returns the password for the current account flow, choosing the creation or login field.",
       "confidence": "reviewed"
     },
     {
@@ -3073,6 +3129,48 @@
       "originalName": "a",
       "to": "pointerPressed",
       "evidence": "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(Ljava/lang/String;ZLjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "startLoginWithCredentials",
+      "evidence": "Source-purpose review: Stores the login name and password and opens the connecting dialog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(Z)I",
+      "originalName": "a",
+      "to": "getRange",
+      "evidence": "Source-purpose review: Returns the upper bound of the slider marker values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.b(II)I",
+      "originalName": "b",
+      "to": "getMarker",
+      "evidence": "Source-purpose review: Returns the marker value at the requested index or minus one if the index is outside the list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.d(B)I",
+      "originalName": "d",
+      "to": "getMarkerCount",
+      "evidence": "Source-purpose review: Returns the number of stored slider markers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.e(B)V",
+      "originalName": "e",
+      "to": "readSocialListUpdate",
+      "evidence": "Source-purpose review: Dispatches the inbound social-list subtypes and updates the named player lists or chat state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.f(B)V",
+      "originalName": "f",
+      "to": "clearPanelSprite",
+      "evidence": "Source-purpose review: Releases the shared panel sprite reference during teardown.",
       "confidence": "reviewed"
     },
     {
@@ -4903,6 +5001,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jd.a(II)Leh;",
+      "originalName": "a",
+      "to": "findQuickChatCommandType",
+      "evidence": "Source-purpose review: Scans the command registry for the requested ID and returns the matching command type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jd.a(IIBLlk;IIII)V",
       "originalName": "a",
       "to": "drawText",
@@ -4921,6 +5026,20 @@
       "originalName": "a",
       "to": "getTextOriginX",
       "evidence": "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.a(ILgk;II)Lwe;",
+      "originalName": "a",
+      "to": "loadIndexedSprite",
+      "evidence": "Source-purpose review: Loads a sprite group and file from the archive, then constructs the first decoded indexed sprite when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.a(ILjava/applet/Applet;Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "persistSettingsCookie",
+      "evidence": "Source-purpose review: Updates the local settings value and writes or expires the browser cookie derived from the applet settings.",
       "confidence": "reviewed"
     },
     {
@@ -4956,6 +5075,13 @@
       "originalName": "a",
       "to": "paintSelection",
       "evidence": "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.a(I[ILwe;)Lwe;",
+      "originalName": "a",
+      "to": "copyIndexedSpriteWithPalette",
+      "evidence": "Source-purpose review: Copies the sprite dimensions and offsets, reuses the pixel indices and substitutes the supplied palette.",
       "confidence": "reviewed"
     },
     {
@@ -5463,6 +5589,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kh.a(IB)Lne;",
+      "originalName": "a",
+      "to": "getPhrase",
+      "evidence": "Source-purpose review: Looks up a phrase by ID, loading it from the matching archive and caching the decoded definition on a miss.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(Lsi;I)Z",
+      "originalName": "a",
+      "to": "isFullscreenAvailable",
+      "evidence": "Source-purpose review: Checks fullscreen capability through the platform dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(Ltg;I)V",
+      "originalName": "a",
+      "to": "setSpriteRasterTarget",
+      "evidence": "Source-purpose review: Makes the sprite pixel array the active raster and sets its width and height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ki.a(Lvc;BII)V",
       "originalName": "a",
       "to": "onTextHotspotActivated",
@@ -5859,6 +6006,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Source-purpose review: Declares the normal draw operation for indexed sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "Source-purpose review: Declares the sprite operation for drawing with a supplied opacity.",
       "confidence": "reviewed"
     },
     {
@@ -10020,10 +10181,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vg.a(B)V",
+      "originalName": "a",
+      "to": "writeReadyReflectionCheckResponses",
+      "evidence": "Source-purpose review: Serializes completed reflection-check responses into the outbound packet buffer and backpatches each packet length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticText",
+      "evidence": "Source-purpose review: Releases the text and text-array references held by the class during teardown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vg.a(ILlk;BZI)V",
       "originalName": "a",
       "to": "paintWidget",
       "evidence": "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZI)Lbl;",
+      "originalName": "a",
+      "to": "readChatMessage",
+      "evidence": "Source-purpose review: Decodes the inbound message header and reads either compressed text or the referenced Quick Chat phrase.",
       "confidence": "reviewed"
     },
     {
@@ -10234,6 +10416,20 @@
       "originalName": "e",
       "to": "isFocused",
       "evidence": "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Source-purpose review: Clips the indexed sprite at the destination and draws it with transparent palette index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "Source-purpose review: Clips the indexed sprite at the destination and draws it using the supplied opacity.",
       "confidence": "reviewed"
     },
     {
@@ -10673,7 +10869,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "09eba32e25af874c0da47b5fb5ae307054ab08abf39d7adf527c626b1572df13",
+      "bouncedown-names.json": "761f80e7c62313eef76a7629626652562d384af71325c512df7a7d95bc63a8c5",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
