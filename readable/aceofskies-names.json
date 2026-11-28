@@ -504,6 +504,36 @@
       "k",
       "MidiFileReader",
       "Reads MIDI track chunks and tracks the cursor, tick and running status of each track."
+    ],
+    [
+      "pi",
+      "ValidationStatusIcon",
+      "Renders a validation status sprite beside a form field and exposes its message as a hover tooltip."
+    ],
+    [
+      "kb",
+      "ValidationStatusWidget",
+      "Renders a validator message or fallback text together with a status sprite."
+    ],
+    [
+      "ub",
+      "MidiNoteMask",
+      "Stores a per-note usage mask in the music track’s instrument patch table."
+    ],
+    [
+      "au",
+      "ArrayBlockSupport",
+      "Implements in-place fills and overlap-safe array copies with unrolled loops."
+    ],
+    [
+      "kd",
+      "ByteArrayPoolSupport",
+      "Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available."
+    ],
+    [
+      "ot",
+      "GrowableIntArray",
+      "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."
     ]
   ],
   "methods": [
@@ -7905,6 +7935,468 @@
       "(Lgk;Ljava/lang/String;Ljava/lang/String;)Lap;",
       "load",
       "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation."
+    ],
+    [
+      "qm",
+      "a",
+      "(BIILea;)I",
+      "getUnalignedTextOriginY",
+      "Source-purpose review: Returns the top text origin from the widget and parent positions, text offset and padding before alignment."
+    ],
+    [
+      "qm",
+      "a",
+      "(IBILea;)V",
+      "drawTextWithDefaultStyle",
+      "Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text."
+    ],
+    [
+      "qm",
+      "a",
+      "(IIIIIILea;I)V",
+      "drawText",
+      "Source-purpose review: Clips text drawing to the widget and renders its single line or wrapped paragraph with the supplied style."
+    ],
+    [
+      "qm",
+      "a",
+      "(Lea;III)I",
+      "getUnalignedTextOriginX",
+      "Source-purpose review: Returns the left text origin from the widget and parent positions, text offset and padding before alignment."
+    ],
+    [
+      "qm",
+      "a",
+      "(Lea;Z)I",
+      "getTextAreaHeight",
+      "Source-purpose review: Returns the widget height available for text after subtracting its vertical padding."
+    ],
+    [
+      "qm",
+      "a",
+      "(Lqm;I)V",
+      "copyStyleTo",
+      "Source-purpose review: Copies this renderer’s font, colours, alignment, wrapping and padding settings to another renderer."
+    ],
+    [
+      "qm",
+      "c",
+      "(Lea;I)V",
+      "rebuildTextLayout",
+      "Source-purpose review: Creates or refreshes the widget’s text layout using its current content, font, alignment and wrapping."
+    ],
+    [
+      "qm",
+      "d",
+      "(Lea;I)Ljava/lang/String;",
+      "resolveDisplayText",
+      "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."
+    ],
+    [
+      "ul",
+      "d",
+      "(Lea;I)Ljava/lang/String;",
+      "resolveDisplayText",
+      "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."
+    ],
+    [
+      "hk",
+      "a",
+      "(BII)V",
+      "setChannelGain",
+      "Source-purpose review: Sets the extra voice gain for one MIDI channel, or for every channel when the index is negative."
+    ],
+    [
+      "hk",
+      "a",
+      "(IILap;Lgk;Lob;)Z",
+      "prepareTrackSamples",
+      "Source-purpose review: Builds the track patch-usage table and walks its instruments to cache samples within the supplied budget."
+    ],
+    [
+      "hk",
+      "a",
+      "(IZI)V",
+      "setChannelProgram",
+      "Source-purpose review: Sets the requested channel’s default program through the program and bank update routine."
+    ],
+    [
+      "hk",
+      "a",
+      "(IZZLap;)V",
+      "startTrack",
+      "Source-purpose review: Loads the track bytes into the MIDI reader and primes the track positions, next event and playback clock."
+    ],
+    [
+      "hk",
+      "a",
+      "(Lft;ZZ)V",
+      "applySampleOffset",
+      "Source-purpose review: Converts a channel’s sample offset to a fixed-point position and reflects it when a looping sample crosses its endpoint."
+    ],
+    [
+      "hk",
+      "a",
+      "(ZILap;)V",
+      "playTrack",
+      "Source-purpose review: Starts the supplied track with the requested loop flag and a fixed policy for the previous track."
+    ],
+    [
+      "hk",
+      "b",
+      "(III)V",
+      "setDefaultProgram",
+      "Source-purpose review: Records the channel’s default program and bank and selects that program for subsequent notes."
+    ],
+    [
+      "hk",
+      "c",
+      "(III)V",
+      "setRetriggerRate",
+      "Source-purpose review: Stores the channel retrigger rate and derives the retrigger phase increment using the MIDI controller’s exponential scale."
+    ],
+    [
+      "wd",
+      "a",
+      "(ILjava/lang/String;Lea;II)I",
+      "addLabeledField",
+      "Source-purpose review: Adds an input in a label-and-widget container and returns its row height."
+    ],
+    [
+      "wd",
+      "a",
+      "(ZLjava/lang/String;Lea;II)I",
+      "addLabeledFieldWithValidationIcon",
+      "Source-purpose review: Adds the labeled field and positions a validation icon beside it, then returns the field height."
+    ],
+    [
+      "wd",
+      "a",
+      "(Ljava/lang/String;ILea;BIILjava/lang/String;)I",
+      "addLabeledFieldWithValidationMessage",
+      "Source-purpose review: Adds the labeled field and a validator message beneath it, then returns their combined height."
+    ],
+    [
+      "wd",
+      "a",
+      "(Ljava/lang/String;ILea;Ljava/lang/String;II)I",
+      "addLabeledFieldWithDefaultValidationMessage",
+      "Source-purpose review: Adds a labeled field and validator message with the form’s default message height."
+    ],
+    [
+      "wd",
+      "j",
+      "(I)Ljava/lang/String;",
+      "getLinkOpenMarkup",
+      "Source-purpose review: Returns the opening color and underline tags used for links in the registration instructions."
+    ],
+    [
+      "wd",
+      "i",
+      "(I)Ljava/lang/String;",
+      "getLinkCloseMarkup",
+      "Source-purpose review: Returns the closing color and underline tags used for links in the registration instructions."
+    ],
+    [
+      "vq",
+      "a",
+      "(ILjava/lang/String;I)V",
+      "setHotspotTooltip",
+      "Source-purpose review: Stores tooltip text for the hotspot index, growing the per-hotspot array when needed."
+    ],
+    [
+      "vq",
+      "a",
+      "(IIIB)V",
+      "setTextBounds",
+      "Source-purpose review: Sets the widget position and width and derives its height from its text renderer."
+    ],
+    [
+      "pp",
+      "a",
+      "(IILjava/lang/String;I)I",
+      "computeJustificationStep",
+      "Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point."
+    ],
+    [
+      "ce",
+      "h",
+      "(I)V",
+      "clearCredentials",
+      "Source-purpose review: Clears both editable credential fields in the login form."
+    ],
+    [
+      "ce",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "setAccountAndClearPassword",
+      "Source-purpose review: Fills the account identifier field with the supplied text and clears the password field."
+    ],
+    [
+      "ce",
+      "d",
+      "(Z)Ljava/lang/String;",
+      "getAccountIdentifier",
+      "Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent."
+    ],
+    [
+      "fh",
+      "b",
+      "(Ljava/lang/String;I)Z",
+      "containsEmailComponent",
+      "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."
+    ],
+    [
+      "ml",
+      "a",
+      "([B[ILob;I)Z",
+      "prepareSamples",
+      "Source-purpose review: Loads samples from the sound cache for notes in the instrument mask while observing the decode budget."
+    ],
+    [
+      "ml",
+      "a",
+      "(Z)V",
+      "releaseSampleIds",
+      "Source-purpose review: Releases the encoded sample IDs once the decoded instrument samples are ready."
+    ],
+    [
+      "hk",
+      "g",
+      "(I)V",
+      "releasePatchSampleIds",
+      "Source-purpose review: Walks the loaded instruments and releases their encoded sample ID arrays."
+    ],
+    [
+      "gu",
+      "a",
+      "(ILgk;I)Lml;",
+      "loadMusicPatch",
+      "Source-purpose review: Loads a patch from the instrument archive and constructs it from the returned binary record."
+    ],
+    [
+      "ft",
+      "a",
+      "(I)V",
+      "releaseReferences",
+      "Source-purpose review: Drops the patch, sample, envelope, and playback stream references after a note ends."
+    ],
+    [
+      "ct",
+      "a",
+      "(JJ)J",
+      "bitwiseAnd",
+      "Source-purpose review: Returns the bitwise conjunction of the two primitive operands."
+    ],
+    [
+      "fk",
+      "a",
+      "(JJ)J",
+      "bitwiseOr",
+      "Source-purpose review: Returns the bitwise disjunction of the two primitive operands."
+    ],
+    [
+      "id",
+      "a",
+      "(II)I",
+      "bitwiseXor",
+      "Source-purpose review: Returns the exclusive OR of the two primitive operands."
+    ],
+    [
+      "pg",
+      "a",
+      "(II)I",
+      "bitwiseAnd",
+      "Source-purpose review: Returns the bitwise conjunction of the two primitive operands."
+    ],
+    [
+      "un",
+      "a",
+      "(JJ)J",
+      "bitwiseXor",
+      "Source-purpose review: Returns the exclusive OR of the two primitive operands."
+    ],
+    [
+      "vo",
+      "a",
+      "(II)I",
+      "bitwiseOr",
+      "Source-purpose review: Returns the bitwise disjunction of the two primitive operands."
+    ],
+    [
+      "ep",
+      "a",
+      "(Ljava/lang/String;IILea;ILjava/lang/String;I)I",
+      "addLabeledFieldWithValidationMessage",
+      "Source-purpose review: Adds the display name field with its label and the validator message below it, then returns their combined height."
+    ],
+    [
+      "ep",
+      "a",
+      "(Lea;IIBLjava/lang/String;Ljava/lang/String;)I",
+      "addLabeledFieldWithDefaultValidationMessage",
+      "Source-purpose review: Adds the display name field with the form’s default validation message height."
+    ],
+    [
+      "au",
+      "a",
+      "([BI[BII)V",
+      "copyByteRange",
+      "Source-purpose review: Copies a byte range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "au",
+      "a",
+      "([II[III)V",
+      "copyIntRange",
+      "Source-purpose review: Copies an integer range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "au",
+      "a",
+      "([Ljava/lang/Object;I[Ljava/lang/Object;II)V",
+      "copyObjectRange",
+      "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array."
+    ],
+    [
+      "pj",
+      "a",
+      "(ILjava/awt/Graphics;II)V",
+      "drawImage",
+      "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position."
+    ],
+    [
+      "pj",
+      "a",
+      "(BIILjava/awt/Component;)V",
+      "initialize",
+      "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size."
+    ],
+    [
+      "dp",
+      "b",
+      "(I)V",
+      "publishPixelsToConsumer",
+      "Source-purpose review: Pushes the current pixels and frame completion notification to the registered AWT image consumer."
+    ],
+    [
+      "pj",
+      "a",
+      "(I)V",
+      "setAsRasterTarget",
+      "Source-purpose review: Binds the backing pixel array and its dimensions as the current target for software drawing."
+    ],
+    [
+      "dp",
+      "a",
+      "(ILjava/awt/Graphics;II)V",
+      "drawImage",
+      "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position."
+    ],
+    [
+      "lf",
+      "a",
+      "(ILjava/awt/Graphics;II)V",
+      "drawImage",
+      "Source-purpose review: Draws the raster image into the supplied AWT graphics at the requested position."
+    ],
+    [
+      "dp",
+      "a",
+      "(BIILjava/awt/Component;)V",
+      "initialize",
+      "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size."
+    ],
+    [
+      "lf",
+      "a",
+      "(BIILjava/awt/Component;)V",
+      "initialize",
+      "Source-purpose review: Allocates the pixel array and creates the AWT image for the requested canvas size."
+    ],
+    [
+      "jt",
+      "a",
+      "(BIZILap;I)V",
+      "switchTrack",
+      "Source-purpose review: Starts the requested MIDI track in one synthesizer and sets the direction and rate of the crossfade."
+    ],
+    [
+      "jt",
+      "a",
+      "(ILhk;II)V",
+      "configureSynthesizer",
+      "Source-purpose review: Applies the track’s gain and timing settings to the selected MIDI synthesizer."
+    ],
+    [
+      "jt",
+      "a",
+      "(BI)V",
+      "setVolume",
+      "Source-purpose review: Stores the master gain used to scale both synthesizers when their output is mixed."
+    ],
+    [
+      "jt",
+      "a",
+      "(Lhk;ILhk;)V",
+      "attachSynthesizers",
+      "Source-purpose review: Assigns the two MIDI synthesizers and resets the crossfade position."
+    ],
+    [
+      "kd",
+      "a",
+      "(IB)[B",
+      "acquireByteArray",
+      "Source-purpose review: Removes a reusable byte array from the matching size bucket or allocates a new array."
+    ],
+    [
+      "ot",
+      "a",
+      "(IB)V",
+      "removeAt",
+      "Source-purpose review: Removes the element at the index, shifts subsequent entries left, and reduces the logical size."
+    ],
+    [
+      "ot",
+      "b",
+      "(II)I",
+      "get",
+      "Source-purpose review: Returns the value stored at the requested index and reports an out-of-range index."
+    ],
+    [
+      "ot",
+      "c",
+      "(II)V",
+      "grow",
+      "Source-purpose review: Allocates a larger backing array and copies the existing entries into it."
+    ],
+    [
+      "ot",
+      "b",
+      "(BI)I",
+      "computeCapacity",
+      "Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy."
+    ],
+    [
+      "ot",
+      "a",
+      "(BII)V",
+      "set",
+      "Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed."
+    ],
+    [
+      "ot",
+      "a",
+      "(BI)V",
+      "append",
+      "Source-purpose review: Inserts an integer at the next index after the current last entry."
+    ],
+    [
+      "ot",
+      "a",
+      "(B)I",
+      "size",
+      "Source-purpose review: Returns the number of stored entries as one more than the last occupied index."
     ]
   ],
   "fields": [
