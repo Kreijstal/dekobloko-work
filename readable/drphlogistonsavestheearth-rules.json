@@ -703,6 +703,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:he",
+      "originalName": "he",
+      "to": "IndexedSprite",
+      "evidence": "Stores palette-indexed pixels and palette colors, with sprite bounds and raster blitters for the indexed representation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hf",
       "originalName": "hf",
       "to": "InteractiveWidget",
@@ -4217,6 +4224,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:he.b()Lnh;",
+      "originalName": "b",
+      "to": "toRgbSprite",
+      "evidence": "Source-purpose review: Expands palette indices to RGB pixels and returns a direct-color sprite with the same dimensions and offsets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:he.b([I[B[IIIIIIII)V",
       "originalName": "b",
       "to": "blitIndexed",
@@ -4231,10 +4245,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:he.c()V",
+      "originalName": "c",
+      "to": "normalizeCanvas",
+      "evidence": "Source-purpose review: Expands the indexed pixel array to the full sprite canvas, copies rows at their offsets, and clears the offsets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:he.c([I[B[IIIIIIII)V",
       "originalName": "c",
       "to": "blitPaletteReverse",
       "evidence": "Source-purpose review: Read source indices in descending order with four-pixel unroll and tail;skip by looked-up palette RGB0,not by source index0. Preserve predecrement carriers and row skips. Original body SHA256 712fe9acabade4e47f75ec0a6f4151f85502830314dbb4e4c1d3d0fab04bf84a. Naming only;preserve full JVM integer domains,byte signedness,parameter slots,array aliases,modifiers,all partial-write/evaluation/allocation/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.f()V",
+      "originalName": "f",
+      "to": "flipVertically",
+      "evidence": "Source-purpose review: Reverses indexed pixel rows and adjusts the vertical canvas offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.g()V",
+      "originalName": "g",
+      "to": "flipHorizontally",
+      "evidence": "Source-purpose review: Reverses indexed pixels within each row and mirrors the horizontal canvas offset.",
       "confidence": "reviewed"
     },
     {
@@ -5600,6 +5635,13 @@
       "originalName": "a",
       "to": "initializeClient",
       "evidence": "Source-purpose review: Initializes the client before the applet starts its main update and render loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(II)I",
+      "originalName": "a",
+      "to": "intOr",
+      "evidence": "Source-purpose review: Returns the bitwise OR of the two integer operands.",
       "confidence": "reviewed"
     },
     {
@@ -9973,7 +10015,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-drphlogistonsavestheearth-rules.mjs": "cdff48475b3699f7d2746754f9b5638184e39f503c7e52e9a27ce61ac7f4e854",
-      "drphlogistonsavestheearth-names.json": "7bf9e7228fdebfa1e005175c9a238fd550b3f3312d308d083e862e35db75209f",
+      "drphlogistonsavestheearth-names.json": "e781a39d99a556c3d759fc72bdcf27c27fdbf4a8493767116b24284e180472e3",
       "reproduce-drphlogistonsavestheearth.mjs": "4eb61234c8f693a5901143e23655851f6692c61799a49e6912b51d62f66d5dfb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

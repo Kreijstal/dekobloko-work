@@ -367,6 +367,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bn",
+      "originalName": "bn",
+      "to": "ModelMesh",
+      "evidence": "Defines the model and animation transform interface, and applies animation frame data through its concrete group transform hooks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:br",
       "originalName": "br",
       "to": "ValidatedTextField",
@@ -588,6 +595,13 @@
       "originalName": "fb",
       "to": "SpriteState",
       "evidence": "DualLinkNode subclass holding the dimension and offset ints and abstract draw hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fc",
+      "originalName": "fc",
+      "to": "SoftwareModelMesh",
+      "evidence": "Stores model vertices and faces and transforms, projects, shades and rasterizes the mesh through the software triangle renderer.",
       "confidence": "reviewed"
     },
     {
@@ -3020,6 +3034,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bn.a(I[IIIIZ)V",
+      "originalName": "a",
+      "to": "applyGroupTransform",
+      "evidence": "Source-purpose review: Applies the requested animation operation to model vertex or face groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.a(I[IIIIZI[I)V",
+      "originalName": "a",
+      "to": "applyMaskedGroupTransform",
+      "evidence": "Source-purpose review: Applies the group animation operation subject to vertex and face masks and optional transform coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bo.a(Ljava/lang/CharSequence;I)[B",
       "originalName": "a",
       "to": "encodeCp1252Bytes",
@@ -5124,6 +5152,48 @@
       "originalName": "a",
       "to": "drawScaledAlpha",
       "evidence": "Source-purpose review: Scales and clips the visible rectangle, then blends the resampled pixels using the supplied opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(IIIIIIII)Z",
+      "originalName": "a",
+      "to": "isPointInTriangleBounds",
+      "evidence": "Source-purpose review: Rejects points outside the triangle coordinate extrema before the caller performs hit testing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(I[IIIIZ)V",
+      "originalName": "a",
+      "to": "applyGroupTransform",
+      "evidence": "Source-purpose review: Applies the requested animation operation to model vertex or face groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(I[IIIIZI[I)V",
+      "originalName": "a",
+      "to": "applyMaskedGroupTransform",
+      "evidence": "Source-purpose review: Applies the group animation operation subject to vertex and face masks and optional transform coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a([I[I)V",
+      "originalName": "a",
+      "to": "drawTransformed",
+      "evidence": "Source-purpose review: Checks the projected mesh bounds, transforms vertices, and dispatches visible faces for drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.c()V",
+      "originalName": "c",
+      "to": "refreshFaceLighting",
+      "evidence": "Source-purpose review: Updates cached face color values from the base face colors and existing lighting levels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.c(I)V",
+      "originalName": "c",
+      "to": "drawFace",
+      "evidence": "Source-purpose review: Chooses the clipped, textured, shaded or flat software rasterization path for a face.",
       "confidence": "reviewed"
     },
     {
@@ -8837,6 +8907,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:og.a(JJ)J",
+      "originalName": "a",
+      "to": "bitXorLong",
+      "evidence": "Source-purpose review: Returns the bitwise XOR of the two long operands.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:og.b(B)V",
       "originalName": "b",
       "to": "disposeClient",
@@ -9933,6 +10010,13 @@
       "originalName": "a",
       "to": "copyObjectRange",
       "evidence": "Source-purpose review: Copies an object reference range between arrays, copying backward when the source and destination overlap in the same array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.a([SI[SII)V",
+      "originalName": "a",
+      "to": "copy",
+      "evidence": "Source-purpose review: Copies the requested short-array segment and handles overlapping ranges in either direction.",
       "confidence": "reviewed"
     },
     {
@@ -12969,7 +13053,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "d7111568a4ea5eb1eb9329acf9e519ecd6e156c62f6d08f47992e2c4f2471047",
+      "vertigo2-names.json": "02947f92295f2c8ba135872bdd369a0ee5b4c20256d430c1f319bfb49f323c6d",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
