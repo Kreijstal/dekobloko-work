@@ -459,6 +459,36 @@
       "oh",
       "VorbisMapping",
       "Reads the submap selector and the floor and residue indices for each Vorbis submap."
+    ],
+    [
+      "gk",
+      "SoundCache",
+      "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive."
+    ],
+    [
+      "kj",
+      "SynthesizedSoundEffect",
+      "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM."
+    ],
+    [
+      "tj",
+      "SynthesizerVoice",
+      "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter."
+    ],
+    [
+      "qg",
+      "SoundEnvelope",
+      "Decodes timed amplitude segments and interpolates the current value as synthesis advances."
+    ],
+    [
+      "cc",
+      "TriangleRasterizer",
+      "Rasterizes flat, shaded, or perspective-textured triangles into the software raster."
+    ],
+    [
+      "sc",
+      "SoftwareModelMesh",
+      "Projects mesh vertices, orders faces and draws them through the software triangle rasterizer."
     ]
   ],
   "methods": [
@@ -6796,6 +6826,265 @@
       "([FIZ)V",
       "decodeResidue",
       "Source-purpose review: Accumulates spectral residue vectors for each partition using the configured codebooks."
+    ],
+    [
+      "gk",
+      "a",
+      "(II[II)Lud;",
+      "loadMusicSample",
+      "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM."
+    ],
+    [
+      "gk",
+      "a",
+      "(I[III)Lud;",
+      "loadSoundEffect",
+      "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM."
+    ],
+    [
+      "gk",
+      "a",
+      "(BII)Lud;",
+      "getMusicSampleByGroup",
+      "Source-purpose review: Retrieves music PCM by archive group and file ID with an unlimited sample budget."
+    ],
+    [
+      "gk",
+      "a",
+      "(IIZ)Lud;",
+      "getSoundEffectByGroup",
+      "Source-purpose review: Retrieves a synthesized effect by archive group and file ID with an unlimited sample budget."
+    ],
+    [
+      "kj",
+      "a",
+      "()Lud;",
+      "toPcmSample",
+      "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second."
+    ],
+    [
+      "kj",
+      "b",
+      "()[B",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "kj",
+      "a",
+      "(Lpf;II)Lkj;",
+      "load",
+      "Source-purpose review: Reads and decodes the indexed sound effect from its archive."
+    ],
+    [
+      "kj",
+      "a",
+      "(Lpf;Ljava/lang/String;Ljava/lang/String;)Lkj;",
+      "loadByName",
+      "Source-purpose review: Reads and decodes a sound effect from its archive by group and file names."
+    ],
+    [
+      "tj",
+      "a",
+      "(II)[I",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "tj",
+      "a",
+      "(Lka;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "tj",
+      "a",
+      "(III)I",
+      "evaluateWaveform",
+      "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude."
+    ],
+    [
+      "qg",
+      "b",
+      "(Lka;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "qg",
+      "a",
+      "()V",
+      "reset",
+      "Source-purpose review: Resets the envelope segment cursor and interpolation state."
+    ],
+    [
+      "qg",
+      "a",
+      "(I)I",
+      "step",
+      "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value."
+    ],
+    [
+      "cc",
+      "a",
+      "()V",
+      "useRasterClip",
+      "Source-purpose review: Copies the software raster clipping rectangle into the triangle rasterizer."
+    ],
+    [
+      "cc",
+      "a",
+      "(F)V",
+      "setRandomizedGamma",
+      "Source-purpose review: Stores gamma with a small random offset used to generate the palette."
+    ],
+    [
+      "cc",
+      "a",
+      "(II)I",
+      "modulateHslLightness",
+      "Source-purpose review: Scales the HSL lightness component and clamps it to the supported range."
+    ],
+    [
+      "cc",
+      "a",
+      "(IIII)V",
+      "setClip",
+      "Source-purpose review: Sets viewport bounds and builds per-row offsets into the shared software raster."
+    ],
+    [
+      "cc",
+      "a",
+      "(IIIIIII)V",
+      "drawFlatTriangle",
+      "Source-purpose review: Walks the edges of a triangle and fills its spans with one colour."
+    ],
+    [
+      "cc",
+      "a",
+      "(IIIIIIIII)V",
+      "drawShadedTriangle",
+      "Source-purpose review: Walks the edges of a triangle and interpolates its vertex colours across spans."
+    ],
+    [
+      "cc",
+      "a",
+      "(IIIIIIIIIIIIIIIIIII)V",
+      "drawTexturedTriangle",
+      "Source-purpose review: Projects triangle texture coordinates, then renders textured spans or a shaded fallback."
+    ],
+    [
+      "cc",
+      "a",
+      "(Lcf;)V",
+      "setTextureProvider",
+      "Source-purpose review: Stores the texture source used by the textured triangle renderer."
+    ],
+    [
+      "cc",
+      "a",
+      "([IIIIII)V",
+      "drawFlatSpan",
+      "Source-purpose review: Writes a horizontal span of one colour, applying clipping and alpha blending."
+    ],
+    [
+      "cc",
+      "a",
+      "([IIIIIIII)V",
+      "drawShadedSpan",
+      "Source-purpose review: Interpolates palette shades and writes one horizontal span of a shaded triangle."
+    ],
+    [
+      "cc",
+      "a",
+      "([I[IIIIIIIIIIIIII)V",
+      "drawTexturedSpan",
+      "Source-purpose review: Samples a texture along one horizontal span with perspective-correct interpolation."
+    ],
+    [
+      "cc",
+      "b",
+      "(F)V",
+      "rebuildPaletteWithGamma",
+      "Source-purpose review: Updates gamma and rebuilds the complete HSL colour palette."
+    ],
+    [
+      "cc",
+      "b",
+      "(II)V",
+      "buildColorPaletteRange",
+      "Source-purpose review: Converts the selected HSL range to gamma-corrected RGB palette entries."
+    ],
+    [
+      "cc",
+      "c",
+      "()V",
+      "centerProjection",
+      "Source-purpose review: Centers the projection in the current triangle rasterizer viewport."
+    ],
+    [
+      "sc",
+      "a",
+      "()V",
+      "calculateBounds",
+      "Source-purpose review: Computes mesh bounds and the bounding radius from the vertex coordinates."
+    ],
+    [
+      "sc",
+      "a",
+      "(II)I",
+      "scaleHslLightness",
+      "Source-purpose review: Multiplies the HSL lightness by a shading factor and clamps its result."
+    ],
+    [
+      "sc",
+      "a",
+      "(IIIIIIII)Z",
+      "isPointInTriangleBounds",
+      "Source-purpose review: Tests whether a point is within the bounds of the three projected triangle vertices."
+    ],
+    [
+      "sc",
+      "a",
+      "(IIIIIIIJ)V",
+      "drawPerspective",
+      "Source-purpose review: Transforms mesh vertices into camera space, projects them and dispatches the visible faces."
+    ],
+    [
+      "sc",
+      "a",
+      "(ZZJII)V",
+      "drawFaces",
+      "Source-purpose review: Builds the depth and priority ordering of the mesh faces and renders them in that order."
+    ],
+    [
+      "sc",
+      "c",
+      "(I)I",
+      "clampHslLightness",
+      "Source-purpose review: Clamps an HSL lightness value to the drawable range."
+    ],
+    [
+      "sc",
+      "d",
+      "(I)V",
+      "drawFace",
+      "Source-purpose review: Draws a single face using its colour and texture data or delegates to near-plane clipping."
+    ],
+    [
+      "sc",
+      "e",
+      "(I)V",
+      "drawNearClippedFace",
+      "Source-purpose review: Clips a face at the near plane, interpolates its replacement vertices and draws the remaining triangles."
+    ],
+    [
+      "bj",
+      "a",
+      "(IIIIIIIJ)V",
+      "drawPerspective",
+      "Source-purpose review: Transforms mesh vertices into camera space, projects them and dispatches the visible faces."
     ]
   ],
   "fields": [

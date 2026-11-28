@@ -311,6 +311,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cc",
+      "originalName": "cc",
+      "to": "TriangleRasterizer",
+      "evidence": "Rasterizes flat, shaded, or perspective-textured triangles into the software raster.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ci",
       "originalName": "ci",
       "to": "FrameTimer",
@@ -483,6 +490,13 @@
       "originalName": "gi",
       "to": "SectorCacheStore",
       "evidence": "Source-purpose review: Sector-chain archive store binds archive index,data file,index file and entry-length limit. Six-byte index records point into520-byte sectors;small keys use8-byte headers/512payload and large keys10-byte headers/510payload. All constructor/read/write/chain-writer/toString bodies and construction/call contexts reviewed. Preserve index-before-payload writes,shared scratch buffer,original512next-link test even for510payload,EOF/IOException and guard paths,int multiplication-before-longcast and exact partial effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gk",
+      "originalName": "gk",
+      "to": "SoundCache",
+      "evidence": "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive.",
       "confidence": "reviewed"
     },
     {
@@ -665,6 +679,13 @@
       "originalName": "ki",
       "to": "ArchiveRequest",
       "evidence": "Source-purpose review: Abstract shared request root owns three booleans including the volatile pending flag initialized true,and declares payload/progress operations implemented by both disk and network requests. Full root/child constructors,getters,abstract signatures/storage and complete override families reviewed. Preserve inheritance,visibility,volatile modifier,parameter widths,guard domains and all unrelated helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kj",
+      "originalName": "kj",
+      "to": "SynthesizedSoundEffect",
+      "evidence": "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM.",
       "confidence": "reviewed"
     },
     {
@@ -913,6 +934,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qg",
+      "originalName": "qg",
+      "to": "SoundEnvelope",
+      "evidence": "Decodes timed amplitude segments and interpolates the current value as synthesis advances.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qh",
       "originalName": "qh",
       "to": "PcmResampler",
@@ -990,6 +1018,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sc",
+      "originalName": "sc",
+      "to": "SoftwareModelMesh",
+      "evidence": "Projects mesh vertices, orders faces and draws them through the software triangle rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sd",
       "originalName": "sd",
       "to": "ScorePopup",
@@ -1036,6 +1071,13 @@
       "originalName": "ti",
       "to": "SoftwareRasterizer",
       "evidence": "Static software framebuffer rasterizer: all12 fields coherently mapped to pixels,stride,height,four clip boundaries,two row masks and three RGB blur sums; all owned operations covered by reviewed complete reference/alternative method bodies and bound field/call correspondences. Preserve class initialization,visibility,integer domains,clipping,shared state and every allocation/exception/partial-write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tj",
+      "originalName": "tj",
+      "to": "SynthesizerVoice",
+      "evidence": "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter.",
       "confidence": "reviewed"
     },
     {
@@ -2222,6 +2264,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.a(IIIIIIIJ)V",
+      "originalName": "a",
+      "to": "drawPerspective",
+      "evidence": "Source-purpose review: Transforms mesh vertices into camera space, projects them and dispatches the visible faces.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2271,10 +2320,108 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cc.a()V",
+      "originalName": "a",
+      "to": "useRasterClip",
+      "evidence": "Source-purpose review: Copies the software raster clipping rectangle into the triangle rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(F)V",
+      "originalName": "a",
+      "to": "setRandomizedGamma",
+      "evidence": "Source-purpose review: Stores gamma with a small random offset used to generate the palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(II)I",
+      "originalName": "a",
+      "to": "modulateHslLightness",
+      "evidence": "Source-purpose review: Scales the HSL lightness component and clamps it to the supported range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(IIII)V",
+      "originalName": "a",
+      "to": "setClip",
+      "evidence": "Source-purpose review: Sets viewport bounds and builds per-row offsets into the shared software raster.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatTriangle",
+      "evidence": "Source-purpose review: Walks the edges of a triangle and fills its spans with one colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(IIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawShadedTriangle",
+      "evidence": "Source-purpose review: Walks the edges of a triangle and interpolates its vertex colours across spans.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(IIIIIIIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedTriangle",
+      "evidence": "Source-purpose review: Projects triangle texture coordinates, then renders textured spans or a shaded fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(Lcf;)V",
+      "originalName": "a",
+      "to": "setTextureProvider",
+      "evidence": "Source-purpose review: Stores the texture source used by the textured triangle renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a([IIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatSpan",
+      "evidence": "Source-purpose review: Writes a horizontal span of one colour, applying clipping and alpha blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawShadedSpan",
+      "evidence": "Source-purpose review: Interpolates palette shades and writes one horizontal span of a shaded triangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a([I[IIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedSpan",
+      "evidence": "Source-purpose review: Samples a texture along one horizontal span with perspective-correct interpolation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cc.b()V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 7 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 2921c605b72b9faf50c4ebcc85e16b78e242285475258a86decd117991e8ea4c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.b(F)V",
+      "originalName": "b",
+      "to": "rebuildPaletteWithGamma",
+      "evidence": "Source-purpose review: Updates gamma and rebuilds the complete HSL colour palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.b(II)V",
+      "originalName": "b",
+      "to": "buildColorPaletteRange",
+      "evidence": "Source-purpose review: Converts the selected HSL range to gamma-corrected RGB palette entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.c()V",
+      "originalName": "c",
+      "to": "centerProjection",
+      "evidence": "Source-purpose review: Centers the projection in the current triangle rasterizer viewport.",
       "confidence": "reviewed"
     },
     {
@@ -3685,10 +3832,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.a(BII)Lud;",
+      "originalName": "a",
+      "to": "getMusicSampleByGroup",
+      "evidence": "Source-purpose review: Retrieves music PCM by archive group and file ID with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a(I)V",
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 2 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(IIZ)Lud;",
+      "originalName": "a",
+      "to": "getSoundEffectByGroup",
+      "evidence": "Source-purpose review: Retrieves a synthesized effect by archive group and file ID with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(II[II)Lud;",
+      "originalName": "a",
+      "to": "loadMusicSample",
+      "evidence": "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(I[III)Lud;",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM.",
       "confidence": "reviewed"
     },
     {
@@ -4893,6 +5068,34 @@
       "originalName": "g",
       "to": "getData",
       "evidence": "Source-purpose review: Returns the original disk payload or network buffer array on the original ready path. Preserve pending/incomplete RuntimeException/null behavior,all aliases,guard-triggered mutations/recursion/helper calls and full parameter domains. Rename the complete disk/root/network family together. Owning body/abstract declaration and bound incoming contexts reviewed;preserve modifiers,descriptors,unselected leaves and all literal values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a()Lud;",
+      "originalName": "a",
+      "to": "toPcmSample",
+      "evidence": "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a(Lpf;II)Lkj;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Reads and decodes the indexed sound effect from its archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a(Lpf;Ljava/lang/String;Ljava/lang/String;)Lkj;",
+      "originalName": "a",
+      "to": "loadByName",
+      "evidence": "Source-purpose review: Reads and decodes a sound effect from its archive by group and file names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.b()[B",
+      "originalName": "b",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
       "confidence": "reviewed"
     },
     {
@@ -6478,10 +6681,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qg.a()V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Resets the envelope segment cursor and interpolation state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(I)I",
+      "originalName": "a",
+      "to": "step",
+      "evidence": "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qg.a(Lka;)V",
       "originalName": "a",
       "to": "decodeSegments",
       "evidence": "Read the envelope segment count,allocate the two retained segment arrays,and read paired unsigned16-bit values per segment. Preserve every actual packet-reader argument,allocation/write order and partial state. Pre-rename body SHA256 2980c972620e86b6325c46819296e48b3e0a93107a12492b0c8641ec4c60a0ef. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.b(Lka;)V",
+      "originalName": "b",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -6905,10 +7129,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sc.a()V",
+      "originalName": "a",
+      "to": "calculateBounds",
+      "evidence": "Source-purpose review: Computes mesh bounds and the bounding radius from the vertex coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.a(II)I",
+      "originalName": "a",
+      "to": "scaleHslLightness",
+      "evidence": "Source-purpose review: Multiplies the HSL lightness by a shading factor and clamps its result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.a(IIIIIIII)Z",
+      "originalName": "a",
+      "to": "isPointInTriangleBounds",
+      "evidence": "Source-purpose review: Tests whether a point is within the bounds of the three projected triangle vertices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.a(IIIIIIIJ)V",
+      "originalName": "a",
+      "to": "drawPerspective",
+      "evidence": "Source-purpose review: Transforms mesh vertices into camera space, projects them and dispatches the visible faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.a(ZZJII)V",
+      "originalName": "a",
+      "to": "drawFaces",
+      "evidence": "Source-purpose review: Builds the depth and priority ordering of the mesh faces and renders them in that order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sc.b()V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 22 null writes to 22 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 bb6348f46f92c6fefa761e7f1c25662ff9ae7cfe8625c889c6af3ad4051883e1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.c(I)I",
+      "originalName": "c",
+      "to": "clampHslLightness",
+      "evidence": "Source-purpose review: Clamps an HSL lightness value to the drawable range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.d(I)V",
+      "originalName": "d",
+      "to": "drawFace",
+      "evidence": "Source-purpose review: Draws a single face using its colour and texture data or delegates to near-plane clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.e(I)V",
+      "originalName": "e",
+      "to": "drawNearClippedFace",
+      "evidence": "Source-purpose review: Clips a face at the near plane, interpolates its replacement vertices and draws the remaining triangles.",
       "confidence": "reviewed"
     },
     {
@@ -7469,6 +7749,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 8 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 981d4d9ecf5b302056d2b9ac7f612444d61d30ef6d0a2b09c8c6afc1784a1950.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(III)I",
+      "originalName": "a",
+      "to": "evaluateWaveform",
+      "evidence": "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(Lka;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -8041,7 +8342,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "97b7aa7d036dd4ab22cb040327f7662abf7881c492f68aebda77d4c48fdaf81f",
+      "stellarshard-names.json": "922f9fcea761dfd5175fc86b2adb95e08d01454c3855c4136a9a7d94b1d262e5",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

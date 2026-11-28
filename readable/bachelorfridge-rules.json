@@ -1340,6 +1340,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:i",
+      "originalName": "i",
+      "to": "SoundCache",
+      "evidence": "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:iaa",
       "originalName": "iaa",
       "to": "MeshObject",
@@ -8207,6 +8214,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:i.a(IB[I)Lbe;",
+      "originalName": "a",
+      "to": "loadMusicSampleById",
+      "evidence": "Source-purpose review: Resolves the numeric music sample ID against the archive layout and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(IIB[I)Lbe;",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(II[II)Lbe;",
+      "originalName": "a",
+      "to": "loadMusicSample",
+      "evidence": "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(I[II)Lbe;",
+      "originalName": "a",
+      "to": "loadSoundEffectById",
+      "evidence": "Source-purpose review: Resolves the numeric effect ID against the archive layout and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(Ljava/lang/String;Ljava/lang/String;B)Lbe;",
+      "originalName": "a",
+      "to": "getMusicSampleByName",
+      "evidence": "Source-purpose review: Retrieves music PCM by archive name with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(Ljava/lang/String;Ljava/lang/String;I)Lbe;",
+      "originalName": "a",
+      "to": "getSoundEffectByName",
+      "evidence": "Source-purpose review: Retrieves a synthesized effect by archive name with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(Ljava/lang/String;[ILjava/lang/String;I)Lbe;",
+      "originalName": "a",
+      "to": "loadSoundEffectByName",
+      "evidence": "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a([IILjava/lang/String;Ljava/lang/String;)Lbe;",
+      "originalName": "a",
+      "to": "loadMusicSampleByName",
+      "evidence": "Source-purpose review: Resolves names in the music archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ia.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -8613,10 +8676,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.a()I",
+      "originalName": "a",
+      "to": "getClipLeft",
+      "evidence": "Source-purpose review: Returns the viewport left coordinate from the first scanline offset and raster stride.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(F)V",
+      "originalName": "a",
+      "to": "setRandomizedGamma",
+      "evidence": "Source-purpose review: Stores gamma with a small random offset used to generate the palette.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.a(II)I",
       "originalName": "a",
       "to": "scaleHslLightness",
       "evidence": "Body is token-identical to the reviewed TriangleRasterizer method of the same name in other FunOrb games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(III)V",
+      "originalName": "a",
+      "to": "setHorizontalClippingForTriangle",
+      "evidence": "Source-purpose review: Enables span clipping when any projected triangle x-coordinate lies outside the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(IIII)V",
+      "originalName": "a",
+      "to": "setClip",
+      "evidence": "Source-purpose review: Sets viewport bounds and builds per-row offsets into the shared software raster.",
       "confidence": "reviewed"
     },
     {
@@ -8634,6 +8725,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.a(IIIIIIIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedTriangle",
+      "evidence": "Source-purpose review: Projects triangle texture coordinates, then renders textured spans or a shaded fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(Loh;)V",
+      "originalName": "a",
+      "to": "setTextureProvider",
+      "evidence": "Source-purpose review: Stores the texture source used by the textured triangle renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.a([IIIIII)V",
       "originalName": "a",
       "to": "drawFlatSpan",
@@ -8648,6 +8753,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.a([I[IIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedSpan",
+      "evidence": "Source-purpose review: Samples a texture along one horizontal span with perspective-correct interpolation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.b()V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -8655,10 +8767,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.b(F)V",
+      "originalName": "b",
+      "to": "rebuildPaletteWithGamma",
+      "evidence": "Source-purpose review: Updates gamma and rebuilds the complete HSL colour palette.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.b(II)V",
       "originalName": "b",
       "to": "setProjectionCenter",
       "evidence": "Body is token-identical to the reviewed TriangleRasterizer method of the same name in other FunOrb games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.c()I",
+      "originalName": "c",
+      "to": "getClipTop",
+      "evidence": "Source-purpose review: Returns the viewport top coordinate from the first scanline offset and raster stride.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.c(II)V",
+      "originalName": "c",
+      "to": "buildColorPaletteRange",
+      "evidence": "Source-purpose review: Converts the selected HSL range to gamma-corrected RGB palette entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.d()V",
+      "originalName": "d",
+      "to": "useRasterClip",
+      "evidence": "Source-purpose review: Copies the software raster clipping rectangle into the triangle rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.e()V",
+      "originalName": "e",
+      "to": "centerProjection",
+      "evidence": "Source-purpose review: Centers the projection in the current triangle rasterizer viewport.",
       "confidence": "reviewed"
     },
     {
@@ -9593,6 +9740,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kd.b(Llu;)V",
+      "originalName": "b",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kda.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -9653,6 +9807,27 @@
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kia.a()V",
+      "originalName": "a",
+      "to": "buildPatchUsage",
+      "evidence": "Source-purpose review: Scans MIDI channel messages to mark the instrument patches and notes used by the track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kia.a(Lvr;Ljava/lang/String;Ljava/lang/String;)Lkia;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kia.b()V",
+      "originalName": "b",
+      "to": "releasePatchUsage",
+      "evidence": "Source-purpose review: Discards the per-patch note usage table so it can be rebuilt on demand.",
       "confidence": "reviewed"
     },
     {
@@ -14661,10 +14836,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sda.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sda.a(III)I",
       "originalName": "a",
       "to": "evaluateWaveform",
       "evidence": "Body is token-identical to the reviewed SynthInstrument method of the same name in other FunOrb games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sda.a(Llu;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -16383,10 +16572,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vga.a(I)I",
+      "originalName": "a",
+      "to": "readMessage",
+      "evidence": "Source-purpose review: Returns the next MIDI message or meta-event code from the current track position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.a(II)I",
+      "originalName": "a",
+      "to": "decodeMessagePayload",
+      "evidence": "Source-purpose review: Reads the data bytes for a MIDI message or processes a meta event, including tempo changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.a(J)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Restarts all MIDI tracks at the supplied time origin and reads each first delta.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.a([B)V",
+      "originalName": "a",
+      "to": "parse",
+      "evidence": "Source-purpose review: Reads the MIDI division and track chunk offsets and initializes independent track state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vga.b()V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.b(I)J",
+      "originalName": "b",
+      "to": "tickTime",
+      "evidence": "Source-purpose review: Converts a MIDI tick to playback time using the current tempo and time origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.c()I",
+      "originalName": "c",
+      "to": "trackCount",
+      "evidence": "Source-purpose review: Returns the number of tracks in the parsed MIDI file.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.c(I)V",
+      "originalName": "c",
+      "to": "seekTrack",
+      "evidence": "Source-purpose review: Moves the input cursor to the saved position of the supplied track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.d()V",
+      "originalName": "d",
+      "to": "markTrackDone",
+      "evidence": "Source-purpose review: Marks the current cursor as exhausted before saving the track’s position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.d(I)I",
+      "originalName": "d",
+      "to": "readNextMessage",
+      "evidence": "Source-purpose review: Handles MIDI running status and system-exclusive events before decoding the message payload.",
       "confidence": "reviewed"
     },
     {
@@ -16397,10 +16649,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vga.e(I)V",
+      "originalName": "e",
+      "to": "readDelta",
+      "evidence": "Source-purpose review: Reads the variable-length delta and accumulates it in the supplied track’s tick counter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vga.f()Z",
       "originalName": "f",
       "to": "hasMidiData",
       "evidence": "Test whether the retained MIDI decoder byte buffer is non-null,without adding state/range checks or substituting track state. Complete original-body SHA256 b92813778977f2b7575450dec7ff43b2dd11b896d491151ed1d27384d02eb4f0. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vga.f(I)V",
+      "originalName": "f",
+      "to": "saveTrackPosition",
+      "evidence": "Source-purpose review: Saves the current input cursor as the resume position for the supplied track.",
       "confidence": "reviewed"
     },
     {
@@ -16569,6 +16835,20 @@
       "originalName": "i",
       "to": "notifyTextChanged",
       "evidence": "Source-purpose review: Dispatches the field edit to the listener and allows validated text fields to notify their validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a()[B",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(Lvr;II)Lvp;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Reads and decodes the indexed sound effect from its archive.",
       "confidence": "reviewed"
     },
     {
@@ -17407,7 +17687,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "1a0f2688457156439318e458b998b4274ad5e005ee49d1612ee6f3114d9c7b87",
+      "bachelorfridge-names.json": "98062194db50a18ccef25cffc24423f00c1de7758dafae6b8c889bed0ae7cf24",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

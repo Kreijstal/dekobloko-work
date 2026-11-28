@@ -1004,6 +1004,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:da",
+      "originalName": "da",
+      "to": "SoundCache",
+      "evidence": "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:db",
       "originalName": "db",
       "to": "MouseInputHandler",
@@ -1134,6 +1141,20 @@
       "originalName": "fi",
       "to": "EmailFormatValidator",
       "evidence": "Checks the account email address and supplies feedback when the format is invalid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fj",
+      "originalName": "fj",
+      "to": "SoundEnvelope",
+      "evidence": "Decodes timed amplitude segments and interpolates the current value as synthesis advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fk",
+      "originalName": "fk",
+      "to": "MidiFileReader",
+      "evidence": "Reads MIDI track chunks and tracks the cursor, tick and running status of each track.",
       "confidence": "reviewed"
     },
     {
@@ -1522,6 +1543,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oc",
+      "originalName": "oc",
+      "to": "SynthesizedSoundEffect",
+      "evidence": "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:of",
       "originalName": "of",
       "to": "ImageProducerRasterBuffer",
@@ -1568,6 +1596,13 @@
       "originalName": "ph",
       "to": "PasswordValidator",
       "evidence": "Checks the proposed account password and supplies feedback about invalid or unsuitable input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pi",
+      "originalName": "pi",
+      "to": "SynthesizerVoice",
+      "evidence": "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter.",
       "confidence": "reviewed"
     },
     {
@@ -1729,6 +1764,13 @@
       "originalName": "tj",
       "to": "AccountCreationResultPanel",
       "evidence": "Complete instance contract source-reviewed: one constructor, three fields and four methods for pending result polling, private success/error/status/suggestion display, callback navigation and248 fallback handling. Full DTO/factory/poller and success-label context establishes role. Preserve all superclass/interface overrides, guard failures, allocation/write/call ordering and unrelated statics. All owned/type-use declarations non-native; exact quoted owned class names absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tk",
+      "originalName": "tk",
+      "to": "MusicTrack",
+      "evidence": "Expands the packed track data into MIDI and records which instrument patches and notes it uses.",
       "confidence": "reviewed"
     },
     {
@@ -3356,6 +3398,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:da.a(BI[I)Lgg;",
+      "originalName": "a",
+      "to": "loadSoundEffectById",
+      "evidence": "Source-purpose review: Resolves the numeric effect ID against the archive layout and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(B[II)Lgg;",
+      "originalName": "a",
+      "to": "loadMusicSampleById",
+      "evidence": "Source-purpose review: Resolves the numeric music sample ID against the archive layout and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Clears the static object references declared by this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IB[II)Lgg;",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(II[II)Lgg;",
+      "originalName": "a",
+      "to": "loadMusicSample",
+      "evidence": "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(ILjava/lang/String;)Lgg;",
+      "originalName": "a",
+      "to": "getMusicSampleByName",
+      "evidence": "Source-purpose review: Retrieves music PCM by archive name with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(ILjava/lang/String;[I)Lgg;",
+      "originalName": "a",
+      "to": "loadMusicSampleByName",
+      "evidence": "Source-purpose review: Resolves names in the music archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(Ljava/lang/String;B[ILjava/lang/String;)Lgg;",
+      "originalName": "a",
+      "to": "loadSoundEffectByName",
+      "evidence": "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(Ljava/lang/String;I)Lgg;",
+      "originalName": "a",
+      "to": "getSoundEffectByName",
+      "evidence": "Source-purpose review: Retrieves a synthesized effect by archive name with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(Ljava/lang/String;Ljava/lang/String;B[I)Lgg;",
+      "originalName": "a",
+      "to": "loadMusicSampleByName",
+      "evidence": "Source-purpose review: Resolves names in the music archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a([ILjava/lang/String;I)Lgg;",
+      "originalName": "a",
+      "to": "loadSoundEffectByName",
+      "evidence": "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:db.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4560,6 +4679,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.a()V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Resets the envelope segment cursor and interpolation state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(I)I",
+      "originalName": "a",
+      "to": "step",
+      "evidence": "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(Ldh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.b(Ldh;)V",
       "originalName": "b",
       "to": "decodeSegments",
@@ -4574,10 +4714,108 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fk.a(I)V",
+      "originalName": "a",
+      "to": "readDelta",
+      "evidence": "Source-purpose review: Reads the variable-length delta and accumulates it in the supplied track’s tick counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(II)I",
+      "originalName": "a",
+      "to": "decodeMessagePayload",
+      "evidence": "Source-purpose review: Reads the data bytes for a MIDI message or processes a meta event, including tempo changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(J)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Restarts all MIDI tracks at the supplied time origin and reads each first delta.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a([B)V",
+      "originalName": "a",
+      "to": "parse",
+      "evidence": "Source-purpose review: Reads the MIDI division and track chunk offsets and initializes independent track state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.b()Z",
+      "originalName": "b",
+      "to": "isDone",
+      "evidence": "Source-purpose review: Checks whether all track positions are exhausted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.b(I)J",
+      "originalName": "b",
+      "to": "tickTime",
+      "evidence": "Source-purpose review: Converts a MIDI tick to playback time using the current tempo and time origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.c()V",
+      "originalName": "c",
+      "to": "release",
+      "evidence": "Source-purpose review: Releases the input buffer payload and the per-track state arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.c(I)V",
+      "originalName": "c",
+      "to": "seekTrack",
+      "evidence": "Source-purpose review: Moves the input cursor to the saved position of the supplied track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.d()V",
+      "originalName": "d",
+      "to": "markTrackDone",
+      "evidence": "Source-purpose review: Marks the current cursor as exhausted before saving the track’s position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.d(I)I",
+      "originalName": "d",
+      "to": "readNextMessage",
+      "evidence": "Source-purpose review: Handles MIDI running status and system-exclusive events before decoding the message payload.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fk.e()Z",
       "originalName": "e",
       "to": "hasMidiData",
       "evidence": "Test whether the retained MIDI decoder byte buffer is non-null,without adding state/range checks or substituting track state. Complete original-body SHA256 50b6e32a75d2f572af940ba829816d063732732735dfc311662a4b3f9f4359c5. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.e(I)V",
+      "originalName": "e",
+      "to": "saveTrackPosition",
+      "evidence": "Source-purpose review: Saves the current input cursor as the resume position for the supplied track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.f()I",
+      "originalName": "f",
+      "to": "nextTrack",
+      "evidence": "Source-purpose review: Finds the active track with the earliest pending tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.f(I)I",
+      "originalName": "f",
+      "to": "readMessage",
+      "evidence": "Source-purpose review: Returns the next MIDI message or meta-event code from the current track position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.g()I",
+      "originalName": "g",
+      "to": "trackCount",
+      "evidence": "Source-purpose review: Returns the number of tracks in the parsed MIDI file.",
       "confidence": "reviewed"
     },
     {
@@ -7206,6 +7444,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oc.a()Lgg;",
+      "originalName": "a",
+      "to": "toPcmSample",
+      "evidence": "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(Lfa;II)Loc;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Reads and decodes the indexed sound effect from its archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.b()[B",
+      "originalName": "b",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -7371,6 +7630,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 8 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 98b11b7d032026311a26e4d4d07a80c1c88463f81b20cdd6f5f41a328302306b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(III)I",
+      "originalName": "a",
+      "to": "evaluateWaveform",
+      "evidence": "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(Ldh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -8330,6 +8610,27 @@
       "originalName": "q",
       "to": "showAccountCreationConnectionFailure",
       "evidence": "Source-purpose review: Creates a connection error result and passes it to the account creation result handler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.a()V",
+      "originalName": "a",
+      "to": "buildPatchUsage",
+      "evidence": "Source-purpose review: Scans MIDI channel messages to mark the instrument patches and notes used by the track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.a(Lfa;Ljava/lang/String;Ljava/lang/String;)Ltk;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.b()V",
+      "originalName": "b",
+      "to": "releasePatchUsage",
+      "evidence": "Source-purpose review: Discards the per-patch note usage table so it can be rebuilt on demand.",
       "confidence": "reviewed"
     },
     {
@@ -9826,7 +10127,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-terraphoenix-rules.mjs": "2b9ef0307d7e8ad8295f9a6d9e8e1d74cc01f0b1d1f8bbcad95b45bfce2e3b38",
-      "terraphoenix-names.json": "155fc63de3f7914037c91bc3e3b1797dd9c13c5f0bbdb79d0a06d3d3cd920786",
+      "terraphoenix-names.json": "0833b7b78653650b143b7ce19f517ed60b9d4b8f44bd3ca7a6de752f9a82a7ce",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

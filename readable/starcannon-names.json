@@ -514,6 +514,26 @@
       "pi",
       "VorbisMapping",
       "Reads the submap selector and the floor and residue indices for each Vorbis submap."
+    ],
+    [
+      "ja",
+      "SoundCache",
+      "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive."
+    ],
+    [
+      "aj",
+      "SynthesizedSoundEffect",
+      "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM."
+    ],
+    [
+      "je",
+      "SynthesizerVoice",
+      "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter."
+    ],
+    [
+      "mk",
+      "SoundEnvelope",
+      "Decodes timed amplitude segments and interpolates the current value as synthesis advances."
     ]
   ],
   "methods": [
@@ -7187,6 +7207,111 @@
       "([FIZ)V",
       "decodeResidue",
       "Source-purpose review: Accumulates spectral residue vectors for each partition using the configured codebooks."
+    ],
+    [
+      "ja",
+      "a",
+      "(IBI[I)Lud;",
+      "loadMusicSample",
+      "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM."
+    ],
+    [
+      "ja",
+      "a",
+      "([IIII)Lud;",
+      "loadSoundEffect",
+      "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM."
+    ],
+    [
+      "ja",
+      "a",
+      "(IIB)Lud;",
+      "getMusicSampleByGroup",
+      "Source-purpose review: Retrieves music PCM by archive group and file ID with an unlimited sample budget."
+    ],
+    [
+      "ja",
+      "b",
+      "(III)Lud;",
+      "getSoundEffectByGroup",
+      "Source-purpose review: Retrieves a synthesized effect by archive group and file ID with an unlimited sample budget."
+    ],
+    [
+      "aj",
+      "a",
+      "()Lud;",
+      "toPcmSample",
+      "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second."
+    ],
+    [
+      "aj",
+      "b",
+      "()[B",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "aj",
+      "a",
+      "(Lue;II)Laj;",
+      "load",
+      "Source-purpose review: Reads and decodes the indexed sound effect from its archive."
+    ],
+    [
+      "aj",
+      "a",
+      "(Lue;Ljava/lang/String;Ljava/lang/String;)Laj;",
+      "loadByName",
+      "Source-purpose review: Reads and decodes a sound effect from its archive by group and file names."
+    ],
+    [
+      "je",
+      "a",
+      "(II)[I",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "je",
+      "a",
+      "(Lrb;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "je",
+      "a",
+      "(III)I",
+      "evaluateWaveform",
+      "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude."
+    ],
+    [
+      "mk",
+      "a",
+      "(Lrb;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "mk",
+      "a",
+      "()V",
+      "reset",
+      "Source-purpose review: Resets the envelope segment cursor and interpolation state."
+    ],
+    [
+      "mk",
+      "a",
+      "(I)I",
+      "step",
+      "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value."
+    ],
+    [
+      "ja",
+      "a",
+      "(III)I",
+      "findMenuActionAt",
+      "Source-purpose review: Walks the visible text menu rows and returns the action assigned to the first row containing the pointer."
     ]
   ],
   "fields": [

@@ -499,6 +499,36 @@
       "oa",
       "VorbisMapping",
       "Reads the submap selector and the floor and residue indices for each Vorbis submap."
+    ],
+    [
+      "fi",
+      "SoundCache",
+      "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive."
+    ],
+    [
+      "cg",
+      "SynthesizedSoundEffect",
+      "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM."
+    ],
+    [
+      "ma",
+      "SynthesizerVoice",
+      "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter."
+    ],
+    [
+      "td",
+      "SoundEnvelope",
+      "Decodes timed amplitude segments and interpolates the current value as synthesis advances."
+    ],
+    [
+      "be",
+      "TriangleRasterizer",
+      "Rasterizes flat, shaded, or perspective-textured triangles into the software raster."
+    ],
+    [
+      "pj",
+      "LitModelMesh",
+      "Stores the vertex and face data and per-face shading prepared from source mesh geometry."
     ]
   ],
   "methods": [
@@ -8054,6 +8084,265 @@
       "([FIZ)V",
       "decodeResidue",
       "Source-purpose review: Accumulates spectral residue vectors for each partition using the configured codebooks."
+    ],
+    [
+      "fi",
+      "a",
+      "(II[IB)Lgg;",
+      "loadMusicSample",
+      "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM."
+    ],
+    [
+      "fi",
+      "a",
+      "([IIII)Lgg;",
+      "loadSoundEffect",
+      "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM."
+    ],
+    [
+      "fi",
+      "a",
+      "(IIB)Lgg;",
+      "getSoundEffectByGroup",
+      "Source-purpose review: Retrieves a synthesized effect by archive group and file ID with an unlimited sample budget."
+    ],
+    [
+      "fi",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;[IB)Lgg;",
+      "loadMusicSampleByName",
+      "Source-purpose review: Resolves names in the music archive and loads the PCM with a sample budget."
+    ],
+    [
+      "fi",
+      "b",
+      "(IIB)Lgg;",
+      "getMusicSampleByGroup",
+      "Source-purpose review: Retrieves music PCM by archive group and file ID with an unlimited sample budget."
+    ],
+    [
+      "fi",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;)Lgg;",
+      "getMusicSampleByName",
+      "Source-purpose review: Retrieves music PCM by archive name with an unlimited sample budget."
+    ],
+    [
+      "cg",
+      "b",
+      "()Lgg;",
+      "toPcmSample",
+      "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second."
+    ],
+    [
+      "cg",
+      "a",
+      "()[B",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "cg",
+      "a",
+      "(Lla;II)Lcg;",
+      "load",
+      "Source-purpose review: Reads and decodes the indexed sound effect from its archive."
+    ],
+    [
+      "cg",
+      "a",
+      "(Lla;Ljava/lang/String;Ljava/lang/String;)Lcg;",
+      "loadByName",
+      "Source-purpose review: Reads and decodes a sound effect from its archive by group and file names."
+    ],
+    [
+      "ma",
+      "a",
+      "(II)[I",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "ma",
+      "a",
+      "(Lfj;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "ma",
+      "a",
+      "(III)I",
+      "evaluateWaveform",
+      "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude."
+    ],
+    [
+      "td",
+      "a",
+      "(Lfj;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "td",
+      "a",
+      "()V",
+      "reset",
+      "Source-purpose review: Resets the envelope segment cursor and interpolation state."
+    ],
+    [
+      "td",
+      "a",
+      "(I)I",
+      "step",
+      "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value."
+    ],
+    [
+      "fi",
+      "a",
+      "(B[B)Lvn;",
+      "createBinaryBitmapFont",
+      "Source-purpose review: Constructs a binary bitmap font from the supplied bytes and the decoded glyph data."
+    ],
+    [
+      "fi",
+      "a",
+      "(I)V",
+      "clearStaticReferences",
+      "Source-purpose review: Clears the static object references declared by this class."
+    ],
+    [
+      "fi",
+      "a",
+      "(Lq;Lq;I)V",
+      "insertNodeAfter",
+      "Source-purpose review: Unlinks an intrusive node if necessary and inserts it immediately after the supplied anchor."
+    ],
+    [
+      "be",
+      "a",
+      "()V",
+      "useRasterClip",
+      "Source-purpose review: Copies the software raster clipping rectangle into the triangle rasterizer."
+    ],
+    [
+      "be",
+      "a",
+      "(F)V",
+      "rebuildPaletteWithGamma",
+      "Source-purpose review: Updates gamma and rebuilds the complete HSL colour palette."
+    ],
+    [
+      "be",
+      "a",
+      "(II)I",
+      "modulateHslLightness",
+      "Source-purpose review: Scales the HSL lightness component and clamps it to the supported range."
+    ],
+    [
+      "be",
+      "a",
+      "(IIII)V",
+      "setClip",
+      "Source-purpose review: Sets viewport bounds and builds per-row offsets into the shared software raster."
+    ],
+    [
+      "be",
+      "a",
+      "(IIIIIII)V",
+      "drawFlatTriangle",
+      "Source-purpose review: Walks the edges of a triangle and fills its spans with one colour."
+    ],
+    [
+      "be",
+      "a",
+      "(IIIIIIIII)V",
+      "drawShadedTriangle",
+      "Source-purpose review: Walks the edges of a triangle and interpolates its vertex colours across spans."
+    ],
+    [
+      "be",
+      "a",
+      "(IIIIIIIIIIIIIIIIIII)V",
+      "drawTexturedTriangle",
+      "Source-purpose review: Projects triangle texture coordinates, then renders textured spans or a shaded fallback."
+    ],
+    [
+      "be",
+      "a",
+      "(Lec;)V",
+      "setTextureProvider",
+      "Source-purpose review: Stores the texture source used by the textured triangle renderer."
+    ],
+    [
+      "be",
+      "a",
+      "([IIIIII)V",
+      "drawFlatSpan",
+      "Source-purpose review: Writes a horizontal span of one colour, applying clipping and alpha blending."
+    ],
+    [
+      "be",
+      "a",
+      "([IIIIIIII)V",
+      "drawShadedSpan",
+      "Source-purpose review: Interpolates palette shades and writes one horizontal span of a shaded triangle."
+    ],
+    [
+      "be",
+      "a",
+      "([I[IIIIIIIIIIIIII)V",
+      "drawTexturedSpan",
+      "Source-purpose review: Samples a texture along one horizontal span with perspective-correct interpolation."
+    ],
+    [
+      "be",
+      "b",
+      "(F)V",
+      "setRandomizedGamma",
+      "Source-purpose review: Stores gamma with a small random offset used to generate the palette."
+    ],
+    [
+      "be",
+      "b",
+      "(II)V",
+      "buildColorPaletteRange",
+      "Source-purpose review: Converts the selected HSL range to gamma-corrected RGB palette entries."
+    ],
+    [
+      "be",
+      "c",
+      "()V",
+      "centerProjection",
+      "Source-purpose review: Centers the projection in the current triangle rasterizer viewport."
+    ],
+    [
+      "pj",
+      "a",
+      "()I",
+      "getBoundingRadius",
+      "Source-purpose review: Returns the bounding radius, computing it on first use."
+    ],
+    [
+      "pj",
+      "a",
+      "(I)I",
+      "clampHslLightness",
+      "Source-purpose review: Clamps an HSL lightness value to the drawable range."
+    ],
+    [
+      "pj",
+      "a",
+      "(II)I",
+      "scaleHslLightness",
+      "Source-purpose review: Multiplies the HSL lightness by a shading factor and clamps its result."
+    ],
+    [
+      "pj",
+      "b",
+      "()V",
+      "calculateBounds",
+      "Source-purpose review: Computes mesh bounds and the bounding radius from the vertex coordinates."
     ]
   ],
   "fields": [

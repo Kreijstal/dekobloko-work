@@ -389,6 +389,11 @@
       "uma",
       "NumericDateInputWidget",
       "Composes separate editable fields for the day, month and year of a birth date."
+    ],
+    [
+      "i",
+      "SoundCache",
+      "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive."
     ]
   ],
   "methods": [
@@ -6425,6 +6430,279 @@
       "(Lvr;Ljava/lang/String;Ljava/lang/String;)Ldv;",
       "loadByName",
       "Source-purpose review: Loads the archive entry by group and file name and constructs the sample after checking codec setup."
+    ],
+    [
+      "i",
+      "a",
+      "(II[II)Lbe;",
+      "loadMusicSample",
+      "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM."
+    ],
+    [
+      "i",
+      "a",
+      "(IIB[I)Lbe;",
+      "loadSoundEffect",
+      "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM."
+    ],
+    [
+      "i",
+      "a",
+      "(IB[I)Lbe;",
+      "loadMusicSampleById",
+      "Source-purpose review: Resolves the numeric music sample ID against the archive layout and loads the PCM with a sample budget."
+    ],
+    [
+      "i",
+      "a",
+      "(I[II)Lbe;",
+      "loadSoundEffectById",
+      "Source-purpose review: Resolves the numeric effect ID against the archive layout and loads the PCM with a sample budget."
+    ],
+    [
+      "i",
+      "a",
+      "(Ljava/lang/String;[ILjava/lang/String;I)Lbe;",
+      "loadSoundEffectByName",
+      "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget."
+    ],
+    [
+      "i",
+      "a",
+      "([IILjava/lang/String;Ljava/lang/String;)Lbe;",
+      "loadMusicSampleByName",
+      "Source-purpose review: Resolves names in the music archive and loads the PCM with a sample budget."
+    ],
+    [
+      "i",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;B)Lbe;",
+      "getMusicSampleByName",
+      "Source-purpose review: Retrieves music PCM by archive name with an unlimited sample budget."
+    ],
+    [
+      "i",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;I)Lbe;",
+      "getSoundEffectByName",
+      "Source-purpose review: Retrieves a synthesized effect by archive name with an unlimited sample budget."
+    ],
+    [
+      "vp",
+      "a",
+      "()[B",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "vp",
+      "a",
+      "(Lvr;II)Lvp;",
+      "load",
+      "Source-purpose review: Reads and decodes the indexed sound effect from its archive."
+    ],
+    [
+      "sda",
+      "a",
+      "(II)[I",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "sda",
+      "a",
+      "(Llu;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "kd",
+      "b",
+      "(Llu;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "vga",
+      "a",
+      "(I)I",
+      "readMessage",
+      "Source-purpose review: Returns the next MIDI message or meta-event code from the current track position."
+    ],
+    [
+      "vga",
+      "a",
+      "(II)I",
+      "decodeMessagePayload",
+      "Source-purpose review: Reads the data bytes for a MIDI message or processes a meta event, including tempo changes."
+    ],
+    [
+      "vga",
+      "a",
+      "(J)V",
+      "reset",
+      "Source-purpose review: Restarts all MIDI tracks at the supplied time origin and reads each first delta."
+    ],
+    [
+      "vga",
+      "a",
+      "([B)V",
+      "parse",
+      "Source-purpose review: Reads the MIDI division and track chunk offsets and initializes independent track state."
+    ],
+    [
+      "vga",
+      "b",
+      "(I)J",
+      "tickTime",
+      "Source-purpose review: Converts a MIDI tick to playback time using the current tempo and time origin."
+    ],
+    [
+      "vga",
+      "c",
+      "()I",
+      "trackCount",
+      "Source-purpose review: Returns the number of tracks in the parsed MIDI file."
+    ],
+    [
+      "vga",
+      "c",
+      "(I)V",
+      "seekTrack",
+      "Source-purpose review: Moves the input cursor to the saved position of the supplied track."
+    ],
+    [
+      "vga",
+      "d",
+      "()V",
+      "markTrackDone",
+      "Source-purpose review: Marks the current cursor as exhausted before saving the track’s position."
+    ],
+    [
+      "vga",
+      "d",
+      "(I)I",
+      "readNextMessage",
+      "Source-purpose review: Handles MIDI running status and system-exclusive events before decoding the message payload."
+    ],
+    [
+      "vga",
+      "e",
+      "(I)V",
+      "readDelta",
+      "Source-purpose review: Reads the variable-length delta and accumulates it in the supplied track’s tick counter."
+    ],
+    [
+      "vga",
+      "f",
+      "(I)V",
+      "saveTrackPosition",
+      "Source-purpose review: Saves the current input cursor as the resume position for the supplied track."
+    ],
+    [
+      "jb",
+      "a",
+      "()I",
+      "getClipLeft",
+      "Source-purpose review: Returns the viewport left coordinate from the first scanline offset and raster stride."
+    ],
+    [
+      "jb",
+      "a",
+      "(F)V",
+      "setRandomizedGamma",
+      "Source-purpose review: Stores gamma with a small random offset used to generate the palette."
+    ],
+    [
+      "jb",
+      "a",
+      "(III)V",
+      "setHorizontalClippingForTriangle",
+      "Source-purpose review: Enables span clipping when any projected triangle x-coordinate lies outside the viewport."
+    ],
+    [
+      "jb",
+      "a",
+      "(IIII)V",
+      "setClip",
+      "Source-purpose review: Sets viewport bounds and builds per-row offsets into the shared software raster."
+    ],
+    [
+      "jb",
+      "a",
+      "(IIIIIIIIIIIIIIIIIII)V",
+      "drawTexturedTriangle",
+      "Source-purpose review: Projects triangle texture coordinates, then renders textured spans or a shaded fallback."
+    ],
+    [
+      "jb",
+      "a",
+      "(Loh;)V",
+      "setTextureProvider",
+      "Source-purpose review: Stores the texture source used by the textured triangle renderer."
+    ],
+    [
+      "jb",
+      "a",
+      "([I[IIIIIIIIIIIIII)V",
+      "drawTexturedSpan",
+      "Source-purpose review: Samples a texture along one horizontal span with perspective-correct interpolation."
+    ],
+    [
+      "jb",
+      "b",
+      "(F)V",
+      "rebuildPaletteWithGamma",
+      "Source-purpose review: Updates gamma and rebuilds the complete HSL colour palette."
+    ],
+    [
+      "jb",
+      "c",
+      "()I",
+      "getClipTop",
+      "Source-purpose review: Returns the viewport top coordinate from the first scanline offset and raster stride."
+    ],
+    [
+      "jb",
+      "c",
+      "(II)V",
+      "buildColorPaletteRange",
+      "Source-purpose review: Converts the selected HSL range to gamma-corrected RGB palette entries."
+    ],
+    [
+      "jb",
+      "d",
+      "()V",
+      "useRasterClip",
+      "Source-purpose review: Copies the software raster clipping rectangle into the triangle rasterizer."
+    ],
+    [
+      "jb",
+      "e",
+      "()V",
+      "centerProjection",
+      "Source-purpose review: Centers the projection in the current triangle rasterizer viewport."
+    ],
+    [
+      "kia",
+      "a",
+      "()V",
+      "buildPatchUsage",
+      "Source-purpose review: Scans MIDI channel messages to mark the instrument patches and notes used by the track."
+    ],
+    [
+      "kia",
+      "b",
+      "()V",
+      "releasePatchUsage",
+      "Source-purpose review: Discards the per-patch note usage table so it can be rebuilt on demand."
+    ],
+    [
+      "kia",
+      "a",
+      "(Lvr;Ljava/lang/String;Ljava/lang/String;)Lkia;",
+      "load",
+      "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation."
     ]
   ],
   "fields": [

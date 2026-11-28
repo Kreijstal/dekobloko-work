@@ -644,6 +644,36 @@
       "wc",
       "VorbisMapping",
       "Reads the submap selector and the floor and residue indices for each Vorbis submap."
+    ],
+    [
+      "lc",
+      "SoundCache",
+      "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive."
+    ],
+    [
+      "v",
+      "SynthesizedSoundEffect",
+      "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM."
+    ],
+    [
+      "wg",
+      "SynthesizerVoice",
+      "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter."
+    ],
+    [
+      "fh",
+      "SoundEnvelope",
+      "Decodes timed amplitude segments and interpolates the current value as synthesis advances."
+    ],
+    [
+      "vm",
+      "MidiFileReader",
+      "Reads MIDI track chunks and tracks the cursor, tick and running status of each track."
+    ],
+    [
+      "vh",
+      "MusicTrack",
+      "Expands the packed track data into MIDI and records which instrument patches and notes it uses."
     ]
   ],
   "methods": [
@@ -9368,6 +9398,258 @@
       "([FIZ)V",
       "decodeResidue",
       "Source-purpose review: Accumulates spectral residue vectors for each partition using the configured codebooks."
+    ],
+    [
+      "lc",
+      "a",
+      "(III[I)Lva;",
+      "loadMusicSample",
+      "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM."
+    ],
+    [
+      "lc",
+      "a",
+      "([IIII)Lva;",
+      "loadSoundEffect",
+      "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM."
+    ],
+    [
+      "lc",
+      "a",
+      "(Ljava/lang/String;[IBLjava/lang/String;)Lva;",
+      "loadSoundEffectByName",
+      "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget."
+    ],
+    [
+      "lc",
+      "a",
+      "([IBI)Lva;",
+      "loadMusicSampleById",
+      "Source-purpose review: Resolves the numeric music sample ID against the archive layout and loads the PCM with a sample budget."
+    ],
+    [
+      "lc",
+      "a",
+      "([III)Lva;",
+      "loadSoundEffectById",
+      "Source-purpose review: Resolves the numeric effect ID against the archive layout and loads the PCM with a sample budget."
+    ],
+    [
+      "lc",
+      "a",
+      "([ILjava/lang/String;ILjava/lang/String;)Lva;",
+      "loadMusicSampleByName",
+      "Source-purpose review: Resolves names in the music archive and loads the PCM with a sample budget."
+    ],
+    [
+      "lc",
+      "a",
+      "(Ljava/lang/String;BLjava/lang/String;)Lva;",
+      "getMusicSampleByName",
+      "Source-purpose review: Retrieves music PCM by archive name with an unlimited sample budget."
+    ],
+    [
+      "lc",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;I)Lva;",
+      "getSoundEffectByName",
+      "Source-purpose review: Retrieves a synthesized effect by archive name with an unlimited sample budget."
+    ],
+    [
+      "v",
+      "a",
+      "()Lva;",
+      "toPcmSample",
+      "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second."
+    ],
+    [
+      "v",
+      "b",
+      "()[B",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "v",
+      "a",
+      "(Lnh;II)Lv;",
+      "load",
+      "Source-purpose review: Reads and decodes the indexed sound effect from its archive."
+    ],
+    [
+      "wg",
+      "a",
+      "(II)[I",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "wg",
+      "a",
+      "(Lec;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "wg",
+      "a",
+      "(III)I",
+      "evaluateWaveform",
+      "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude."
+    ],
+    [
+      "fh",
+      "b",
+      "(Lec;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "fh",
+      "a",
+      "()V",
+      "reset",
+      "Source-purpose review: Resets the envelope segment cursor and interpolation state."
+    ],
+    [
+      "fh",
+      "a",
+      "(I)I",
+      "step",
+      "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value."
+    ],
+    [
+      "lc",
+      "a",
+      "(ILcn;II)Lcn;",
+      "resizeSprite",
+      "Source-purpose review: Draws a sprite into a new raster, selecting area sampling when both dimensions are reduced."
+    ],
+    [
+      "lc",
+      "a",
+      "([BI)[B",
+      "decompressArchiveContainer",
+      "Source-purpose review: Reads the archive container header and copies or decompresses the payload according to its compression type."
+    ],
+    [
+      "vm",
+      "a",
+      "()I",
+      "trackCount",
+      "Source-purpose review: Returns the number of tracks in the parsed MIDI file."
+    ],
+    [
+      "vm",
+      "a",
+      "(I)V",
+      "saveTrackPosition",
+      "Source-purpose review: Saves the current input cursor as the resume position for the supplied track."
+    ],
+    [
+      "vm",
+      "a",
+      "(II)I",
+      "decodeMessagePayload",
+      "Source-purpose review: Reads the data bytes for a MIDI message or processes a meta event, including tempo changes."
+    ],
+    [
+      "vm",
+      "a",
+      "(J)V",
+      "reset",
+      "Source-purpose review: Restarts all MIDI tracks at the supplied time origin and reads each first delta."
+    ],
+    [
+      "vm",
+      "a",
+      "([B)V",
+      "parse",
+      "Source-purpose review: Reads the MIDI division and track chunk offsets and initializes independent track state."
+    ],
+    [
+      "vm",
+      "b",
+      "()I",
+      "nextTrack",
+      "Source-purpose review: Finds the active track with the earliest pending tick."
+    ],
+    [
+      "vm",
+      "b",
+      "(I)V",
+      "readDelta",
+      "Source-purpose review: Reads the variable-length delta and accumulates it in the supplied track’s tick counter."
+    ],
+    [
+      "vm",
+      "c",
+      "()V",
+      "release",
+      "Source-purpose review: Releases the input buffer payload and the per-track state arrays."
+    ],
+    [
+      "vm",
+      "c",
+      "(I)I",
+      "readMessage",
+      "Source-purpose review: Returns the next MIDI message or meta-event code from the current track position."
+    ],
+    [
+      "vm",
+      "d",
+      "(I)V",
+      "seekTrack",
+      "Source-purpose review: Moves the input cursor to the saved position of the supplied track."
+    ],
+    [
+      "vm",
+      "e",
+      "()V",
+      "markTrackDone",
+      "Source-purpose review: Marks the current cursor as exhausted before saving the track’s position."
+    ],
+    [
+      "vm",
+      "e",
+      "(I)J",
+      "tickTime",
+      "Source-purpose review: Converts a MIDI tick to playback time using the current tempo and time origin."
+    ],
+    [
+      "vm",
+      "f",
+      "()Z",
+      "isDone",
+      "Source-purpose review: Checks whether all track positions are exhausted."
+    ],
+    [
+      "vm",
+      "f",
+      "(I)I",
+      "readNextMessage",
+      "Source-purpose review: Handles MIDI running status and system-exclusive events before decoding the message payload."
+    ],
+    [
+      "vh",
+      "a",
+      "()V",
+      "buildPatchUsage",
+      "Source-purpose review: Scans MIDI channel messages to mark the instrument patches and notes used by the track."
+    ],
+    [
+      "vh",
+      "b",
+      "()V",
+      "releasePatchUsage",
+      "Source-purpose review: Discards the per-patch note usage table so it can be rebuilt on demand."
+    ],
+    [
+      "vh",
+      "a",
+      "(Lnh;Ljava/lang/String;Ljava/lang/String;)Lvh;",
+      "load",
+      "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation."
     ]
   ],
   "fields": [

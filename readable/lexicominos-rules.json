@@ -556,6 +556,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ih",
+      "originalName": "ih",
+      "to": "MusicTrack",
+      "evidence": "Expands the packed track data into MIDI and records which instrument patches and notes it uses.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ii",
       "originalName": "ii",
       "to": "FullscreenStatusDialog",
@@ -574,6 +581,13 @@
       "originalName": "j",
       "to": "WidgetPointerListener",
       "evidence": "Receives pointer press and release callbacks from interactive widgets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ja",
+      "originalName": "ja",
+      "to": "SoundCache",
+      "evidence": "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive.",
       "confidence": "reviewed"
     },
     {
@@ -1704,6 +1718,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.a(III)I",
+      "originalName": "a",
+      "to": "evaluateWaveform",
+      "evidence": "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.a(Lwf;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(B)Z",
       "originalName": "a",
       "to": "snapDialogAnimation",
@@ -1862,6 +1897,34 @@
       "originalName": "f",
       "to": "writeMixBlock",
       "evidence": "Clamp signed24-bit mixed samples to the original bounds,write high16bits as little-endian bytes and emit the current256-frame mono/stereo block through the retained line. Original-body SHA256 9265619237dc049c9efd5c01a5c74a7e99db1a67aa7ef3e2e396e54563e1bc57. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a()Lke;",
+      "originalName": "a",
+      "to": "toPcmSample",
+      "evidence": "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a(Lsh;II)Lba;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Reads and decodes the indexed sound effect from its archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a(Lsh;Ljava/lang/String;Ljava/lang/String;)Lba;",
+      "originalName": "a",
+      "to": "loadByName",
+      "evidence": "Source-purpose review: Reads and decodes a sound effect from its archive by group and file names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.b()[B",
+      "originalName": "b",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
       "confidence": "reviewed"
     },
     {
@@ -3111,10 +3174,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ek.a(I)V",
+      "originalName": "a",
+      "to": "readDelta",
+      "evidence": "Source-purpose review: Reads the variable-length delta and accumulates it in the supplied track’s tick counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(II)I",
+      "originalName": "a",
+      "to": "decodeMessagePayload",
+      "evidence": "Source-purpose review: Reads the data bytes for a MIDI message or processes a meta event, including tempo changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ek.a(J)V",
       "originalName": "a",
       "to": "reset",
       "evidence": "Source-purpose review: Set longbaseclock,resetper-trackticks/status,rewindsharedpacketbuffer totrackstart,readinitialdelta andpublishpositions. Original identity M:ek.a(J)V. Pinned original body SHA256 93332feda5fa974bcec172c59b984f202c478e2007aa63e6674f48d71bb88b4b. Resolved parameter/field/helper bindings checked;matching shape alone is not semantic or runtime equivalence. Keep every original descriptor,modifier,guard,literal,operation,evaluation/exception order,allocation and dispatch;rename identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a([B)V",
+      "originalName": "a",
+      "to": "parse",
+      "evidence": "Source-purpose review: Reads the MIDI division and track chunk offsets and initializes independent track state.",
       "confidence": "reviewed"
     },
     {
@@ -3125,10 +3209,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ek.b(I)V",
+      "originalName": "b",
+      "to": "saveTrackPosition",
+      "evidence": "Source-purpose review: Saves the current input cursor as the resume position for the supplied track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.c()Z",
+      "originalName": "c",
+      "to": "isDone",
+      "evidence": "Source-purpose review: Checks whether all track positions are exhausted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.c(I)V",
+      "originalName": "c",
+      "to": "seekTrack",
+      "evidence": "Source-purpose review: Moves the input cursor to the saved position of the supplied track.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ek.d()Z",
       "originalName": "d",
       "to": "hasMidiData",
       "evidence": "Test whether the retained MIDI decoder byte buffer is non-null,without adding state/range checks or substituting track state. Complete original-body SHA256 6c109f86c6e9307356397d2ff8a776b4145a54765feb698bb871ec82ae4cd631. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.d(I)J",
+      "originalName": "d",
+      "to": "tickTime",
+      "evidence": "Source-purpose review: Converts a MIDI tick to playback time using the current tempo and time origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.e()I",
+      "originalName": "e",
+      "to": "trackCount",
+      "evidence": "Source-purpose review: Returns the number of tracks in the parsed MIDI file.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.e(I)I",
+      "originalName": "e",
+      "to": "readNextMessage",
+      "evidence": "Source-purpose review: Handles MIDI running status and system-exclusive events before decoding the message payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.f()V",
+      "originalName": "f",
+      "to": "markTrackDone",
+      "evidence": "Source-purpose review: Marks the current cursor as exhausted before saving the track’s position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.f(I)I",
+      "originalName": "f",
+      "to": "readMessage",
+      "evidence": "Source-purpose review: Returns the next MIDI message or meta-event code from the current track position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.g()V",
+      "originalName": "g",
+      "to": "release",
+      "evidence": "Source-purpose review: Releases the input buffer payload and the per-track state arrays.",
       "confidence": "reviewed"
     },
     {
@@ -3902,6 +4049,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ih.a()V",
+      "originalName": "a",
+      "to": "releasePatchUsage",
+      "evidence": "Source-purpose review: Discards the per-patch note usage table so it can be rebuilt on demand.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(Lsh;Ljava/lang/String;Ljava/lang/String;)Lih;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.b()V",
+      "originalName": "b",
+      "to": "buildPatchUsage",
+      "evidence": "Source-purpose review: Scans MIDI channel messages to mark the instrument patches and notes used by the track.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ii.a(IIIILkf;)V",
       "originalName": "a",
       "to": "onWidgetActivated",
@@ -4025,6 +4193,69 @@
       "originalName": "a",
       "to": "onWidgetPointerReleased",
       "evidence": "Source-purpose review: Receives a pointer release from the interactive widget’s release handler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Clears the static object references declared by this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(BLjava/lang/String;)Lke;",
+      "originalName": "a",
+      "to": "getMusicSampleByName",
+      "evidence": "Source-purpose review: Retrieves music PCM by archive name with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(BLjava/lang/String;[I)Lke;",
+      "originalName": "a",
+      "to": "loadMusicSampleByName",
+      "evidence": "Source-purpose review: Resolves names in the music archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(IIB[I)Lke;",
+      "originalName": "a",
+      "to": "loadMusicSample",
+      "evidence": "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(I[II)Lke;",
+      "originalName": "a",
+      "to": "loadSoundEffectById",
+      "evidence": "Source-purpose review: Resolves the numeric effect ID against the archive layout and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(I[IZ)Lke;",
+      "originalName": "a",
+      "to": "loadMusicSampleById",
+      "evidence": "Source-purpose review: Resolves the numeric music sample ID against the archive layout and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(Ljava/lang/String;[IILjava/lang/String;)Lke;",
+      "originalName": "a",
+      "to": "loadMusicSampleByName",
+      "evidence": "Source-purpose review: Resolves names in the music archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a([IIII)Lke;",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.b(B)V",
+      "originalName": "b",
+      "to": "pushRasterState",
+      "evidence": "Source-purpose review: Captures the current raster pixels, dimensions and clip bounds and pushes them on the raster state deque.",
       "confidence": "reviewed"
     },
     {
@@ -6835,6 +7066,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:se.a()V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Resets the envelope segment cursor and interpolation state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.a(I)I",
+      "originalName": "a",
+      "to": "step",
+      "evidence": "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.a(Lwf;)V",
+      "originalName": "a",
+      "to": "decodeSegments",
+      "evidence": "Source-purpose review: Reads the envelope point times and values from the packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.b(Lwf;)V",
+      "originalName": "b",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sg.a(IIIIILab;)Lra;",
       "originalName": "a",
       "to": "createFullscreenCanvas",
@@ -8286,7 +8545,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "823853dd83f9af1e644687f07bed3ab5b1e9f6384b0aa2c57e8d4a13c5bbc051",
+      "lexicominos-names.json": "2679aa04c2f619991081aa2527d59117ca613e0b73d84c24790d81ff52135c75",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

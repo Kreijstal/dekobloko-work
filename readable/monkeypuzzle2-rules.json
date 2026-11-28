@@ -339,6 +339,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dg",
+      "originalName": "dg",
+      "to": "SoundEnvelope",
+      "evidence": "Decodes timed amplitude segments and interpolates the current value as synthesis advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dm",
+      "originalName": "dm",
+      "to": "SynthesizerVoice",
+      "evidence": "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eb",
       "originalName": "eb",
       "to": "DisplayNameSelectionPanel",
@@ -399,6 +413,13 @@
       "originalName": "fh",
       "to": "PcmStream",
       "evidence": "Abstract IntrusiveNode defining sample fill, skip and a sibling substream link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:g",
+      "originalName": "g",
+      "to": "SynthesizedSoundEffect",
+      "evidence": "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM.",
       "confidence": "reviewed"
     },
     {
@@ -973,6 +994,13 @@
       "originalName": "ua",
       "to": "WidgetContainer",
       "evidence": "UiWidget owning an IntrusiveDeque of children and forwarding draw/focus/input to them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ud",
+      "originalName": "ud",
+      "to": "SoundCache",
+      "evidence": "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive.",
       "confidence": "reviewed"
     },
     {
@@ -2313,10 +2341,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.a()V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Resets the envelope segment cursor and interpolation state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a(I)I",
+      "originalName": "a",
+      "to": "step",
+      "evidence": "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.a(Lgk;)V",
       "originalName": "a",
       "to": "decodeSegments",
       "evidence": "Read the envelope segment count,allocate the two retained segment arrays,and read paired unsigned16-bit values per segment. Preserve every actual packet-reader argument,allocation/write order and partial state. Pre-rename body SHA256 87c5b89d3eddc7afa25fd65f4455797717955f378c944a7eaf3407936f108d08. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.b(Lgk;)V",
+      "originalName": "b",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -2366,6 +2415,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 8 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 224f41d77f88862ad0cc7eb641f3649514ba29544c1c968aa3d561bbe6b1de43.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dm.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dm.a(III)I",
+      "originalName": "a",
+      "to": "evaluateWaveform",
+      "evidence": "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dm.a(Lgk;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -2807,6 +2877,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.a()[B",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.a(Lad;II)Lg;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Reads and decodes the indexed sound effect from its archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.b()Ltd;",
+      "originalName": "b",
+      "to": "toPcmSample",
+      "evidence": "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second.",
       "confidence": "reviewed"
     },
     {
@@ -7150,6 +7241,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ud.a(BI[II)Ltd;",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.a(III)Ltd;",
+      "originalName": "a",
+      "to": "getSoundEffectByGroup",
+      "evidence": "Source-purpose review: Retrieves a synthesized effect by archive group and file ID with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.a(IIZ)Ltd;",
+      "originalName": "a",
+      "to": "getMusicSampleByGroup",
+      "evidence": "Source-purpose review: Retrieves music PCM by archive group and file ID with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.a(ILjava/lang/String;[ILjava/lang/String;)Ltd;",
+      "originalName": "a",
+      "to": "loadSoundEffectByName",
+      "evidence": "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.a(I[ILjava/lang/String;)Ltd;",
+      "originalName": "a",
+      "to": "loadSoundEffectByName",
+      "evidence": "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.a(Ljava/lang/String;B)Ltd;",
+      "originalName": "a",
+      "to": "getSoundEffectByName",
+      "evidence": "Source-purpose review: Retrieves a synthesized effect by archive name with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.a([IIII)Ltd;",
+      "originalName": "a",
+      "to": "loadMusicSample",
+      "evidence": "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ud.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -8034,7 +8174,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "039d6d545c137f236ca814308f715cb105ad69f488434d4f14c34acd019177c4",
+      "monkeypuzzle2-names.json": "24dbd64822bfba12f3fb58db68c47339dd6ebe9e5e2130a6050344ceff18bb55",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

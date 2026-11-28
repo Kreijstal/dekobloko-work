@@ -489,6 +489,26 @@
       "sa",
       "VorbisMapping",
       "Reads the submap selector and the floor and residue indices for each Vorbis submap."
+    ],
+    [
+      "ud",
+      "SoundCache",
+      "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive."
+    ],
+    [
+      "g",
+      "SynthesizedSoundEffect",
+      "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM."
+    ],
+    [
+      "dm",
+      "SynthesizerVoice",
+      "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter."
+    ],
+    [
+      "dg",
+      "SoundEnvelope",
+      "Decodes timed amplitude segments and interpolates the current value as synthesis advances."
     ]
   ],
   "methods": [
@@ -7085,6 +7105,118 @@
       "([FIZ)V",
       "decodeResidue",
       "Source-purpose review: Accumulates spectral residue vectors for each partition using the configured codebooks."
+    ],
+    [
+      "ud",
+      "a",
+      "([IIII)Ltd;",
+      "loadMusicSample",
+      "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM."
+    ],
+    [
+      "ud",
+      "a",
+      "(BI[II)Ltd;",
+      "loadSoundEffect",
+      "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM."
+    ],
+    [
+      "ud",
+      "a",
+      "(III)Ltd;",
+      "getSoundEffectByGroup",
+      "Source-purpose review: Retrieves a synthesized effect by archive group and file ID with an unlimited sample budget."
+    ],
+    [
+      "ud",
+      "a",
+      "(IIZ)Ltd;",
+      "getMusicSampleByGroup",
+      "Source-purpose review: Retrieves music PCM by archive group and file ID with an unlimited sample budget."
+    ],
+    [
+      "ud",
+      "a",
+      "(ILjava/lang/String;[ILjava/lang/String;)Ltd;",
+      "loadSoundEffectByName",
+      "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget."
+    ],
+    [
+      "ud",
+      "a",
+      "(I[ILjava/lang/String;)Ltd;",
+      "loadSoundEffectByName",
+      "Source-purpose review: Resolves names in the effect archive and loads the PCM with a sample budget."
+    ],
+    [
+      "ud",
+      "a",
+      "(Ljava/lang/String;B)Ltd;",
+      "getSoundEffectByName",
+      "Source-purpose review: Retrieves a synthesized effect by archive name with an unlimited sample budget."
+    ],
+    [
+      "g",
+      "b",
+      "()Ltd;",
+      "toPcmSample",
+      "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second."
+    ],
+    [
+      "g",
+      "a",
+      "()[B",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "g",
+      "a",
+      "(Lad;II)Lg;",
+      "load",
+      "Source-purpose review: Reads and decodes the indexed sound effect from its archive."
+    ],
+    [
+      "dm",
+      "a",
+      "(II)[I",
+      "synthesize",
+      "Source-purpose review: Generates the rendered samples for the effect or instrument voice."
+    ],
+    [
+      "dm",
+      "a",
+      "(Lgk;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "dm",
+      "a",
+      "(III)I",
+      "evaluateWaveform",
+      "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude."
+    ],
+    [
+      "dg",
+      "b",
+      "(Lgk;)V",
+      "decode",
+      "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet."
+    ],
+    [
+      "dg",
+      "a",
+      "()V",
+      "reset",
+      "Source-purpose review: Resets the envelope segment cursor and interpolation state."
+    ],
+    [
+      "dg",
+      "a",
+      "(I)I",
+      "step",
+      "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value."
     ]
   ],
   "fields": [

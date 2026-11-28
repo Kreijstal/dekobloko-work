@@ -241,6 +241,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:aj",
+      "originalName": "aj",
+      "to": "SynthesizedSoundEffect",
+      "evidence": "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:al",
       "originalName": "al",
       "to": "JavaSoundAudioOutput",
@@ -563,6 +570,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ja",
+      "originalName": "ja",
+      "to": "SoundCache",
+      "evidence": "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jb",
       "originalName": "jb",
       "to": "IsaacRandom",
@@ -574,6 +588,13 @@
       "originalName": "jd",
       "to": "BufferedImageRasterBuffer",
       "evidence": "AWT raster buffer backed by inherited int pixel storage through DataBufferInt/DirectColorModel/WritableRaster/BufferedImage,and drawn through Graphics.drawImage using retained Component observer. Complete class,public empty no-argument constructor,and both initialization/drawing bodies reviewed;exactly one own nonstatic Component field and four inherited dimension/pixel/image fields verified with bound platform APIs. Preserve finality/visibility,all method/field leaves except constructor class-name display,full primitive domains,guard paths,int overflow and pixel-array size,Lexicominos supplied premultiplication boolean,aliases,partial writes and allocation/call/exception order. Exactly one bound Class.forName string must follow this class rename;other literals unchanged. Deko already has provisional RenderingSupport013 alias,so its existing literal edit is refined rather than counted twice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:je",
+      "originalName": "je",
+      "to": "SynthesizerVoice",
+      "evidence": "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter.",
       "confidence": "reviewed"
     },
     {
@@ -714,6 +735,13 @@
       "originalName": "mh",
       "to": "EmailFormatValidator",
       "evidence": "Checks the account email address and supplies feedback when the format is invalid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mk",
+      "originalName": "mk",
+      "to": "SoundEnvelope",
+      "evidence": "Decodes timed amplitude segments and interpolates the current value as synthesis advances.",
       "confidence": "reviewed"
     },
     {
@@ -1505,6 +1533,34 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 dcdf856796260358dca743bd02a52fd2436a7de4d23cbcad994a25ab9cffd520.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a()Lud;",
+      "originalName": "a",
+      "to": "toPcmSample",
+      "evidence": "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(Lue;II)Laj;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Reads and decodes the indexed sound effect from its archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(Lue;Ljava/lang/String;Ljava/lang/String;)Laj;",
+      "originalName": "a",
+      "to": "loadByName",
+      "evidence": "Source-purpose review: Reads and decodes a sound effect from its archive by group and file names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.b()[B",
+      "originalName": "b",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
       "confidence": "reviewed"
     },
     {
@@ -3902,6 +3958,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ja.a(IBI[I)Lud;",
+      "originalName": "a",
+      "to": "loadMusicSample",
+      "evidence": "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(IIB)Lud;",
+      "originalName": "a",
+      "to": "getMusicSampleByGroup",
+      "evidence": "Source-purpose review: Retrieves music PCM by archive group and file ID with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(III)I",
+      "originalName": "a",
+      "to": "findMenuActionAt",
+      "evidence": "Source-purpose review: Walks the visible text menu rows and returns the action assigned to the first row containing the pointer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a([IIII)Lud;",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.b(III)Lud;",
+      "originalName": "b",
+      "to": "getSoundEffectByGroup",
+      "evidence": "Source-purpose review: Retrieves a synthesized effect by archive group and file ID with an unlimited sample budget.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.a(B)V",
       "originalName": "a",
       "to": "generateResults",
@@ -3948,6 +4039,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 8 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1bc3f22d8774db75e70bf886d52fd889e3431e44e9c65e4c55e7bf8de340567f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(III)I",
+      "originalName": "a",
+      "to": "evaluateWaveform",
+      "evidence": "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(Lrb;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -5089,6 +5201,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 6b2a12b465b5b8f0f5989c3a3b905880b3c1d1894f15964317cd9690a066315f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a()V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Resets the envelope segment cursor and interpolation state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(I)I",
+      "originalName": "a",
+      "to": "step",
+      "evidence": "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(Lrb;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -8041,7 +8174,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "1291c2e5834de46d645566a15c5ea716697cfb426c25155420b51310a2bff420",
+      "starcannon-names.json": "89e3102d865d6e1a10ada4104e159403e3e91b9ee0d1a6ab0613435b9c2383ab",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

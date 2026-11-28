@@ -479,6 +479,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dn",
+      "originalName": "dn",
+      "to": "SynthesizerVoice",
+      "evidence": "Decodes one instrument voice and generates samples from its oscillators, envelopes and filter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dq",
       "originalName": "dq",
       "to": "WidgetContainerMarker",
@@ -661,6 +668,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hp",
+      "originalName": "hp",
+      "to": "SynthesizedSoundEffect",
+      "evidence": "Loads an archived sound effect, mixes its instrument voices and converts its samples to PCM.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ia",
       "originalName": "ia",
       "to": "NetworkArchiveRequest",
@@ -672,6 +686,13 @@
       "originalName": "ic",
       "to": "VorbisCodebook",
       "evidence": "Vorbis codebook: constructor consumes24bits without validating them,reads dimensions/entry count and ordered/sparse code lengths,builds a canonical Huffman tree,and reads quantized lookup vectors. Scalar bit traversal returns complemented tree leaf;vector decoding returns the retained vector row by alias;lookup1 uses the original integer-power helper. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:id",
+      "originalName": "id",
+      "to": "SoundCache",
+      "evidence": "Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive.",
       "confidence": "reviewed"
     },
     {
@@ -969,6 +990,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oo",
+      "originalName": "oo",
+      "to": "TriangleRasterizer",
+      "evidence": "Rasterizes flat, shaded, or perspective-textured triangles into the software raster.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pg",
       "originalName": "pg",
       "to": "VorbisMapping",
@@ -1004,6 +1032,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pr",
+      "originalName": "pr",
+      "to": "SoundEnvelope",
+      "evidence": "Decodes timed amplitude segments and interpolates the current value as synthesis advances.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qa",
       "originalName": "qa",
       "to": "TextWidgetRenderer",
@@ -1015,6 +1050,13 @@
       "originalName": "qb",
       "to": "JaggrabClient",
       "evidence": "Runnable that writes a JAGGRAB request line to its connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qd",
+      "originalName": "qd",
+      "to": "MidiFileReader",
+      "evidence": "Reads MIDI track chunks and tracks the cursor, tick and running status of each track.",
       "confidence": "reviewed"
     },
     {
@@ -1155,6 +1197,13 @@
       "originalName": "sh",
       "to": "WidgetDropListener",
       "evidence": "Receives accepted widget drops from a drop target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:si",
+      "originalName": "si",
+      "to": "MusicTrack",
+      "evidence": "Expands the packed track data into MIDI and records which instrument patches and notes it uses.",
       "confidence": "reviewed"
     },
     {
@@ -3958,6 +4007,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dn.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(III)I",
+      "originalName": "a",
+      "to": "evaluateWaveform",
+      "evidence": "Source-purpose review: Evaluates the selected oscillator waveform at the supplied phase and amplitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(Led;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dp.h(I)V",
       "originalName": "h",
       "to": "clearStaticReferences",
@@ -5491,6 +5561,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hp.a()Lae;",
+      "originalName": "a",
+      "to": "toPcmSample",
+      "evidence": "Source-purpose review: Mixes the effect and packages its PCM bytes and loop positions at 22,050 samples per second.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hp.a(Lr;II)Lhp;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Reads and decodes the indexed sound effect from its archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hp.a(Lr;Ljava/lang/String;Ljava/lang/String;)Lhp;",
+      "originalName": "a",
+      "to": "loadByName",
+      "evidence": "Source-purpose review: Reads and decodes a sound effect from its archive by group and file names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hp.b()[B",
+      "originalName": "b",
+      "to": "synthesize",
+      "evidence": "Source-purpose review: Generates the rendered samples for the effect or instrument voice.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hq.a(Z)V",
       "originalName": "a",
       "to": "resetStaticState",
@@ -5565,6 +5663,55 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(IIBILjj;I)Lqi;",
+      "originalName": "a",
+      "to": "createFullscreenFocusCanvas",
+      "evidence": "Source-purpose review: Creates the fullscreen frame and installs a new canvas with focus handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(ISSLlg;ZS)I",
+      "originalName": "a",
+      "to": "addScaledTriangle",
+      "evidence": "Source-purpose review: Scales the three triangle vertices about the midpoint of its base edge and adds the resulting face.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(Lmi;I)Z",
+      "originalName": "a",
+      "to": "readBitFlag",
+      "evidence": "Source-purpose review: Reads one packet bit and returns whether it is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(Z[II)Lae;",
+      "originalName": "a",
+      "to": "loadSoundEffectById",
+      "evidence": "Source-purpose review: Resolves the numeric effect ID against the archive layout and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a([III)Lae;",
+      "originalName": "a",
+      "to": "loadMusicSampleById",
+      "evidence": "Source-purpose review: Resolves the numeric music sample ID against the archive layout and loads the PCM with a sample budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a([IIII)Lae;",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "Source-purpose review: Synthesizes an archived sound effect by group and file ID and caches the resulting PCM.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.b([IIII)Lae;",
+      "originalName": "b",
+      "to": "loadMusicSample",
+      "evidence": "Source-purpose review: Loads or resumes a compressed music sample by archive group and file ID and caches the decoded PCM.",
       "confidence": "reviewed"
     },
     {
@@ -7836,6 +7983,111 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oo.a(F)V",
+      "originalName": "a",
+      "to": "setRandomizedGamma",
+      "evidence": "Source-purpose review: Stores gamma with a small random offset used to generate the palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(II)V",
+      "originalName": "a",
+      "to": "setProjectionCenter",
+      "evidence": "Source-purpose review: Translates the supplied raster-space projection center into viewport coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(IIII)V",
+      "originalName": "a",
+      "to": "setClip",
+      "evidence": "Source-purpose review: Sets viewport bounds and builds per-row offsets into the shared software raster.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatTriangle",
+      "evidence": "Source-purpose review: Walks the edges of a triangle and fills its spans with one colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(IIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawShadedTriangle",
+      "evidence": "Source-purpose review: Walks the edges of a triangle and interpolates its vertex colours across spans.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(IIIIIIIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedTriangle",
+      "evidence": "Source-purpose review: Projects triangle texture coordinates, then renders textured spans or a shaded fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(Lef;)V",
+      "originalName": "a",
+      "to": "setTextureProvider",
+      "evidence": "Source-purpose review: Stores the texture source used by the textured triangle renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a([IIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatSpan",
+      "evidence": "Source-purpose review: Writes a horizontal span of one colour, applying clipping and alpha blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawShadedSpan",
+      "evidence": "Source-purpose review: Interpolates palette shades and writes one horizontal span of a shaded triangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a([I[IIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedSpan",
+      "evidence": "Source-purpose review: Samples a texture along one horizontal span with perspective-correct interpolation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.b()V",
+      "originalName": "b",
+      "to": "centerProjection",
+      "evidence": "Source-purpose review: Centers the projection in the current triangle rasterizer viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.b(F)V",
+      "originalName": "b",
+      "to": "rebuildPaletteWithGamma",
+      "evidence": "Source-purpose review: Updates gamma and rebuilds the complete HSL colour palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.b(II)I",
+      "originalName": "b",
+      "to": "modulateHslLightness",
+      "evidence": "Source-purpose review: Scales the HSL lightness component and clamps it to the supported range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.c()V",
+      "originalName": "c",
+      "to": "useRasterClip",
+      "evidence": "Source-purpose review: Copies the software raster clipping rectangle into the triangle rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.c(II)V",
+      "originalName": "c",
+      "to": "buildColorPaletteRange",
+      "evidence": "Source-purpose review: Converts the selected HSL range to gamma-corrected RGB palette entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:op.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -8018,10 +8270,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pr.a()V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Source-purpose review: Resets the envelope segment cursor and interpolation state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.a(I)I",
+      "originalName": "a",
+      "to": "step",
+      "evidence": "Source-purpose review: Advances the envelope interpolation by one sample and returns the next value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pr.a(Led;)V",
       "originalName": "a",
       "to": "decodeSegments",
       "evidence": "Read the envelope segment count,allocate the two retained segment arrays,and read paired unsigned16-bit values per segment. Preserve every actual packet-reader argument,allocation/write order and partial state. Pre-rename body SHA256 5e64e1798d3aba082d40060dfe501f776835b5b9f854ed03cd7d0a765fac3238. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.b(Led;)V",
+      "originalName": "b",
+      "to": "decode",
+      "evidence": "Source-purpose review: Reads the encoded instrument voice or complete envelope from the packet.",
       "confidence": "reviewed"
     },
     {
@@ -8116,10 +8389,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qd.a()I",
+      "originalName": "a",
+      "to": "nextTrack",
+      "evidence": "Source-purpose review: Finds the active track with the earliest pending tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(I)V",
+      "originalName": "a",
+      "to": "seekTrack",
+      "evidence": "Source-purpose review: Moves the input cursor to the saved position of the supplied track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(II)I",
+      "originalName": "a",
+      "to": "decodeMessagePayload",
+      "evidence": "Source-purpose review: Reads the data bytes for a MIDI message or processes a meta event, including tempo changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(J)I",
+      "originalName": "a",
+      "to": "ticksAtTime",
+      "evidence": "Source-purpose review: Converts playback time to the corresponding tick, rounding up to the next tick when necessary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a([B)V",
+      "originalName": "a",
+      "to": "parse",
+      "evidence": "Source-purpose review: Reads the MIDI division and track chunk offsets and initializes independent track state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.b()V",
+      "originalName": "b",
+      "to": "release",
+      "evidence": "Source-purpose review: Releases the input buffer payload and the per-track state arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.b(I)J",
+      "originalName": "b",
+      "to": "tickTime",
+      "evidence": "Source-purpose review: Converts a MIDI tick to playback time using the current tempo and time origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.b(J)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "Source-purpose review: Restarts all MIDI tracks at the supplied time origin and reads each first delta.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.c()I",
+      "originalName": "c",
+      "to": "trackCount",
+      "evidence": "Source-purpose review: Returns the number of tracks in the parsed MIDI file.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.c(I)I",
+      "originalName": "c",
+      "to": "readMessage",
+      "evidence": "Source-purpose review: Returns the next MIDI message or meta-event code from the current track position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.d()V",
+      "originalName": "d",
+      "to": "markTrackDone",
+      "evidence": "Source-purpose review: Marks the current cursor as exhausted before saving the track’s position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.d(I)V",
+      "originalName": "d",
+      "to": "saveTrackPosition",
+      "evidence": "Source-purpose review: Saves the current input cursor as the resume position for the supplied track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.e()Z",
+      "originalName": "e",
+      "to": "isDone",
+      "evidence": "Source-purpose review: Checks whether all track positions are exhausted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.e(I)V",
+      "originalName": "e",
+      "to": "readDelta",
+      "evidence": "Source-purpose review: Reads the variable-length delta and accumulates it in the supplied track’s tick counter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qd.f()Z",
       "originalName": "f",
       "to": "hasMidiData",
       "evidence": "Test whether the retained MIDI decoder byte buffer is non-null,without adding state/range checks or substituting track state. Complete original-body SHA256 959a67ffd4704a09fc47b2a3b22e662d577e7e746e3759d011f477c2e4f49e46. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.f(I)I",
+      "originalName": "f",
+      "to": "readNextMessage",
+      "evidence": "Source-purpose review: Handles MIDI running status and system-exclusive events before decoding the message payload.",
       "confidence": "reviewed"
     },
     {
@@ -9429,6 +9807,27 @@
       "originalName": "a",
       "to": "widgetDropped",
       "evidence": "Source-purpose review: Reports the draggable widget and the target that accepted it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a()V",
+      "originalName": "a",
+      "to": "releasePatchUsage",
+      "evidence": "Source-purpose review: Discards the per-patch note usage table so it can be rebuilt on demand.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(Lr;Ljava/lang/String;Ljava/lang/String;)Lsi;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.b()V",
+      "originalName": "b",
+      "to": "buildPatchUsage",
+      "evidence": "Source-purpose review: Scans MIDI channel messages to mark the instrument patches and notes used by the track.",
       "confidence": "reviewed"
     },
     {
@@ -10995,7 +11394,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "c92a44d79a2525139bccd689c72fe2d530a32f248ac6c5a34abc280d5aa32c47",
+      "vertigo2-names.json": "94e9d4554b48c61b1957ab7360f4cd02c9cf8d81d7b751a56c6cc1fa8fb2de4d",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
