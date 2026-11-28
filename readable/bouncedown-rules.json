@@ -906,6 +906,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lj",
+      "originalName": "lj",
+      "to": "EmailValidationError",
+      "evidence": "Identifies email validation failures by distinct marker instances.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lk",
       "originalName": "lk",
       "to": "UiWidget",
@@ -1498,6 +1505,13 @@
       "originalName": "vd",
       "to": "ViewportControllerSupport",
       "evidence": "Holds the shared viewport sizing controller used by game updates and fullscreen transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ve",
+      "originalName": "ve",
+      "to": "LoginNameValue",
+      "evidence": "Stores a normalized login name and whether the account request should include it.",
       "confidence": "reviewed"
     },
     {
@@ -2992,6 +3006,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ce.a(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "normalizeDisplayName",
+      "evidence": "Source-purpose review: Trims display-name separators, enforces the twelve-character limit and canonicalizes the allowed characters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.b(B)V",
       "originalName": "b",
       "to": "prefetchAllGroups",
@@ -3174,6 +3195,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ck.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawDottedWhiteRectangle",
+      "evidence": "Source-purpose review: Draws the clipped rectangle edges with white pixels at alternating positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.a(ILjava/lang/CharSequence;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "sanitizeAsciiAccountName",
+      "evidence": "Source-purpose review: Limits an account name to twenty characters, folds ASCII uppercase, and substitutes underscores for characters outside ASCII letters and digits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.a(Ljava/lang/String;Ljava/lang/String;JIZ)Lng;",
+      "originalName": "a",
+      "to": "createLoginCredentials",
+      "evidence": "Source-purpose review: Selects the email, standard username, or alternate username credential representation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ck.b(I)Lvf;",
       "originalName": "b",
       "to": "evaluateValidationStatus",
@@ -3192,6 +3234,27 @@
       "originalName": "d",
       "to": "recordInputChange",
       "evidence": "Source-purpose review: Stores the current time on input changes so the validation delay can restart.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.e(B)V",
+      "originalName": "e",
+      "to": "startLoginAfterRegistration",
+      "evidence": "Source-purpose review: Starts login using the saved registration credentials and records the registration login state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.f(B)V",
+      "originalName": "f",
+      "to": "clearValidatorSharedReferences",
+      "evidence": "Source-purpose review: Releases the shared platform dispatcher and static text references during teardown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.g(B)Z",
+      "originalName": "g",
+      "to": "shouldSendCurrentLoginName",
+      "evidence": "Source-purpose review: Tests the current login-name request state before deciding whether to include the name in an account response exchange.",
       "confidence": "reviewed"
     },
     {
@@ -4665,10 +4728,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hc.a(I)V",
+      "originalName": "a",
+      "to": "showBlankLoginPanel",
+      "evidence": "Source-purpose review: Opens the login panel with blank credentials.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hc.a(IIB)Ltg;",
       "originalName": "a",
       "to": "createFilledSquareSprite",
       "evidence": "Source-purpose review: Allocates a square sprite and sets every pixel to the supplied color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(IIIIIBII)Lke;",
+      "originalName": "a",
+      "to": "queueAchievementSubmission",
+      "evidence": "Source-purpose review: Creates a pending achievement submission, queues it and passes it to the packet writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(IZIB)Z",
+      "originalName": "a",
+      "to": "precedesPlayerResult",
+      "evidence": "Source-purpose review: Compares player result entries using the selected ranking order with a stable index tie break.",
       "confidence": "reviewed"
     },
     {
@@ -4686,6 +4770,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hc.a(Ljava/lang/String;I)Llj;",
+      "originalName": "a",
+      "to": "validateEmailAddress",
+      "evidence": "Source-purpose review: Splits the email address at the at sign and returns the first local-part or domain validation error.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hc.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4697,6 +4788,13 @@
       "originalName": "b",
       "to": "getNextWithSameKey",
       "evidence": "Source-purpose review: Resumes the previous lookup and returns the next node with the saved key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.b(Ljava/lang/String;I)Z",
+      "originalName": "b",
+      "to": "hasInvalidPasswordLength",
+      "evidence": "Source-purpose review: Reports a missing password or one outside the configured length bounds.",
       "confidence": "reviewed"
     },
     {
@@ -4742,6 +4840,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hg.a(BLjava/lang/String;)[B",
+      "originalName": "a",
+      "to": "loadClientTextBytes",
+      "evidence": "Source-purpose review: Reads a named file from the client text archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hg.a(Ljava/lang/String;B)Ljava/lang/String;",
       "originalName": "a",
       "to": "getValidationMessage",
@@ -4749,10 +4854,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hg.a(Ljava/lang/String;IF)V",
+      "originalName": "a",
+      "to": "setLoadingProgress",
+      "evidence": "Source-purpose review: Stores the current loading message and progress percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hg.a(Ljava/lang/String;Lgk;ILjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatArchiveLoadingMessage",
+      "evidence": "Source-purpose review: Appends the archive loading percentage when its index is available and returns the fallback message while waiting.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hg.b(Ljava/lang/String;B)Lvf;",
       "originalName": "b",
       "to": "getValidationStatus",
       "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hg.d(I)V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Releases the static command and input handler references during teardown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hg.h(B)V",
+      "originalName": "h",
+      "to": "readLocalPlayerDisplayName",
+      "evidence": "Source-purpose review: Reads the local display name from the incoming packet and updates the normalized name.",
       "confidence": "reviewed"
     },
     {
@@ -6247,6 +6380,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lj.a(Ljava/applet/Applet;Ljava/lang/String;Ljava/lang/String;BJ)V",
+      "originalName": "a",
+      "to": "writeBrowserCookie",
+      "evidence": "Source-purpose review: Writes a browser cookie using the configured domain, with a session or persistent lifetime.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lk.a(BIC)Z",
       "originalName": "a",
       "to": "processKeyInput",
@@ -6590,10 +6730,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mg.a(BLjava/lang/String;)[B",
+      "originalName": "a",
+      "to": "loadGameTextBytes",
+      "evidence": "Source-purpose review: Reads a named game text file, including achievements and control labels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mg.a(Ljava/lang/String;B)Ljava/lang/String;",
       "originalName": "a",
       "to": "getValidationMessage",
       "evidence": "Source-purpose review: Returns the validation feedback message for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(ZLjava/applet/Applet;Ljava/lang/String;Z)V",
+      "originalName": "a",
+      "to": "openExternalUrl",
+      "evidence": "Source-purpose review: Opens the URL through the Windows browser helper when supported, with applet navigation as the fallback.",
       "confidence": "reviewed"
     },
     {
@@ -6604,10 +6758,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mg.d(I)V",
+      "originalName": "d",
+      "to": "requestFullscreen",
+      "evidence": "Source-purpose review: Requests the default fullscreen transition through the shared canvas helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mg.e(I)V",
       "originalName": "e",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 02ca90b6de7ea3b211fe1feb0f5cebc2f67f4bf1ad3f431edaba0b3638d0e950.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.f(I)I",
+      "originalName": "f",
+      "to": "getTickRate",
+      "evidence": "Source-purpose review: Converts the configured tick length in nanoseconds to ticks per second.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.h(B)V",
+      "originalName": "h",
+      "to": "clearFacePriorityOffsets",
+      "evidence": "Source-purpose review: Zeros the mesh face priority offsets before processing a new mesh.",
       "confidence": "reviewed"
     },
     {
@@ -6989,6 +7164,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nd.a(I)I",
+      "originalName": "a",
+      "to": "getMenuStackHeight",
+      "evidence": "Source-purpose review: Reads the combined height of the stacked menu items and their spacing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nd.a(IIII)V",
       "originalName": "a",
       "to": "drawWidget",
@@ -6996,10 +7178,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nd.a(Ljava/applet/Applet;I)V",
+      "originalName": "a",
+      "to": "openServerList",
+      "evidence": "Source-purpose review: Navigates the browser to the game server list using the applet code base.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nd.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "containsNonAlphanumeric",
+      "evidence": "Source-purpose review: Tests whether the string contains a character that is neither an ASCII letter nor a decimal digit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nd.a(Llk;CII)Z",
       "originalName": "a",
       "to": "handleKey",
       "evidence": "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nd.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Releases the static panel and supporting references during teardown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nd.a(ZLjava/applet/Applet;)Z",
+      "originalName": "a",
+      "to": "hasStartupMarkerCookie",
+      "evidence": "Source-purpose review: Checks the startup marker in memory, in browser cookies, or in the applet parameters.",
       "confidence": "reviewed"
     },
     {
@@ -10566,6 +10776,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ve.a(B)Z",
+      "originalName": "a",
+      "to": "shouldSendName",
+      "evidence": "Source-purpose review: Reports whether the name should be included in the account request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a(I)V",
+      "originalName": "a",
+      "to": "restoreRasterTarget",
+      "evidence": "Source-purpose review: Pops the saved raster target and clipping bounds and returns the entry to the reuse pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a(II[Ltg;BII)V",
+      "originalName": "a",
+      "to": "drawNineSlice",
+      "evidence": "Source-purpose review: Paints the nine-slice image tiles into the clipped rectangle, adjusting the border regions to fit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.b(B)V",
+      "originalName": "b",
+      "to": "captureMouseInput",
+      "evidence": "Source-purpose review: Copies mouse coordinates and button state into the current tick and resets the consumed event counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.c(B)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "getName",
+      "evidence": "Source-purpose review: Returns the stored login name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ve.d(B)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -11268,7 +11513,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "df77a895179630eec6b54931156cede6aec3fb2651b3a57c0e61fc8ea10bef78",
+      "bouncedown-names.json": "0ba6187d13e18229a2f68cf7fed5350bf90c812bf5548576e97f917c25e1e0d7",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
