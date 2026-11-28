@@ -220,6 +220,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ab",
+      "originalName": "ab",
+      "to": "AchievementPopup",
+      "evidence": "Queued with the unlocked achievement index and rendered with that index’s name and icon during the on-screen notification.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ac",
       "originalName": "ac",
       "to": "JavaScriptBridge",
@@ -640,6 +647,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gi",
+      "originalName": "gi",
+      "to": "ArchiveLoadProgress",
+      "evidence": "Walks a list of archive prerequisites and computes the current loading message and fractional progress.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gj",
       "originalName": "gj",
       "to": "ArchiveRequest",
@@ -658,6 +672,13 @@
       "originalName": "gl",
       "to": "TextFieldListener",
       "evidence": "Receives the editable field callbacks for text changes and text submission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ha",
+      "originalName": "ha",
+      "to": "AsyncAssetDownload",
+      "evidence": "Provides a runnable for downloading a URL via the applet connection or a fallback connection, and exposes the resulting bytes when complete.",
       "confidence": "reviewed"
     },
     {
@@ -752,6 +773,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:j",
+      "originalName": "j",
+      "to": "DelayedIncomingPacket",
+      "evidence": "Stores an incoming packet type, payload and release time. The packet reader enqueues one while simulating network latency.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jb",
       "originalName": "jb",
       "to": "FullscreenFocusCanvas",
@@ -777,6 +805,13 @@
       "originalName": "jg",
       "to": "AlphaWidgetContainer",
       "evidence": "Draws a widget through an opacity-controlled wrapper, with a direct draw at full opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jh",
+      "originalName": "jh",
+      "to": "SpriteButtonStyle",
+      "evidence": "Paints button labels over a sprite-based frame, selecting colors for the normal, active and disabled appearance.",
       "confidence": "reviewed"
     },
     {
@@ -1970,6 +2005,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ab.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "hasOnlyRepeatedCharacter",
+      "evidence": "Source-purpose review: Starting at the second character, compares each character to the first and returns false on a mismatch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ab.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2086,6 +2128,27 @@
       "originalName": "a",
       "to": "attach",
       "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.a(I)V",
+      "originalName": "a",
+      "to": "clearSharedReferences",
+      "evidence": "Source-purpose review: Releases the two shared references during game teardown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.a(Ljava/applet/Applet;Ljava/net/URL;Z)Ljava/net/URL;",
+      "originalName": "a",
+      "to": "rewriteAppletNavigationUrl",
+      "evidence": "Source-purpose review: Forwards changed applet settings and session parameters for insertion into the outgoing navigation URL.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getTimedChatNotice",
+      "evidence": "Source-purpose review: Returns the pending chat notice during its display interval, otherwise null.",
       "confidence": "reviewed"
     },
     {
@@ -2793,6 +2856,20 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 6b3362987e1acd68e9315e40615c7d1f81d89a762569d7365522b1ec83e778ca.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(II)V",
+      "originalName": "a",
+      "to": "notifyBrowserResize",
+      "evidence": "Source-purpose review: Invokes the JavaScript resizing callback with the given sizing state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(Ljava/net/URL;BILjava/lang/String;Ljava/lang/String;)Ljava/net/URL;",
+      "originalName": "a",
+      "to": "rewriteAppletUrlPath",
+      "evidence": "Source-purpose review: Rewrites the language, settings and session path segments of the applet URL and keeps its remaining path.",
       "confidence": "reviewed"
     },
     {
@@ -4469,6 +4546,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gi.a(I)Z",
+      "originalName": "a",
+      "to": "pollArchivePrerequisites",
+      "evidence": "Source-purpose review: Polls the current archive prerequisite, advances through ready prerequisites, and returns true after all are ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatTriangle",
+      "evidence": "Source-purpose review: Orders the three vertices by their Y positions and invokes the flat-color scanline renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(ILlh;I)V",
+      "originalName": "a",
+      "to": "updateLoadingProgress",
+      "evidence": "Source-purpose review: Updates the aggregate progress and chooses the current step’s plain or percentage status label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a([BI)Lo;",
+      "originalName": "a",
+      "to": "createBitmapFontFromDecodedGlyphs",
+      "evidence": "Source-purpose review: Creates a bitmap font from the metrics bytes and shared glyph buffers, then clears the buffers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gi.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -4697,6 +4802,34 @@
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
       "evidence": "Complete declaration/body verified against exact source-reviewed private static<T extends Throwable> RuntimeException helper with throws T and body throw(T)throwable. Preserve generic exception signature, original Throwable identity, null behavior, annotation and every explicit type argument/call site; do not wrap or convert checked exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(B)Z",
+      "originalName": "a",
+      "to": "pollDownloadComplete",
+      "evidence": "Source-purpose review: Advances the connection and reader startup states and reports when the download reaches a terminal state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(I)Lwi;",
+      "originalName": "a",
+      "to": "getDownloadResult",
+      "evidence": "Source-purpose review: Returns the populated download buffer when the finish state is reached and returns null while it is unavailable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(ILsa;I)V",
+      "originalName": "a",
+      "to": "writeLeaderboardRequest",
+      "evidence": "Source-purpose review: Writes the service opcode and leaderboard query fields. Called when opening the leaderboard and resending queued queries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(IZ)V",
+      "originalName": "a",
+      "to": "drawMenuOverlay",
+      "evidence": "Source-purpose review: Draws the menu over the dimmed game raster through the menu overlay renderer.",
       "confidence": "reviewed"
     },
     {
@@ -5239,10 +5372,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.a(CB)Z",
+      "originalName": "a",
+      "to": "isAsciiLetter",
+      "evidence": "Source-purpose review: Tests membership in one of the two ASCII alphabet ranges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(ZBZIZI)Lgk;",
+      "originalName": "a",
+      "to": "openCachedResourceArchive",
+      "evidence": "Source-purpose review: Initializes the requested cache index and its reference-table store and creates the backed resource archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 2a32f526f05b3847a71c3c305ef84a78bc7ac81aeb1dd7f8a3160e4b702ae814.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.c(B)V",
+      "originalName": "c",
+      "to": "prepareLobbyReturn",
+      "evidence": "Source-purpose review: Resets the old session UI, sets the lobby display flags, and reopens the lobby dialog during the transition.",
       "confidence": "reviewed"
     },
     {
@@ -5572,6 +5726,13 @@
       "originalName": "a",
       "to": "paintWidget",
       "evidence": "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.b(I)Z",
+      "originalName": "b",
+      "to": "isOfflineMode",
+      "evidence": "Source-purpose review: Returns the offline gameplay flag. Choosing Just play sets the flag, which bypasses online score and lobby requests.",
       "confidence": "reviewed"
     },
     {
@@ -11513,7 +11674,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "0ba6187d13e18229a2f68cf7fed5350bf90c812bf5548576e97f917c25e1e0d7",
+      "bouncedown-names.json": "a3eb215a7c504fff7173915da02082e4ec7a1c2bcef7e7980d6d51f07a5ea3c3",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

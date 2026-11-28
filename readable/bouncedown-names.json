@@ -187,7 +187,12 @@
     ["sj","DialWidgetRenderer","Draws a circular dial and highlights current and target angles using the widget radius."],
     ["fh","DialWidget","Converts a pointer press within the circular control to a discrete angle and wraps it into the configured range."],
     ["ve","LoginNameValue","Stores a normalized login name and whether the account request should include it."],
-    ["lj","EmailValidationError","Identifies email validation failures by distinct marker instances."]
+    ["lj","EmailValidationError","Identifies email validation failures by distinct marker instances."],
+    ["ab","AchievementPopup","Queued with the unlocked achievement index and rendered with that index’s name and icon during the on-screen notification."],
+    ["gi","ArchiveLoadProgress","Walks a list of archive prerequisites and computes the current loading message and fractional progress."],
+    ["ha","AsyncAssetDownload","Provides a runnable for downloading a URL via the applet connection or a fallback connection, and exposes the resulting bytes when complete."],
+    ["j","DelayedIncomingPacket","Stores an incoming packet type, payload and release time. The packet reader enqueues one while simulating network latency."],
+    ["jh","SpriteButtonStyle","Paints button labels over a sprite-based frame, selecting colors for the normal, active and disabled appearance."]
   ],
   "methods": [
     ["ab","b","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 100b3a6a165e64b3ded080ec0f696f75a382f92c59f7b42efe45ddbfcda5b071."],
@@ -1565,7 +1570,25 @@
     ["hc","a","(IIIIIBII)Lke;","queueAchievementSubmission","Source-purpose review: Creates a pending achievement submission, queues it and passes it to the packet writer."],
     ["hc","a","(IZIB)Z","precedesPlayerResult","Source-purpose review: Compares player result entries using the selected ranking order with a stable index tie break."],
     ["hc","a","(Ljava/lang/String;I)Llj;","validateEmailAddress","Source-purpose review: Splits the email address at the at sign and returns the first local-part or domain validation error."],
-    ["hc","b","(Ljava/lang/String;I)Z","hasInvalidPasswordLength","Source-purpose review: Reports a missing password or one outside the configured length bounds."]
+    ["hc","b","(Ljava/lang/String;I)Z","hasInvalidPasswordLength","Source-purpose review: Reports a missing password or one outside the configured length bounds."],
+    ["ab","a","(Ljava/lang/String;B)Z","hasOnlyRepeatedCharacter","Source-purpose review: Starting at the second character, compares each character to the first and returns false on a mismatch."],
+    ["gi","a","(ILlh;I)V","updateLoadingProgress","Source-purpose review: Updates the aggregate progress and chooses the current step’s plain or percentage status label."],
+    ["gi","a","(I)Z","pollArchivePrerequisites","Source-purpose review: Polls the current archive prerequisite, advances through ready prerequisites, and returns true after all are ready."],
+    ["gi","a","([BI)Lo;","createBitmapFontFromDecodedGlyphs","Source-purpose review: Creates a bitmap font from the metrics bytes and shared glyph buffers, then clears the buffers."],
+    ["gi","a","(IIIIIIII)V","drawFlatTriangle","Source-purpose review: Orders the three vertices by their Y positions and invokes the flat-color scanline renderer."],
+    ["ha","a","(IZ)V","drawMenuOverlay","Source-purpose review: Draws the menu over the dimmed game raster through the menu overlay renderer."],
+    ["ha","a","(I)Lwi;","getDownloadResult","Source-purpose review: Returns the populated download buffer when the finish state is reached and returns null while it is unavailable."],
+    ["ha","a","(B)Z","pollDownloadComplete","Source-purpose review: Advances the connection and reader startup states and reports when the download reaches a terminal state."],
+    ["ha","a","(ILsa;I)V","writeLeaderboardRequest","Source-purpose review: Writes the service opcode and leaderboard query fields. Called when opening the leaderboard and resending queued queries."],
+    ["j","a","(ZBZIZI)Lgk;","openCachedResourceArchive","Source-purpose review: Initializes the requested cache index and its reference-table store and creates the backed resource archive."],
+    ["j","a","(CB)Z","isAsciiLetter","Source-purpose review: Tests membership in one of the two ASCII alphabet ranges."],
+    ["j","c","(B)V","prepareLobbyReturn","Source-purpose review: Resets the old session UI, sets the lobby display flags, and reopens the lobby dialog during the transition."],
+    ["jh","b","(I)Z","isOfflineMode","Source-purpose review: Returns the offline gameplay flag. Choosing Just play sets the flag, which bypasses online score and lobby requests."],
+    ["ag","b","(I)Ljava/lang/String;","getTimedChatNotice","Source-purpose review: Returns the pending chat notice during its display interval, otherwise null."],
+    ["ag","a","(Ljava/applet/Applet;Ljava/net/URL;Z)Ljava/net/URL;","rewriteAppletNavigationUrl","Source-purpose review: Forwards changed applet settings and session parameters for insertion into the outgoing navigation URL."],
+    ["ag","a","(I)V","clearSharedReferences","Source-purpose review: Releases the two shared references during game teardown."],
+    ["bi","a","(II)V","notifyBrowserResize","Source-purpose review: Invokes the JavaScript resizing callback with the given sizing state."],
+    ["bi","a","(Ljava/net/URL;BILjava/lang/String;Ljava/lang/String;)Ljava/net/URL;","rewriteAppletUrlPath","Source-purpose review: Rewrites the language, settings and session path segments of the applet URL and keeps its remaining path."]
   ],
   "fields": [
     ["wi","field_i","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],
