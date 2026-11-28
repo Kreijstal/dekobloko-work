@@ -344,6 +344,81 @@
       "sb",
       "RichTextLayout",
       "Concrete text layout that wraps and aligns formatted text with the selected bitmap font, caches its inputs, and records per-line caret positions."
+    ],
+    [
+      "jd",
+      "WidgetHoverListener",
+      "Receives notifications when the pointer enters or leaves a widget’s bounds."
+    ],
+    [
+      "bj",
+      "WidgetFocusListener",
+      "Receives notifications when an interactive widget gains or loses keyboard focus."
+    ],
+    [
+      "jb",
+      "WidgetPointerListener",
+      "Receives pointer press and release callbacks from interactive widgets."
+    ],
+    [
+      "ml",
+      "WidgetRenderer",
+      "Draws a widget on a single render layer using the supplied origin."
+    ],
+    [
+      "of",
+      "WidgetEventListener",
+      "Common marker interface for the listener stored on a base UI widget. The widget checks narrower listener types before sending hover or focus events."
+    ],
+    [
+      "jk",
+      "SingleChildWidgetContainer",
+      "Container that holds one widget and delegates drawing, layout, pointer input and focus to that child."
+    ],
+    [
+      "ga",
+      "WidgetContainerMarker",
+      "Marker interface implemented by the single-child, deque and array widget containers."
+    ],
+    [
+      "ee",
+      "DraggableWidgetContainer",
+      "Wraps a widget for pointer-driven dragging and can restore its original position after release."
+    ],
+    [
+      "mh",
+      "LabeledWidgetContainer",
+      "Draws a text label beside a child widget using a bitmap font."
+    ],
+    [
+      "ue",
+      "AlphaWidgetContainer",
+      "Draws a widget through an opacity-controlled wrapper, with a direct draw at full opacity."
+    ],
+    [
+      "oa",
+      "DropTargetWidgetContainer",
+      "Tests pointer release inside its bounds and sends an accepted drag to a drop listener."
+    ],
+    [
+      "kj",
+      "ModalDialogHost",
+      "Stores the open dialogs, draws them in order, and gives input focus to the active dialog."
+    ],
+    [
+      "rh",
+      "ModalDialog",
+      "Base dialog container that centers its content and manages its open or closing opacity."
+    ],
+    [
+      "qe",
+      "WidgetDragListener",
+      "Receives notifications from draggable widgets as they move."
+    ],
+    [
+      "tc",
+      "WidgetDropListener",
+      "Receives accepted widget drops from a drop target."
     ]
   ],
   "methods": [
@@ -5701,6 +5776,972 @@
       "(Ljava/lang/String;IILta;I)V",
       "layoutSingleLineCentered",
       "Source-purpose review: Places the line’s bounds one half-width to either side of the supplied center coordinate."
+    ],
+    [
+      "we",
+      "a",
+      "(IIIII)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "jh",
+      "a",
+      "(IIIII)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "jj",
+      "a",
+      "(IIIII)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "jk",
+      "a",
+      "(IIIII)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "ua",
+      "a",
+      "(IIIII)V",
+      "setBounds",
+      "Source-purpose review: Stores the widget origin, width and height. Layout refresh passes those same four stored values back through this method."
+    ],
+    [
+      "we",
+      "a",
+      "(IIIIB)Z",
+      "containsPointer",
+      "Source-purpose review: Tests whether the supplied pointer position is inside the stored widget rectangle relative to its parent origin."
+    ],
+    [
+      "we",
+      "g",
+      "(I)V",
+      "refreshLayout",
+      "Source-purpose review: Calls the bounds setter again using the widget’s current position and size so layout overrides can recompute their child geometry."
+    ],
+    [
+      "we",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "cm",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "jh",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "jj",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "jk",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "kj",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "lb",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "mh",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "qi",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "rh",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "rj",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "sk",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "ua",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "ue",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "vg",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "vh",
+      "a",
+      "(IIII)V",
+      "drawWidget",
+      "Source-purpose review: Draws a single layer of the widget, using the caller’s origin and the widget’s renderer."
+    ],
+    [
+      "we",
+      "f",
+      "(I)I",
+      "getMaximumRenderLayer",
+      "Source-purpose review: Returns the largest draw layer that the widget or its containers need to render."
+    ],
+    [
+      "jk",
+      "f",
+      "(I)I",
+      "getMaximumRenderLayer",
+      "Source-purpose review: Returns the largest draw layer that the widget or its containers need to render."
+    ],
+    [
+      "ua",
+      "f",
+      "(I)I",
+      "getMaximumRenderLayer",
+      "Source-purpose review: Returns the largest draw layer that the widget or its containers need to render."
+    ],
+    [
+      "we",
+      "a",
+      "(III)V",
+      "drawAllLayers",
+      "Source-purpose review: Gets the maximum draw layer and iterates from layer zero through that maximum, invoking the per-layer painter."
+    ],
+    [
+      "we",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "bg",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "eb",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "ee",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "jh",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "jj",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "jk",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "qc",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "rj",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "t",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "ua",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "vg",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "vh",
+      "a",
+      "(Lwe;IIB)V",
+      "updatePointer",
+      "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes."
+    ],
+    [
+      "we",
+      "a",
+      "(IILwe;III)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "ee",
+      "a",
+      "(IILwe;III)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "jk",
+      "a",
+      "(IILwe;III)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "oa",
+      "a",
+      "(IILwe;III)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "t",
+      "a",
+      "(IILwe;III)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "ua",
+      "a",
+      "(IILwe;III)V",
+      "pointerReleased",
+      "Source-purpose review: Handles the release of a previously pressed pointer button and forwards release information to a widget listener when present."
+    ],
+    [
+      "we",
+      "a",
+      "(IIIILwe;II)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "ee",
+      "a",
+      "(IIIILwe;II)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "fj",
+      "a",
+      "(IIIILwe;II)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "jk",
+      "a",
+      "(IIIILwe;II)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "qj",
+      "a",
+      "(IIIILwe;II)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "rj",
+      "a",
+      "(IIIILwe;II)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "t",
+      "a",
+      "(IIIILwe;II)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "ua",
+      "a",
+      "(IIIILwe;II)Z",
+      "pointerPressed",
+      "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation."
+    ],
+    [
+      "we",
+      "a",
+      "(ILwe;IIIII)Z",
+      "handleWheel",
+      "Source-purpose review: Handles wheel scrolling for the widget. The base implementation leaves the wheel event unhandled."
+    ],
+    [
+      "jk",
+      "a",
+      "(ILwe;IIIII)Z",
+      "handleWheel",
+      "Source-purpose review: Handles wheel scrolling for the widget. The base implementation leaves the wheel event unhandled."
+    ],
+    [
+      "ua",
+      "a",
+      "(ILwe;IIIII)Z",
+      "handleWheel",
+      "Source-purpose review: Handles wheel scrolling for the widget. The base implementation leaves the wheel event unhandled."
+    ],
+    [
+      "we",
+      "a",
+      "(IIZZ)Z",
+      "processPointerInput",
+      "Source-purpose review: Dispatches pointer movement, press, release and wheel input and updates focus and tooltip state at the root widget."
+    ],
+    [
+      "we",
+      "a",
+      "(Lwe;Z)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "jj",
+      "a",
+      "(Lwe;Z)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "jk",
+      "a",
+      "(Lwe;Z)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "t",
+      "a",
+      "(Lwe;Z)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "ua",
+      "a",
+      "(Lwe;Z)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "vg",
+      "a",
+      "(Lwe;Z)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "vh",
+      "a",
+      "(Lwe;Z)Z",
+      "takeFocus",
+      "Source-purpose review: Requests keyboard focus with the supplied root widget for context. Interactive controls can accept focus."
+    ],
+    [
+      "we",
+      "b",
+      "(B)Z",
+      "isFocused",
+      "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes."
+    ],
+    [
+      "jk",
+      "b",
+      "(B)Z",
+      "isFocused",
+      "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes."
+    ],
+    [
+      "t",
+      "b",
+      "(B)Z",
+      "isFocused",
+      "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes."
+    ],
+    [
+      "ua",
+      "b",
+      "(B)Z",
+      "isFocused",
+      "Source-purpose review: Reports the keyboard focus state. The root input dispatch checks this before handling keys and pointer-driven focus changes."
+    ],
+    [
+      "we",
+      "e",
+      "(I)V",
+      "blur",
+      "Source-purpose review: Clears keyboard focus during a pointer-driven focus change or keyboard traversal."
+    ],
+    [
+      "jk",
+      "e",
+      "(I)V",
+      "blur",
+      "Source-purpose review: Clears keyboard focus during a pointer-driven focus change or keyboard traversal."
+    ],
+    [
+      "t",
+      "e",
+      "(I)V",
+      "blur",
+      "Source-purpose review: Clears keyboard focus during a pointer-driven focus change or keyboard traversal."
+    ],
+    [
+      "ua",
+      "e",
+      "(I)V",
+      "blur",
+      "Source-purpose review: Clears keyboard focus during a pointer-driven focus change or keyboard traversal."
+    ],
+    [
+      "we",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "bg",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "cm",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "eb",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "ha",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "ja",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "jk",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "lb",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "pc",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "qi",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "rj",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "t",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "ua",
+      "a",
+      "(Lwe;CII)Z",
+      "handleKey",
+      "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling."
+    ],
+    [
+      "we",
+      "a",
+      "(IIC)Z",
+      "processKeyInput",
+      "Source-purpose review: Checks that keyboard focus is available and dispatches a key or typed character, with focus traversal for Tab."
+    ],
+    [
+      "we",
+      "a",
+      "(Ljava/util/Hashtable;ILjava/lang/StringBuilder;I)V",
+      "appendDebugProperties",
+      "Source-purpose review: Appends widget identity, bounds and focus information to the diagnostic widget tree."
+    ],
+    [
+      "we",
+      "a",
+      "(Ljava/util/Hashtable;BILjava/lang/StringBuilder;)Z",
+      "beginDebugTreeEntry",
+      "Source-purpose review: Checks the visited widget table and initializes a debug-tree entry, with a circular-reference marker for previously visited widgets."
+    ],
+    [
+      "we",
+      "a",
+      "(ZLjava/lang/StringBuilder;Ljava/util/Hashtable;I)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "ee",
+      "a",
+      "(ZLjava/lang/StringBuilder;Ljava/util/Hashtable;I)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "jk",
+      "a",
+      "(ZLjava/lang/StringBuilder;Ljava/util/Hashtable;I)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "t",
+      "a",
+      "(ZLjava/lang/StringBuilder;Ljava/util/Hashtable;I)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "ua",
+      "a",
+      "(ZLjava/lang/StringBuilder;Ljava/util/Hashtable;I)Ljava/lang/StringBuilder;",
+      "appendDebugTree",
+      "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries."
+    ],
+    [
+      "jd",
+      "a",
+      "(ZLwe;I)V",
+      "onWidgetHoverChanged",
+      "Source-purpose review: Handles a hover state change for the supplied widget. The base widget calls it only when the state changes."
+    ],
+    [
+      "bj",
+      "a",
+      "(ZLwe;Z)V",
+      "onWidgetFocusChanged",
+      "Source-purpose review: Handles a keyboard focus change. The interactive widget calls the same callback when taking or clearing focus."
+    ],
+    [
+      "jb",
+      "a",
+      "(IIIIILt;I)V",
+      "onWidgetPointerPressed",
+      "Source-purpose review: Receives a pointer press after the interactive widget tests the active region and records the pressed button."
+    ],
+    [
+      "jb",
+      "a",
+      "(BIIIILt;)V",
+      "onWidgetPointerReleased",
+      "Source-purpose review: Receives a pointer release from the interactive widget’s release handler."
+    ],
+    [
+      "ml",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "a",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "ak",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "db",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "hd",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "lc",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "mc",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "mg",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "pb",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "wi",
+      "a",
+      "(ZLwe;III)V",
+      "paintWidget",
+      "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag."
+    ],
+    [
+      "jk",
+      "a",
+      "(ILwe;)Z",
+      "focusNextChild",
+      "Source-purpose review: The keyboard handler calls this for Tab with Shift released to move focus forward within the children."
+    ],
+    [
+      "jk",
+      "a",
+      "(BLwe;)Z",
+      "focusPreviousChild",
+      "Source-purpose review: The keyboard handler calls this for Tab with Shift held to move focus backward within the children."
+    ],
+    [
+      "jk",
+      "a",
+      "(I)Lwe;",
+      "getFocusedChild",
+      "Source-purpose review: Returns the child whose focus test succeeds, or null when none is focused."
+    ],
+    [
+      "jk",
+      "b",
+      "(Ljava/util/Hashtable;ILjava/lang/StringBuilder;I)V",
+      "appendChildDebugTree",
+      "Source-purpose review: Adds the child widget’s debug entry to the output using the shared visited-widget table and indentation."
+    ],
+    [
+      "jk",
+      "i",
+      "(I)V",
+      "layoutChild",
+      "Source-purpose review: Called when the wrapper’s bounds change to refresh or compute the layout of its sole child."
+    ],
+    [
+      "ua",
+      "b",
+      "(Lwe;Z)Z",
+      "focusNextChild",
+      "Source-purpose review: The keyboard handler calls this for Tab with Shift released to move focus forward within the children."
+    ],
+    [
+      "ua",
+      "a",
+      "(BLwe;)Z",
+      "focusPreviousChild",
+      "Source-purpose review: The keyboard handler calls this for Tab with Shift held to move focus backward within the children."
+    ],
+    [
+      "ua",
+      "a",
+      "(Z)Lwe;",
+      "getFocusedChild",
+      "Source-purpose review: Returns the child whose focus test succeeds, or null when none is focused."
+    ],
+    [
+      "ua",
+      "b",
+      "(Ljava/util/Hashtable;ILjava/lang/StringBuilder;I)V",
+      "appendChildDebugTrees",
+      "Source-purpose review: Adds debug entries for the child widgets to the output using the shared visited-widget table and indentation."
+    ],
+    [
+      "ua",
+      "c",
+      "(B)V",
+      "refreshChildLayouts",
+      "Source-purpose review: Visits the deque’s children and refreshes their layouts after the container’s bounds change."
+    ],
+    [
+      "ua",
+      "b",
+      "(BLwe;)V",
+      "addChild",
+      "Source-purpose review: Adds the supplied child widget to the container’s internal deque."
+    ],
+    [
+      "kj",
+      "a",
+      "(I)Lwe;",
+      "getFocusedChild",
+      "Source-purpose review: Returns the child whose focus test succeeds, or null when none is focused."
+    ],
+    [
+      "ee",
+      "i",
+      "(I)V",
+      "layoutChild",
+      "Source-purpose review: Called when the wrapper’s bounds change to refresh or compute the layout of its sole child."
+    ],
+    [
+      "rh",
+      "a",
+      "(Z)Lwe;",
+      "getFocusedChild",
+      "Source-purpose review: Returns the child whose focus test succeeds, or null when none is focused."
+    ],
+    [
+      "kj",
+      "j",
+      "(I)Lrh;",
+      "getTopOpenDialog",
+      "Source-purpose review: Returns the first open dialog in the host’s display order, or null if none are open."
+    ],
+    [
+      "kj",
+      "b",
+      "(BLwe;)V",
+      "showDialog",
+      "Source-purpose review: Adds a dialog to the host, marks it open, and requests widget focus."
+    ],
+    [
+      "kj",
+      "k",
+      "(I)V",
+      "closeAllDialogs",
+      "Source-purpose review: Marks all dialogs closed and clears the host’s active child."
+    ],
+    [
+      "kj",
+      "l",
+      "(I)V",
+      "advanceDialogs",
+      "Source-purpose review: Advances each dialog’s opacity, unlinks finished closing dialogs, and selects the active child."
+    ],
+    [
+      "kj",
+      "a",
+      "(Z)V",
+      "snapAndPruneDialogs",
+      "Source-purpose review: Moves each dialog immediately to its target opacity and unlinks finished closing dialogs."
+    ],
+    [
+      "rh",
+      "k",
+      "(I)Z",
+      "advanceDialogAnimation",
+      "Source-purpose review: Moves the dialog opacity toward its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "rh",
+      "b",
+      "(Z)Z",
+      "snapDialogAnimation",
+      "Source-purpose review: Sets opacity directly to its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "rh",
+      "m",
+      "(I)I",
+      "getTargetAlpha",
+      "Source-purpose review: Returns full opacity for the top open dialog and zero otherwise."
+    ],
+    [
+      "rh",
+      "a",
+      "(IBI)V",
+      "setCenteredSize",
+      "Source-purpose review: Sets the dialog bounds from the requested width and height centered in the viewport."
+    ],
+    [
+      "qe",
+      "a",
+      "(ILee;II)V",
+      "widgetDragged",
+      "Source-purpose review: Reports the dragged widget and the coordinate origin used during pointer movement."
+    ],
+    [
+      "tc",
+      "a",
+      "(Loa;BLee;)V",
+      "widgetDropped",
+      "Source-purpose review: Reports the draggable widget and the target that accepted it."
+    ],
+    [
+      "jg",
+      "k",
+      "(I)Z",
+      "advanceDialogAnimation",
+      "Source-purpose review: Moves the dialog opacity toward its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "nf",
+      "k",
+      "(I)Z",
+      "advanceDialogAnimation",
+      "Source-purpose review: Moves the dialog opacity toward its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "pc",
+      "k",
+      "(I)Z",
+      "advanceDialogAnimation",
+      "Source-purpose review: Moves the dialog opacity toward its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "nf",
+      "b",
+      "(Z)Z",
+      "snapDialogAnimation",
+      "Source-purpose review: Sets opacity directly to its target and reports when a closed dialog can be unlinked."
+    ],
+    [
+      "pc",
+      "b",
+      "(Z)Z",
+      "snapDialogAnimation",
+      "Source-purpose review: Sets opacity directly to its target and reports when a closed dialog can be unlinked."
     ]
   ],
   "fields": [
