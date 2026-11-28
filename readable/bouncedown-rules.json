@@ -542,6 +542,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fe",
+      "originalName": "fe",
+      "to": "WidgetTheme",
+      "evidence": "Initializes shared widget renderers and fonts, and paints single-line and wrapped tooltip backgrounds and text.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fg",
       "originalName": "fg",
       "to": "VorbisFloor",
@@ -763,6 +770,13 @@
       "originalName": "kf",
       "to": "MouseWheelInput",
       "evidence": "Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kg",
+      "originalName": "kg",
+      "to": "LayeredWidgetStyle",
+      "evidence": "Carries frame sprites, an icon, text styling, and offsets. It can paint a widget or apply its defined values over another layer.",
       "confidence": "reviewed"
     },
     {
@@ -1064,6 +1078,20 @@
       "originalName": "qb",
       "to": "IsaacRandom",
       "evidence": "Primary instance role reviewed from exact source: seeded ISAAC pseudorandom stream with two private int[256] tables and four private int state/count fields, four golden-ratio mixes, two eight-word initialization passes, generation with shifts13/6/2/16 and half-table/index lookups, and reverse-count result consumption. Every constructor and nonstatic method in this cohort is human-read, including bounded adapters where present. Packet masking and game-animation/random-choice callers are reviewed where selected. Mixed unrelated static responsibilities are retained. Rename identifiers only; preserve every declaration/modifier, primitive domain, table allocation, seed copy, class initializer, literal, arithmetic/guard/helper/recursion order, partial effect and exception. No library RNG substitution, guard removal, table normalization or runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qh",
+      "originalName": "qh",
+      "to": "NameCheckRequest",
+      "evidence": "A name with separate completion and result flags. The client starts another request when the completed name differs from current input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qi",
+      "originalName": "qi",
+      "to": "LayeredButtonRenderer",
+      "evidence": "Selects style overlays from widget state and paints the combined layer with the text renderer settings.",
       "confidence": "reviewed"
     },
     {
@@ -3636,6 +3664,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fe.a(BLjava/lang/String;II)V",
+      "originalName": "a",
+      "to": "drawSingleLineTooltip",
+      "evidence": "Source-purpose review: Measures the text, clamps its padded box to the raster, and draws the outline and text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "fillRectangleAlpha",
+      "evidence": "Source-purpose review: Delegates the rectangle geometry, color, and alpha to the software rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(IIIZII)V",
+      "originalName": "a",
+      "to": "drawLine",
+      "evidence": "Source-purpose review: Delegates the coordinates and color to the software rasterizer line routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(ILjava/lang/String;IZ)V",
+      "originalName": "a",
+      "to": "drawTooltip",
+      "evidence": "Source-purpose review: Dispatches to the single-line or wrapped renderer according to the theme setting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(ILtj;)V",
+      "originalName": "a",
+      "to": "installDefaultPainters",
+      "evidence": "Source-purpose review: Builds the default font-backed renderer, layered button painters, and their widget style presets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "hasKnownPlayerName",
+      "evidence": "Source-purpose review: Checks whether the normalized name resolves to a player entry in the client name index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(Ljava/lang/String;IIZ)V",
+      "originalName": "a",
+      "to": "drawWrappedTooltip",
+      "evidence": "Source-purpose review: Measures wrapped lines, constrains the tooltip to the raster, and draws its box and text.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ff.a(IIBI)V",
       "originalName": "a",
       "to": "activateFromInput",
@@ -5194,6 +5271,97 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 5 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 6919d149a53adb7d1036bc8df6769eb24d5ac95501099942e551394a6f61e91d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(BI)Lkg;",
+      "originalName": "a",
+      "to": "setOffsetX",
+      "evidence": "Source-purpose review: Sets the offset added to the widget x position for icons and text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(I)V",
+      "originalName": "a",
+      "to": "resetStyle",
+      "evidence": "Source-purpose review: Resets layer alpha, icon, frame, offsets, and shadow to the default values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(IB)Lkg;",
+      "originalName": "a",
+      "to": "setTextShadowColor",
+      "evidence": "Source-purpose review: Sets the color passed as the shadow argument to the font renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(II)Lkg;",
+      "originalName": "a",
+      "to": "setTextColor",
+      "evidence": "Source-purpose review: Sets the foreground text color passed to the font renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(IIIII)[Ltg;",
+      "originalName": "a",
+      "to": "createBeveledFrameSprites",
+      "evidence": "Source-purpose review: Builds a nine-slice frame with two border colors and an optional solid center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(IIIII[IIII)V",
+      "originalName": "a",
+      "to": "rasterizeClippedTriangle",
+      "evidence": "Source-purpose review: Steps the triangle edges in fixed point and fills each clipped horizontal pixel span.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(ILjava/lang/String;)Lqh;",
+      "originalName": "a",
+      "to": "createNameCheckRequest",
+      "evidence": "Source-purpose review: Creates a new request containing the supplied name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(ILqi;Llk;II)V",
+      "originalName": "a",
+      "to": "paint",
+      "evidence": "Source-purpose review: Draws the frame, positioned icon, and styled text within the supplied widget bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(Lkg;B)V",
+      "originalName": "a",
+      "to": "copyTo",
+      "evidence": "Source-purpose review: Copies all style fields into the supplied destination layer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(Lkg;IILqi;ZLlk;)V",
+      "originalName": "a",
+      "to": "applyTo",
+      "evidence": "Source-purpose review: Applies every defined style field to an accumulated layer, optionally painting and resetting it first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(ZB)Lkg;",
+      "originalName": "a",
+      "to": "setResetBeforeApplying",
+      "evidence": "Source-purpose review: Controls whether applying the style paints and resets the accumulated layer first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a([Ltg;I)Lkg;",
+      "originalName": "a",
+      "to": "setFrameSprites",
+      "evidence": "Source-purpose review: Sets the sprite array used for the nine-slice background.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.b(IB)Lkg;",
+      "originalName": "b",
+      "to": "setOffsetY",
+      "evidence": "Source-purpose review: Sets the offset added to the widget y position for icons and text.",
       "confidence": "reviewed"
     },
     {
@@ -7787,10 +7955,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getName",
+      "evidence": "Source-purpose review: Returns the name saved when the client creates the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a(I)Z",
+      "originalName": "a",
+      "to": "isComplete",
+      "evidence": "Source-purpose review: Returns the completion flag set when the request receives its result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a(ZB)V",
+      "originalName": "a",
+      "to": "complete",
+      "evidence": "Source-purpose review: Records the supplied result and marks the request complete.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 6 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.b(I)Z",
+      "originalName": "b",
+      "to": "getResult",
+      "evidence": "Source-purpose review: Returns the stored boolean result of the check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(II[Ltg;)V",
+      "originalName": "a",
+      "to": "setStateFrameSprites",
+      "evidence": "Source-purpose review: Creates an absent state layer and assigns its background sprites.",
       "confidence": "reviewed"
     },
     {
@@ -7801,10 +8004,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qi.a(I[Ltg;)V",
+      "originalName": "a",
+      "to": "setFrameSprites",
+      "evidence": "Source-purpose review: Updates the background sprites of every existing state layer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(Lgk;Lgk;BLgk;)Z",
+      "originalName": "a",
+      "to": "areButtonAssetsReady",
+      "evidence": "Source-purpose review: Checks the three archives and verifies that their common UI and button assets are available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(Ljava/awt/Canvas;III)V",
+      "originalName": "a",
+      "to": "paintRasterToCanvas",
+      "evidence": "Source-purpose review: Paints the software raster to the canvas graphics context and falls back to repaint on error.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(Ljava/lang/CharSequence;I)Z",
+      "originalName": "a",
+      "to": "isDecimalInteger",
+      "evidence": "Source-purpose review: Validates a signed decimal integer using radix 10 and allowing a leading plus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(ZILqi;)V",
+      "originalName": "a",
+      "to": "copyTo",
+      "evidence": "Source-purpose review: Copies the base renderer and either duplicates each state layer or shares the layer references.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(ZLtg;)V",
+      "originalName": "a",
+      "to": "setIcon",
+      "evidence": "Source-purpose review: Updates the icon of every existing state layer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a([BI)V",
+      "originalName": "a",
+      "to": "decodeIndexedSpriteSheet",
+      "evidence": "Source-purpose review: Decodes sprite dimensions, palette entries, and row- or column-major pixel and alpha data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qi.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.b(II)Lkg;",
+      "originalName": "b",
+      "to": "createStateStyle",
+      "evidence": "Source-purpose review: Replaces a state’s layer with a fresh style and returns it.",
       "confidence": "reviewed"
     },
     {
@@ -10113,7 +10372,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "9cfaff1388f5e6f44d1da6eb8c9dd3f586abc6ae110bbe57ec90a77e792ff972",
+      "bouncedown-names.json": "31ec81b90c0af55dbfc4284b9d61d74e76c233b19669defd3cb1f57d65a21c29",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
