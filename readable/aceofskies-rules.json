@@ -12445,6 +12445,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ag.a(Z)[B",
+      "originalName": "a",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ag.e(I)I",
       "originalName": "e",
       "to": "getProgressPercent",
@@ -12855,6 +12862,27 @@
       "originalName": "b",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 4 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.a(II)[B",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "Source-purpose review: Reads the entry index and validates the stored sector headers while following the chain into a byte array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.a(III[B)Z",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Source-purpose review: Validates the entry length and attempts to update the existing sector chain before allocating a new chain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.a(IIZ[BI)Z",
+      "originalName": "a",
+      "to": "writeSectorChain",
+      "evidence": "Source-purpose review: Writes the index record and payload sectors, maintaining the archive, chunk, and next-sector headers.",
       "confidence": "reviewed"
     },
     {
@@ -13740,6 +13768,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.a(B)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "Source-purpose review: Signals the worker to stop, wakes its queue monitor, and joins the worker thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(BLbl;I)Los;",
+      "originalName": "a",
+      "to": "requestRead",
+      "evidence": "Source-purpose review: Creates and queues a disk cache read operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(BLos;)V",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "Source-purpose review: Links a disk operation into the queue and wakes the worker.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(Lbl;BI)Los;",
+      "originalName": "a",
+      "to": "readNow",
+      "evidence": "Source-purpose review: Returns a completed disk read, reusing matching data from a pending queued write where available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a([BLbl;ZI)Los;",
+      "originalName": "a",
+      "to": "requestWrite",
+      "evidence": "Source-purpose review: Creates and queues a disk cache write operation with the caller’s bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dl.a(Z[I)V",
       "originalName": "a",
       "to": "initializeOpcodeCipher",
@@ -14496,10 +14559,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fg.a(B)V",
+      "originalName": "a",
+      "to": "pollBackgroundRequests",
+      "evidence": "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(BII)Lag;",
+      "originalName": "a",
+      "to": "loadGroupRequest",
+      "evidence": "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(II)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Returns the available packed group bytes and removes the finished request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(Z)Lps;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.b(I)V",
+      "originalName": "b",
+      "to": "pollGroupPrefetches",
+      "evidence": "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fg.b(II)I",
       "originalName": "b",
       "to": "getGroupRequestProgressPercent",
       "evidence": "Source-purpose review: Looks up the pending request by group ID and returns its progress, or zero when absent. A first int other than one clears a static string before looking up the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.c(I)V",
+      "originalName": "c",
+      "to": "prefetchAllGroups",
+      "evidence": "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue.",
       "confidence": "reviewed"
     },
     {
@@ -15032,6 +15137,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gp.a(Z)[B",
+      "originalName": "a",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks.",
       "confidence": "reviewed"
     },
     {
@@ -16085,6 +16197,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ip.a(II)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ip.a(Z)Lps;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Source-purpose review: Defines the corresponding archive provider operation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ip.b(II)I",
       "originalName": "b",
       "to": "getGroupRequestProgressPercent",
@@ -16946,6 +17072,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kp.f(I)V",
+      "originalName": "f",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Clears the class’s retained static references, preserving the existing guarded call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kq.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -17160,6 +17293,13 @@
       "originalName": "c",
       "to": "evaluateValidationStatus",
       "evidence": "Source-purpose review: Evaluates the current input using the field-specific validation rules once input is ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(I[BI)I",
+      "originalName": "a",
+      "to": "computeCrc32Prefix",
+      "evidence": "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine.",
       "confidence": "reviewed"
     },
     {
@@ -18024,6 +18164,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nm.a(ZI)I",
+      "originalName": "a",
+      "to": "findIndex",
+      "evidence": "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nq.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -18455,6 +18602,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:os.a(Z)[B",
+      "originalName": "a",
+      "to": "getData",
+      "evidence": "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks.",
       "confidence": "reviewed"
     },
     {
@@ -19263,6 +19417,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ps.a([BI)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pt.a(I)V",
       "originalName": "a",
       "to": "resetStaticState",
@@ -19435,6 +19596,13 @@
       "originalName": "a",
       "to": "paintSelection",
       "evidence": "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qm.a(II[BI)[B",
+      "originalName": "a",
+      "to": "whirlpoolDigest",
+      "evidence": "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest.",
       "confidence": "reviewed"
     },
     {
@@ -22525,10 +22693,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wb.a(B)V",
+      "originalName": "a",
+      "to": "processBlock",
+      "evidence": "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(I[BJ)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wb.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5c0642128694475a08e7f21ae37467b799376cf53000f0c441ac5173354e4915.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a([BBI)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.b(B)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words.",
       "confidence": "reviewed"
     },
     {
@@ -31319,7 +31515,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-aceofskies-rules.mjs": "f144b046334021de717312bcc4655ec2e74a95a9df7e13f2aeb66eacf195148a",
-      "aceofskies-names.json": "a7a1e96924637da59bb2c066805f3816fff0d9bd4695118b0cc6a8faee961231",
+      "aceofskies-names.json": "6b21982c27eadfbe4b36f06add1ef676c85b6b7074a9f93e7f4e73545f87ded8",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "tests/test-aceofskies-core.mjs": "411552405573a5228962211d3e8ee1d080550c058b6e2505f5ccd939b2122427",

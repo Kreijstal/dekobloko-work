@@ -8897,6 +8897,202 @@
       "(B)V",
       "pollArchiveSources",
       "Source-purpose review: Polls active providers for pending work and advances their background operations."
+    ],
+    [
+      "ip",
+      "a",
+      "(II)[B",
+      "takeGroupData",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "fg",
+      "a",
+      "(II)[B",
+      "takeGroupData",
+      "Source-purpose review: Returns the available packed group bytes and removes the finished request."
+    ],
+    [
+      "fg",
+      "a",
+      "(BII)Lag;",
+      "loadGroupRequest",
+      "Source-purpose review: Looks up or issues the requested group operation and verifies completed data before returning it."
+    ],
+    [
+      "ip",
+      "a",
+      "(Z)Lps;",
+      "loadIndex",
+      "Source-purpose review: Defines the corresponding archive provider operation."
+    ],
+    [
+      "fg",
+      "a",
+      "(Z)Lps;",
+      "loadIndex",
+      "Source-purpose review: Loads and validates the archive index and keeps it available for subsequent group requests."
+    ],
+    [
+      "fg",
+      "b",
+      "(I)V",
+      "pollGroupPrefetches",
+      "Source-purpose review: Processes individually queued groups and advances their disk checks and prefetch requests."
+    ],
+    [
+      "fg",
+      "a",
+      "(B)V",
+      "pollBackgroundRequests",
+      "Source-purpose review: Scans groups for disk validation and prefetch work and expires completed requests."
+    ],
+    [
+      "fg",
+      "c",
+      "(I)V",
+      "prefetchAllGroups",
+      "Source-purpose review: Enables prefetching across the archive and initializes the pending group queue."
+    ],
+    [
+      "ps",
+      "a",
+      "([BI)V",
+      "decode",
+      "Source-purpose review: Parses the archive format, group and file identifiers, checksums and optional name hashes."
+    ],
+    [
+      "nm",
+      "a",
+      "(ZI)I",
+      "findIndex",
+      "Source-purpose review: Looks up an integer key in the table, probing consecutive slots and returning its stored index or -1."
+    ],
+    [
+      "kp",
+      "f",
+      "(I)V",
+      "clearStaticReferences",
+      "Source-purpose review: Clears the class’s retained static references, preserving the existing guarded call."
+    ],
+    [
+      "qm",
+      "a",
+      "(II[BI)[B",
+      "whirlpoolDigest",
+      "Source-purpose review: Hashes a selected byte range and returns the 64-byte Whirlpool digest."
+    ],
+    [
+      "wb",
+      "b",
+      "(B)V",
+      "reset",
+      "Source-purpose review: Zeros the bit-length accumulator, buffered bit count, block state, and digest words."
+    ],
+    [
+      "wb",
+      "a",
+      "(I[BJ)V",
+      "updateBits",
+      "Source-purpose review: Appends the given bit count to the running digest, processing each complete 512-bit message block."
+    ],
+    [
+      "wb",
+      "a",
+      "([BBI)V",
+      "finishDigest",
+      "Source-purpose review: Pads the final block, appends the accumulated bit length, and writes the digest bytes to the caller’s output buffer."
+    ],
+    [
+      "wb",
+      "a",
+      "(B)V",
+      "processBlock",
+      "Source-purpose review: Packs the current block into words and applies the ten Whirlpool rounds and feed-forward to the digest state."
+    ],
+    [
+      "ag",
+      "a",
+      "(Z)[B",
+      "getData",
+      "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks."
+    ],
+    [
+      "gp",
+      "a",
+      "(Z)[B",
+      "getData",
+      "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks."
+    ],
+    [
+      "os",
+      "a",
+      "(Z)[B",
+      "getData",
+      "Source-purpose review: Returns the completed archive request data, enforcing the request’s readiness checks."
+    ],
+    [
+      "bl",
+      "a",
+      "(II)[B",
+      "read",
+      "Source-purpose review: Reads the entry index and validates the stored sector headers while following the chain into a byte array."
+    ],
+    [
+      "bl",
+      "a",
+      "(III[B)Z",
+      "write",
+      "Source-purpose review: Validates the entry length and attempts to update the existing sector chain before allocating a new chain."
+    ],
+    [
+      "bl",
+      "a",
+      "(IIZ[BI)Z",
+      "writeSectorChain",
+      "Source-purpose review: Writes the index record and payload sectors, maintaining the archive, chunk, and next-sector headers."
+    ],
+    [
+      "dk",
+      "a",
+      "(Lbl;BI)Los;",
+      "readNow",
+      "Source-purpose review: Returns a completed disk read, reusing matching data from a pending queued write where available."
+    ],
+    [
+      "dk",
+      "a",
+      "(BLbl;I)Los;",
+      "requestRead",
+      "Source-purpose review: Creates and queues a disk cache read operation."
+    ],
+    [
+      "dk",
+      "a",
+      "([BLbl;ZI)Los;",
+      "requestWrite",
+      "Source-purpose review: Creates and queues a disk cache write operation with the caller’s bytes."
+    ],
+    [
+      "dk",
+      "a",
+      "(BLos;)V",
+      "enqueue",
+      "Source-purpose review: Links a disk operation into the queue and wakes the worker."
+    ],
+    [
+      "dk",
+      "a",
+      "(B)V",
+      "shutdown",
+      "Source-purpose review: Signals the worker to stop, wakes its queue monitor, and joins the worker thread."
+    ],
+    [
+      "lj",
+      "a",
+      "(I[BI)I",
+      "computeCrc32Prefix",
+      "Source-purpose review: Computes the CRC-32 of the requested prefix by passing a zero start offset to the range routine."
     ]
   ],
   "fields": [
