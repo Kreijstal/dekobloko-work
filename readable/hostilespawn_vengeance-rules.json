@@ -2292,6 +2292,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gi.a(B)V",
+      "originalName": "a",
+      "to": "generateResults",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Generate the next ISAAC result table using the original accumulator/counter/table state and exact supplied loop start and guards. Keep every global flag read where present, full signed int/byte/boolean argument domain, arithmetic guards, recursion and side-effect order. Retain the exact counter increment and accumulator-add sequence, loop start and bound, four index-bit branches with shifts13/6/2/16, half-table lookup, original mask helper calls/argument order/literals and every memory/state/result store in order. No normalization of masks/shifts/addition groupings, guards, duplicate loops or exceptions. Read the game flag before the byte<106 early return; counters and array writes happen only after that branch. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(I)V",
+      "originalName": "a",
+      "to": "initializeState",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Initialize the ISAAC instance from its seed/result table through the original two mixing passes, generation and count update. Keep eight golden-ratio local values, four initial mixes, seed-backed and memory-backed passes, exact per-game array reads/stores and int arithmetic order, final generation and remaining-count writes. Retain full supplied primitive domains, every global flag read, early return, guard, recursion, unrelated helper, static clear, interim write, allocation/failure and partial-effect order. Do not replace a body with a canonical ISAAC implementation or remove guards; Torquing supplies an actual second-pass start index. Wrong int!=-7 returns before mixing. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(Z)I",
+      "originalName": "a",
+      "to": "nextInt",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Consume the next ISAAC result, retaining the exact refill predicate and count-decrement/read ordering. Keep this actual refill predicate, its position relative to all sentinel/byte/boolean/arithmetic guards, exact generation call(s), count assignment and post-decrement-before-array-read order. Preserve constant-return branches, static clears, instance writes, repeated calls, null/index/division failures and partial effects across the full supplied primitive domain. Do not standardize predicates to count==0 or remove dummy branches.  Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gi.b(Z)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -4350,6 +4371,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vi.a(IBI[I)V",
+      "originalName": "a",
+      "to": "decryptXteaRange",
+      "evidence": "Source-purpose review: Source-purpose and bound caller review: Decrypt complete eight-byte blocks in the supplied [start,end) range with the stateful buffer cursor and XTEA subtraction rounds. Retain the package-visible final instance declaration, all supplied int/byte/key-array domains and exact helper arguments. Add no range/key-length/alignment validation, clamping or non-null precondition. Keep the global game flag read before the try block, signed division by8, integer subtraction/addition overflow, 32-round post-decrement loops, exact XOR/add/subtract precedence, all shifts, masks and literals. Do not normalize obfuscating masks. Keep two ordered big-endian reads before each block computation, cursor rewind by8, and two ordered big-endian writes. Preserve output/cursor partial effects and null/index/allocation/exception order. Retain catch wrapping, all diagnostic strings including original obfuscated method names, StringBuilder append order, null versus {...} formatting and wrapper reuse/allocation behavior. Do not add cursor restoration in finally. The key array is accessed only inside processed rounds. Empty or negative computed block counts retain their original behavior even with a null or short key array. Save cursor, assign param2 to cursor and compute (param0-param2)/8 before the byte guard. param1 > -114 returns with cursor at param2; do not restore it on that branch. Start sum at -957401312, subtract the second word, subtract delta, then subtract the first word. Preserve key indices (sum &7500) >>>11 and sum &3 exactly. Restore the saved cursor only when the block loop normally finishes. Both the archive caller using byte -126/start5 and the write-long dummy branch using byte -21/start-127 are bound references and must be renamed without argument or behavior changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a([IB)V",
+      "originalName": "a",
+      "to": "encryptXtea",
+      "evidence": "Source-purpose review: Source-purpose and bound caller review: Encrypt the complete eight-byte blocks in the existing buffer prefix with XTEA addition rounds. Retain the package-visible final instance declaration, all supplied int/byte/key-array domains and exact helper arguments. Add no range/key-length/alignment validation, clamping or non-null precondition. Keep the global game flag read before the try block, signed division by8, integer subtraction/addition overflow, 32-round post-decrement loops, exact XOR/add/subtract precedence, all shifts, masks and literals. Do not normalize obfuscating masks. Keep two ordered big-endian reads before each block computation, cursor rewind by8, and two ordered big-endian writes. Preserve output/cursor partial effects and null/index/allocation/exception order. Retain catch wrapping, all diagnostic strings including original obfuscated method names, StringBuilder append order, null versus {...} formatting and wrapper reuse/allocation behavior. Do not add cursor restoration in finally. The key array is accessed only inside processed rounds. Empty or negative computed block counts retain their original behavior even with a null or short key array. Compute old cursor/8 and set cursor0 before checking param1. A byte <104 clears the existing static reference array; keep that effect and its position. Start sum0, add to first word, add delta, then add to second word; preserve key indices sum &3 and sum >>>11 &-1023410173. Keep the resulting cursor at the processed block boundary, including cursor0 for zero/negative block counts. Retain the login caller byte108, prefix copy/length update and surrounding packet construction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vi.e(I)I",
       "originalName": "e",
       "to": "readUnsignedShort",
@@ -4835,7 +4870,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "7badb83973c2c8a3640219bf56dfcca5b184784a99b420e2aabe1f599d033e3c",
+      "hostilespawn_vengeance-names.json": "fd569b971a37223de9fba9adf51d628624b3c9624870eae5dcb460014995571f",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

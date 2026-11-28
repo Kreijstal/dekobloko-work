@@ -731,6 +731,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:re",
+      "originalName": "re",
+      "to": "IsaacRandom",
+      "evidence": "Primary instance role reviewed from exact source: seeded ISAAC pseudorandom stream with two private int[256] tables and four private int state/count fields, four golden-ratio mixes, two eight-word initialization passes, generation with shifts13/6/2/16 and half-table/index lookups, and reverse-count result consumption. Every constructor and nonstatic method in this cohort is human-read, including bounded adapters where present. Packet masking and game-animation/random-choice callers are reviewed where selected. Mixed unrelated static responsibilities are retained. Rename identifiers only; preserve every declaration/modifier, primitive domain, table allocation, seed copy, class initializer, literal, arithmetic/guard/helper/recursion order, partial effect and exception. No library RNG substitution, guard removal, table normalization or runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:t",
       "originalName": "t",
       "to": "CrossfadingMidiPcmStream",
@@ -3783,6 +3790,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:re.a(B)V",
+      "originalName": "a",
+      "to": "generateResults",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Generate the next ISAAC result table using the original accumulator/counter/table state and exact supplied loop start and guards. Keep every global flag read where present, full signed int/byte/boolean argument domain, arithmetic guards, recursion and side-effect order. Retain the exact counter increment and accumulator-add sequence, loop start and bound, four index-bit branches with shifts13/6/2/16, half-table lookup, original mask helper calls/argument order/literals and every memory/state/result store in order. No normalization of masks/shifts/addition groupings, guards, duplicate loops or exceptions. A byte<118 calls the result accessor with92 before counters; preserve the possible nested generation, result consumption and state mutation. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a(I)I",
+      "originalName": "a",
+      "to": "nextInt",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Consume the next ISAAC result, retaining the exact refill predicate and count-decrement/read ordering. Keep this actual refill predicate, its position relative to all sentinel/byte/boolean/arithmetic guards, exact generation call(s), count assignment and post-decrement-before-array-read order. Preserve constant-return branches, static clears, instance writes, repeated calls, null/index/division failures and partial effects across the full supplied primitive domain. Do not standardize predicates to count==0 or remove dummy branches.  Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.b(B)V",
+      "originalName": "b",
+      "to": "initializeState",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Initialize the ISAAC instance from its seed/result table through the original two mixing passes, generation and count update. Keep eight golden-ratio local values, four initial mixes, seed-backed and memory-backed passes, exact per-game array reads/stores and int arithmetic order, final generation and remaining-count writes. Retain full supplied primitive domains, every global flag read, early return, guard, recursion, unrelated helper, static clear, interim write, allocation/failure and partial-effect order. Do not replace a body with a canonical ISAAC implementation or remove guards; Torquing supplies an actual second-pass start index. -97/((param0-3)/50) occurs between passes; first-pass mutations precede possible failure. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -4639,7 +4667,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-orbdefence-rules.mjs": "7265f3a9f5e13a3fed5621337395faa83930486229ce2e8682b070f11e4f498e",
-      "orbdefence-names.json": "2004a259e64716c34c21229b76d248c84e053bc3a2993c440a70efc852bcf42b",
+      "orbdefence-names.json": "3acd727b3b4f77d0ba1587676a2ff26a1c72d999dddb1efaa5c6a9b574806fcf",
       "reproduce-orbdefence.mjs": "24edd3e6decd14f7af15c46ba33901279428686ce88376fa1945d21ab4b43608",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

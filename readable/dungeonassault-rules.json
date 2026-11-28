@@ -430,6 +430,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ff",
+      "originalName": "ff",
+      "to": "IsaacRandom",
+      "evidence": "Primary instance role reviewed from exact source: seeded ISAAC pseudorandom stream with two private int[256] tables and four private int state/count fields, four golden-ratio mixes, two eight-word initialization passes, generation with shifts13/6/2/16 and half-table/index lookups, and reverse-count result consumption. Every constructor and nonstatic method in this cohort is human-read, including bounded adapters where present. Packet masking and game-animation/random-choice callers are reviewed where selected. Mixed unrelated static responsibilities are retained. Rename identifiers only; preserve every declaration/modifier, primitive domain, table allocation, seed copy, class initializer, literal, arithmetic/guard/helper/recursion order, partial effect and exception. No library RNG substitution, guard removal, table normalization or runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fg",
       "originalName": "fg",
       "to": "NanoFrameTimer",
@@ -511,6 +518,13 @@
       "originalName": "in",
       "to": "NetworkGameClient",
       "evidence": "GameAppletShell subclass reading gameport, servernum, gamecrc and js5 applet parameters and handling connect failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ja",
+      "originalName": "ja",
+      "to": "HuffmanDecoder",
+      "evidence": "Primary instance purpose reviewed from exact constructor, every owned instance method, private fields and selected bound consumers. Build canonical Huffman codewords and a growing decode tree from signed byte code lengths; tree leaves store complemented symbols. Three codecs encode and decode; Dungeon Assault retains only decoding and does not retain the caller byte-length array. Archive resource constructors use the huffman entry; string packet helpers use returned encoded-byte counts to advance cursors. Preserve unrelated static responsibilities and class-initializer order; no complete unrelated-static-body claim. Identifier-only naming; retain primitive domains, array aliases, all allocation/read/write/guard/recursion/partial-effect/exception order, literal values and diagnostics.",
       "confidence": "reviewed"
     },
     {
@@ -2250,6 +2264,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ff.a(I)I",
+      "originalName": "a",
+      "to": "nextInt",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Consume the next ISAAC result, retaining the exact refill predicate and count-decrement/read ordering. Keep this actual refill predicate, its position relative to all sentinel/byte/boolean/arithmetic guards, exact generation call(s), count assignment and post-decrement-before-array-read order. Preserve constant-return branches, static clears, instance writes, repeated calls, null/index/division failures and partial effects across the full supplied primitive domain. Do not standardize predicates to count==0 or remove dummy branches.  Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ff.b(B)V",
+      "originalName": "b",
+      "to": "initializeState",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Initialize the ISAAC instance from its seed/result table through the original two mixing passes, generation and count update. Keep eight golden-ratio local values, four initial mixes, seed-backed and memory-backed passes, exact per-game array reads/stores and int arithmetic order, final generation and remaining-count writes. Retain full supplied primitive domains, every global flag read, early return, guard, recursion, unrelated helper, static clear, interim write, allocation/failure and partial-effect order. Do not replace a body with a canonical ISAAC implementation or remove guards; Torquing supplies an actual second-pass start index. byte<=66 calls static c(89) before mixing. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ff.b(I)V",
+      "originalName": "b",
+      "to": "generateResults",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Generate the next ISAAC result table using the original accumulator/counter/table state and exact supplied loop start and guards. Keep every global flag read where present, full signed int/byte/boolean argument domain, arithmetic guards, recursion and side-effect order. Retain the exact counter increment and accumulator-add sequence, loop start and bound, four index-bit branches with shifts13/6/2/16, half-table lookup, original mask helper calls/argument order/literals and every memory/state/result store in order. No normalization of masks/shifts/addition groupings, guards, duplicate loops or exceptions. Counter and last-word updates happen before param0!=256 early return; do not move the guard ahead of them. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ff.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -3094,6 +3129,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a1fa9c835a09a9dd776c937cfcc7da20f1d3bae7ed6b544d00cfef527d66a6ce.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a([B[BBIII)I",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "Source-purpose review: Exact Huffman source-purpose/body and bound caller review: Traverse the existing decode tree using signed-byte bit7 then masks64/32/16/8/4/2/1. Preserve every negative-leaf complement/cast/store, output-index postincrement before array access, per-bit exit and reset, source-index increment only after a full byte, and consumed-encoded-byte return. Retain supplied count/offset/array domains, zero/negative/overflow counts, every guard and recursive/static effect, partial writes and diagnostic/exception order. Do not normalize loops, byte masks or guard positions. Wrong byte!=-88 self-recurses with byte93/null arrays before zero-count return. Preserve repeated global reads and StackOverflowError behavior, including zero-length calls. Class primary instance role is decoding only; proposed readable class role is HuffmanDecoder.",
       "confidence": "reviewed"
     },
     {
@@ -5451,7 +5493,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-dungeonassault-rules.mjs": "8eb15e13a50fdc4451ed6ef68e53e6f3481c4d7f58d0976003f9ed284e2452de",
-      "dungeonassault-names.json": "0a796d0ce0a33b39dcd715d3c8bf794dee0880aba7d589fbe837376afdf36d12",
+      "dungeonassault-names.json": "1f2aa94a667c2cd19ea8b9060629da67fd8c5467e14aa037b626a214699be8ee",
       "reproduce-dungeonassault.mjs": "91cc0426bf614cfc9a70de2a232ea4543d6576e41cf2fec5dad4cf428a0fd8c4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

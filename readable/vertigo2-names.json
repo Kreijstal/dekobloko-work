@@ -164,6 +164,11 @@
       "rj",
       "Bzip2Decompressor",
       "Whole source-purpose review: final static Bzip2 decompression utility; one private typed state singleton allocated at class initialization; synchronized byte-array entry, bit/byte readers, used-symbol map, canonical Huffman tables, move-to-front block decoding, inverse-BWT/run output and retained cleanup all individually read or linked to exact earlier human-read bodies. All incoming selected helper references lie inside exact reviewed bodies. Keep the state allocation and class-init behavior, shared table ownership, locks, source/output/index/count/cast domains, array aliasing, partial writes, evaluation/exception order and all literals. Rename identifiers only; add no format checks, repairs, CRC handling or guards."
+    ],
+    [
+      "ke",
+      "HuffmanCodec",
+      "Primary instance purpose reviewed from exact constructor, every owned instance method, private fields and selected bound consumers. Build canonical Huffman codewords and a growing decode tree from signed byte code lengths; tree leaves store complemented symbols. Three codecs encode and decode; Dungeon Assault retains only decoding and does not retain the caller byte-length array. Archive resource constructors use the huffman entry; string packet helpers use returned encoded-byte counts to advance cursors. Preserve unrelated static responsibilities and class-initializer order; no complete unrelated-static-body claim. Identifier-only naming; retain primitive domains, array aliases, all allocation/read/write/guard/recursion/partial-effect/exception order, literal values and diagnostics."
     ]
   ],
   "methods": [
@@ -4051,6 +4056,48 @@
       "(Lvq;)V",
       "buildSymbolMap",
       "Source-purpose review: Exact source/body and compiler-bound caller review: Bzip2 buildSymbolMap. {\"behavior\":\"Reset the used-symbol count, scan 256 usage booleans and append each used index as a byte to the sequential symbol map.\",\"preserve\":\"Keep count reset before traversal, boolean read before map store, and count increment after the store. Preserve signed casts, null/index exceptions and partial writes; do not clear unused map entries.\"} Identifier-only change; retain modifiers, primitive types, class initialization, all literals, aliasing, partial effects and original exceptions."
+    ],
+    [
+      "wa",
+      "b",
+      "(I)V",
+      "generateResults",
+      "Source-purpose review: Exact source/body and bound caller review: Generate the next ISAAC result table using the original accumulator/counter/table state and exact supplied loop start and guards. Keep every global flag read where present, full signed int/byte/boolean argument domain, arithmetic guards, recursion and side-effect order. Retain the exact counter increment and accumulator-add sequence, loop start and bound, four index-bit branches with shifts13/6/2/16, half-table lookup, original mask helper calls/argument order/literals and every memory/state/result store in order. No normalization of masks/shifts/addition groupings, guards, duplicate loops or exceptions. int>=-34 invokes the original unrelated static helper before counters; retain helper and exception timing. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only."
+    ],
+    [
+      "wa",
+      "d",
+      "(I)V",
+      "initializeState",
+      "Source-purpose review: Exact source/body and bound caller review: Initialize the ISAAC instance from its seed/result table through the original two mixing passes, generation and count update. Keep eight golden-ratio local values, four initial mixes, seed-backed and memory-backed passes, exact per-game array reads/stores and int arithmetic order, final generation and remaining-count writes. Retain full supplied primitive domains, every global flag read, early return, guard, recursion, unrelated helper, static clear, interim write, allocation/failure and partial-effect order. Do not replace a body with a canonical ISAAC implementation or remove guards; Torquing supplies an actual second-pass start index. 89%((param0-55)/51) occurs after local constants and before all four mixes. Retain signed overflow, division/remainder exceptions and subsequent pass order. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only."
+    ],
+    [
+      "ed",
+      "a",
+      "([II)V",
+      "encryptXtea",
+      "Source-purpose review: Source-purpose and bound caller review: Encrypt the complete eight-byte blocks in the existing buffer prefix with XTEA addition rounds. Retain the package-visible final instance declaration, all supplied int/byte/key-array domains and exact helper arguments. Add no range/key-length/alignment validation, clamping or non-null precondition. Keep the global game flag read before the try block, signed division by8, integer subtraction/addition overflow, 32-round post-decrement loops, exact XOR/add/subtract precedence, all shifts, masks and literals. Do not normalize obfuscating masks. Keep two ordered big-endian reads before each block computation, cursor rewind by8, and two ordered big-endian writes. Preserve output/cursor partial effects and null/index/allocation/exception order. Retain catch wrapping, all diagnostic strings including original obfuscated method names, StringBuilder append order, null versus {...} formatting and wrapper reuse/allocation behavior. Do not add cursor restoration in finally. The key array is accessed only inside processed rounds. Empty or negative computed block counts retain their original behavior even with a null or short key array. Compute old cursor/8 before testing param1. An int !=-12257 returns before cursor is reset; preserve this difference from Hostile Spawn. On the accepted branch reset cursor0, start sum0 and preserve first-word/add-delta/second-word ordering and key indices sum &3 and (sum &6169) >>>11. Keep partial writes and the final processed-prefix cursor. Retain the login caller sentinel -12257 and adjacent copy/length/packet construction operations."
+    ],
+    [
+      "ed",
+      "a",
+      "([IIII)V",
+      "decryptXteaRange",
+      "Source-purpose review: Source-purpose and bound caller review: Decrypt complete eight-byte blocks in the supplied range, then restore the saved cursor on normal block-loop completion. Retain the package-visible final instance declaration, all supplied int/byte/key-array domains and exact helper arguments. Add no range/key-length/alignment validation, clamping or non-null precondition. Keep the global game flag read before the try block, signed division by8, integer subtraction/addition overflow, 32-round post-decrement loops, exact XOR/add/subtract precedence, all shifts, masks and literals. Do not normalize obfuscating masks. Keep two ordered big-endian reads before each block computation, cursor rewind by8, and two ordered big-endian writes. Preserve output/cursor partial effects and null/index/allocation/exception order. Retain catch wrapping, all diagnostic strings including original obfuscated method names, StringBuilder append order, null versus {...} formatting and wrapper reuse/allocation behavior. Do not add cursor restoration in finally. The key array is accessed only inside processed rounds. Empty or negative computed block counts retain their original behavior even with a null or short key array. Save cursor, assign param2 and compute (-param2+param1)/8 with the original signed overflow and truncation behavior. Start sum-957401312 and preserve second-word/subtract-delta/first-word ordering and exact (sum &6974) >>>11 and 3 &sum indices. After restoring the cursor, param3 !=-123 calls the existing RSA helper with two null BigIntegers and -97; retain that call, its failure/partial effects and nested exception wrapping even for an empty range. Retain archive caller start5/end backing-array length and sentinel -123; no guard removal or format handling changes."
+    ],
+    [
+      "ke",
+      "a",
+      "(II[BII[B)I",
+      "compress",
+      "Source-purpose review: Exact Huffman source-purpose/body and bound caller review: Emit source bytes as the existing high-bit-first Huffman codewords using the retained length-array alias and codeword table. Keep all full int/byte/boolean domains, guards, global flag reads, source/destination array aliasing, bit-position overflow, signed shifts and byte casts; preserve exact unrolled up-to-five-byte write order, zero-code-length RuntimeException text, output-byte-count return, and diagnostic evaluation/wrapping. No new validation or library codec substitution. int param1>-3 calls the original decompress overload with48/null arrays before calculating input end, even for an empty range. That overload returns86 for this sentinel; keep the discarded call/global read. Advance bit position before the first output write, unlike the other encoders."
+    ],
+    [
+      "ke",
+      "a",
+      "(I[BIII[B)I",
+      "decompress",
+      "Source-purpose review: Exact Huffman source-purpose/body and bound caller review: Traverse the existing decode tree using signed-byte bit7 then masks64/32/16/8/4/2/1. Preserve every negative-leaf complement/cast/store, output-index postincrement before array access, per-bit exit and reset, source-index increment only after a full byte, and consumed-encoded-byte return. Retain supplied count/offset/array domains, zero/negative/overflow counts, every guard and recursive/static effect, partial writes and diagnostic/exception order. Do not normalize loops, byte masks or guard positions. Wrong int param0!=25330 returns86 BEFORE testing zero output count; accepted sentinel returns0 for zero count. Keep this order and the original fifth-bit direct return."
     ]
   ],
   "fields": [

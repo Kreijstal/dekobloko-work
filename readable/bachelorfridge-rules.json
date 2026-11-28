@@ -1242,6 +1242,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:il",
+      "originalName": "il",
+      "to": "HuffmanCodec",
+      "evidence": "Primary instance purpose reviewed from exact constructor, every owned instance method, private fields and selected bound consumers. Build canonical Huffman codewords and a growing decode tree from signed byte code lengths; tree leaves store complemented symbols. Three codecs encode and decode; Dungeon Assault retains only decoding and does not retain the caller byte-length array. Archive resource constructors use the huffman entry; string packet helpers use returned encoded-byte counts to advance cursors. Preserve unrelated static responsibilities and class-initializer order; no complete unrelated-static-body claim. Identifier-only naming; retain primitive domains, array aliases, all allocation/read/write/guard/recursion/partial-effect/exception order, literal values and diagnostics.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ima",
       "originalName": "ima",
       "to": "TeleportEvent",
@@ -6821,6 +6828,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:il.a(I[BI[BBI)I",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "Source-purpose review: Exact Huffman source-purpose/body and bound caller review: Traverse the existing decode tree using signed-byte bit7 then masks64/32/16/8/4/2/1. Preserve every negative-leaf complement/cast/store, output-index postincrement before array access, per-bit exit and reset, source-index increment only after a full byte, and consumed-encoded-byte return. Retain supplied count/offset/array domains, zero/negative/overflow counts, every guard and recursive/static effect, partial writes and diagnostic/exception order. Do not normalize loops, byte masks or guard positions. Zero output count returns0 before byte guard. Otherwise byte!=-69 clears static field_a before count+offset and all reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a([BII[BII)I",
+      "originalName": "a",
+      "to": "compress",
+      "evidence": "Source-purpose review: Exact Huffman source-purpose/body and bound caller review: Emit source bytes as the existing high-bit-first Huffman codewords using the retained length-array alias and codeword table. Keep all full int/byte/boolean domains, guards, global flag reads, source/destination array aliasing, bit-position overflow, signed shifts and byte casts; preserve exact unrolled up-to-five-byte write order, zero-code-length RuntimeException text, output-byte-count return, and diagnostic evaluation/wrapping. No new validation or library codec substitution. Add input length to param4, compute output bit position, then wrong param2!=20857 nulls field_f before testing empty input. Preserve that state change even when the loop is skipped.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:im.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -7794,10 +7815,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ko.a(I)V",
+      "originalName": "a",
+      "to": "initializeState",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Initialize the ISAAC instance from its seed/result table through the original two mixing passes, generation and count update. Keep eight golden-ratio local values, four initial mixes, seed-backed and memory-backed passes, exact per-game array reads/stores and int arithmetic order, final generation and remaining-count writes. Retain full supplied primitive domains, every global flag read, early return, guard, recursion, unrelated helper, static clear, interim write, allocation/failure and partial-effect order. Do not replace a body with a canonical ISAAC implementation or remove guards; Torquing supplies an actual second-pass start index. 77/((param0-1)/37) occurs after four local mixes, before the seed-backed pass; retain full signed arithmetic/exception domain. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ko.a(II)I",
       "originalName": "a",
       "to": "nextBounded",
       "evidence": "Rejection-samples nextInt against a positive bound and throws otherwise.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.a(Z)V",
+      "originalName": "a",
+      "to": "generateResults",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Generate the next ISAAC result table using the original accumulator/counter/table state and exact supplied loop start and guards. Keep every global flag read where present, full signed int/byte/boolean argument domain, arithmetic guards, recursion and side-effect order. Retain the exact counter increment and accumulator-add sequence, loop start and bound, four index-bit branches with shifts13/6/2/16, half-table lookup, original mask helper calls/argument order/literals and every memory/state/result store in order. No normalization of masks/shifts/addition groupings, guards, duplicate loops or exceptions. Boolean-triggered unrelated static call occurs after every result has been stored; do not move it before the loop. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
       "confidence": "reviewed"
     },
     {
@@ -13179,7 +13214,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "668d15c1bde505eec00afc4fb9ab2854bdf80d209b08e1c65cfc3579dcc098e5",
+      "bachelorfridge-names.json": "8137e006ef2e7f369e9ec1a46b94e9dca775347767c71d8a3b0a34043645f30c",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

@@ -859,9 +859,9 @@
     {
       "symbol": "C:ee",
       "originalName": "ee",
-      "to": "MixedSupport030",
-      "evidence": "Structural category: Utility or mixed responsibility (low); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "IsaacRandom",
+      "evidence": "Primary instance role reviewed from exact source: seeded ISAAC pseudorandom stream with two private int[256] tables and four private int state/count fields, four golden-ratio mixes, two eight-word initialization passes, generation with shifts13/6/2/16 and half-table/index lookups, and reverse-count result consumption. Every constructor and nonstatic method in this cohort is human-read, including bounded adapters where present. Packet masking and game-animation/random-choice callers are reviewed where selected. Mixed unrelated static responsibilities are retained. Rename identifiers only; preserve every declaration/modifier, primitive domain, table allocation, seed copy, class initializer, literal, arithmetic/guard/helper/recursion order, partial effect and exception. No library RNG substitution, guard removal, table normalization or runtime equivalence claim.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:ef",
@@ -132144,30 +132144,30 @@
     {
       "symbol": "M:ee.a(I)V",
       "originalName": "a",
-      "to": "performAction0412",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "initializeState",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Initialize the ISAAC instance from its seed/result table through the original two mixing passes, generation and count update. Keep eight golden-ratio local values, four initial mixes, seed-backed and memory-backed passes, exact per-game array reads/stores and int arithmetic order, final generation and remaining-count writes. Retain full supplied primitive domains, every global flag read, early return, guard, recursion, unrelated helper, static clear, interim write, allocation/failure and partial-effect order. Do not replace a body with a canonical ISAAC implementation or remove guards; Torquing supplies an actual second-pass start index. Wrong sentinel!=8388607 writes last-word field_j=-27 before mixing. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ee.a(II)I",
       "originalName": "a",
-      "to": "computeInteger0413",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "nextBounded",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Return a bounded ISAAC-derived value using the existing positive-bound check and signed rejection/modulo helper. Keep the positive-bound check, exact long modulo and cast expression for the rejection threshold, sentinel-side static clear or state write, signed comparison/retry order, exact unbounded accessor call and final bound helper call. Do not substitute a library RNG, unsigned arithmetic, a new rejection algorithm or a different modulo implementation.  Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ee.a(Z)I",
       "originalName": "a",
-      "to": "computeInteger0414",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "nextInt",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Consume the next ISAAC result, retaining the exact refill predicate and count-decrement/read ordering. Keep this actual refill predicate, its position relative to all sentinel/byte/boolean/arithmetic guards, exact generation call(s), count assignment and post-decrement-before-array-read order. Preserve constant-return branches, static clears, instance writes, repeated calls, null/index/division failures and partial effects across the full supplied primitive domain. Do not standardize predicates to count==0 or remove dummy branches.  Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ee.b(I)V",
       "originalName": "b",
-      "to": "performAction0415",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "generateResults",
+      "evidence": "Source-purpose review: Exact source/body and bound caller review: Generate the next ISAAC result table using the original accumulator/counter/table state and exact supplied loop start and guards. Keep every global flag read where present, full signed int/byte/boolean argument domain, arithmetic guards, recursion and side-effect order. Retain the exact counter increment and accumulator-add sequence, loop start and bound, four index-bit branches with shifts13/6/2/16, half-table lookup, original mask helper calls/argument order/literals and every memory/state/result store in order. No normalization of masks/shifts/addition groupings, guards, duplicate loops or exceptions. param0!=-1 nulls the memory array before counters; preserve partial state and every helper/store order. Retain all supplied primitive domains, modifiers, literal values, diagnostic text, global reads, dummy branches, helper arguments, table aliases, partial effects and exception order. Rename this identifier only.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ef.a(IIII)V",
@@ -194769,7 +194769,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "reproduce-dekobloko.mjs": "2a1c461995165406fd2fad26551c82dbc06aa441ae38cff980551230c1b2144b",
-      "dekobloko-reviewed-names.json": "1fb41cb12a407d88631aec74108108b206cd4c9373a82b90458116fd11de5c76",
+      "dekobloko-reviewed-names.json": "eefb66b3d775672941c6b7eae6bf5406c01ff66cbe34068e9626dc231fdc5b76",
       "dekobloko-provisional-names.json": "99a1f75e618d2dd63a8885728ecdfb70e4fa3bc7f1b3bd584951c5a27359cb30",
       "catalog-naming-coverage.mjs": "0a733b0a7e4a2779b01b5c15f1e7b027c0fdfed9012851e35f420d3bfcf6ce43",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2"
