@@ -213,6 +213,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:aa",
+      "originalName": "aa",
+      "to": "ViewportResizeListener",
+      "evidence": "Receives requested viewport width and height from the sizing controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ac",
       "originalName": "ac",
       "to": "JavaScriptBridge",
@@ -581,6 +588,13 @@
       "originalName": "fg",
       "to": "VorbisFloor",
       "evidence": "Vorbis floor type1: constructor reads and requires16-bit type1,partition classes,subclass codebooks,multiplier and x coordinates. Owns shared x/y/active scratch and inverse-dB/range tables;decodes presence and scalar y values,unpacks predicted residuals,sorts linked points and applies the floor curve to the spectrum. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fh",
+      "originalName": "fh",
+      "to": "DialWidget",
+      "evidence": "Converts a pointer press within the circular control to a discrete angle and wraps it into the configured range.",
       "confidence": "reviewed"
     },
     {
@@ -1116,6 +1130,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pb",
+      "originalName": "pb",
+      "to": "ViewportSizingController",
+      "evidence": "Maintains requested and active viewport sizes, applies adaptive sizing, and saves or restores the windowed size around fullscreen.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pc",
       "originalName": "pc",
       "to": "BufferedSocket",
@@ -1155,6 +1176,13 @@
       "originalName": "qb",
       "to": "IsaacRandom",
       "evidence": "Primary instance role reviewed from exact source: seeded ISAAC pseudorandom stream with two private int[256] tables and four private int state/count fields, four golden-ratio mixes, two eight-word initialization passes, generation with shifts13/6/2/16 and half-table/index lookups, and reverse-count result consumption. Every constructor and nonstatic method in this cohort is human-read, including bounded adapters where present. Packet masking and game-animation/random-choice callers are reviewed where selected. Mixed unrelated static responsibilities are retained. Rename identifiers only; preserve every declaration/modifier, primitive domain, table allocation, seed copy, class initializer, literal, arithmetic/guard/helper/recursion order, partial effect and exception. No library RNG substitution, guard removal, table normalization or runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qd",
+      "originalName": "qd",
+      "to": "FullscreenCanvasFactory",
+      "evidence": "Creates the canvas attached to the requested fullscreen frame and transfers focus to it.",
       "confidence": "reviewed"
     },
     {
@@ -1295,6 +1323,13 @@
       "originalName": "si",
       "to": "PlatformTaskDispatcher",
       "evidence": "Complete JVM/cache setup,daemon Runnable dispatch loop,FIFO queue and all guarded request/shutdown/capability contracts reviewed. Complete dispatcher constructor/run/FIFO queue/all instance wrappers and task record/constructor reviewed. Preserve original guards,task kinds,permissions,vendor/reflective paths,argument widths,aliases,monitors,field write/notification order and exceptions. Unrelated static members unchanged. No native owned/type-use declarations or exact quoted owned class literals. Identifier-only rename.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sj",
+      "originalName": "sj",
+      "to": "DialWidgetRenderer",
+      "evidence": "Draws a circular dial and highlights current and target angles using the widget radius.",
       "confidence": "reviewed"
     },
     {
@@ -1456,6 +1491,13 @@
       "originalName": "vc",
       "to": "RichTextWidget",
       "evidence": "Displays formatted text with tagged hotspots, tracks the bounds of each hotspot across wrapped lines, and dispatches the selected hotspot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vd",
+      "originalName": "vd",
+      "to": "ViewportControllerSupport",
+      "evidence": "Holds the shared viewport sizing controller used by game updates and fullscreen transitions.",
       "confidence": "reviewed"
     },
     {
@@ -1904,6 +1946,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 4 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(III)V",
+      "originalName": "a",
+      "to": "resizeViewport",
+      "evidence": "Source-purpose review: Declares the resize callback used for windowed, adaptive and fullscreen dimensions.",
       "confidence": "reviewed"
     },
     {
@@ -3622,6 +3671,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.a(B)V",
+      "originalName": "a",
+      "to": "resetDialogTransitionsAndTooltips",
+      "evidence": "Source-purpose review: Snaps or prunes dialog transitions and resets tooltip state through the shared UI helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.a(I)V",
       "originalName": "a",
       "to": "resetStaticState",
@@ -3650,10 +3706,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.a(IIII)[Ltg;",
+      "originalName": "a",
+      "to": "createWidgetFrameSprites",
+      "evidence": "Source-purpose review: Constructs the beveled frame sprite colours used by the widget styles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.a(IIILjava/lang/String;)I",
       "originalName": "a",
       "to": "computeJustificationStep",
       "evidence": "Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(ILsi;)[Llb;",
+      "originalName": "a",
+      "to": "listDisplayModes",
+      "evidence": "Source-purpose review: Requests display modes, waits for the platform task, and converts the returned width, height, depth and refresh-rate tuples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(ILsi;IIII)Ljava/awt/Frame;",
+      "originalName": "a",
+      "to": "enterFullscreenFrame",
+      "evidence": "Source-purpose review: Finds a matching display mode when needed, requests fullscreen and cleans up a failed frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a([IIII[B)V",
+      "originalName": "a",
+      "to": "sortMeshFacesByPriority",
+      "evidence": "Source-purpose review: Places the mesh face indices into priority buckets for the software renderer.",
       "confidence": "reviewed"
     },
     {
@@ -3986,10 +4070,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fh.a(BLjava/lang/CharSequence;)Z",
+      "originalName": "a",
+      "to": "hasValidDisplayName",
+      "evidence": "Source-purpose review: Delegates to the display-name format check in the normal call path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fh.a(ILlk;IIIII)Z",
       "originalName": "a",
       "to": "pointerPressed",
       "evidence": "Source-purpose review: Hit-tests a button press and processes it for the widget. Interactive controls override it to trigger activation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Releases the static account state and Quick Chat command references during teardown.",
       "confidence": "reviewed"
     },
     {
@@ -5022,6 +5120,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.a(I)I",
+      "originalName": "a",
+      "to": "getKeyboardIdleTicks",
+      "evidence": "Source-purpose review: Returns the tick counter that resets on keyboard input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -5820,6 +5925,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatPacketDiagnostics",
+      "evidence": "Source-purpose review: Formats status codes and the available packet bytes for the client error log.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(IIII)V",
       "originalName": "a",
       "to": "drawWidget",
@@ -5827,10 +5939,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(IIII[I)V",
+      "originalName": "a",
+      "to": "blendHalfOpacitySpan",
+      "evidence": "Source-purpose review: Blends the pre-scaled source colour with half the destination colour for each pixel in the span.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(IIILlk;)V",
       "originalName": "a",
       "to": "updatePointer",
       "evidence": "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IILgk;B)[Lwe;",
+      "originalName": "a",
+      "to": "loadIndexedSpriteFrames",
+      "evidence": "Source-purpose review: Loads the sprite file from the archive and constructs its indexed frames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IZ)V",
+      "originalName": "a",
+      "to": "attemptFullscreen",
+      "evidence": "Source-purpose review: Attempts to create a fullscreen canvas, attaches input and selects the appropriate status notice.",
       "confidence": "reviewed"
     },
     {
@@ -7570,10 +7703,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pb.a(B)V",
+      "originalName": "a",
+      "to": "restoreWindowedSize",
+      "evidence": "Source-purpose review: Requests the dimensions saved before fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pb.a(BB)C",
       "originalName": "a",
       "to": "decodeCp1252Byte",
       "evidence": "Source-purpose review: Converts a byte to a character, using the CP1252 extension table for values 128 through 159 and 63 for undefined entries. Byte below 108 calls pb.b(44) before masking and the zero test. Both branches have independent exception and return paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.a(BII)V",
+      "originalName": "a",
+      "to": "setRequestedSize",
+      "evidence": "Source-purpose review: Stores the requested viewport height and width.",
       "confidence": "reviewed"
     },
     {
@@ -7584,10 +7731,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pb.a(Lwi;B)Z",
+      "originalName": "a",
+      "to": "readAccountResponseFlag",
+      "evidence": "Source-purpose review: Reads the boolean in the account response branch, where byte value one means true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.a([IIIIIIIIB)Lhe;",
+      "originalName": "a",
+      "to": "queueLeaderboardSubmission",
+      "evidence": "Source-purpose review: Constructs and queues a leaderboard submission and invokes the packet writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.b(B)Z",
+      "originalName": "b",
+      "to": "canUseAdaptiveSize",
+      "evidence": "Source-purpose review: Checks the minimum heap size and active client mode required for adaptive viewport sizing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pb.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 8ce93ac2a9a41d1e2d8791ca3731202d1b0439478bdd8ac47f6c6b607e5e3e48.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.c(B)Ljb;",
+      "originalName": "c",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Saves the windowed dimensions, resizes the viewport for fullscreen and restores the previous size if canvas creation fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.c(I)I",
+      "originalName": "c",
+      "to": "getLogoIntroOffset",
+      "evidence": "Source-purpose review: Reads the offset passed to the startup logo initializer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.d(B)V",
+      "originalName": "d",
+      "to": "updateViewport",
+      "evidence": "Source-purpose review: Updates viewport dimensions when windowed, choosing between adaptive sizing and the fixed dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.d(I)V",
+      "originalName": "d",
+      "to": "applyAdaptiveSize",
+      "evidence": "Source-purpose review: Clamps the requested width and height, enforces the configured aspect ratio, and requests a resize when the dimensions change.",
       "confidence": "reviewed"
     },
     {
@@ -8477,6 +8673,13 @@
       "originalName": "a",
       "to": "createFullscreenCanvas",
       "evidence": "Complete factory body reviewed. Acquires Frame before int param3<121 static Boolean clear. Null Frame returns; otherwise construct/store/add/setBounds/listener/requestFocus. Preserve every original argument domain,width,allocation/alias,guard,field write,callback,loop,exception context and evaluation order. Identifier-only rename.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(Ljava/lang/String;I)Llj;",
+      "originalName": "a",
+      "to": "validateEmailLocalPart",
+      "evidence": "Source-purpose review: Checks the length and dot, quote and escape rules for the part of an email address before the at sign.",
       "confidence": "reviewed"
     },
     {
@@ -10335,6 +10538,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vd.a(BLjava/lang/CharSequence;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getDisplayNameValidationMessage",
+      "evidence": "Source-purpose review: Returns a validation message from the display-name checks or a fallback when the name contains disallowed characters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(BLwi;)V",
+      "originalName": "a",
+      "to": "readPackedPlayerResult",
+      "evidence": "Source-purpose review: Reads the four fields packed across byte and short boundaries for a player result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(I)Ljd;",
+      "originalName": "a",
+      "to": "getValidationStatusTextRenderer",
+      "evidence": "Source-purpose review: Returns the cached text renderer used by validation status widgets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vd.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -11044,7 +11268,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "938eb7c52246ebb2942919866db9ee2712dba25f29e16e35a3fac3699ada4da0",
+      "bouncedown-names.json": "df77a895179630eec6b54931156cede6aec3fb2651b3a57c0e61fc8ea10bef78",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
