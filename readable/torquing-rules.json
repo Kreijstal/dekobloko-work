@@ -1203,7 +1203,7 @@
       "symbol": "C:rm",
       "originalName": "rm",
       "to": "MeshGeometry",
-      "evidence": "Parallel vertex and triangle arrays with counts; addVertex appends x, y, z and attributes and returns the index.",
+      "evidence": "Stores vertex coordinates and triangular faces in parallel arrays with separate counts.",
       "confidence": "reviewed"
     },
     {
@@ -1804,29 +1804,29 @@
     {
       "symbol": "F:rm.field_g:I",
       "originalName": "field_g",
-      "to": "vertexCount",
-      "evidence": "addVertex indexes with and then increments this counter.",
+      "to": "faceCount",
+      "evidence": "The software model uses this count to size and traverse its face arrays.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:rm.field_o:[I",
       "originalName": "field_o",
-      "to": "vertexX",
-      "evidence": "addVertex stores its first argument here.",
+      "to": "faceVertexA",
+      "evidence": "The software model uses these indices to fetch the first vertex of each face.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:rm.field_q:[I",
       "originalName": "field_q",
-      "to": "vertexZ",
-      "evidence": "addVertex stores its third argument here.",
+      "to": "faceVertexC",
+      "evidence": "The software model uses these indices to fetch the third vertex of each face.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:rm.field_y:[I",
       "originalName": "field_y",
-      "to": "vertexY",
-      "evidence": "addVertex stores its second argument here.",
+      "to": "faceVertexB",
+      "evidence": "The software model uses these indices to fetch the second vertex of each face.",
       "confidence": "reviewed"
     },
     {
@@ -8104,8 +8104,8 @@
     {
       "symbol": "M:rm.a(IIIBBSS)I",
       "originalName": "a",
-      "to": "addVertex",
-      "evidence": "Stores the first three arguments in parallel vertex arrays and returns the new index.",
+      "to": "addFace",
+      "evidence": "Appends three vertex indices and their face attributes, then returns the new face index.",
       "confidence": "reviewed"
     },
     {
@@ -10204,22 +10204,22 @@
     {
       "symbol": "P:rm.a(IIIBBSS)I#0",
       "originalName": "param0",
-      "to": "x",
-      "evidence": "Stores the first three arguments in parallel vertex arrays and returns the new index.",
+      "to": "vertexA",
+      "evidence": "Appends three vertex indices and their face attributes, then returns the new face index.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:rm.a(IIIBBSS)I#1",
       "originalName": "param1",
-      "to": "y",
-      "evidence": "Stores the first three arguments in parallel vertex arrays and returns the new index.",
+      "to": "vertexB",
+      "evidence": "Appends three vertex indices and their face attributes, then returns the new face index.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:rm.a(IIIBBSS)I#2",
       "originalName": "param2",
-      "to": "z",
-      "evidence": "Stores the first three arguments in parallel vertex arrays and returns the new index.",
+      "to": "vertexC",
+      "evidence": "Appends three vertex indices and their face attributes, then returns the new face index.",
       "confidence": "reviewed"
     },
     {
@@ -10266,7 +10266,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-torquing-rules.mjs": "8da598367c03f04c9e534a68a3861682d35d37834f3f17cf0207e7991dc70176",
+      "build-torquing-rules.mjs": "b674df8f6fc057fcef43aaf3c7ed23d0ed0597554f2747a6ce7c641593b6a60c",
       "torquing-names.json": "253a489c6eb457a4704e4398e6ebfcbfb32f4df3fbb732039b481210593bf2a3",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
