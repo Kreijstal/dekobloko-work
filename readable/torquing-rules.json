@@ -619,6 +619,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fh$1$CfrPartitionedBody",
+      "originalName": "$CfrPartitionedBody",
+      "to": "ClientTextLoader",
+      "evidence": "Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fi",
       "originalName": "fi",
       "to": "SoundCache",
@@ -3566,10 +3573,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fh$1$CfrPartitionedBody.runChunk0()V",
+      "originalName": "runChunk0",
+      "to": "loadLoginLobbyAndChatText",
+      "evidence": "Source-purpose review: Loads 243 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh$1$CfrPartitionedBody.runChunk1()V",
+      "originalName": "runChunk1",
+      "to": "loadAccountFormsAndLoadingText",
+      "evidence": "Source-purpose review: Loads 229 text entries in this section, including create_displayname, monthnames, loading_music.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh$1$CfrPartitionedBody.runChunk2()V",
+      "originalName": "runChunk2",
+      "to": "loadMatchDisplayAndMembershipText",
+      "evidence": "Source-purpose review: Loads 234 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh$1$CfrPartitionedBody.runChunk3()V",
+      "originalName": "runChunk3",
+      "to": "loadLoginPromptsAndSubscriptionText",
+      "evidence": "Source-purpose review: Loads 38 text entries in this section, including mustlogin_alternate, subscription_cost_monthly, sentence_separator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fh.$cfr$lcmp(JJ)I",
       "originalName": "$cfr$lcmp",
       "to": "compareLongs",
       "evidence": "Complete private static declaration/body source reviewed and exactly checked against archived pinned source. Signed64-bit comparison returning-1/0/1 without subtracting operands; preserve full long range and argument order. Pure comparison with no allocation/state/side effects; preserve all operators, result constants, operand types and caller behavior. No replacement of the comparison implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(ILla;)V",
+      "originalName": "a",
+      "to": "loadSharedInterfaceText",
+      "evidence": "Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive.",
       "confidence": "reviewed"
     },
     {
@@ -4511,6 +4553,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hk.a(IILjava/lang/String;IIII)V",
+      "originalName": "a",
+      "to": "startApplet",
+      "evidence": "Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showErrorPage",
+      "evidence": "Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hk.a(IZI[B)Ljava/lang/String;",
       "originalName": "a",
       "to": "decodeCp1252String",
@@ -4536,6 +4592,13 @@
       "originalName": "b",
       "to": "prepareGameShutdown",
       "evidence": "Source-purpose review: Declares the early shutdown callback invoked before removing the main canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.b(Z)Z",
+      "originalName": "b",
+      "to": "allowAppletStartup",
+      "evidence": "Source-purpose review: Provides the applet’s startup predicate before browser parameters are read.",
       "confidence": "reviewed"
     },
     {
@@ -5799,10 +5862,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ko.$cfr$intArgs$a$feb7e63b59d8(ZIZZ)Ljava/lang/String;",
+      "originalName": "$cfr$intArgs$a$feb7e63b59d8",
+      "to": "getSaveResultsLoginPromptWithIntGuard",
+      "evidence": "Source-purpose review: Selects the sign-in prompt for preserving the current score, progress, or achievements. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ko.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.a(ZBZZ)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getSaveResultsLoginPrompt",
+      "evidence": "Source-purpose review: Selects the sign-in prompt for preserving the current score, progress, or achievements.",
       "confidence": "reviewed"
     },
     {
@@ -6982,10 +7059,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:no.a(I)I",
+      "originalName": "a",
+      "to": "availableBytes",
+      "evidence": "Source-purpose review: Returns the number of input bytes available to read without blocking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.a(II[BB)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "Source-purpose review: Reads repeatedly into the requested destination range and throws EOFException when the stream ends early.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.a(I[BBI)V",
+      "originalName": "a",
+      "to": "enqueueWrite",
+      "evidence": "Source-purpose review: Copies outgoing bytes to the circular write buffer, starts the background writer when needed, and signals it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.a(Z)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Source-purpose review: Signals the socket writer to stop and waits for its thread before clearing the writer task.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:no.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.d(I)I",
+      "originalName": "d",
+      "to": "readByteOrEof",
+      "evidence": "Source-purpose review: Reads one byte from the socket input stream and returns its end-of-stream result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.e(I)V",
+      "originalName": "e",
+      "to": "checkWriteError",
+      "evidence": "Source-purpose review: Checks and clears the saved background-write error, reporting it once as an IOException.",
       "confidence": "reviewed"
     },
     {
@@ -8991,6 +9110,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tg.a(ZB)V",
+      "originalName": "a",
+      "to": "enableDefaultPacketHandlers",
+      "evidence": "Source-purpose review: Configures the common packet routes available to the client and its optional default features.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(ZZZ)I",
+      "originalName": "a",
+      "to": "processAccountUiActions",
+      "evidence": "Source-purpose review: Dispatches account and login actions and polls the country list download when requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.b(ZI)I",
+      "originalName": "b",
+      "to": "pollAccountUiActions",
+      "evidence": "Source-purpose review: Runs one account and login UI polling step through the common action dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.c(B)V",
+      "originalName": "c",
+      "to": "readSessionCookieUpdate",
+      "evidence": "Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.d(B)V",
+      "originalName": "d",
+      "to": "enablePacketFive",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.e(B)V",
+      "originalName": "e",
+      "to": "dispatchCommonPacket",
+      "evidence": "Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.f(I)V",
+      "originalName": "f",
+      "to": "enablePacketHandler",
+      "evidence": "Source-purpose review: Enables dispatch for the supplied server packet type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.g(I)I",
+      "originalName": "g",
+      "to": "reconnectAndResendRequests",
+      "evidence": "Source-purpose review: Retries the connection and resubmits outstanding requests for enabled response types.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tg.h(I)V",
       "originalName": "h",
       "to": "initializePacketLengths",
@@ -8998,10 +9173,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tg.i(I)V",
+      "originalName": "i",
+      "to": "enablePacketTwo",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 2.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tg.j(I)I",
       "originalName": "j",
       "to": "pollLoginConnection",
       "evidence": "Source-purpose review: Polls the login connection when ready and schedules reconnection after an error.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.l(I)V",
+      "originalName": "l",
+      "to": "enablePacketOne",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.n(I)V",
+      "originalName": "n",
+      "to": "updateLoginFlow",
+      "evidence": "Source-purpose review: Advances the login UI and connection states while the client cannot enter the game.",
       "confidence": "reviewed"
     },
     {
@@ -10463,7 +10659,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "b674df8f6fc057fcef43aaf3c7ed23d0ed0597554f2747a6ce7c641593b6a60c",
-      "torquing-names.json": "5937c86f120a9cf5abb82dbf3d27248109cae27f605f61f8ec2475fc182b3d11",
+      "torquing-names.json": "879ccb04250d1cb83c2eeaf19338328b065a83f89897f31dac715b9b38ac4bbe",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

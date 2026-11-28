@@ -472,6 +472,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:g$1$CfrPartitionedBody",
+      "originalName": "$CfrPartitionedBody",
+      "to": "ClientTextLoader",
+      "evidence": "Local loader carries the resource archive and temporary decode state across 3 sections with 744 bound shared client interface text lookups.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ga",
       "originalName": "ga",
       "to": "NodeHashTableIterator",
@@ -1001,6 +1008,13 @@
       "originalName": "r",
       "to": "WidgetPointerListener",
       "evidence": "Receives pointer press and release callbacks from interactive widgets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rb",
+      "originalName": "rb",
+      "to": "NetworkGameClient",
+      "evidence": "Extends the applet shell with network setup, archive services, and common server packet dispatch.",
       "confidence": "reviewed"
     },
     {
@@ -1634,6 +1648,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ac.a(IIIIIILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "startApplet",
+      "evidence": "Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ac.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showErrorPage",
+      "evidence": "Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ac.a(IZ)V",
       "originalName": "a",
       "to": "shutdownApplet",
@@ -1673,6 +1701,13 @@
       "originalName": "f",
       "to": "disposeClient",
       "evidence": "Source-purpose review: Releases the client’s running resources before the applet detaches listeners and its canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ac.g(B)Z",
+      "originalName": "g",
+      "to": "allowAppletStartup",
+      "evidence": "Source-purpose review: Provides the applet’s startup predicate before browser parameters are read.",
       "confidence": "reviewed"
     },
     {
@@ -3328,6 +3363,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fh.a(I)I",
+      "originalName": "a",
+      "to": "readByteOrEof",
+      "evidence": "Source-purpose review: Reads one byte from the socket input stream and returns its end-of-stream result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(IB[BI)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "Source-purpose review: Reads repeatedly into the requested destination range and throws EOFException when the stream ends early.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(Z)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Source-purpose review: Signals the socket writer to stop and waits for its thread before clearing the writer task.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a([BIII)V",
+      "originalName": "a",
+      "to": "enqueueWrite",
+      "evidence": "Source-purpose review: Copies outgoing bytes to the circular write buffer, starts the background writer when needed, and signals it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.b(I)I",
+      "originalName": "b",
+      "to": "availableBytes",
+      "evidence": "Source-purpose review: Returns the number of input bytes available to read without blocking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.c(I)V",
+      "originalName": "c",
+      "to": "checkWriteError",
+      "evidence": "Source-purpose review: Checks and clears the saved background-write error, reporting it once as an IOException.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fi.a()[F",
       "originalName": "a",
       "to": "decodeVector",
@@ -3374,6 +3451,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g$1$CfrPartitionedBody.runChunk0()V",
+      "originalName": "runChunk0",
+      "to": "loadLoginLobbyAndChatText",
+      "evidence": "Source-purpose review: Loads 259 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g$1$CfrPartitionedBody.runChunk1()V",
+      "originalName": "runChunk1",
+      "to": "loadAccountFormsAndLoadingText",
+      "evidence": "Source-purpose review: Loads 249 text entries in this section, including create_displayname, monthnames, loading_music.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g$1$CfrPartitionedBody.runChunk2()V",
+      "originalName": "runChunk2",
+      "to": "loadMatchDisplayAndMembershipText",
+      "evidence": "Source-purpose review: Loads 236 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits.",
       "confidence": "reviewed"
     },
     {
@@ -3437,6 +3535,13 @@
       "originalName": "a",
       "to": "appendDebugTree",
       "evidence": "Source-purpose review: Enters the widget in the diagnostic tree, then appends the widget properties and descendant entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.a(Lpf;I)V",
+      "originalName": "a",
+      "to": "loadSharedInterfaceText",
+      "evidence": "Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive.",
       "confidence": "reviewed"
     },
     {
@@ -6674,10 +6779,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.$cfr$intArgs$a$3214d41809e1(ZZIZ)Ljava/lang/String;",
+      "originalName": "$cfr$intArgs$a$3214d41809e1",
+      "to": "getAlternativeButtonPromptPrefixWithIntGuard",
+      "evidence": "Source-purpose review: Selects the alternative-button prefix for the current combination of result flags. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e43a27949b177ffa3051bf9448b95e3b5f3f2bff68fcd72750e626f4308f9d0d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ZZBZ)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getAlternativeButtonPromptPrefix",
+      "evidence": "Source-purpose review: Selects the alternative-button prefix for the current combination of result flags.",
       "confidence": "reviewed"
     },
     {
@@ -7059,6 +7178,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.$cfr$intArgs$a$590e95718a07(ILjava/lang/String;Z)I",
+      "originalName": "$cfr$intArgs$a$590e95718a07",
+      "to": "measureSelectedFontTextWidthWithIntGuard",
+      "evidence": "Source-purpose review: Measures the supplied text in one of two bitmap fonts selected by the boolean argument. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(BLjava/lang/String;Z)I",
+      "originalName": "a",
+      "to": "measureSelectedFontTextWidth",
+      "evidence": "Source-purpose review: Measures the supplied text in one of two bitmap fonts selected by the boolean argument.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qe.b(I)Lpb;",
       "originalName": "b",
       "to": "currentSprite",
@@ -7182,6 +7315,125 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7782ffc8581f5218b9c46e4ce76a1e31fcb3e1bad3b2d39f9c73d36070a8a787.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(BZ)V",
+      "originalName": "a",
+      "to": "enableDefaultPacketHandlers",
+      "evidence": "Source-purpose review: Configures the common packet routes available to the client and its optional default features.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(IIIIZIBI)V",
+      "originalName": "a",
+      "to": "initializeFramework",
+      "evidence": "Source-purpose review: Sets up the client display, network and resource archive services, and the applet’s input handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(IILjava/lang/String;II)V",
+      "originalName": "a",
+      "to": "readAppletParameters",
+      "evidence": "Source-purpose review: Reads the applet host, server ports, game checksum, instance and membership parameters before startup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(IZLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "startWithDefaultSize",
+      "evidence": "Source-purpose review: Starts applet configuration with the default 640 by 480 canvas size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(ZIZZZ)V",
+      "originalName": "a",
+      "to": "configureOptionalPacketHandlers",
+      "evidence": "Source-purpose review: Enables the default packet routes and applies the game’s optional packet settings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(ZZZ)I",
+      "originalName": "a",
+      "to": "processAccountUiActions",
+      "evidence": "Source-purpose review: Dispatches account and login actions and polls the country list download when requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.b(IZ)V",
+      "originalName": "b",
+      "to": "serviceFramework",
+      "evidence": "Source-purpose review: Services the client’s resource loading and reconnect state, updates input, and handles canvas resets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.b(Z)V",
+      "originalName": "b",
+      "to": "readSessionCookieUpdate",
+      "evidence": "Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.c(IZ)I",
+      "originalName": "c",
+      "to": "pollAccountUiActions",
+      "evidence": "Source-purpose review: Runs one account and login UI polling step through the common action dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.c(Z)V",
+      "originalName": "c",
+      "to": "enablePacketTwo",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.e(I)V",
+      "originalName": "e",
+      "to": "enablePacketFour",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.f(I)I",
+      "originalName": "f",
+      "to": "reconnectAndResendRequests",
+      "evidence": "Source-purpose review: Retries the connection and resubmits outstanding requests for enabled response types.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.h(B)V",
+      "originalName": "h",
+      "to": "enablePacketFive",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.h(I)V",
+      "originalName": "h",
+      "to": "dispatchCommonPacket",
+      "evidence": "Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.i(B)V",
+      "originalName": "i",
+      "to": "enablePacketOne",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.i(I)V",
+      "originalName": "i",
+      "to": "initializePacketLengths",
+      "evidence": "Source-purpose review: Registers the fixed and variable lengths of common incoming packets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.l(I)I",
+      "originalName": "l",
+      "to": "attemptReconnect",
+      "evidence": "Source-purpose review: Polls reconnection and updates the pending reconnect state after a server reply.",
       "confidence": "reviewed"
     },
     {
@@ -8853,7 +9105,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "3e57f8e619d36ba9f907e1b7d738b2f8f857020cc275999d64096076d8feb064",
+      "stellarshard-names.json": "59d1f0396aaa8d62d8caf8e6f487977cca1e89c9b0a1daf1bdd1ccdb64faefbc",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

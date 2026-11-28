@@ -149,7 +149,8 @@
     ["dm","MidiNoteMask","Stores a per-note usage mask in the music track’s instrument patch table."],
     ["eg","ArrayBlockSupport","Implements in-place fills and overlap-safe array copies with unrolled loops."],
     ["h","ByteArrayPoolSupport","Provides reusable byte arrays in fixed-size buckets and allocates a fresh array when none is available."],
-    ["ch","GrowableIntArray","Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."]
+    ["ch","GrowableIntArray","Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."],
+    ["qb$1$CfrPartitionedBody","ClientTextLoader","Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 860a6640a0040623dc715c9df38faebec011d486fd06448cd3bee8ff33ccce22."],
@@ -1443,7 +1444,32 @@
     ["ch","b","(II)I","computeCapacity","Source-purpose review: Calculates the capacity needed to contain the requested index using the configured growth policy."],
     ["ch","a","(BII)V","set","Source-purpose review: Stores an integer at the index, increasing the logical size and growing the backing array when needed."],
     ["ch","a","(IB)V","append","Source-purpose review: Inserts an integer at the next index after the current last entry."],
-    ["ch","a","(Z)I","size","Source-purpose review: Returns the number of stored entries as one more than the last occupied index."]
+    ["ch","a","(Z)I","size","Source-purpose review: Returns the number of stored entries as one more than the last occupied index."],
+    ["wa","a","(ILjava/lang/String;)V","showErrorPage","Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page."],
+    ["eb","a","(IILjava/lang/String;IB)V","readAppletParameters","Source-purpose review: Reads the applet host, server ports, game checksum, instance and membership parameters before startup."],
+    ["wa","a","(BIILjava/lang/String;III)V","startApplet","Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread."],
+    ["eb","a","(ILjava/lang/String;I)V","startWithDefaultSize","Source-purpose review: Starts applet configuration with the default 640 by 480 canvas size."],
+    ["wa","f","(I)Z","allowAppletStartup","Source-purpose review: Provides the applet’s startup predicate before browser parameters are read."],
+    ["eb","a","(IIBZIIII)V","initializeFramework","Source-purpose review: Sets up the client display, network and resource archive services, and the applet’s input handlers."],
+    ["eb","l","(I)V","dispatchCommonPacket","Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types."],
+    ["eb","a","(ZI)V","serviceFramework","Source-purpose review: Services the client’s resource loading and reconnect state, updates input, and handles canvas resets."],
+    ["eb","a","(ZBZ)I","processAccountUiActions","Source-purpose review: Dispatches account and login actions and polls the country list download when requested."],
+    ["eb","a","(IZ)I","pollAccountUiActions","Source-purpose review: Runs one account and login UI polling step through the common action dispatcher."],
+    ["eb","k","(I)V","updateLoginFlow","Source-purpose review: Advances the login UI and connection states while the client cannot enter the game."],
+    ["eb","j","(I)V","readSessionCookieUpdate","Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie."],
+    ["eb","i","(I)I","attemptReconnect","Source-purpose review: Polls reconnection and updates the pending reconnect state after a server reply."],
+    ["eb","b","(Z)V","initializePacketLengths","Source-purpose review: Registers the fixed and variable lengths of common incoming packets."],
+    ["eb","b","(ZI)V","enableDefaultPacketHandlers","Source-purpose review: Configures the common packet routes available to the client and its optional default features."],
+    ["eb","h","(I)V","enablePacketOne","Source-purpose review: Enables dispatch for common server packet 1."],
+    ["eb","d","(B)V","enablePacketFour","Source-purpose review: Enables dispatch for common server packet 4."],
+    ["eb","e","(B)V","enablePacketFive","Source-purpose review: Enables dispatch for common server packet 5."],
+    ["qb","a","(Ldb;I)V","loadSharedInterfaceText","Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive."],
+    ["qb$1$CfrPartitionedBody","runChunk0","()V","loadLoginLobbyAndChatText","Source-purpose review: Loads 244 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby."],
+    ["qb$1$CfrPartitionedBody","runChunk1","()V","loadAccountFormsAndLoadingText","Source-purpose review: Loads 232 text entries in this section, including create_displayname, monthnames, loading_music."],
+    ["qb$1$CfrPartitionedBody","runChunk2","()V","loadMatchDisplayAndMembershipText","Source-purpose review: Loads 233 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits."],
+    ["qb$1$CfrPartitionedBody","runChunk3","()V","loadLoginPromptsAndSubscriptionText","Source-purpose review: Loads 35 text entries in this section, including mustlogin_alternate, subscription_cost_monthly, sentence_separator."],
+    ["vm","a","(BZLjava/lang/String;)I","measureSelectedFontTextWidth","Source-purpose review: Measures the supplied text in one of two bitmap fonts selected by the boolean argument."],
+    ["vm","$cfr$intArgs$a$62abead39cee","(IZLjava/lang/String;)I","measureSelectedFontTextWidthWithIntGuard","Source-purpose review: Measures the supplied text in one of two bitmap fonts selected by the boolean argument. Preserves the separate JVM integer-width guard and all bound integer call sites."]
   ],
   "fields": [
     ["ng","field_h","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],

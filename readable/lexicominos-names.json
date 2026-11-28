@@ -599,6 +599,16 @@
       "gl",
       "GrowableIntArray",
       "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."
+    ],
+    [
+      "nk",
+      "NetworkGameClient",
+      "Extends the applet shell with network setup, archive services, and common server packet dispatch."
+    ],
+    [
+      "kb$1$CfrPartitionedBody",
+      "ClientTextLoader",
+      "Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups."
     ]
   ],
   "methods": [
@@ -8000,6 +8010,174 @@
       "(B)I",
       "size",
       "Source-purpose review: Returns the number of stored entries as one more than the last occupied index."
+    ],
+    [
+      "qb",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "showErrorPage",
+      "Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page."
+    ],
+    [
+      "nk",
+      "a",
+      "(Ljava/lang/String;IIBI)V",
+      "readAppletParameters",
+      "Source-purpose review: Reads the applet host, server ports, game checksum, instance and membership parameters before startup."
+    ],
+    [
+      "qb",
+      "a",
+      "(IIIIIILjava/lang/String;)V",
+      "startApplet",
+      "Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread."
+    ],
+    [
+      "nk",
+      "a",
+      "(ILjava/lang/String;B)V",
+      "startWithDefaultSize",
+      "Source-purpose review: Starts applet configuration with the default 640 by 480 canvas size."
+    ],
+    [
+      "qb",
+      "c",
+      "(I)Z",
+      "allowAppletStartup",
+      "Source-purpose review: Provides the applet’s startup predicate before browser parameters are read."
+    ],
+    [
+      "nk",
+      "a",
+      "(IIZIIIII)V",
+      "initializeFramework",
+      "Source-purpose review: Sets up the client display, network and resource archive services, and the applet’s input handlers."
+    ],
+    [
+      "nk",
+      "m",
+      "(I)V",
+      "dispatchCommonPacket",
+      "Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types."
+    ],
+    [
+      "nk",
+      "c",
+      "(ZI)V",
+      "serviceFramework",
+      "Source-purpose review: Services the client’s resource loading and reconnect state, updates input, and handles canvas resets."
+    ],
+    [
+      "nk",
+      "a",
+      "(ZIZ)I",
+      "processAccountUiActions",
+      "Source-purpose review: Dispatches account and login actions and polls the country list download when requested."
+    ],
+    [
+      "nk",
+      "b",
+      "(ZI)I",
+      "pollAccountUiActions",
+      "Source-purpose review: Runs one account and login UI polling step through the common action dispatcher."
+    ],
+    [
+      "nk",
+      "e",
+      "(B)V",
+      "updateLoginFlow",
+      "Source-purpose review: Advances the login UI and connection states while the client cannot enter the game."
+    ],
+    [
+      "nk",
+      "h",
+      "(I)V",
+      "readSessionCookieUpdate",
+      "Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie."
+    ],
+    [
+      "nk",
+      "f",
+      "(B)I",
+      "attemptReconnect",
+      "Source-purpose review: Polls reconnection and updates the pending reconnect state after a server reply."
+    ],
+    [
+      "nk",
+      "n",
+      "(I)I",
+      "reconnectAndResendRequests",
+      "Source-purpose review: Retries the connection and resubmits outstanding requests for enabled response types."
+    ],
+    [
+      "nk",
+      "g",
+      "(I)V",
+      "initializePacketLengths",
+      "Source-purpose review: Registers the fixed and variable lengths of common incoming packets."
+    ],
+    [
+      "kb",
+      "a",
+      "(ILsh;)V",
+      "loadSharedInterfaceText",
+      "Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive."
+    ],
+    [
+      "kb$1$CfrPartitionedBody",
+      "runChunk0",
+      "()V",
+      "loadLoginLobbyAndChatText",
+      "Source-purpose review: Loads 250 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby."
+    ],
+    [
+      "kb$1$CfrPartitionedBody",
+      "runChunk1",
+      "()V",
+      "loadAccountFormsAndLoadingText",
+      "Source-purpose review: Loads 239 text entries in this section, including create_displayname, monthnames, loading_music."
+    ],
+    [
+      "kb$1$CfrPartitionedBody",
+      "runChunk2",
+      "()V",
+      "loadMatchDisplayAndMembershipText",
+      "Source-purpose review: Loads 242 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits."
+    ],
+    [
+      "kb$1$CfrPartitionedBody",
+      "runChunk3",
+      "()V",
+      "loadSubscriptionText",
+      "Source-purpose review: Loads 13 text entries in this section, including subscription_cost_monthly, sentence_separator."
+    ],
+    [
+      "ga",
+      "a",
+      "(BZLjava/awt/Canvas;)V",
+      "drawClientCanvas",
+      "Source-purpose review: Draws the loading or client interface and presents the resulting raster on the supplied canvas."
+    ],
+    [
+      "ga",
+      "$cfr$intArgs$a$f0d318109cc1",
+      "(IZLjava/awt/Canvas;)V",
+      "drawClientCanvasWithIntGuard",
+      "Source-purpose review: Draws the loading or client interface and presents the resulting raster on the supplied canvas. Preserves the separate JVM integer-width guard and all bound integer call sites."
+    ],
+    [
+      "ck",
+      "b",
+      "(B)V",
+      "closeBufferedSocket",
+      "Source-purpose review: Closes the current buffered socket if present and clears its shared reference."
+    ],
+    [
+      "ck",
+      "$cfr$intArgs$b$e683eeaaf5b5",
+      "(I)V",
+      "closeBufferedSocketWithIntGuard",
+      "Source-purpose review: Closes the current buffered socket if present and clears its shared reference. Preserves the separate JVM integer-width guard and all bound integer call sites."
     ]
   ],
   "fields": [

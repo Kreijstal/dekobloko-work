@@ -1018,6 +1018,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sf$1$CfrPartitionedBody",
+      "originalName": "$CfrPartitionedBody",
+      "to": "ClientTextLoader",
+      "evidence": "Local loader carries the resource archive and temporary decode state across 3 sections with 744 bound shared client interface text lookups.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sh",
       "originalName": "sh",
       "to": "VorbisResidue",
@@ -2180,6 +2187,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bc.a(I)I",
+      "originalName": "a",
+      "to": "readByteOrEof",
+      "evidence": "Source-purpose review: Reads one byte from the socket input stream and returns its end-of-stream result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.a(II)I",
       "originalName": "a",
       "to": "roundUpPowerOfTwo",
@@ -2187,10 +2201,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bc.a(I[BII)V",
+      "originalName": "a",
+      "to": "enqueueWrite",
+      "evidence": "Source-purpose review: Copies outgoing bytes to the circular write buffer, starts the background writer when needed, and signals it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(Z)V",
+      "originalName": "a",
+      "to": "checkWriteError",
+      "evidence": "Source-purpose review: Checks and clears the saved background-write error, reporting it once as an IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a([BIII)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "Source-purpose review: Reads repeatedly into the requested destination range and throws EOFException when the stream ends early.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.b(I)I",
+      "originalName": "b",
+      "to": "availableBytes",
+      "evidence": "Source-purpose review: Returns the number of input bytes available to read without blocking.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 48af9ae3a3c581246c0815960f46b78879d56d52a1293682e435a9173ed1cd4d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.d(I)V",
+      "originalName": "d",
+      "to": "close",
+      "evidence": "Source-purpose review: Signals the socket writer to stop and waits for its thread before clearing the writer task.",
       "confidence": "reviewed"
     },
     {
@@ -2961,6 +3010,90 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 74ad84e18c0ca4457e5a3a21571bfe62cd51514e4281bb9e181dcf0908098ce2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.a(BLjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "startWithDefaultSize",
+      "evidence": "Source-purpose review: Starts applet configuration with the default 640 by 480 canvas size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.a(BZ)V",
+      "originalName": "a",
+      "to": "serviceFramework",
+      "evidence": "Source-purpose review: Services the client’s resource loading and reconnect state, updates input, and handles canvas resets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.a(IIIILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "readAppletParameters",
+      "evidence": "Source-purpose review: Reads the applet host, server ports, game checksum, instance and membership parameters before startup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.a(ZIIIIBII)V",
+      "originalName": "a",
+      "to": "initializeFramework",
+      "evidence": "Source-purpose review: Sets up the client display, network and resource archive services, and the applet’s input handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.a(ZZZ)I",
+      "originalName": "a",
+      "to": "processAccountUiActions",
+      "evidence": "Source-purpose review: Dispatches account and login actions and polls the country list download when requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.b(ZI)I",
+      "originalName": "b",
+      "to": "pollAccountUiActions",
+      "evidence": "Source-purpose review: Runs one account and login UI polling step through the common action dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.d(B)I",
+      "originalName": "d",
+      "to": "reconnectAndResendRequests",
+      "evidence": "Source-purpose review: Retries the connection and resubmits outstanding requests for enabled response types.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.e(B)V",
+      "originalName": "e",
+      "to": "dispatchCommonPacket",
+      "evidence": "Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.i(I)V",
+      "originalName": "i",
+      "to": "readSessionCookieUpdate",
+      "evidence": "Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.j(I)I",
+      "originalName": "j",
+      "to": "attemptReconnect",
+      "evidence": "Source-purpose review: Polls reconnection and updates the pending reconnect state after a server reply.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.l(I)V",
+      "originalName": "l",
+      "to": "updateLoginFlow",
+      "evidence": "Source-purpose review: Advances the login UI and connection states while the client cannot enter the game.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.o(I)V",
+      "originalName": "o",
+      "to": "initializePacketLengths",
+      "evidence": "Source-purpose review: Registers the fixed and variable lengths of common incoming packets.",
       "confidence": "reviewed"
     },
     {
@@ -4574,10 +4707,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:id.$cfr$intArgs$a$1fdf1ca47e3f(IILoh;Ljava/lang/String;Lva;)V",
+      "originalName": "$cfr$intArgs$a$1fdf1ca47e3f",
+      "to": "computeJustifiedCharacterOffsetsWithIntGuard",
+      "evidence": "Source-purpose review: Fills the text-position array using font advances, fixed-point space justification, and single positions for characters inside markup tags. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.a(B)Lfc;",
       "originalName": "a",
       "to": "next",
       "evidence": "Advances through the bucket rings from the saved bucket index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(BILoh;Ljava/lang/String;Lva;)V",
+      "originalName": "a",
+      "to": "computeJustifiedCharacterOffsets",
+      "evidence": "Source-purpose review: Fills the text-position array using font advances, fixed-point space justification, and single positions for characters inside markup tags.",
       "confidence": "reviewed"
     },
     {
@@ -4882,10 +5029,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ji.$cfr$intArgs$a$f0d318109cc1(IZLjava/awt/Canvas;)V",
+      "originalName": "$cfr$intArgs$a$f0d318109cc1",
+      "to": "drawClientCanvasWithIntGuard",
+      "evidence": "Source-purpose review: Draws the loading or client interface and presents the resulting raster on the supplied canvas. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ji.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ji.a(BZLjava/awt/Canvas;)V",
+      "originalName": "a",
+      "to": "drawClientCanvas",
+      "evidence": "Source-purpose review: Draws the loading or client interface and presents the resulting raster on the supplied canvas.",
       "confidence": "reviewed"
     },
     {
@@ -7248,6 +7409,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qc.$cfr$intArgs$a$feb7e63b59d8(ZIZZ)Ljava/lang/String;",
+      "originalName": "$cfr$intArgs$a$feb7e63b59d8",
+      "to": "getDiscardResultsPromptSuffixWithIntGuard",
+      "evidence": "Source-purpose review: Selects the singular or plural discard-and-continue suffix for the current result flags. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qc.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
@@ -7259,6 +7427,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.a(ZBZZ)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getDiscardResultsPromptSuffix",
+      "evidence": "Source-purpose review: Selects the singular or plural discard-and-continue suffix for the current result flags.",
       "confidence": "reviewed"
     },
     {
@@ -7724,6 +7899,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:re.a(B)Z",
+      "originalName": "a",
+      "to": "allowAppletStartup",
+      "evidence": "Source-purpose review: Provides the applet’s startup predicate before browser parameters are read.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.a(I)V",
       "originalName": "a",
       "to": "drawFrame",
@@ -7731,10 +7913,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:re.a(IIILjava/lang/String;III)V",
+      "originalName": "a",
+      "to": "startApplet",
+      "evidence": "Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.a(IZ)V",
       "originalName": "a",
       "to": "shutdownApplet",
       "evidence": "Source-purpose review: Shuts down the applet and platform services, detaches the canvas, and clears client resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a(Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "showErrorPage",
+      "evidence": "Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page.",
       "confidence": "reviewed"
     },
     {
@@ -8123,10 +8319,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sf$1$CfrPartitionedBody.runChunk0()V",
+      "originalName": "runChunk0",
+      "to": "loadLoginLobbyAndChatText",
+      "evidence": "Source-purpose review: Loads 267 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf$1$CfrPartitionedBody.runChunk1()V",
+      "originalName": "runChunk1",
+      "to": "loadAccountFormsAndLoadingText",
+      "evidence": "Source-purpose review: Loads 256 text entries in this section, including create_displayname, monthnames, loading_music.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf$1$CfrPartitionedBody.runChunk2()V",
+      "originalName": "runChunk2",
+      "to": "loadMatchDisplayAndMembershipText",
+      "evidence": "Source-purpose review: Loads 221 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sf.a(BCLal;I)Z",
       "originalName": "a",
       "to": "handleKey",
       "evidence": "Source-purpose review: Handles a key code or typed character in the receiving widget using the caller’s root widget for focus handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(BLkk;)V",
+      "originalName": "a",
+      "to": "loadSharedInterfaceText",
+      "evidence": "Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive.",
       "confidence": "reviewed"
     },
     {
@@ -8165,10 +8389,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:si.$cfr$intArgs$a$e9dea5688aa5(II)V",
+      "originalName": "$cfr$intArgs$a$e9dea5688aa5",
+      "to": "playIndexedSoundEffectWithIntGuard",
+      "evidence": "Source-purpose review: Selects a PCM effect by its index and submits it for playback at the configured volume. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:si.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 eefc3ab1fd8415d19b7fb12c9b9628aa13514dd64453d1bf99ddfd0d90ec1575.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(BI)V",
+      "originalName": "a",
+      "to": "playIndexedSoundEffect",
+      "evidence": "Source-purpose review: Selects a PCM effect by its index and submits it for playback at the configured volume.",
       "confidence": "reviewed"
     },
     {
@@ -9329,7 +9567,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "4c66f47fea184b3790db5b4127eacabbc22f2b83d54e463e23fd9bd13e5fd68e",
+      "trackcontroller-names.json": "ecb412dddb28d1d0dbfcd4a178e06cc8bcbf0959e88bdd7b638c3378d62b8ee4",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

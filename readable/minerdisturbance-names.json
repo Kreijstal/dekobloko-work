@@ -629,6 +629,21 @@
       "aa",
       "GrowableIntArray",
       "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."
+    ],
+    [
+      "ob",
+      "NetworkGameClient",
+      "Extends the applet shell with network setup, archive services, and common server packet dispatch."
+    ],
+    [
+      "lg$1$CfrPartitionedBody",
+      "GameTextLoader",
+      "Local loader carries the resource archive and temporary decode state across 3 sections with 473 bound game interface text lookups."
+    ],
+    [
+      "li$1$CfrPartitionedBody",
+      "ClientTextLoader",
+      "Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups."
     ]
   ],
   "methods": [
@@ -8590,6 +8605,237 @@
       "(I)I",
       "size",
       "Source-purpose review: Returns the number of stored entries as one more than the last occupied index."
+    ],
+    [
+      "m",
+      "a",
+      "(BLjava/lang/String;)V",
+      "showErrorPage",
+      "Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page."
+    ],
+    [
+      "ob",
+      "a",
+      "(Ljava/lang/String;IIII)V",
+      "readAppletParameters",
+      "Source-purpose review: Reads the applet host, server ports, game checksum, instance and membership parameters before startup."
+    ],
+    [
+      "m",
+      "a",
+      "(IIIILjava/lang/String;II)V",
+      "startApplet",
+      "Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread."
+    ],
+    [
+      "ob",
+      "a",
+      "(Ljava/lang/String;II)V",
+      "startWithDefaultSize",
+      "Source-purpose review: Starts applet configuration with the default 640 by 480 canvas size."
+    ],
+    [
+      "m",
+      "a",
+      "(B)Z",
+      "allowAppletStartup",
+      "Source-purpose review: Provides the applet’s startup predicate before browser parameters are read."
+    ],
+    [
+      "ob",
+      "a",
+      "(ZIBIIIII)V",
+      "initializeFramework",
+      "Source-purpose review: Sets up the client display, network and resource archive services, and the applet’s input handlers."
+    ],
+    [
+      "ob",
+      "n",
+      "(I)V",
+      "dispatchCommonPacket",
+      "Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types."
+    ],
+    [
+      "ob",
+      "a",
+      "(ZI)V",
+      "serviceFramework",
+      "Source-purpose review: Services the client’s resource loading and reconnect state, updates input, and handles canvas resets."
+    ],
+    [
+      "ob",
+      "a",
+      "(ZZZ)I",
+      "processAccountUiActions",
+      "Source-purpose review: Dispatches account and login actions and polls the country list download when requested."
+    ],
+    [
+      "ob",
+      "c",
+      "(ZZ)I",
+      "pollAccountUiActions",
+      "Source-purpose review: Runs one account and login UI polling step through the common action dispatcher."
+    ],
+    [
+      "ob",
+      "k",
+      "(I)V",
+      "updateLoginFlow",
+      "Source-purpose review: Advances the login UI and connection states while the client cannot enter the game."
+    ],
+    [
+      "ob",
+      "g",
+      "(I)V",
+      "readSessionCookieUpdate",
+      "Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie."
+    ],
+    [
+      "ob",
+      "d",
+      "(B)I",
+      "attemptReconnect",
+      "Source-purpose review: Polls reconnection and updates the pending reconnect state after a server reply."
+    ],
+    [
+      "ob",
+      "c",
+      "(B)I",
+      "reconnectAndResendRequests",
+      "Source-purpose review: Retries the connection and resubmits outstanding requests for enabled response types."
+    ],
+    [
+      "ob",
+      "c",
+      "(Z)V",
+      "initializePacketLengths",
+      "Source-purpose review: Registers the fixed and variable lengths of common incoming packets."
+    ],
+    [
+      "ob",
+      "b",
+      "(ZZ)V",
+      "enableDefaultPacketHandlers",
+      "Source-purpose review: Configures the common packet routes available to the client and its optional default features."
+    ],
+    [
+      "ob",
+      "i",
+      "(I)V",
+      "enablePacketHandler",
+      "Source-purpose review: Enables dispatch for the supplied server packet type."
+    ],
+    [
+      "ob",
+      "m",
+      "(I)V",
+      "enablePacketTwo",
+      "Source-purpose review: Enables dispatch for common server packet 2."
+    ],
+    [
+      "ob",
+      "j",
+      "(I)V",
+      "enablePacketFour",
+      "Source-purpose review: Enables dispatch for common server packet 4."
+    ],
+    [
+      "ob",
+      "p",
+      "(I)V",
+      "enablePacketFive",
+      "Source-purpose review: Enables dispatch for common server packet 5."
+    ],
+    [
+      "lg",
+      "a",
+      "(Lbj;I)V",
+      "loadGameInterfaceText",
+      "Source-purpose review: Runs the local loader for game interface text, reading and decoding resource keys from the supplied archive."
+    ],
+    [
+      "lg$1$CfrPartitionedBody",
+      "runChunk0",
+      "()V",
+      "loadCaptionsAchievementsInstructionsAndRankNames",
+      "Source-purpose review: Loads 227 text entries in this section, including caption1, achievement_names, INSTRUCTION, rankingArcticExplorer."
+    ],
+    [
+      "lg$1$CfrPartitionedBody",
+      "runChunk1",
+      "()V",
+      "loadDeathMessagesTutorialAndVolcanoText",
+      "Source-purpose review: Loads 234 text entries in this section, including deathCauseCrushed, tutorialOre, highscoreVolcano."
+    ],
+    [
+      "lg$1$CfrPartitionedBody",
+      "runChunk2",
+      "()V",
+      "loadSuperVolcanoAndMiningControlLabels",
+      "Source-purpose review: Loads 12 text entries in this section, including stillLoadingSuperVolcano, keycode_mine_up_left, keycode_mine_down_right."
+    ],
+    [
+      "li",
+      "a",
+      "(ILbj;)V",
+      "loadSharedInterfaceText",
+      "Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive."
+    ],
+    [
+      "li$1$CfrPartitionedBody",
+      "runChunk0",
+      "()V",
+      "loadLoginLobbyAndChatText",
+      "Source-purpose review: Loads 254 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby."
+    ],
+    [
+      "li$1$CfrPartitionedBody",
+      "runChunk1",
+      "()V",
+      "loadAccountFormsAndLoadingText",
+      "Source-purpose review: Loads 243 text entries in this section, including create_displayname, monthnames, loading_music."
+    ],
+    [
+      "li$1$CfrPartitionedBody",
+      "runChunk2",
+      "()V",
+      "loadMatchDisplayAndMembershipText",
+      "Source-purpose review: Loads 241 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits."
+    ],
+    [
+      "li$1$CfrPartitionedBody",
+      "runChunk3",
+      "()V",
+      "loadSubscriptionText",
+      "Source-purpose review: Loads 6 text entries in this section, including subscription_cost_monthly, sentence_separator."
+    ],
+    [
+      "jb",
+      "a",
+      "(ZBZIZ)Z",
+      "drawAchievementGrid",
+      "Source-purpose review: Draws an achievement icon grid and the details and progress for its hovered or selected achievement, then reports whether one is selected."
+    ],
+    [
+      "jb",
+      "$cfr$intArgs$a$3cff09437531",
+      "(ZIZIZ)Z",
+      "drawAchievementGridWithIntGuard",
+      "Source-purpose review: Draws an achievement icon grid and the details and progress for its hovered or selected achievement, then reports whether one is selected. Preserves the separate JVM integer-width guard and all bound integer call sites."
+    ],
+    [
+      "oj",
+      "a",
+      "(Lpi;Lpi;B)V",
+      "insertAdjacentNode",
+      "Source-purpose review: Unlinks the incoming node if already linked, then joins it to the anchor and its adjacent node by updating both directions."
+    ],
+    [
+      "oj",
+      "$cfr$intArgs$a$c5042ffd0615",
+      "(Lpi;Lpi;I)V",
+      "insertAdjacentNodeWithIntGuard",
+      "Source-purpose review: Unlinks the incoming node if already linked, then joins it to the anchor and its adjacent node by updating both directions. Preserves the separate JVM integer-width guard and all bound integer call sites."
     ]
   ],
   "fields": [

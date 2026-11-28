@@ -94,7 +94,8 @@ for (const [owner, original, descriptor, name, evidence] of reviewedNames.fields
 
 export function buildNamingRules(input, rows, classMap) {
   const declarations=rows.filter(r=>r[0]==='D');
-  const topClasses=declarations.filter(r=>r[4].startsWith('C:') && r[1]===r[5]+'.java');
+  const classDeclarations=new Map(declarations.filter(row=>row[4].startsWith('C:')).map(row=>[row[4],row]));
+  const topClasses=[...classDeclarations.values()].filter(r=>r[1]===r[5]+'.java');
   const categories=new Map();
   for(const line of classMap.split('\n')) {
     const cells=line.split('|').map(s=>s.trim());
@@ -114,6 +115,12 @@ export function buildNamingRules(input, rows, classMap) {
       :`Structural category: ${info.category} (${info.confidence}); numbered category label, finer purpose unresolved.`),classNames[original]?'reviewed':'category');
   }
   if(new Set(Object.values(aliases)).size!==topClasses.length)throw new Error('Class alias collision');
+  for (const [owner, name, evidence] of reviewedNames.classes) {
+    const symbol = 'C:' + owner;
+    const declaration = classDeclarations.get(symbol);
+    if (!declaration) throw new Error('Reviewed class identity missing: ' + symbol);
+    if (!topClasses.includes(declaration)) add(symbol, declaration[5], name, evidence, 'reviewed');
+  }
   const parents=new Map();
   const find=x=>{if(!parents.has(x))parents.set(x,x);const p=parents.get(x);if(p!==x)parents.set(x,find(p));return parents.get(x);};
   for(const r of rows.filter(r=>r[0]==='O'))parents.set(find(r[2]),find(r[1]));

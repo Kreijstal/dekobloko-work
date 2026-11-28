@@ -534,6 +534,16 @@
       "of",
       "GrowableIntArray",
       "Stores an indexed sequence of integers and expands its backing array when an index exceeds the capacity."
+    ],
+    [
+      "ab",
+      "NetworkGameClient",
+      "Extends the applet shell with network setup, archive services, and common server packet dispatch."
+    ],
+    [
+      "lj$1$CfrPartitionedBody",
+      "ClientTextLoader",
+      "Local loader carries the resource archive and temporary decode state across 3 sections with 744 bound shared client interface text lookups."
     ]
   ],
   "methods": [
@@ -7844,6 +7854,244 @@
       "(I)I",
       "size",
       "Source-purpose review: Returns the number of stored entries as one more than the last occupied index."
+    ],
+    [
+      "dh",
+      "a",
+      "(Ljava/lang/String;I)V",
+      "showErrorPage",
+      "Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page."
+    ],
+    [
+      "ab",
+      "a",
+      "(IIIILjava/lang/String;)V",
+      "readAppletParameters",
+      "Source-purpose review: Reads the applet host, server ports, game checksum, instance and membership parameters before startup."
+    ],
+    [
+      "dh",
+      "a",
+      "(BLjava/lang/String;IIIII)V",
+      "startApplet",
+      "Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread."
+    ],
+    [
+      "ab",
+      "a",
+      "(Ljava/lang/String;II)V",
+      "startWithDefaultSize",
+      "Source-purpose review: Starts applet configuration with the default 640 by 480 canvas size."
+    ],
+    [
+      "dh",
+      "c",
+      "(I)Z",
+      "allowAppletStartup",
+      "Source-purpose review: Provides the applet’s startup predicate before browser parameters are read."
+    ],
+    [
+      "ab",
+      "a",
+      "(IZIIZIII)V",
+      "initializeFramework",
+      "Source-purpose review: Sets up the client display, network and resource archive services, and the applet’s input handlers."
+    ],
+    [
+      "ab",
+      "d",
+      "(Z)V",
+      "dispatchCommonPacket",
+      "Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types."
+    ],
+    [
+      "ab",
+      "a",
+      "(IZ)V",
+      "serviceFramework",
+      "Source-purpose review: Services the client’s resource loading and reconnect state, updates input, and handles canvas resets."
+    ],
+    [
+      "ab",
+      "a",
+      "(ZZI)I",
+      "processAccountUiActions",
+      "Source-purpose review: Dispatches account and login actions and polls the country list download when requested."
+    ],
+    [
+      "ab",
+      "b",
+      "(ZZ)I",
+      "pollAccountUiActions",
+      "Source-purpose review: Runs one account and login UI polling step through the common action dispatcher."
+    ],
+    [
+      "ab",
+      "c",
+      "(Z)V",
+      "updateLoginFlow",
+      "Source-purpose review: Advances the login UI and connection states while the client cannot enter the game."
+    ],
+    [
+      "ab",
+      "k",
+      "(I)V",
+      "readSessionCookieUpdate",
+      "Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie."
+    ],
+    [
+      "ab",
+      "j",
+      "(I)I",
+      "attemptReconnect",
+      "Source-purpose review: Polls reconnection and updates the pending reconnect state after a server reply."
+    ],
+    [
+      "ab",
+      "g",
+      "(I)I",
+      "reconnectAndResendRequests",
+      "Source-purpose review: Retries the connection and resubmits outstanding requests for enabled response types."
+    ],
+    [
+      "ab",
+      "g",
+      "(B)V",
+      "initializePacketLengths",
+      "Source-purpose review: Registers the fixed and variable lengths of common incoming packets."
+    ],
+    [
+      "ab",
+      "c",
+      "(ZZ)V",
+      "enableDefaultPacketHandlers",
+      "Source-purpose review: Configures the common packet routes available to the client and its optional default features."
+    ],
+    [
+      "ab",
+      "h",
+      "(I)V",
+      "enablePacketHandler",
+      "Source-purpose review: Enables dispatch for the supplied server packet type."
+    ],
+    [
+      "ab",
+      "i",
+      "(I)V",
+      "enablePacketOne",
+      "Source-purpose review: Enables dispatch for common server packet 1."
+    ],
+    [
+      "ab",
+      "b",
+      "(Z)V",
+      "enablePacketTwo",
+      "Source-purpose review: Enables dispatch for common server packet 2."
+    ],
+    [
+      "ab",
+      "f",
+      "(B)V",
+      "enablePacketFour",
+      "Source-purpose review: Enables dispatch for common server packet 4."
+    ],
+    [
+      "lj",
+      "a",
+      "(ILda;)V",
+      "loadSharedInterfaceText",
+      "Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive."
+    ],
+    [
+      "lj$1$CfrPartitionedBody",
+      "runChunk0",
+      "()V",
+      "loadLoginLobbyAndChatText",
+      "Source-purpose review: Loads 260 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby."
+    ],
+    [
+      "lj$1$CfrPartitionedBody",
+      "runChunk1",
+      "()V",
+      "loadAccountFormsAndLoadingText",
+      "Source-purpose review: Loads 248 text entries in this section, including create_displayname, monthnames, loading_music."
+    ],
+    [
+      "lj$1$CfrPartitionedBody",
+      "runChunk2",
+      "()V",
+      "loadMatchDisplayAndMembershipText",
+      "Source-purpose review: Loads 236 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits."
+    ],
+    [
+      "ai",
+      "a",
+      "(BZZZ)Ljava/lang/String;",
+      "getSaveResultsLoginPrompt",
+      "Source-purpose review: Selects the sign-in prompt for preserving the current score, progress, or achievements."
+    ],
+    [
+      "ai",
+      "$cfr$intArgs$a$c7de0d339b2a",
+      "(IZZZ)Ljava/lang/String;",
+      "getSaveResultsLoginPromptWithIntGuard",
+      "Source-purpose review: Selects the sign-in prompt for preserving the current score, progress, or achievements. Preserves the separate JVM integer-width guard and all bound integer call sites."
+    ],
+    [
+      "b",
+      "a",
+      "(Ljava/lang/String;CZ)[Ljava/lang/String;",
+      "splitByDelimiter",
+      "Source-purpose review: Counts delimiter matches, extracts each intervening substring, and returns the final tail as the last entry."
+    ],
+    [
+      "b",
+      "$cfr$intArgs$a$25ae83805f84",
+      "(Ljava/lang/String;IZ)[Ljava/lang/String;",
+      "splitByDelimiterWithIntDelimiter",
+      "Source-purpose review: Counts delimiter matches, extracts each intervening substring, and returns the final tail as the last entry. Keeps the character casts for counting and error reporting, and the integer comparison while scanning the string."
+    ],
+    [
+      "ad",
+      "b",
+      "(I)I",
+      "availableBytes",
+      "Source-purpose review: Returns the number of input bytes available to read without blocking."
+    ],
+    [
+      "ad",
+      "a",
+      "(I)I",
+      "readByteOrEof",
+      "Source-purpose review: Reads one byte from the socket input stream and returns its end-of-stream result."
+    ],
+    [
+      "ad",
+      "a",
+      "(BII[B)V",
+      "readFully",
+      "Source-purpose review: Reads repeatedly into the requested destination range and throws EOFException when the stream ends early."
+    ],
+    [
+      "ad",
+      "a",
+      "(III[B)V",
+      "enqueueWrite",
+      "Source-purpose review: Copies outgoing bytes to the circular write buffer, starts the background writer when needed, and signals it."
+    ],
+    [
+      "ad",
+      "d",
+      "(I)V",
+      "close",
+      "Source-purpose review: Signals the socket writer to stop and waits for its thread before clearing the writer task."
+    ],
+    [
+      "ad",
+      "a",
+      "(Z)V",
+      "checkWriteError",
+      "Source-purpose review: Checks and clears the saved background-write error, reporting it once as an IOException."
     ]
   ],
   "fields": [

@@ -346,6 +346,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cg$1$CfrPartitionedBody",
+      "originalName": "$CfrPartitionedBody",
+      "to": "ClientTextLoader",
+      "evidence": "Local loader carries the resource archive and temporary decode state across 4 sections with 744 bound shared client interface text lookups.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ch",
       "originalName": "ch",
       "to": "MusicPatchEnvelope",
@@ -2593,6 +2600,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cg$1$CfrPartitionedBody.runChunk0()V",
+      "originalName": "runChunk0",
+      "to": "loadLoginLobbyAndChatText",
+      "evidence": "Source-purpose review: Loads 248 text entries in this section, including loginm3, gameopt_needrating, mu_chat_lobby.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg$1$CfrPartitionedBody.runChunk1()V",
+      "originalName": "runChunk1",
+      "to": "loadAccountFormsAndLoadingText",
+      "evidence": "Source-purpose review: Loads 238 text entries in this section, including create_displayname, monthnames, loading_music.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg$1$CfrPartitionedBody.runChunk2()V",
+      "originalName": "runChunk2",
+      "to": "loadMatchDisplayAndMembershipText",
+      "evidence": "Source-purpose review: Loads 241 text entries in this section, including mp_offerrematch, fs_button_members, me_extra_benefits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg$1$CfrPartitionedBody.runChunk3()V",
+      "originalName": "runChunk3",
+      "to": "loadLoginPromptsAndSubscriptionText",
+      "evidence": "Source-purpose review: Loads 17 text entries in this section, including mustlogin_alternate, subscription_cost_monthly, sentence_separator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.a(BLgk;)V",
+      "originalName": "a",
+      "to": "loadSharedInterfaceText",
+      "evidence": "Source-purpose review: Runs the local loader for shared client interface text, reading and decoding resource keys from the supplied archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ch.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3356,6 +3398,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showErrorPage",
+      "evidence": "Source-purpose review: Reports the applet error once, notifies the browser of logout, and navigates to its error page.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(I)Z",
+      "originalName": "a",
+      "to": "allowAppletStartup",
+      "evidence": "Source-purpose review: Provides the applet’s startup predicate before browser parameters are read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(ILjava/lang/String;IIIII)V",
+      "originalName": "a",
+      "to": "startApplet",
+      "evidence": "Source-purpose review: Sets up the applet host and task dispatcher, then starts its game loop thread.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.a(Lgk;II)Lrj;",
       "originalName": "a",
       "to": "loadMusicPatch",
@@ -3927,6 +3990,20 @@
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 7 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.$cfr$intArgs$a$d6db22f779ae(ZILjk;II)V",
+      "originalName": "$cfr$intArgs$a$d6db22f779ae",
+      "to": "bucketVisibleFacesByDepthWithIntGuard",
+      "evidence": "Source-purpose review: Tests projected triangle winding and depth, stores visible face indices in depth buckets, and prepares optional face-priority offsets. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a(ZBLjk;II)V",
+      "originalName": "a",
+      "to": "bucketVisibleFacesByDepth",
+      "evidence": "Source-purpose review: Tests projected triangle winding and depth, stores visible face indices in depth buckets, and prepares optional face-priority offsets.",
       "confidence": "reviewed"
     },
     {
@@ -4588,10 +4665,108 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kk.a(IBLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "startWithDefaultSize",
+      "evidence": "Source-purpose review: Starts applet configuration with the default 640 by 480 canvas size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(IIBLjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "readAppletParameters",
+      "evidence": "Source-purpose review: Reads the applet host, server ports, game checksum, instance and membership parameters before startup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(IIIIIIZI)V",
+      "originalName": "a",
+      "to": "initializeFramework",
+      "evidence": "Source-purpose review: Sets up the client display, network and resource archive services, and the applet’s input handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(IZ)I",
+      "originalName": "a",
+      "to": "pollAccountUiActions",
+      "evidence": "Source-purpose review: Runs one account and login UI polling step through the common action dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(ZI)V",
+      "originalName": "a",
+      "to": "serviceFramework",
+      "evidence": "Source-purpose review: Services the client’s resource loading and reconnect state, updates input, and handles canvas resets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(ZZ)V",
+      "originalName": "a",
+      "to": "enableDefaultPacketHandlers",
+      "evidence": "Source-purpose review: Configures the common packet routes available to the client and its optional default features.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(ZZZ)I",
+      "originalName": "a",
+      "to": "processAccountUiActions",
+      "evidence": "Source-purpose review: Dispatches account and login actions and polls the country list download when requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.f(B)V",
+      "originalName": "f",
+      "to": "initializePacketLengths",
+      "evidence": "Source-purpose review: Registers the fixed and variable lengths of common incoming packets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.f(I)V",
+      "originalName": "f",
+      "to": "enablePacketHandler",
+      "evidence": "Source-purpose review: Enables dispatch for the supplied server packet type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kk.g(B)V",
       "originalName": "g",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.h(B)V",
+      "originalName": "h",
+      "to": "readSessionCookieUpdate",
+      "evidence": "Source-purpose review: Reads the server-provided session value and updates the applet’s session cookie.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.h(I)I",
+      "originalName": "h",
+      "to": "attemptReconnect",
+      "evidence": "Source-purpose review: Polls reconnection and updates the pending reconnect state after a server reply.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.i(I)V",
+      "originalName": "i",
+      "to": "enablePacketTwo",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.j(B)V",
+      "originalName": "j",
+      "to": "enablePacketFive",
+      "evidence": "Source-purpose review: Enables dispatch for common server packet 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.j(I)V",
+      "originalName": "j",
+      "to": "dispatchCommonPacket",
+      "evidence": "Source-purpose review: Routes enabled common server packets to their handlers and reports unknown packet types.",
       "confidence": "reviewed"
     },
     {
@@ -4788,6 +4963,20 @@
       "originalName": "j",
       "to": "refreshChildLayouts",
       "evidence": "Source-purpose review: Visits the deque’s children and refreshes their layouts after the container’s bounds change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.$cfr$intArgs$a$c7de0d339b2a(IZZZ)Ljava/lang/String;",
+      "originalName": "$cfr$intArgs$a$c7de0d339b2a",
+      "to": "getAlternativeButtonPromptPrefixWithIntGuard",
+      "evidence": "Source-purpose review: Selects the alternative-button prefix for the current combination of result flags. Preserves the separate JVM integer-width guard and all bound integer call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.a(BZZZ)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getAlternativeButtonPromptPrefix",
+      "evidence": "Source-purpose review: Selects the alternative-button prefix for the current combination of result flags.",
       "confidence": "reviewed"
     },
     {
@@ -8902,7 +9091,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "997839dfed2e852e694a2aef4b284f397db83d1d106c9c9ffd5ebf0e55c6700e",
+      "bouncedown-names.json": "1c7800c1e2a90776dee66de3c1f326e2c797ef8ef967872cb847d064b69718a2",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
