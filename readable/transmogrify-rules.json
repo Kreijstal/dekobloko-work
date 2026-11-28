@@ -269,6 +269,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:al",
+      "originalName": "al",
+      "to": "MenuSelectionInput",
+      "evidence": "Tracks the selected option, pointer mode, key events, and held-button activity for menu navigation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bb",
       "originalName": "bb",
       "to": "PcmSampleStream",
@@ -1319,6 +1326,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vg",
+      "originalName": "vg",
+      "to": "GameMenuScreen",
+      "evidence": "Owns one menu page, calculates item bounds, handles page actions, and paints its options and panels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vh",
       "originalName": "vh",
       "to": "EmailFormatValidator",
@@ -1830,6 +1844,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Transmogrify.a(BZ)Z",
+      "originalName": "a",
+      "to": "loadGameAssets",
+      "evidence": "Source-purpose review: Checks archive and asset readiness, reports progress, and initializes game assets when requested.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:Transmogrify.a(I)V",
       "originalName": "a",
       "to": "initializeGame",
@@ -1862,6 +1883,48 @@
       "originalName": "e",
       "to": "releaseGameResources",
       "evidence": "Invoked just before destroy at shutdown to release audio and graphics resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.j(I)V",
+      "originalName": "j",
+      "to": "initializeGameArchives",
+      "evidence": "Source-purpose review: Releases the startup handle and acquires the archives used for game resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.k(I)Ljava/lang/String;",
+      "originalName": "k",
+      "to": "readIncomingString",
+      "evidence": "Source-purpose review: Reads the next string from the shared incoming packet buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.l(I)V",
+      "originalName": "l",
+      "to": "clearStaticReferences",
+      "evidence": "Source-purpose review: Releases the game class’s static string references during shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.m(I)V",
+      "originalName": "m",
+      "to": "queueReflectionCheckReplies",
+      "evidence": "Source-purpose review: Frames every ready reflection-check reply into the outbound buffer and backfills its length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.n(I)V",
+      "originalName": "n",
+      "to": "startMenuAudio",
+      "evidence": "Source-purpose review: Fetches the initial menu data if needed and starts the opening menu track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.o(I)V",
+      "originalName": "o",
+      "to": "updateMenuTransition",
+      "evidence": "Source-purpose review: Advances the menu fade and switches screens, or updates the current menu’s input.",
       "confidence": "reviewed"
     },
     {
@@ -2208,10 +2271,108 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.a(B)Z",
+      "originalName": "a",
+      "to": "isPreviousOptionRequested",
+      "evidence": "Source-purpose review: Signals the previous choice for a secondary pointer action or Left key input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ba120a5fb13f2f707f91aa9d521ed29b043aa998cf8494a4ceb8b23c3003b8cc.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(IIBZ)V",
+      "originalName": "a",
+      "to": "resetSelection",
+      "evidence": "Source-purpose review: Clears the held button and chooses the pointer option or default option based on the mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(III)V",
+      "originalName": "a",
+      "to": "updatePointerSelection",
+      "evidence": "Source-purpose review: Consumes click and held-button state, schedules repeat activity, and tracks the hovered option.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(Z)V",
+      "originalName": "a",
+      "to": "captureCurrentKey",
+      "evidence": "Source-purpose review: Clears transient events and captures the current keyboard event when the pointer button is inactive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.b(B)Z",
+      "originalName": "b",
+      "to": "isPointerHeld",
+      "evidence": "Source-purpose review: Checks the active mouse button retained across input frames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.b(I)Z",
+      "originalName": "b",
+      "to": "isAlternateActivationRequested",
+      "evidence": "Source-purpose review: Signals activation from the alternate input field or either confirm key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.b(Z)V",
+      "originalName": "b",
+      "to": "handleHorizontalNavigation",
+      "evidence": "Source-purpose review: Captures the current key and moves left or right, wrapping at the option count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.c(B)Z",
+      "originalName": "c",
+      "to": "isRightPressed",
+      "evidence": "Source-purpose review: Tests the captured key for the internal Right key code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.c(I)Z",
+      "originalName": "c",
+      "to": "isEndPressed",
+      "evidence": "Source-purpose review: Tests the captured key for the internal End key code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.c(Z)Z",
+      "originalName": "c",
+      "to": "isLeftPressed",
+      "evidence": "Source-purpose review: Tests the captured key for the internal Left key code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.d(B)V",
+      "originalName": "d",
+      "to": "handleVerticalNavigation",
+      "evidence": "Source-purpose review: Captures the current key and moves up or down, wrapping at the option count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.d(I)Z",
+      "originalName": "d",
+      "to": "isNextOptionRequested",
+      "evidence": "Source-purpose review: Signals the next choice for primary pointer input, Right, Enter, or Space.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.e(I)Z",
+      "originalName": "e",
+      "to": "isHomePressed",
+      "evidence": "Source-purpose review: Tests the captured key for the internal Home key code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.f(I)Z",
+      "originalName": "f",
+      "to": "isActivationRequested",
+      "evidence": "Source-purpose review: Signals option activation from pointer input or either confirm key.",
       "confidence": "reviewed"
     },
     {
@@ -9670,10 +9831,129 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vg.a(IB)I",
+      "originalName": "a",
+      "to": "getOptionLeft",
+      "evidence": "Source-purpose review: Returns the horizontal start, with per-column placement on highscores and help pages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(II)I",
+      "originalName": "a",
+      "to": "getOptionRight",
+      "evidence": "Source-purpose review: Returns the horizontal end used in text alignment and option hit testing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(III)I",
+      "originalName": "a",
+      "to": "findOptionAt",
+      "evidence": "Source-purpose review: Returns the visible option whose bounds enclose the pointer, or the miss sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(IIZZIII)V",
+      "originalName": "a",
+      "to": "sortRankingRows",
+      "evidence": "Source-purpose review: Partitions ranking row indexes by score and compares adjacent rows to finish the ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(IZ)Z",
+      "originalName": "a",
+      "to": "isOptionVisible",
+      "evidence": "Source-purpose review: Rejects unavailable help-page arrows and score-dependent menu options.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZI)V",
+      "originalName": "a",
+      "to": "resetSelection",
+      "evidence": "Source-purpose review: Initializes pointer or default selection and resets the highlighted achievement and page age.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZII)V",
+      "originalName": "a",
+      "to": "drawAchievementPanel",
+      "evidence": "Source-purpose review: Draws achievement icons, selection, status, description, and reward for the current achievement page.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZIII)V",
+      "originalName": "a",
+      "to": "drawOption",
+      "evidence": "Source-purpose review: Paints the option’s label, slider, or icon using its highlight state and row bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZIZ)V",
+      "originalName": "a",
+      "to": "handleOptionInput",
+      "evidence": "Source-purpose review: Dispatches the current option’s input to menu transitions, sliders, character selection, or game actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(ZLjava/lang/CharSequence;B)Z",
+      "originalName": "a",
+      "to": "isValidPlayerName",
+      "evidence": "Source-purpose review: Checks name length and normalization and rejects leading, trailing, or disallowed repeated separators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.b(B)V",
+      "originalName": "b",
+      "to": "moveKeyboardSelection",
+      "evidence": "Source-purpose review: Moves selection within the highscores grid, along the help page, or through vertically stacked options.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.b(II)I",
+      "originalName": "b",
+      "to": "getOptionHeight",
+      "evidence": "Source-purpose review: Uses the page’s configured row height or the special font height on compact pages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.c(B)V",
+      "originalName": "c",
+      "to": "updateMenuInput",
+      "evidence": "Source-purpose review: Drains key events, updates pointer selection, and dispatches the highlighted option’s input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vg.c(II)I",
       "originalName": "c",
       "to": "bitwiseAnd",
       "evidence": "Source-purpose review: Returns the bitwise conjunction of the two primitive operands.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.d(II)V",
+      "originalName": "d",
+      "to": "drawMenu",
+      "evidence": "Source-purpose review: Draws the page background and its specialized panel, then paints every visible option.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.e(II)V",
+      "originalName": "e",
+      "to": "drawHelpPage",
+      "evidence": "Source-purpose review: Wraps the selected help page text, draws its lines and page number, and paints the help decoration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.f(II)I",
+      "originalName": "f",
+      "to": "getOptionTop",
+      "evidence": "Source-purpose review: Calculates the option’s vertical start, skipping hidden options where the page compacts its layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.g(II)V",
+      "originalName": "g",
+      "to": "drawHighscores",
+      "evidence": "Source-purpose review: Renders ranked player names, scores, and badges, or the loading and error text.",
       "confidence": "reviewed"
     },
     {
@@ -10099,7 +10379,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "4df1e4da4f3faa64cc0b9645242150392e7f5813053c446527be20c96aad1500",
+      "transmogrify-names.json": "0f5e9dd8bafbf7b93f5cb6eebcee35e80c74571588995c11ab7df39eec5df413",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
