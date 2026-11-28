@@ -7244,6 +7244,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:va",
+      "originalName": "va",
+      "to": "PcmMixerListener",
+      "evidence": "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vb",
       "originalName": "vb",
       "to": "GameAppletShell",
@@ -12270,6 +12277,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bm.a(BI)V",
+      "originalName": "a",
+      "to": "moveCaret",
+      "evidence": "Source-purpose review: Moves the caret and retains the selection anchor when Shift is held.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.a(ILjava/lang/String;Z)V",
+      "originalName": "a",
+      "to": "setText",
+      "evidence": "Source-purpose review: Replaces the editor value, enforces its length limit, and updates the caret and selection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bm.a(Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "insertTextAtCaret",
@@ -12281,6 +12302,20 @@
       "originalName": "b",
       "to": "cutSelection",
       "evidence": "Source-purpose review: Copies the selected text to the clipboard and then removes it from the editor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.e(B)I",
+      "originalName": "e",
+      "to": "findPreviousWordBoundary",
+      "evidence": "Source-purpose review: Scans backward from the caret for the preceding space or start of text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.f(B)V",
+      "originalName": "f",
+      "to": "clearText",
+      "evidence": "Source-purpose review: Clears the editor value, resets the selection, and notifies the edit listener.",
       "confidence": "reviewed"
     },
     {
@@ -12298,6 +12333,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bm.h(I)V",
+      "originalName": "h",
+      "to": "scrollCaretIntoView",
+      "evidence": "Source-purpose review: Updates the horizontal text offset to keep the caret inside the field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bm.i(I)V",
       "originalName": "i",
       "to": "copySelection",
@@ -12309,6 +12351,13 @@
       "originalName": "j",
       "to": "submitText",
       "evidence": "Source-purpose review: Dispatches the text submission event to the field listener from the editor key handler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.k(I)I",
+      "originalName": "k",
+      "to": "findNextWordBoundary",
+      "evidence": "Source-purpose review: Scans forward from the caret for the next space or end of text.",
       "confidence": "reviewed"
     },
     {
@@ -12526,6 +12575,20 @@
       "originalName": "a",
       "to": "drawGlyph",
       "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cp.a([I[BIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphRows",
+      "evidence": "Source-purpose review: Blends glyph pixels using each byte as per-pixel coverage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cp.a([I[BIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphAlphaRows",
+      "evidence": "Source-purpose review: Scales per-pixel glyph coverage by the supplied uniform opacity when blending.",
       "confidence": "reviewed"
     },
     {
@@ -14146,10 +14209,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hk.a(BLft;)I",
+      "originalName": "a",
+      "to": "computeNoteVolume",
+      "evidence": "Source-purpose review: Computes note gain from channel expression, velocity, master gain and the note envelopes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hk.a(I)V",
       "originalName": "a",
       "to": "skipFrames",
       "evidence": "Advance the original PCM stream state without producing its normal output buffer,including raw loop/ramp position,MIDI timing/voices,scheduled listener or container traversal and effect-specific behavior. Preserve every game-specific empty/guard/global branch,original arithmetic and mutation ordering. Complete original-body SHA256 58797a261cbb484d2a466c7522aa2682cbc42af7069b6083f406243f87cf9e09. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.a(IBI)V",
+      "originalName": "a",
+      "to": "setProgram",
+      "evidence": "Source-purpose review: Updates the active program used to select a channel’s patch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.a(IBII)V",
+      "originalName": "a",
+      "to": "onPolyPressure",
+      "evidence": "Source-purpose review: Handles the per-note pressure status for the specified note and channel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.a(IIB)V",
+      "originalName": "a",
+      "to": "onChannelPressure",
+      "evidence": "Source-purpose review: Handles the channel-wide pressure status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.a(III)V",
+      "originalName": "a",
+      "to": "setPitchWheel",
+      "evidence": "Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.a(IIII)V",
+      "originalName": "a",
+      "to": "noteOff",
+      "evidence": "Source-purpose review: Releases a channel note when the MIDI note-off status is received.",
       "confidence": "reviewed"
     },
     {
@@ -14178,6 +14283,48 @@
       "originalName": "b",
       "to": "firstChildStream",
       "evidence": "Begin enumeration of immediate child PCM streams using the original null/raw,linked-mixer,voice-deque or paired-stream contract. Preserve all mutable iterator cursors,guard/global exceptional paths,casts and exact null behavior. Complete original-body SHA256 6d12a6c0c2c7d7728486ae447d0649da7fefb45f1d44eec77e2932e4a4683d49. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.b(BLft;)I",
+      "originalName": "b",
+      "to": "computeNoteSampleStep",
+      "evidence": "Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.b(II)V",
+      "originalName": "b",
+      "to": "handleMidiMessage",
+      "evidence": "Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.b(IIII)V",
+      "originalName": "b",
+      "to": "noteOn",
+      "evidence": "Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.b(ILft;)I",
+      "originalName": "b",
+      "to": "computeNotePan",
+      "evidence": "Source-purpose review: Combines channel pan and note pan to produce the stereo pan value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.b(IZ)V",
+      "originalName": "b",
+      "to": "setMasterVolume",
+      "evidence": "Source-purpose review: Sets the master gain read by the note-volume calculation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.b(ZI)V",
+      "originalName": "b",
+      "to": "resetPlaybackChannels",
+      "evidence": "Source-purpose review: Resets active notes, controllers and channel programs for the system reset message.",
       "confidence": "reviewed"
     },
     {
@@ -14906,6 +15053,13 @@
       "originalName": "a",
       "to": "getFieldValidator",
       "evidence": "Source-purpose review: Returns the attached form field validator for status checks or validation feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(Lsp;I)V",
+      "originalName": "a",
+      "to": "setFieldValidator",
+      "evidence": "Source-purpose review: Stores the optional validator used by the attached text field.",
       "confidence": "reviewed"
     },
     {
@@ -16778,6 +16932,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pn.a(Loc;BI)V",
+      "originalName": "a",
+      "to": "enqueueAndWriteAchievementSubmission",
+      "evidence": "Source-purpose review: Adds the submission node to the pending list and writes its achievement payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.a([BI)[B",
+      "originalName": "a",
+      "to": "decompressArchiveContainer",
+      "evidence": "Source-purpose review: Reads the archive container header, validates its sizes, and returns raw, Bzip2, or gzip data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:po.c(I)V",
       "originalName": "c",
       "to": "resetStaticState",
@@ -17660,6 +17828,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:su.a(II)V",
+      "originalName": "a",
+      "to": "setVolumeAndPan",
+      "evidence": "Source-purpose review: Sets the target volume and pan immediately, clears the current ramp, and updates the channel gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(III)V",
+      "originalName": "a",
+      "to": "rampVolumeAndPan",
+      "evidence": "Source-purpose review: Schedules a change to target volume and pan and calculates the per-frame gain adjustments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(II[B[IIIIIIIIIILsu;II)I",
+      "originalName": "a",
+      "to": "mixReverseStereoInterpolatedRamp",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(II[B[IIIIIIIILsu;II)I",
+      "originalName": "a",
+      "to": "mixForwardStereoInterpolated",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this stereo mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(II[B[IIIIIIILsu;II)I",
+      "originalName": "a",
+      "to": "mixForwardMonoInterpolated",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this mono mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(I[B[IIIIIIIIIILsu;)I",
+      "originalName": "a",
+      "to": "mixForwardStereoAlignedRamp",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this stereo mixer for aligned samples during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(I[B[IIIIIIIILsu;)I",
+      "originalName": "a",
+      "to": "mixReverseStereoAligned",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(Lal;II)Lsu;",
+      "originalName": "a",
+      "to": "createForPlaybackRate",
+      "evidence": "Source-purpose review: Creates a sample playback stream whose step is scaled for the requested rate and current output sample rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(Lal;III)Lsu;",
+      "originalName": "a",
+      "to": "createForSampleStep",
+      "evidence": "Source-purpose review: Creates a playback stream with an explicit sample step, target volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a(Z)V",
+      "originalName": "a",
+      "to": "setReversePlayback",
+      "evidence": "Source-purpose review: Updates the sign of the sample step to reverse playback direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a([B[IIIIIIIILsu;)I",
+      "originalName": "a",
+      "to": "mixForwardMonoAlignedRamp",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this mono mixer for aligned samples during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.a([B[IIIIIIILsu;)I",
+      "originalName": "a",
+      "to": "mixForwardMonoAligned",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this mono mixer for aligned samples at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:su.a([IIIII)I",
       "originalName": "a",
       "to": "mixBackwardSegment",
@@ -17671,6 +17923,62 @@
       "originalName": "b",
       "to": "firstChildStream",
       "evidence": "Begin enumeration of immediate child PCM streams using the original null/raw,linked-mixer,voice-deque or paired-stream contract. Preserve all mutable iterator cursors,guard/global exceptional paths,casts and exact null behavior. Complete original-body SHA256 8e3206f68e80879d581c5df2e63d30570ceaacfa4de14fa89bafaf5b71237483. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b(II)I",
+      "originalName": "b",
+      "to": "computeLeftVolume",
+      "evidence": "Source-purpose review: Computes the left-channel gain from volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b(II[B[IIIIIIIIIILsu;II)I",
+      "originalName": "b",
+      "to": "mixForwardStereoInterpolatedRamp",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this stereo mixer for linear interpolation during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b(II[B[IIIIIIIILsu;II)I",
+      "originalName": "b",
+      "to": "mixReverseStereoInterpolated",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b(II[B[IIIIIIILsu;II)I",
+      "originalName": "b",
+      "to": "mixReverseMonoInterpolated",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this mono mixer for linear interpolation at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b(I[B[IIIIIIIIIILsu;)I",
+      "originalName": "b",
+      "to": "mixReverseStereoAlignedRamp",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b(I[B[IIIIIIIILsu;)I",
+      "originalName": "b",
+      "to": "mixForwardStereoAligned",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this stereo mixer for aligned samples at steady gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b([B[IIIIIIIILsu;)I",
+      "originalName": "b",
+      "to": "mixReverseMonoAlignedRamp",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this mono mixer for aligned samples during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b([B[IIIIIIILsu;)I",
+      "originalName": "b",
+      "to": "mixReverseMonoAligned",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this mono mixer for aligned samples at steady gain.",
       "confidence": "reviewed"
     },
     {
@@ -17695,10 +18003,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:su.c(II)I",
+      "originalName": "c",
+      "to": "computeRightVolume",
+      "evidence": "Source-purpose review: Computes the right-channel gain from volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.c(II[B[IIIIIIIILsu;II)I",
+      "originalName": "c",
+      "to": "mixForwardMonoInterpolatedRamp",
+      "evidence": "Source-purpose review: The forward playback dispatcher selects this mono mixer for linear interpolation during a gain ramp.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:su.d()I",
       "originalName": "d",
       "to": "getSchedulingCost",
       "evidence": "Return the original PCM scheduler work-cost value:fixed container/leaf cost or state-dependent activity/effect cost as actually implemented. Retain original integer products,guards,shared/volatile reads and all special return values. Complete original-body SHA256 486b165ef7aa383a5269114e88b082841fac3bbdad6dd911cf0ab13f1fa81933. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.d(I)V",
+      "originalName": "d",
+      "to": "setLoopCount",
+      "evidence": "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.d(II)V",
+      "originalName": "d",
+      "to": "rampVolume",
+      "evidence": "Source-purpose review: Schedules a volume ramp while preserving the current pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.d(II[B[IIIIIIIILsu;II)I",
+      "originalName": "d",
+      "to": "mixReverseMonoInterpolatedRamp",
+      "evidence": "Source-purpose review: The reverse playback dispatcher selects this mono mixer for linear interpolation during a gain ramp.",
       "confidence": "reviewed"
     },
     {
@@ -17709,10 +18052,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:su.e(I)V",
+      "originalName": "e",
+      "to": "setSamplePositionFixed",
+      "evidence": "Source-purpose review: Sets the fixed-point read position after clamping it to the sample bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.f()Z",
+      "originalName": "f",
+      "to": "isSamplePositionOutOfRange",
+      "evidence": "Source-purpose review: Reports whether the fixed-point playback position is outside the available data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.f(I)V",
+      "originalName": "f",
+      "to": "setVolume",
+      "evidence": "Source-purpose review: Converts the supplied volume to internal units and applies it using the current pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.g()I",
+      "originalName": "g",
+      "to": "getPan",
+      "evidence": "Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.g(I)V",
+      "originalName": "g",
+      "to": "setSampleStepMagnitude",
+      "evidence": "Source-purpose review: Changes the magnitude of the sample step while preserving its current direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.h()Z",
+      "originalName": "h",
+      "to": "finishOrContinueVolumeRamp",
+      "evidence": "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.h(I)V",
+      "originalName": "h",
+      "to": "fadeOutAndUnlink",
+      "evidence": "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.i()I",
+      "originalName": "i",
+      "to": "getTargetVolume",
+      "evidence": "Source-purpose review: Returns the target volume, treating the pending fade-out sentinel as zero volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.j()Z",
+      "originalName": "j",
+      "to": "hasRemainingRampFrames",
+      "evidence": "Source-purpose review: Reports whether the gain ramp still has frames remaining.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:su.k()V",
       "originalName": "k",
       "to": "recomputeGains",
       "evidence": "Copy target volume into current mono gain,then evaluate and store left and right panning gains through the two exact original static helpers in their retained order. Complete original-body SHA256 e37b0ec613a461609015dc1abd905eeaa0cadbdb0efee2d8f334793f55fd9400. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.l()I",
+      "originalName": "l",
+      "to": "getSampleStepMagnitude",
+      "evidence": "Source-purpose review: Returns the unsigned magnitude of the current fixed-point sample step.",
       "confidence": "reviewed"
     },
     {
@@ -18388,6 +18801,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:va.a()V",
+      "originalName": "a",
+      "to": "onRemovedFromMixer",
+      "evidence": "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:va.a(Ltp;)I",
       "originalName": "a",
       "to": "onScheduledEvent",
@@ -18402,10 +18822,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vb.a(B)V",
+      "originalName": "a",
+      "to": "renderAppletFrame",
+      "evidence": "Source-purpose review: Records frame timing, refreshes the canvas size and position, and calls the client frame renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.a(I)V",
       "originalName": "a",
       "to": "initializeClient",
       "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(ZB)V",
+      "originalName": "a",
+      "to": "shutdownApplet",
+      "evidence": "Source-purpose review: Shuts down the applet and platform services, detaches the canvas, and clears client resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.c(B)V",
+      "originalName": "c",
+      "to": "processClientTick",
+      "evidence": "Source-purpose review: Records tick timing and copies synchronized focus state before updating the client.",
       "confidence": "reviewed"
     },
     {
@@ -18868,6 +19309,27 @@
       "originalName": "a",
       "to": "drawGlyph",
       "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vt.a([I[BIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphRows",
+      "evidence": "Source-purpose review: Writes the supplied colour at nonzero glyph mask positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vt.a([I[BIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphAlphaRows",
+      "evidence": "Source-purpose review: Blends nonzero glyph mask positions at the supplied uniform opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vt.a([I[BIIIIIIIII[I[I)V",
+      "originalName": "a",
+      "to": "blitGlyphClippedRows",
+      "evidence": "Source-purpose review: Clips the glyph writes to each row’s permitted offset and width.",
       "confidence": "reviewed"
     },
     {
@@ -27546,7 +28008,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-aceofskies-rules.mjs": "f144b046334021de717312bcc4655ec2e74a95a9df7e13f2aeb66eacf195148a",
-      "aceofskies-names.json": "23cc7996c50a82c4817036f81ad1c12847ce400fc4615290ab6295c41241a107",
+      "aceofskies-names.json": "2f7033df9e6ee8ec661ef43d1c6dcdb94286dadcff2e4471d36e809e74895a45",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "tests/test-aceofskies-core.mjs": "411552405573a5228962211d3e8ee1d080550c058b6e2505f5ccd939b2122427",

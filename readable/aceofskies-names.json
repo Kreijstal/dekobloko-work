@@ -294,6 +294,11 @@
       "vo",
       "TextFieldValidator",
       "Checks whether the attached text field is empty and delegates status and feedback to the concrete text rules."
+    ],
+    [
+      "va",
+      "PcmMixerListener",
+      "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer."
     ]
   ],
   "methods": [
@@ -5224,6 +5229,461 @@
       "(I)Ljava/lang/String;",
       "evaluateValidationMessage",
       "Source-purpose review: Obtains feedback for the current input from the field-specific validator."
+    ],
+    [
+      "cp",
+      "a",
+      "([I[BIIIIIII)V",
+      "blitGlyphRows",
+      "Source-purpose review: Blends glyph pixels using each byte as per-pixel coverage."
+    ],
+    [
+      "cp",
+      "a",
+      "([I[BIIIIIIII)V",
+      "blitGlyphAlphaRows",
+      "Source-purpose review: Scales per-pixel glyph coverage by the supplied uniform opacity when blending."
+    ],
+    [
+      "vt",
+      "a",
+      "([I[BIIIIIII)V",
+      "blitGlyphRows",
+      "Source-purpose review: Writes the supplied colour at nonzero glyph mask positions."
+    ],
+    [
+      "vt",
+      "a",
+      "([I[BIIIIIIII)V",
+      "blitGlyphAlphaRows",
+      "Source-purpose review: Blends nonzero glyph mask positions at the supplied uniform opacity."
+    ],
+    [
+      "vt",
+      "a",
+      "([I[BIIIIIIIII[I[I)V",
+      "blitGlyphClippedRows",
+      "Source-purpose review: Clips the glyph writes to each row’s permitted offset and width."
+    ],
+    [
+      "bm",
+      "a",
+      "(BI)V",
+      "moveCaret",
+      "Source-purpose review: Moves the caret and retains the selection anchor when Shift is held."
+    ],
+    [
+      "bm",
+      "k",
+      "(I)I",
+      "findNextWordBoundary",
+      "Source-purpose review: Scans forward from the caret for the next space or end of text."
+    ],
+    [
+      "bm",
+      "e",
+      "(B)I",
+      "findPreviousWordBoundary",
+      "Source-purpose review: Scans backward from the caret for the preceding space or start of text."
+    ],
+    [
+      "bm",
+      "a",
+      "(ILjava/lang/String;Z)V",
+      "setText",
+      "Source-purpose review: Replaces the editor value, enforces its length limit, and updates the caret and selection."
+    ],
+    [
+      "bm",
+      "f",
+      "(B)V",
+      "clearText",
+      "Source-purpose review: Clears the editor value, resets the selection, and notifies the edit listener."
+    ],
+    [
+      "bm",
+      "h",
+      "(I)V",
+      "scrollCaretIntoView",
+      "Source-purpose review: Updates the horizontal text offset to keep the caret inside the field."
+    ],
+    [
+      "kk",
+      "a",
+      "(Lsp;I)V",
+      "setFieldValidator",
+      "Source-purpose review: Stores the optional validator used by the attached text field."
+    ],
+    [
+      "vb",
+      "a",
+      "(ZB)V",
+      "shutdownApplet",
+      "Source-purpose review: Shuts down the applet and platform services, detaches the canvas, and clears client resources."
+    ],
+    [
+      "vb",
+      "c",
+      "(B)V",
+      "processClientTick",
+      "Source-purpose review: Records tick timing and copies synchronized focus state before updating the client."
+    ],
+    [
+      "vb",
+      "a",
+      "(B)V",
+      "renderAppletFrame",
+      "Source-purpose review: Records frame timing, refreshes the canvas size and position, and calls the client frame renderer."
+    ],
+    [
+      "su",
+      "a",
+      "(I[B[IIIIIIIILsu;)I",
+      "mixReverseStereoAligned",
+      "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples at steady gain."
+    ],
+    [
+      "su",
+      "b",
+      "([B[IIIIIIILsu;)I",
+      "mixReverseMonoAligned",
+      "Source-purpose review: The reverse playback dispatcher selects this mono mixer for aligned samples at steady gain."
+    ],
+    [
+      "su",
+      "b",
+      "(II[B[IIIIIIIILsu;II)I",
+      "mixReverseStereoInterpolated",
+      "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation at steady gain."
+    ],
+    [
+      "su",
+      "b",
+      "(II[B[IIIIIIILsu;II)I",
+      "mixReverseMonoInterpolated",
+      "Source-purpose review: The reverse playback dispatcher selects this mono mixer for linear interpolation at steady gain."
+    ],
+    [
+      "su",
+      "b",
+      "([B[IIIIIIIILsu;)I",
+      "mixReverseMonoAlignedRamp",
+      "Source-purpose review: The reverse playback dispatcher selects this mono mixer for aligned samples during a gain ramp."
+    ],
+    [
+      "su",
+      "b",
+      "(I[B[IIIIIIIIIILsu;)I",
+      "mixReverseStereoAlignedRamp",
+      "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for aligned samples during a gain ramp."
+    ],
+    [
+      "su",
+      "d",
+      "(II[B[IIIIIIIILsu;II)I",
+      "mixReverseMonoInterpolatedRamp",
+      "Source-purpose review: The reverse playback dispatcher selects this mono mixer for linear interpolation during a gain ramp."
+    ],
+    [
+      "su",
+      "a",
+      "(II[B[IIIIIIIIIILsu;II)I",
+      "mixReverseStereoInterpolatedRamp",
+      "Source-purpose review: The reverse playback dispatcher selects this stereo mixer for linear interpolation during a gain ramp."
+    ],
+    [
+      "su",
+      "b",
+      "(I[B[IIIIIIIILsu;)I",
+      "mixForwardStereoAligned",
+      "Source-purpose review: The forward playback dispatcher selects this stereo mixer for aligned samples at steady gain."
+    ],
+    [
+      "su",
+      "a",
+      "([B[IIIIIIILsu;)I",
+      "mixForwardMonoAligned",
+      "Source-purpose review: The forward playback dispatcher selects this mono mixer for aligned samples at steady gain."
+    ],
+    [
+      "su",
+      "a",
+      "(II[B[IIIIIIIILsu;II)I",
+      "mixForwardStereoInterpolated",
+      "Source-purpose review: The forward playback dispatcher selects this stereo mixer for linear interpolation at steady gain."
+    ],
+    [
+      "su",
+      "a",
+      "(II[B[IIIIIIILsu;II)I",
+      "mixForwardMonoInterpolated",
+      "Source-purpose review: The forward playback dispatcher selects this mono mixer for linear interpolation at steady gain."
+    ],
+    [
+      "su",
+      "a",
+      "([B[IIIIIIIILsu;)I",
+      "mixForwardMonoAlignedRamp",
+      "Source-purpose review: The forward playback dispatcher selects this mono mixer for aligned samples during a gain ramp."
+    ],
+    [
+      "su",
+      "a",
+      "(I[B[IIIIIIIIIILsu;)I",
+      "mixForwardStereoAlignedRamp",
+      "Source-purpose review: The forward playback dispatcher selects this stereo mixer for aligned samples during a gain ramp."
+    ],
+    [
+      "su",
+      "c",
+      "(II[B[IIIIIIIILsu;II)I",
+      "mixForwardMonoInterpolatedRamp",
+      "Source-purpose review: The forward playback dispatcher selects this mono mixer for linear interpolation during a gain ramp."
+    ],
+    [
+      "su",
+      "b",
+      "(II[B[IIIIIIIIIILsu;II)I",
+      "mixForwardStereoInterpolatedRamp",
+      "Source-purpose review: The forward playback dispatcher selects this stereo mixer for linear interpolation during a gain ramp."
+    ],
+    [
+      "su",
+      "a",
+      "(II)V",
+      "setVolumeAndPan",
+      "Source-purpose review: Sets the target volume and pan immediately, clears the current ramp, and updates the channel gains."
+    ],
+    [
+      "su",
+      "a",
+      "(Lal;II)Lsu;",
+      "createForPlaybackRate",
+      "Source-purpose review: Creates a sample playback stream whose step is scaled for the requested rate and current output sample rate."
+    ],
+    [
+      "su",
+      "a",
+      "(Lal;III)Lsu;",
+      "createForSampleStep",
+      "Source-purpose review: Creates a playback stream with an explicit sample step, target volume and pan."
+    ],
+    [
+      "su",
+      "a",
+      "(Z)V",
+      "setReversePlayback",
+      "Source-purpose review: Updates the sign of the sample step to reverse playback direction."
+    ],
+    [
+      "su",
+      "b",
+      "(II)I",
+      "computeLeftVolume",
+      "Source-purpose review: Computes the left-channel gain from volume and pan."
+    ],
+    [
+      "su",
+      "c",
+      "(II)I",
+      "computeRightVolume",
+      "Source-purpose review: Computes the right-channel gain from volume and pan."
+    ],
+    [
+      "su",
+      "d",
+      "(II)V",
+      "rampVolume",
+      "Source-purpose review: Schedules a volume ramp while preserving the current pan."
+    ],
+    [
+      "su",
+      "e",
+      "(I)V",
+      "setSamplePositionFixed",
+      "Source-purpose review: Sets the fixed-point read position after clamping it to the sample bounds."
+    ],
+    [
+      "su",
+      "f",
+      "()Z",
+      "isSamplePositionOutOfRange",
+      "Source-purpose review: Reports whether the fixed-point playback position is outside the available data."
+    ],
+    [
+      "su",
+      "f",
+      "(I)V",
+      "setVolume",
+      "Source-purpose review: Converts the supplied volume to internal units and applies it using the current pan."
+    ],
+    [
+      "su",
+      "g",
+      "()I",
+      "getPan",
+      "Source-purpose review: Returns the current pan and normalizes the negative phase-inversion sentinel."
+    ],
+    [
+      "su",
+      "g",
+      "(I)V",
+      "setSampleStepMagnitude",
+      "Source-purpose review: Changes the magnitude of the sample step while preserving its current direction."
+    ],
+    [
+      "su",
+      "i",
+      "()I",
+      "getTargetVolume",
+      "Source-purpose review: Returns the target volume, treating the pending fade-out sentinel as zero volume."
+    ],
+    [
+      "su",
+      "j",
+      "()Z",
+      "hasRemainingRampFrames",
+      "Source-purpose review: Reports whether the gain ramp still has frames remaining."
+    ],
+    [
+      "su",
+      "l",
+      "()I",
+      "getSampleStepMagnitude",
+      "Source-purpose review: Returns the unsigned magnitude of the current fixed-point sample step."
+    ],
+    [
+      "su",
+      "a",
+      "(III)V",
+      "rampVolumeAndPan",
+      "Source-purpose review: Schedules a change to target volume and pan and calculates the per-frame gain adjustments."
+    ],
+    [
+      "su",
+      "d",
+      "(I)V",
+      "setLoopCount",
+      "Source-purpose review: Sets the remaining loop count consumed by the mixer. Negative values select indefinite looping."
+    ],
+    [
+      "su",
+      "h",
+      "()Z",
+      "finishOrContinueVolumeRamp",
+      "Source-purpose review: Completes an exact gain ramp, unlinks a finished fade-out, or schedules the remaining gain correction."
+    ],
+    [
+      "su",
+      "h",
+      "(I)V",
+      "fadeOutAndUnlink",
+      "Source-purpose review: Schedules a gain ramp to silence and sets the fade-out sentinel used to unlink the stream."
+    ],
+    [
+      "hk",
+      "b",
+      "(II)V",
+      "handleMidiMessage",
+      "Source-purpose review: Dispatches packed MIDI bytes to note, pressure, program, pitch-bend, and controller handlers."
+    ],
+    [
+      "hk",
+      "a",
+      "(IIII)V",
+      "noteOff",
+      "Source-purpose review: Releases a channel note when the MIDI note-off status is received."
+    ],
+    [
+      "hk",
+      "b",
+      "(IIII)V",
+      "noteOn",
+      "Source-purpose review: Starts a sample-backed note for a nonzero-velocity MIDI note-on event."
+    ],
+    [
+      "hk",
+      "a",
+      "(IBII)V",
+      "onPolyPressure",
+      "Source-purpose review: Handles the per-note pressure status for the specified note and channel."
+    ],
+    [
+      "hk",
+      "a",
+      "(IBI)V",
+      "setProgram",
+      "Source-purpose review: Updates the active program used to select a channel’s patch."
+    ],
+    [
+      "hk",
+      "a",
+      "(IIB)V",
+      "onChannelPressure",
+      "Source-purpose review: Handles the channel-wide pressure status."
+    ],
+    [
+      "hk",
+      "a",
+      "(III)V",
+      "setPitchWheel",
+      "Source-purpose review: Stores the pitch wheel value assembled from the two MIDI data bytes."
+    ],
+    [
+      "hk",
+      "b",
+      "(ZI)V",
+      "resetPlaybackChannels",
+      "Source-purpose review: Resets active notes, controllers and channel programs for the system reset message."
+    ],
+    [
+      "hk",
+      "b",
+      "(BLft;)I",
+      "computeNoteSampleStep",
+      "Source-purpose review: Computes the fixed-point sample step from base pitch, portamento, pitch bend, vibrato and sample rate."
+    ],
+    [
+      "hk",
+      "a",
+      "(BLft;)I",
+      "computeNoteVolume",
+      "Source-purpose review: Computes note gain from channel expression, velocity, master gain and the note envelopes."
+    ],
+    [
+      "hk",
+      "b",
+      "(ILft;)I",
+      "computeNotePan",
+      "Source-purpose review: Combines channel pan and note pan to produce the stereo pan value."
+    ],
+    [
+      "hk",
+      "b",
+      "(IZ)V",
+      "setMasterVolume",
+      "Source-purpose review: Sets the master gain read by the note-volume calculation."
+    ],
+    [
+      "va",
+      "a",
+      "()V",
+      "onRemovedFromMixer",
+      "Source-purpose review: Notification issued after the mixer unlinks the listener. The concrete override detaches existing playback streams."
+    ],
+    [
+      "pn",
+      "a",
+      "(Loc;BI)V",
+      "enqueueAndWriteAchievementSubmission",
+      "Source-purpose review: Adds the submission node to the pending list and writes its achievement payload."
+    ],
+    [
+      "pn",
+      "a",
+      "([BI)[B",
+      "decompressArchiveContainer",
+      "Source-purpose review: Reads the archive container header, validates its sizes, and returns raw, Bzip2, or gzip data."
     ]
   ],
   "fields": [
