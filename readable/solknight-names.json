@@ -489,6 +489,16 @@
       "rl",
       "MusicTrack",
       "Expands the packed track data into MIDI and records which instrument patches and notes it uses."
+    ],
+    [
+      "kc",
+      "ValidationStatusIcon",
+      "Renders a validation status sprite beside a form field and exposes its message as a hover tooltip."
+    ],
+    [
+      "pk",
+      "ValidationStatusWidget",
+      "Renders a validator message or fallback text together with a status sprite."
     ]
   ],
   "methods": [
@@ -7358,6 +7368,209 @@
       "(Lda;Ljava/lang/String;Ljava/lang/String;)Lrl;",
       "load",
       "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation."
+    ],
+    [
+      "af",
+      "a",
+      "(IIIIIILrc;I)V",
+      "drawText",
+      "Source-purpose review: Clips text drawing to the widget and renders its single line or wrapped paragraph with the supplied style."
+    ],
+    [
+      "af",
+      "a",
+      "(IIILrc;)I",
+      "getUnalignedTextOriginY",
+      "Source-purpose review: Returns the top text origin from the widget and parent positions, text offset and padding before alignment."
+    ],
+    [
+      "af",
+      "a",
+      "(Laf;I)V",
+      "copyStyleTo",
+      "Source-purpose review: Copies this renderer’s font, colours, alignment, wrapping and padding settings to another renderer."
+    ],
+    [
+      "af",
+      "a",
+      "(Lrc;B)V",
+      "rebuildTextLayout",
+      "Source-purpose review: Creates or refreshes the widget’s text layout using its current content, font, alignment and wrapping."
+    ],
+    [
+      "af",
+      "a",
+      "(Lrc;IIB)I",
+      "getUnalignedTextOriginX",
+      "Source-purpose review: Returns the left text origin from the widget and parent positions, text offset and padding before alignment."
+    ],
+    [
+      "af",
+      "a",
+      "(Lrc;III)V",
+      "drawTextWithDefaultStyle",
+      "Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text."
+    ],
+    [
+      "af",
+      "b",
+      "(Lrc;I)Ljava/lang/String;",
+      "resolveDisplayText",
+      "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."
+    ],
+    [
+      "af",
+      "c",
+      "(ILrc;)I",
+      "getTextAreaHeight",
+      "Source-purpose review: Returns the widget height available for text after subtracting its vertical padding."
+    ],
+    [
+      "bg",
+      "b",
+      "(Lrc;I)Ljava/lang/String;",
+      "resolveDisplayText",
+      "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."
+    ],
+    [
+      "mf",
+      "a",
+      "(III)V",
+      "setRetriggerRate",
+      "Source-purpose review: Stores the channel retrigger rate and derives the retrigger phase increment using the MIDI controller’s exponential scale."
+    ],
+    [
+      "mf",
+      "a",
+      "(ILrl;Lme;Lda;I)Z",
+      "prepareTrackSamples",
+      "Source-purpose review: Builds the track patch-usage table and walks its instruments to cache samples within the supplied budget."
+    ],
+    [
+      "mf",
+      "a",
+      "(IZZLrl;)V",
+      "startTrack",
+      "Source-purpose review: Loads the track bytes into the MIDI reader and primes the track positions, next event and playback clock."
+    ],
+    [
+      "mf",
+      "a",
+      "(Lhg;ZZ)V",
+      "applySampleOffset",
+      "Source-purpose review: Converts a channel’s sample offset to a fixed-point position and reflects it when a looping sample crosses its endpoint."
+    ],
+    [
+      "mf",
+      "b",
+      "(BII)V",
+      "setDefaultProgram",
+      "Source-purpose review: Records the channel’s default program and bank and selects that program for subsequent notes."
+    ],
+    [
+      "mf",
+      "b",
+      "(III)V",
+      "setChannelGain",
+      "Source-purpose review: Sets the extra voice gain for one MIDI channel, or for every channel when the index is negative."
+    ],
+    [
+      "mf",
+      "d",
+      "(III)V",
+      "setChannelProgram",
+      "Source-purpose review: Sets the requested channel’s default program through the program and bank update routine."
+    ],
+    [
+      "rf",
+      "a",
+      "(Ljava/lang/String;IBLrc;I)I",
+      "addLabeledField",
+      "Source-purpose review: Adds an input in a label-and-widget container and returns its row height."
+    ],
+    [
+      "rf",
+      "a",
+      "(ILrc;ILjava/lang/String;Z)I",
+      "addLabeledFieldWithValidationIcon",
+      "Source-purpose review: Adds the labeled field and positions a validation icon beside it, then returns the field height."
+    ],
+    [
+      "rf",
+      "a",
+      "(BIIILjava/lang/String;Ljava/lang/String;Lrc;)I",
+      "addLabeledFieldWithValidationMessage",
+      "Source-purpose review: Adds the labeled field and a validator message beneath it, then returns their combined height."
+    ],
+    [
+      "rf",
+      "a",
+      "(IILrc;Ljava/lang/String;Ljava/lang/String;I)I",
+      "addLabeledFieldWithDefaultValidationMessage",
+      "Source-purpose review: Adds a labeled field and validator message with the form’s default message height."
+    ],
+    [
+      "rf",
+      "j",
+      "(I)Ljava/lang/String;",
+      "getLinkOpenMarkup",
+      "Source-purpose review: Returns the opening color and underline tags used for links in the registration instructions."
+    ],
+    [
+      "rf",
+      "g",
+      "(Z)Ljava/lang/String;",
+      "getLinkCloseMarkup",
+      "Source-purpose review: Returns the closing color and underline tags used for links in the registration instructions."
+    ],
+    [
+      "kj",
+      "a",
+      "(ILjava/lang/String;I)V",
+      "setHotspotTooltip",
+      "Source-purpose review: Stores tooltip text for the hotspot index, growing the per-hotspot array when needed."
+    ],
+    [
+      "kj",
+      "b",
+      "(IIII)V",
+      "setTextBounds",
+      "Source-purpose review: Sets the widget position and width and derives its height from its text renderer."
+    ],
+    [
+      "jf",
+      "a",
+      "(IIILjava/lang/String;)I",
+      "computeJustificationStep",
+      "Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point."
+    ],
+    [
+      "bb",
+      "i",
+      "(I)V",
+      "clearCredentials",
+      "Source-purpose review: Clears both editable credential fields in the login form."
+    ],
+    [
+      "bb",
+      "a",
+      "(ILjava/lang/String;)V",
+      "setAccountAndClearPassword",
+      "Source-purpose review: Fills the account identifier field with the supplied text and clears the password field."
+    ],
+    [
+      "bb",
+      "j",
+      "(I)Ljava/lang/String;",
+      "getAccountIdentifier",
+      "Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent."
+    ],
+    [
+      "uk",
+      "a",
+      "(BLjava/lang/String;)Z",
+      "containsEmailComponent",
+      "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."
     ]
   ],
   "fields": [

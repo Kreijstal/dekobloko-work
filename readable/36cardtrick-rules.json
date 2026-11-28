@@ -227,10 +227,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:b",
+      "originalName": "b",
+      "to": "TextureProvider",
+      "evidence": "Supplies texture pixels, average colours and format properties to the model and triangle rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ba",
       "originalName": "ba",
       "to": "FieldValidator",
       "evidence": "Defines the status and feedback queries, edit timestamp notification, and missing-input check shared by the field validators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bb",
+      "originalName": "bb",
+      "to": "MeshData",
+      "evidence": "Stores source vertices and faces, prepares their lighting and skin groups, and constructs a renderable mesh.",
       "confidence": "reviewed"
     },
     {
@@ -483,6 +497,13 @@
       "originalName": "gk",
       "to": "FrameTimer",
       "evidence": "FrameTimer source-purpose review: abstract timer contract or concrete System.nanoTime timestamps/sample buffer;all instance operations,typed factories and selected method callers reviewed;preserve existing behavior and full primitive parameter domains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gl",
+      "originalName": "gl",
+      "to": "ValidationStatusIcon",
+      "evidence": "Renders a validation status sprite beside a form field and exposes its message as a hover tooltip.",
       "confidence": "reviewed"
     },
     {
@@ -826,6 +847,13 @@
       "originalName": "p",
       "to": "ConfirmedEmailAvailabilityValidator",
       "evidence": "Checks that the confirmation matches the email input, then obtains and caches the email availability result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pa",
+      "originalName": "pa",
+      "to": "ValidationStatusWidget",
+      "evidence": "Renders a validator message or fallback text together with a status sprite.",
       "confidence": "reviewed"
     },
     {
@@ -1648,10 +1676,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "setAccountAndClearPassword",
+      "evidence": "Source-purpose review: Fills the account identifier field with the supplied text and clears the password field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ak.a(Z)V",
       "originalName": "a",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 3 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getAccountIdentifier",
+      "evidence": "Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent.",
       "confidence": "reviewed"
     },
     {
@@ -1662,10 +1704,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.l(I)V",
+      "originalName": "l",
+      "to": "clearCredentials",
+      "evidence": "Source-purpose review: Clears both editable credential fields in the login form.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 16e47e8aebd8323ac789fc24cd4eaa23d6360e5d00100ed4f46110af8a53d1d1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(IBF)[I",
+      "originalName": "a",
+      "to": "getTexturePixels",
+      "evidence": "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(II)Z",
+      "originalName": "a",
+      "to": "hasTexture",
+      "evidence": "Source-purpose review: Reports whether a model may use the texture identifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.b(II)I",
+      "originalName": "b",
+      "to": "getAverageTextureColor",
+      "evidence": "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.c(II)I",
+      "originalName": "c",
+      "to": "getTextureAlphaMode",
+      "evidence": "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.d(II)Z",
+      "originalName": "d",
+      "to": "isTextureSize64",
+      "evidence": "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path.",
       "confidence": "reviewed"
     },
     {
@@ -1694,6 +1778,48 @@
       "originalName": "b",
       "to": "getValidationMessage",
       "evidence": "Source-purpose review: Returns no feedback while input is missing or waiting and otherwise requests the concrete validator message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a()V",
+      "originalName": "a",
+      "to": "buildSkinGroups",
+      "evidence": "Source-purpose review: Counts and indexes vertices and faces by their skin labels for animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(III)I",
+      "originalName": "a",
+      "to": "findOrAddVertex",
+      "evidence": "Source-purpose review: Finds a vertex at the supplied coordinates or adds a new one to the mesh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(IIIBBSS)I",
+      "originalName": "a",
+      "to": "addFace",
+      "evidence": "Source-purpose review: Appends the three vertex indices and the rendering attributes for one face.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(IIIII)Lm;",
+      "originalName": "a",
+      "to": "createModel",
+      "evidence": "Source-purpose review: Builds the renderable model from this source mesh and the supplied lighting parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(SSS)B",
+      "originalName": "a",
+      "to": "addTextureTriangle",
+      "evidence": "Source-purpose review: Appends a simple texture-mapping triangle and returns its index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.b()V",
+      "originalName": "b",
+      "to": "calculateNormals",
+      "evidence": "Source-purpose review: Computes face normals from triangle edge cross products and accumulates vertex normals for smooth shading.",
       "confidence": "reviewed"
     },
     {
@@ -1960,6 +2086,41 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 2 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (1 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(IBF)[I",
+      "originalName": "a",
+      "to": "getTexturePixels",
+      "evidence": "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(II)Z",
+      "originalName": "a",
+      "to": "hasTexture",
+      "evidence": "Source-purpose review: Reports whether a model may use the texture identifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.b(II)I",
+      "originalName": "b",
+      "to": "getAverageTextureColor",
+      "evidence": "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.c(II)I",
+      "originalName": "c",
+      "to": "getTextureAlphaMode",
+      "evidence": "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.d(II)Z",
+      "originalName": "d",
+      "to": "isTextureSize64",
+      "evidence": "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path.",
       "confidence": "reviewed"
     },
     {
@@ -2299,6 +2460,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.a(Ljava/lang/String;BI)V",
+      "originalName": "a",
+      "to": "setHotspotTooltip",
+      "evidence": "Source-purpose review: Stores tooltip text for the hotspot index, growing the per-hotspot array when needed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.b(B)Ljava/lang/String;",
       "originalName": "b",
       "to": "getTooltipText",
@@ -2310,6 +2478,13 @@
       "originalName": "b",
       "to": "findHotspotAt",
       "evidence": "Source-purpose review: Finds the first tagged hotspot whose linked rectangles contain the tested widget position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.b(IIII)V",
+      "originalName": "b",
+      "to": "setTextBounds",
+      "evidence": "Source-purpose review: Sets the widget position and width and derives its height from its text renderer.",
       "confidence": "reviewed"
     },
     {
@@ -2677,6 +2852,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ek.a(IIBIIIILlk;)V",
+      "originalName": "a",
+      "to": "drawText",
+      "evidence": "Source-purpose review: Clips text drawing to the widget and renders its single line or wrapped paragraph with the supplied style.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ek.a(IIIBLlk;)V",
       "originalName": "a",
       "to": "paintCaret",
@@ -2698,10 +2880,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ek.a(ILlk;II)V",
+      "originalName": "a",
+      "to": "drawTextWithDefaultStyle",
+      "evidence": "Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ek.a(ILlk;IIZ)V",
       "originalName": "a",
       "to": "paintWidget",
       "evidence": "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(Lek;B)V",
+      "originalName": "a",
+      "to": "copyStyleTo",
+      "evidence": "Source-purpose review: Copies this renderer’s font, colours, alignment, wrapping and padding settings to another renderer.",
       "confidence": "reviewed"
     },
     {
@@ -2730,6 +2926,41 @@
       "originalName": "a",
       "to": "getTextOriginY",
       "evidence": "Source-purpose review: Returns the vertical origin used by text hit testing and caret painting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(Llk;III)I",
+      "originalName": "a",
+      "to": "getUnalignedTextOriginX",
+      "evidence": "Source-purpose review: Returns the left text origin from the widget and parent positions, text offset and padding before alignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(Llk;Z)V",
+      "originalName": "a",
+      "to": "rebuildTextLayout",
+      "evidence": "Source-purpose review: Creates or refreshes the widget’s text layout using its current content, font, alignment and wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.b(ILlk;)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "resolveDisplayText",
+      "evidence": "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.b(Llk;I)I",
+      "originalName": "b",
+      "to": "getTextAreaHeight",
+      "evidence": "Source-purpose review: Returns the widget height available for text after subtracting its vertical padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.b(Llk;III)I",
+      "originalName": "b",
+      "to": "getUnalignedTextOriginY",
+      "evidence": "Source-purpose review: Returns the top text origin from the widget and parent positions, text offset and padding before alignment.",
       "confidence": "reviewed"
     },
     {
@@ -4791,6 +5022,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kl.a(IILjava/lang/String;BLlk;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationIcon",
+      "evidence": "Source-purpose review: Adds the labeled field and positions a validation icon beside it, then returns the field height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kl.a(IILlk;I)V",
       "originalName": "a",
       "to": "updatePointer",
@@ -4798,10 +5036,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kl.a(Ljava/lang/String;ILlk;II)I",
+      "originalName": "a",
+      "to": "addLabeledField",
+      "evidence": "Source-purpose review: Adds an input in a label-and-widget container and returns its row height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kl.a(Ljava/lang/String;Z)V",
       "originalName": "a",
       "to": "onNameSuggestionSelected",
       "evidence": "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Llk;ILjava/lang/String;Ljava/lang/String;III)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the labeled field and a validator message beneath it, then returns their combined height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Llk;ZILjava/lang/String;Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds a labeled field and validator message with the form’s default message height.",
       "confidence": "reviewed"
     },
     {
@@ -4816,6 +5075,13 @@
       "originalName": "a",
       "to": "isFieldReadyForRegistration",
       "evidence": "Source-purpose review: Checks whether the attached field validator reports a state accepted for registration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getLinkCloseMarkup",
+      "evidence": "Source-purpose review: Returns the closing color and underline tags used for links in the registration instructions.",
       "confidence": "reviewed"
     },
     {
@@ -4837,6 +5103,13 @@
       "originalName": "m",
       "to": "clearDeclaredStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.n(I)Ljava/lang/String;",
+      "originalName": "n",
+      "to": "getLinkOpenMarkup",
+      "evidence": "Source-purpose review: Returns the opening color and underline tags used for links in the registration instructions.",
       "confidence": "reviewed"
     },
     {
@@ -5568,6 +5841,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mj.a(IILjava/lang/String;I)I",
+      "originalName": "a",
+      "to": "computeJustificationStep",
+      "evidence": "Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mj.a(ZI)I",
       "originalName": "a",
       "to": "getXForTextOffset",
@@ -5607,6 +5887,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-purpose review: Clears 1 owned static reference fields by null assignment. Full source-bound restricted-effect parse permits only these null stores, primitive guard/local expressions, conditional returns, and direct self calls (0 sites). No external calls or foreign field/array effects. Preserve modifiers,full primitive domains,casts,sentinel control flow,self recursion/overflow,division exceptions and original write/evaluation order. Effect parser passed7positive/14hostile fixtures;representative bodies/callers separately reviewed;all original caller bindings retained. Cleanup synonym selected to avoid inherited or same-signature name collisions;all unselected meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.b(Ljava/lang/String;I)Z",
+      "originalName": "b",
+      "to": "containsEmailComponent",
+      "evidence": "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case.",
       "confidence": "reviewed"
     },
     {
@@ -7045,6 +7332,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rl.b(ILlk;)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "resolveDisplayText",
+      "evidence": "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:s.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -8216,7 +8510,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-36cardtrick-rules.mjs": "50dbdca01ccbc37049448a6c5673dcd1f8af792b0cf93f16ef76c7ac2de01d53",
-      "36cardtrick-names.json": "5b6f8ab5646f74f5cc40bae85e1b39f999c1cb9e444f0107a7e4d1adb651dc93",
+      "36cardtrick-names.json": "9f8ca90a0888eb56f8b04ca96840bbc25a9d8a9bc20cd92712e7e8a91eb114cf",
       "reproduce-36cardtrick.mjs": "d69474327fda28f59b518411a57d253a7dc723b2c7cebec47cdf1a89a48a54b6",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

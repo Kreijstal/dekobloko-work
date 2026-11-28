@@ -489,6 +489,26 @@
       "sc",
       "SoftwareModelMesh",
       "Projects mesh vertices, orders faces and draws them through the software triangle rasterizer."
+    ],
+    [
+      "pa",
+      "MeshData",
+      "Stores source vertices and faces, prepares their lighting and skin groups, and constructs a renderable mesh."
+    ],
+    [
+      "cf",
+      "TextureProvider",
+      "Supplies texture pixels, average colours and format properties to the model and triangle rasterizer."
+    ],
+    [
+      "ii",
+      "ValidationStatusIcon",
+      "Renders a validation status sprite beside a form field and exposes its message as a hover tooltip."
+    ],
+    [
+      "cd",
+      "ValidationStatusWidget",
+      "Renders a validator message or fallback text together with a status sprite."
     ]
   ],
   "methods": [
@@ -7085,6 +7105,286 @@
       "(IIIIIIIJ)V",
       "drawPerspective",
       "Source-purpose review: Transforms mesh vertices into camera space, projects them and dispatches the visible faces."
+    ],
+    [
+      "pa",
+      "a",
+      "()V",
+      "calculateNormals",
+      "Source-purpose review: Computes face normals from triangle edge cross products and accumulates vertex normals for smooth shading."
+    ],
+    [
+      "pa",
+      "a",
+      "(IIIII)Lbj;",
+      "createModel",
+      "Source-purpose review: Builds the renderable model from this source mesh and the supplied lighting parameters."
+    ],
+    [
+      "pa",
+      "a",
+      "(Lpf;Ljava/lang/String;Ljava/lang/String;)Lpa;",
+      "load",
+      "Source-purpose review: Loads packed mesh data by group and file name from the resource archive."
+    ],
+    [
+      "pa",
+      "a",
+      "([B)V",
+      "decodeLegacyFormat",
+      "Source-purpose review: Decodes the legacy packed mesh format using its 18-byte footer."
+    ],
+    [
+      "pa",
+      "a",
+      "([I)V",
+      "transformVertices",
+      "Source-purpose review: Applies the supplied fixed-point affine transform to each vertex."
+    ],
+    [
+      "pa",
+      "b",
+      "()V",
+      "buildSkinGroups",
+      "Source-purpose review: Counts and indexes vertices and faces by their skin labels for animation."
+    ],
+    [
+      "pa",
+      "b",
+      "([B)V",
+      "decodeExtendedFormat",
+      "Source-purpose review: Decodes the extended packed mesh format using its 23-byte footer."
+    ],
+    [
+      "pa",
+      "c",
+      "()V",
+      "clearGeometryCaches",
+      "Source-purpose review: Releases the derived normal arrays so geometry changes can regenerate them."
+    ],
+    [
+      "id",
+      "a",
+      "(BLrj;)I",
+      "getTextAreaHeight",
+      "Source-purpose review: Returns the widget height available for text after subtracting its vertical padding."
+    ],
+    [
+      "id",
+      "a",
+      "(IIIIIILrj;I)V",
+      "drawText",
+      "Source-purpose review: Clips text drawing to the widget and renders its single line or wrapped paragraph with the supplied style."
+    ],
+    [
+      "id",
+      "a",
+      "(ILrj;BI)I",
+      "getUnalignedTextOriginY",
+      "Source-purpose review: Returns the top text origin from the widget and parent positions, text offset and padding before alignment."
+    ],
+    [
+      "id",
+      "a",
+      "(Lid;B)V",
+      "copyStyleTo",
+      "Source-purpose review: Copies this renderer’s font, colours, alignment, wrapping and padding settings to another renderer."
+    ],
+    [
+      "id",
+      "a",
+      "(Lrj;III)V",
+      "drawTextWithDefaultStyle",
+      "Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text."
+    ],
+    [
+      "id",
+      "a",
+      "(Lrj;IIZ)I",
+      "getUnalignedTextOriginX",
+      "Source-purpose review: Returns the left text origin from the widget and parent positions, text offset and padding before alignment."
+    ],
+    [
+      "id",
+      "b",
+      "(BLrj;)V",
+      "rebuildTextLayout",
+      "Source-purpose review: Creates or refreshes the widget’s text layout using its current content, font, alignment and wrapping."
+    ],
+    [
+      "id",
+      "b",
+      "(Lrj;I)Ljava/lang/String;",
+      "resolveDisplayText",
+      "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."
+    ],
+    [
+      "il",
+      "b",
+      "(Lrj;I)Ljava/lang/String;",
+      "resolveDisplayText",
+      "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."
+    ],
+    [
+      "cf",
+      "a",
+      "(ZIF)[I",
+      "getTexturePixels",
+      "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result."
+    ],
+    [
+      "cf",
+      "b",
+      "(II)Z",
+      "isTextureSize64",
+      "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path."
+    ],
+    [
+      "cf",
+      "a",
+      "(BI)I",
+      "getTextureAlphaMode",
+      "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing."
+    ],
+    [
+      "cf",
+      "a",
+      "(II)I",
+      "getAverageTextureColor",
+      "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels."
+    ],
+    [
+      "cf",
+      "a",
+      "(IB)Z",
+      "hasTexture",
+      "Source-purpose review: Reports whether a model may use the texture identifier."
+    ],
+    [
+      "stellarshard",
+      "a",
+      "(ZIF)[I",
+      "getTexturePixels",
+      "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result."
+    ],
+    [
+      "stellarshard",
+      "b",
+      "(II)Z",
+      "isTextureSize64",
+      "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path."
+    ],
+    [
+      "stellarshard",
+      "a",
+      "(BI)I",
+      "getTextureAlphaMode",
+      "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing."
+    ],
+    [
+      "stellarshard",
+      "a",
+      "(II)I",
+      "getAverageTextureColor",
+      "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels."
+    ],
+    [
+      "stellarshard",
+      "a",
+      "(IB)Z",
+      "hasTexture",
+      "Source-purpose review: Reports whether a model may use the texture identifier."
+    ],
+    [
+      "mj",
+      "a",
+      "(ILjava/lang/String;Lrj;II)I",
+      "addLabeledField",
+      "Source-purpose review: Adds an input in a label-and-widget container and returns its row height."
+    ],
+    [
+      "mj",
+      "a",
+      "(IILrj;Ljava/lang/String;I)I",
+      "addLabeledFieldWithValidationIcon",
+      "Source-purpose review: Adds the labeled field and positions a validation icon beside it, then returns the field height."
+    ],
+    [
+      "mj",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;Lrj;III)I",
+      "addLabeledFieldWithValidationMessage",
+      "Source-purpose review: Adds the labeled field and a validator message beneath it, then returns their combined height."
+    ],
+    [
+      "mj",
+      "a",
+      "(ILrj;IBLjava/lang/String;Ljava/lang/String;)I",
+      "addLabeledFieldWithDefaultValidationMessage",
+      "Source-purpose review: Adds a labeled field and validator message with the form’s default message height."
+    ],
+    [
+      "mj",
+      "k",
+      "(I)Ljava/lang/String;",
+      "getLinkOpenMarkup",
+      "Source-purpose review: Returns the opening color and underline tags used for links in the registration instructions."
+    ],
+    [
+      "mj",
+      "e",
+      "(B)Ljava/lang/String;",
+      "getLinkCloseMarkup",
+      "Source-purpose review: Returns the closing color and underline tags used for links in the registration instructions."
+    ],
+    [
+      "rg",
+      "a",
+      "(Ljava/lang/String;II)V",
+      "setHotspotTooltip",
+      "Source-purpose review: Stores tooltip text for the hotspot index, growing the per-hotspot array when needed."
+    ],
+    [
+      "rg",
+      "b",
+      "(IBII)V",
+      "setTextBounds",
+      "Source-purpose review: Sets the widget position and width and derives its height from its text renderer."
+    ],
+    [
+      "vk",
+      "a",
+      "(Ljava/lang/String;ZII)I",
+      "computeJustificationStep",
+      "Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point."
+    ],
+    [
+      "la",
+      "e",
+      "(B)V",
+      "clearCredentials",
+      "Source-purpose review: Clears both editable credential fields in the login form."
+    ],
+    [
+      "la",
+      "b",
+      "(Ljava/lang/String;I)V",
+      "setAccountAndClearPassword",
+      "Source-purpose review: Fills the account identifier field with the supplied text and clears the password field."
+    ],
+    [
+      "la",
+      "f",
+      "(B)Ljava/lang/String;",
+      "getAccountIdentifier",
+      "Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent."
+    ],
+    [
+      "lc",
+      "a",
+      "(ILjava/lang/String;)Z",
+      "containsEmailComponent",
+      "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."
     ]
   ],
   "fields": [

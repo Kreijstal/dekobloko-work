@@ -717,6 +717,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ld",
+      "originalName": "ld",
+      "to": "ValidationStatusIcon",
+      "evidence": "Renders a validation status sprite beside a form field and exposes its message as a hover tooltip.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:le",
       "originalName": "le",
       "to": "BitmapFont",
@@ -728,6 +735,13 @@
       "originalName": "lf",
       "to": "SoftwareRasterizer",
       "evidence": "Global software framebuffer with clip bounds and drawing primitives (same shared role as Escape Vector SoftwareRasterizer; matching member signatures here).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:li",
+      "originalName": "li",
+      "to": "ValidationStatusWidget",
+      "evidence": "Renders a validator message or fallback text together with a status sprite.",
       "confidence": "reviewed"
     },
     {
@@ -2005,10 +2019,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bc.a(Ljava/lang/String;II)V",
+      "originalName": "a",
+      "to": "setHotspotTooltip",
+      "evidence": "Source-purpose review: Stores tooltip text for the hotspot index, growing the per-hotspot array when needed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.b(I)Ljava/lang/String;",
       "originalName": "b",
       "to": "getTooltipText",
       "evidence": "Source-purpose review: Returns the widget’s current tooltip or validation hint, including a hovered link’s tooltip in the rich-text implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.b(IIII)V",
+      "originalName": "b",
+      "to": "setTextBounds",
+      "evidence": "Source-purpose review: Sets the widget position and width and derives its height from its text renderer.",
       "confidence": "reviewed"
     },
     {
@@ -2968,6 +2996,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 54c4520ee227837c7b8eeb8d7a2c96ecc3f29cbd7574e207d107a1c1c4e5eb75.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.c(ILw;)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "resolveDisplayText",
+      "evidence": "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget.",
       "confidence": "reviewed"
     },
     {
@@ -4098,6 +4133,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.a(BLw;)I",
+      "originalName": "a",
+      "to": "getTextAreaHeight",
+      "evidence": "Source-purpose review: Returns the widget height available for text after subtracting its vertical padding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ik.a(I)I",
       "originalName": "a",
       "to": "getFontLineHeight",
@@ -4133,6 +4175,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.a(ILw;II)I",
+      "originalName": "a",
+      "to": "getUnalignedTextOriginX",
+      "evidence": "Source-purpose review: Returns the left text origin from the widget and parent positions, text offset and padding before alignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(Lik;Z)V",
+      "originalName": "a",
+      "to": "copyStyleTo",
+      "evidence": "Source-purpose review: Copies this renderer’s font, colours, alignment, wrapping and padding settings to another renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ik.a(Lw;B)Lve;",
       "originalName": "a",
       "to": "getTextLayout",
@@ -4154,10 +4210,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.a(Lw;III)I",
+      "originalName": "a",
+      "to": "getUnalignedTextOriginY",
+      "evidence": "Source-purpose review: Returns the top text origin from the widget and parent positions, text offset and padding before alignment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ik.a(Lw;IIIII)I",
       "originalName": "a",
       "to": "findTextOffsetAtScreenPosition",
       "evidence": "Source-purpose review: Subtracts the text origin from a screen position and resolves the corresponding character offset in the widget layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(Lw;IIIIIII)V",
+      "originalName": "a",
+      "to": "drawText",
+      "evidence": "Source-purpose review: Clips text drawing to the widget and renders its single line or wrapped paragraph with the supplied style.",
       "confidence": "reviewed"
     },
     {
@@ -4168,10 +4238,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.b(Lw;I)V",
+      "originalName": "b",
+      "to": "rebuildTextLayout",
+      "evidence": "Source-purpose review: Creates or refreshes the widget’s text layout using its current content, font, alignment and wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ik.b(Lw;II)I",
       "originalName": "b",
       "to": "getTextOriginX",
       "evidence": "Source-purpose review: Returns the horizontal origin used to translate between widget text and screen positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.b(Lw;III)V",
+      "originalName": "b",
+      "to": "drawTextWithDefaultStyle",
+      "evidence": "Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.c(ILw;)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "resolveDisplayText",
+      "evidence": "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget.",
       "confidence": "reviewed"
     },
     {
@@ -6303,6 +6394,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pj.a(BLw;IILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationIcon",
+      "evidence": "Source-purpose review: Adds the labeled field and positions a validation icon beside it, then returns the field height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pj.a(CILw;B)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -6317,6 +6415,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pj.a(IILjava/lang/String;Lw;I)I",
+      "originalName": "a",
+      "to": "addLabeledField",
+      "evidence": "Source-purpose review: Adds an input in a label-and-widget container and returns its row height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pj.a(ILbc;II)V",
       "originalName": "a",
       "to": "onTextHotspotActivated",
@@ -6324,10 +6429,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pj.a(ILjava/lang/String;Ljava/lang/String;ILw;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds a labeled field and validator message with the form’s default message height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ILjava/lang/String;ZIILjava/lang/String;Lw;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the labeled field and a validator message beneath it, then returns their combined height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pj.a(Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "onNameSuggestionSelected",
       "evidence": "Source-purpose review: Accepts the selected suggestion and uses it to populate the form’s editable name field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getLinkOpenMarkup",
+      "evidence": "Source-purpose review: Returns the opening color and underline tags used for links in the registration instructions.",
       "confidence": "reviewed"
     },
     {
@@ -6342,6 +6468,13 @@
       "originalName": "e",
       "to": "submitRegistration",
       "evidence": "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.g(I)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "getLinkCloseMarkup",
+      "evidence": "Source-purpose review: Returns the closing color and underline tags used for links in the registration instructions.",
       "confidence": "reviewed"
     },
     {
@@ -7507,10 +7640,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ti.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "setAccountAndClearPassword",
+      "evidence": "Source-purpose review: Fills the account identifier field with the supplied text and clears the password field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ti.a(Lrl;Z)V",
       "originalName": "a",
       "to": "onTextSubmitted",
       "evidence": "Source-purpose review: Receives the editor callback when the user submits the field value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ti.d(B)V",
+      "originalName": "d",
+      "to": "clearCredentials",
+      "evidence": "Source-purpose review: Clears both editable credential fields in the login form.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ti.e(B)Ljava/lang/String;",
+      "originalName": "e",
+      "to": "getAccountIdentifier",
+      "evidence": "Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent.",
       "confidence": "reviewed"
     },
     {
@@ -7885,6 +8039,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:va.a(Ljava/lang/String;Z)Z",
+      "originalName": "a",
+      "to": "containsEmailComponent",
+      "evidence": "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:va.d(B)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -7973,6 +8134,13 @@
       "originalName": "a",
       "to": "getLineIndexForTextOffset",
       "evidence": "Source-purpose review: Walks the wrapped lines, subtracting their text lengths, to find the line for the supplied text offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a(IZILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "computeJustificationStep",
+      "evidence": "Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point.",
       "confidence": "reviewed"
     },
     {
@@ -8545,7 +8713,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "2679aa04c2f619991081aa2527d59117ca613e0b73d84c24790d81ff52135c75",
+      "lexicominos-names.json": "58a27e75eab2694af093a5bbb4c4a6781f685b48b7f8b2c23a1e47778c1273c2",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

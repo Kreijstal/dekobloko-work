@@ -574,6 +574,21 @@
       "si",
       "MusicTrack",
       "Expands the packed track data into MIDI and records which instrument patches and notes it uses."
+    ],
+    [
+      "ef",
+      "TextureProvider",
+      "Supplies texture pixels, average colours and format properties to the model and triangle rasterizer."
+    ],
+    [
+      "lr",
+      "ValidationStatusIcon",
+      "Renders a validation status sprite beside a form field and exposes its message as a hover tooltip."
+    ],
+    [
+      "qe",
+      "ValidationStatusWidget",
+      "Renders a validator message or fallback text together with a status sprite."
     ]
   ],
   "methods": [
@@ -9725,6 +9740,433 @@
       "(Lr;Ljava/lang/String;Ljava/lang/String;)Lsi;",
       "load",
       "Source-purpose review: Loads the packed music track from its archive and constructs its MIDI representation."
+    ],
+    [
+      "lg",
+      "a",
+      "(III)I",
+      "findOrAddVertex",
+      "Source-purpose review: Finds a vertex at the supplied coordinates or adds a new one to the mesh."
+    ],
+    [
+      "lg",
+      "a",
+      "(IIIBBSS)I",
+      "addFace",
+      "Source-purpose review: Appends the three vertex indices and the rendering attributes for one face."
+    ],
+    [
+      "lg",
+      "a",
+      "(IIIII)Lbn;",
+      "createModel",
+      "Source-purpose review: Builds the renderable model from this source mesh and the supplied lighting parameters."
+    ],
+    [
+      "lg",
+      "a",
+      "(I[IIII)V",
+      "applyGroupTransform",
+      "Source-purpose review: Applies the selected animation transform to the vertices or faces in the supplied groups."
+    ],
+    [
+      "lg",
+      "a",
+      "(Lei;I)V",
+      "applyAnimationFrame",
+      "Source-purpose review: Reads the selected animation frame and applies its transforms to the corresponding skin groups."
+    ],
+    [
+      "lg",
+      "a",
+      "(Llg;IS)I",
+      "findOrAddVertex",
+      "Source-purpose review: Finds a vertex at the supplied coordinates or adds a new one to the mesh."
+    ],
+    [
+      "lg",
+      "a",
+      "(Llg;ZZZZ)V",
+      "copyFrom",
+      "Source-purpose review: Copies a source mesh, optionally sharing vertex and face attribute arrays according to the supplied flags."
+    ],
+    [
+      "lg",
+      "a",
+      "(Lr;Ljava/lang/String;Ljava/lang/String;)Llg;",
+      "load",
+      "Source-purpose review: Loads packed mesh data by group and file name from the resource archive."
+    ],
+    [
+      "lg",
+      "a",
+      "(SSS)B",
+      "addTextureTriangle",
+      "Source-purpose review: Appends a simple texture-mapping triangle and returns its index."
+    ],
+    [
+      "lg",
+      "a",
+      "([B)V",
+      "decodeLegacyFormat",
+      "Source-purpose review: Decodes the legacy packed mesh format using its 18-byte footer."
+    ],
+    [
+      "lg",
+      "a",
+      "([I)V",
+      "transformVertices",
+      "Source-purpose review: Applies the supplied fixed-point affine transform to each vertex."
+    ],
+    [
+      "lg",
+      "b",
+      "()V",
+      "clearGeometryCaches",
+      "Source-purpose review: Releases the derived normal arrays so geometry changes can regenerate them."
+    ],
+    [
+      "lg",
+      "b",
+      "(III)V",
+      "scaleVertices",
+      "Source-purpose review: Scales the three vertex axes by the supplied fixed-point factors and clears the geometry caches."
+    ],
+    [
+      "lg",
+      "b",
+      "(IIIII)Lfc;",
+      "createModelMesh",
+      "Source-purpose review: Builds and returns the concrete renderable mesh with the supplied lighting parameters."
+    ],
+    [
+      "lg",
+      "b",
+      "([B)V",
+      "decodeExtendedFormat",
+      "Source-purpose review: Decodes the extended packed mesh format using its 23-byte footer."
+    ],
+    [
+      "lg",
+      "c",
+      "()V",
+      "calculateNormals",
+      "Source-purpose review: Computes face normals from triangle edge cross products and accumulates vertex normals for smooth shading."
+    ],
+    [
+      "va",
+      "a",
+      "(BLiq;)Ljava/lang/String;",
+      "resolveDisplayText",
+      "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."
+    ],
+    [
+      "va",
+      "a",
+      "(IBILiq;)I",
+      "getUnalignedTextOriginY",
+      "Source-purpose review: Returns the top text origin from the widget and parent positions, text offset and padding before alignment."
+    ],
+    [
+      "va",
+      "a",
+      "(IBLiq;I)I",
+      "getUnalignedTextOriginX",
+      "Source-purpose review: Returns the left text origin from the widget and parent positions, text offset and padding before alignment."
+    ],
+    [
+      "va",
+      "a",
+      "(IIIIILiq;II)V",
+      "drawText",
+      "Source-purpose review: Clips text drawing to the widget and renders its single line or wrapped paragraph with the supplied style."
+    ],
+    [
+      "va",
+      "a",
+      "(IIILiq;)V",
+      "drawTextWithDefaultStyle",
+      "Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text."
+    ],
+    [
+      "va",
+      "a",
+      "(ILva;)V",
+      "copyStyleTo",
+      "Source-purpose review: Copies this renderer’s font, colours, alignment, wrapping and padding settings to another renderer."
+    ],
+    [
+      "va",
+      "a",
+      "(ZLiq;)V",
+      "rebuildTextLayout",
+      "Source-purpose review: Creates or refreshes the widget’s text layout using its current content, font, alignment and wrapping."
+    ],
+    [
+      "va",
+      "c",
+      "(Liq;I)I",
+      "getTextAreaHeight",
+      "Source-purpose review: Returns the widget height available for text after subtracting its vertical padding."
+    ],
+    [
+      "om",
+      "a",
+      "(BLiq;)Ljava/lang/String;",
+      "resolveDisplayText",
+      "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."
+    ],
+    [
+      "ef",
+      "a",
+      "(FII)[I",
+      "getTexturePixels",
+      "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result."
+    ],
+    [
+      "ef",
+      "c",
+      "(II)Z",
+      "isTextureSize64",
+      "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path."
+    ],
+    [
+      "ef",
+      "b",
+      "(II)I",
+      "getTextureAlphaMode",
+      "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing."
+    ],
+    [
+      "ef",
+      "a",
+      "(II)I",
+      "getAverageTextureColor",
+      "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels."
+    ],
+    [
+      "ef",
+      "d",
+      "(II)Z",
+      "hasTexture",
+      "Source-purpose review: Reports whether a model may use the texture identifier."
+    ],
+    [
+      "nr",
+      "a",
+      "(FII)[I",
+      "getTexturePixels",
+      "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result."
+    ],
+    [
+      "rp",
+      "a",
+      "(FII)[I",
+      "getTexturePixels",
+      "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result."
+    ],
+    [
+      "nr",
+      "c",
+      "(II)Z",
+      "isTextureSize64",
+      "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path."
+    ],
+    [
+      "rp",
+      "c",
+      "(II)Z",
+      "isTextureSize64",
+      "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path."
+    ],
+    [
+      "nr",
+      "b",
+      "(II)I",
+      "getTextureAlphaMode",
+      "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing."
+    ],
+    [
+      "rp",
+      "b",
+      "(II)I",
+      "getTextureAlphaMode",
+      "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing."
+    ],
+    [
+      "nr",
+      "a",
+      "(II)I",
+      "getAverageTextureColor",
+      "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels."
+    ],
+    [
+      "rp",
+      "a",
+      "(II)I",
+      "getAverageTextureColor",
+      "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels."
+    ],
+    [
+      "nr",
+      "d",
+      "(II)Z",
+      "hasTexture",
+      "Source-purpose review: Reports whether a model may use the texture identifier."
+    ],
+    [
+      "rp",
+      "d",
+      "(II)Z",
+      "hasTexture",
+      "Source-purpose review: Reports whether a model may use the texture identifier."
+    ],
+    [
+      "db",
+      "a",
+      "(IIB)V",
+      "setChannelGain",
+      "Source-purpose review: Sets the extra voice gain for one MIDI channel, or for every channel when the index is negative."
+    ],
+    [
+      "db",
+      "a",
+      "(ILid;Lsi;Lr;B)Z",
+      "prepareTrackSamples",
+      "Source-purpose review: Builds the track patch-usage table and walks its instruments to cache samples within the supplied budget."
+    ],
+    [
+      "db",
+      "a",
+      "(ILsi;Z)V",
+      "playTrack",
+      "Source-purpose review: Starts the supplied track with the requested loop flag and a fixed policy for the previous track."
+    ],
+    [
+      "db",
+      "a",
+      "(IZI)V",
+      "setChannelProgram",
+      "Source-purpose review: Sets the requested channel’s default program through the program and bank update routine."
+    ],
+    [
+      "db",
+      "a",
+      "(Lpe;BZ)V",
+      "applySampleOffset",
+      "Source-purpose review: Converts a channel’s sample offset to a fixed-point position and reflects it when a looping sample crosses its endpoint."
+    ],
+    [
+      "db",
+      "a",
+      "(ZLsi;ZI)V",
+      "startTrack",
+      "Source-purpose review: Loads the track bytes into the MIDI reader and primes the track positions, next event and playback clock."
+    ],
+    [
+      "db",
+      "b",
+      "(III)V",
+      "setRetriggerRate",
+      "Source-purpose review: Stores the channel retrigger rate and derives the retrigger phase increment using the MIDI controller’s exponential scale."
+    ],
+    [
+      "db",
+      "c",
+      "(III)V",
+      "setDefaultProgram",
+      "Source-purpose review: Records the channel’s default program and bank and selects that program for subsequent notes."
+    ],
+    [
+      "mk",
+      "b",
+      "(Ljava/lang/String;ILiq;II)I",
+      "addLabeledField",
+      "Source-purpose review: Adds an input in a label-and-widget container and returns its row height."
+    ],
+    [
+      "mk",
+      "a",
+      "(Ljava/lang/String;ILiq;II)I",
+      "addLabeledFieldWithValidationIcon",
+      "Source-purpose review: Adds the labeled field and positions a validation icon beside it, then returns the field height."
+    ],
+    [
+      "mk",
+      "a",
+      "(IIILiq;Ljava/lang/String;ILjava/lang/String;)I",
+      "addLabeledFieldWithValidationMessage",
+      "Source-purpose review: Adds the labeled field and a validator message beneath it, then returns their combined height."
+    ],
+    [
+      "mk",
+      "a",
+      "(Ljava/lang/String;Liq;ILjava/lang/String;II)I",
+      "addLabeledFieldWithDefaultValidationMessage",
+      "Source-purpose review: Adds a labeled field and validator message with the form’s default message height."
+    ],
+    [
+      "mk",
+      "i",
+      "(I)Ljava/lang/String;",
+      "getLinkOpenMarkup",
+      "Source-purpose review: Returns the opening color and underline tags used for links in the registration instructions."
+    ],
+    [
+      "mk",
+      "j",
+      "(I)Ljava/lang/String;",
+      "getLinkCloseMarkup",
+      "Source-purpose review: Returns the closing color and underline tags used for links in the registration instructions."
+    ],
+    [
+      "pn",
+      "a",
+      "(IILjava/lang/String;)V",
+      "setHotspotTooltip",
+      "Source-purpose review: Stores tooltip text for the hotspot index, growing the per-hotspot array when needed."
+    ],
+    [
+      "pn",
+      "b",
+      "(IIBI)V",
+      "setTextBounds",
+      "Source-purpose review: Sets the widget position and width and derives its height from its text renderer."
+    ],
+    [
+      "ro",
+      "a",
+      "(Ljava/lang/String;ZII)I",
+      "computeJustificationStep",
+      "Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point."
+    ],
+    [
+      "ob",
+      "i",
+      "(I)V",
+      "clearCredentials",
+      "Source-purpose review: Clears both editable credential fields in the login form."
+    ],
+    [
+      "ob",
+      "a",
+      "(BLjava/lang/String;)V",
+      "setAccountAndClearPassword",
+      "Source-purpose review: Fills the account identifier field with the supplied text and clears the password field."
+    ],
+    [
+      "ob",
+      "j",
+      "(I)Ljava/lang/String;",
+      "getAccountIdentifier",
+      "Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent."
+    ],
+    [
+      "wc",
+      "a",
+      "(Ljava/lang/String;B)Z",
+      "containsEmailComponent",
+      "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case."
     ]
   ],
   "fields": [

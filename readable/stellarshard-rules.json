@@ -318,6 +318,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cd",
+      "originalName": "cd",
+      "to": "ValidationStatusWidget",
+      "evidence": "Renders a validator message or fallback text together with a status sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cf",
+      "originalName": "cf",
+      "to": "TextureProvider",
+      "evidence": "Supplies texture pixels, average colours and format properties to the model and triangle rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ci",
       "originalName": "ci",
       "to": "FrameTimer",
@@ -567,6 +581,13 @@
       "originalName": "ig",
       "to": "InteractiveWidget",
       "evidence": "Interactive control that tracks pointer and keyboard input and forwards its activation to the registered listener. The account forms use this control for their buttons and suggestion choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ii",
+      "originalName": "ii",
+      "to": "ValidationStatusIcon",
+      "evidence": "Renders a validation status sprite beside a form field and exposes its message as a hover tooltip.",
       "confidence": "reviewed"
     },
     {
@@ -847,6 +868,13 @@
       "originalName": "p",
       "to": "PcmMixerListener",
       "evidence": "Intrusive listener with a frame deadline and callback used by both PCM mixer fill and skip. A negative callback result removes it from the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pa",
+      "originalName": "pa",
+      "to": "MeshData",
+      "evidence": "Stores source vertices and faces, prepares their lighting and skin groups, and constructs a renderable mesh.",
       "confidence": "reviewed"
     },
     {
@@ -2464,6 +2492,41 @@
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 6 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(BI)I",
+      "originalName": "a",
+      "to": "getTextureAlphaMode",
+      "evidence": "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(IB)Z",
+      "originalName": "a",
+      "to": "hasTexture",
+      "evidence": "Source-purpose review: Reports whether a model may use the texture identifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(II)I",
+      "originalName": "a",
+      "to": "getAverageTextureColor",
+      "evidence": "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(ZIF)[I",
+      "originalName": "a",
+      "to": "getTexturePixels",
+      "evidence": "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.b(II)Z",
+      "originalName": "b",
+      "to": "isTextureSize64",
+      "evidence": "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path.",
       "confidence": "reviewed"
     },
     {
@@ -4168,6 +4231,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:id.a(BLrj;)I",
+      "originalName": "a",
+      "to": "getTextAreaHeight",
+      "evidence": "Source-purpose review: Returns the widget height available for text after subtracting its vertical padding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.a(BLrj;I)I",
       "originalName": "a",
       "to": "getTextOriginY",
@@ -4182,10 +4252,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:id.a(IIIIIILrj;I)V",
+      "originalName": "a",
+      "to": "drawText",
+      "evidence": "Source-purpose review: Clips text drawing to the widget and renders its single line or wrapped paragraph with the supplied style.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.a(ILrj;)I",
       "originalName": "a",
       "to": "getTextAreaWidth",
       "evidence": "Source-purpose review: Subtracts both horizontal padding values from the widget width to find the width available for text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(ILrj;BI)I",
+      "originalName": "a",
+      "to": "getUnalignedTextOriginY",
+      "evidence": "Source-purpose review: Returns the top text origin from the widget and parent positions, text offset and padding before alignment.",
       "confidence": "reviewed"
     },
     {
@@ -4210,6 +4294,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:id.a(Lid;B)V",
+      "originalName": "a",
+      "to": "copyStyleTo",
+      "evidence": "Source-purpose review: Copies this renderer’s font, colours, alignment, wrapping and padding settings to another renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.a(Lrj;B)I",
       "originalName": "a",
       "to": "getPreferredWidth",
@@ -4224,10 +4315,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:id.a(Lrj;III)V",
+      "originalName": "a",
+      "to": "drawTextWithDefaultStyle",
+      "evidence": "Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.a(Lrj;IIIII)V",
       "originalName": "a",
       "to": "paintSelection",
       "evidence": "Source-purpose review: Resolves both endpoints through the text layout and fills the selected range on each covered line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(Lrj;IIZ)I",
+      "originalName": "a",
+      "to": "getUnalignedTextOriginX",
+      "evidence": "Source-purpose review: Returns the left text origin from the widget and parent positions, text offset and padding before alignment.",
       "confidence": "reviewed"
     },
     {
@@ -4238,10 +4343,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:id.b(BLrj;)V",
+      "originalName": "b",
+      "to": "rebuildTextLayout",
+      "evidence": "Source-purpose review: Creates or refreshes the widget’s text layout using its current content, font, alignment and wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.b(Lrj;B)Lvk;",
       "originalName": "b",
       "to": "getTextLayout",
       "evidence": "Source-purpose review: Returns the rendered line layout used for sizing and hit-testing the supplied text widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.b(Lrj;I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "resolveDisplayText",
+      "evidence": "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget.",
       "confidence": "reviewed"
     },
     {
@@ -4382,6 +4501,13 @@
       "originalName": "a",
       "to": "onWidgetFocusChanged",
       "evidence": "Source-purpose review: Handles a keyboard focus change. The interactive widget calls the same callback when taking or clearing focus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.b(Lrj;I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "resolveDisplayText",
+      "evidence": "Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget.",
       "confidence": "reviewed"
     },
     {
@@ -5183,6 +5309,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(Ljava/lang/String;I)V",
+      "originalName": "b",
+      "to": "setAccountAndClearPassword",
+      "evidence": "Source-purpose review: Fills the account identifier field with the supplied text and clears the password field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.e(B)V",
+      "originalName": "e",
+      "to": "clearCredentials",
+      "evidence": "Source-purpose review: Clears both editable credential fields in the login form.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.f(B)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "getAccountIdentifier",
+      "evidence": "Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.g(B)V",
       "originalName": "g",
       "to": "submitLogin",
@@ -5201,6 +5348,13 @@
       "originalName": "a",
       "to": "getValidationStatus",
       "evidence": "Source-purpose review: Returns the validation status for the supplied text using the concrete registration field rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "containsEmailComponent",
+      "evidence": "Source-purpose review: Checks whether the password contains the email address local part or domain, ignoring case.",
       "confidence": "reviewed"
     },
     {
@@ -5561,6 +5715,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mj.a(IILrj;Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationIcon",
+      "evidence": "Source-purpose review: Adds the labeled field and positions a validation icon beside it, then returns the field height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a(ILjava/lang/String;Lrj;II)I",
+      "originalName": "a",
+      "to": "addLabeledField",
+      "evidence": "Source-purpose review: Adds an input in a label-and-widget container and returns its row height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mj.a(ILje;)Z",
       "originalName": "a",
       "to": "isFieldReadyForRegistration",
@@ -5568,10 +5736,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mj.a(ILrj;IBLjava/lang/String;Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultValidationMessage",
+      "evidence": "Source-purpose review: Adds a labeled field and validator message with the form’s default message height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mj.a(IZILrj;)V",
       "originalName": "a",
       "to": "updatePointer",
       "evidence": "Source-purpose review: Hit-tests the current pointer position and updates the hover state, notifying the registered listener when it changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a(Ljava/lang/String;ILjava/lang/String;Lrj;III)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationMessage",
+      "evidence": "Source-purpose review: Adds the labeled field and a validator message beneath it, then returns their combined height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.e(B)Ljava/lang/String;",
+      "originalName": "e",
+      "to": "getLinkCloseMarkup",
+      "evidence": "Source-purpose review: Returns the closing color and underline tags used for links in the registration instructions.",
       "confidence": "reviewed"
     },
     {
@@ -5593,6 +5782,13 @@
       "originalName": "j",
       "to": "submitRegistration",
       "evidence": "Source-purpose review: Checks form readiness, reads the age, and forwards the account inputs to registration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.k(I)Ljava/lang/String;",
+      "originalName": "k",
+      "to": "getLinkOpenMarkup",
+      "evidence": "Source-purpose review: Returns the opening color and underline tags used for links in the registration instructions.",
       "confidence": "reviewed"
     },
     {
@@ -5922,6 +6118,62 @@
       "originalName": "b",
       "to": "onAddedToMixer",
       "evidence": "Source-purpose review: Notification issued after a mixer takes ownership and before scheduling the first callback. The concrete override attaches existing playback streams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a()V",
+      "originalName": "a",
+      "to": "calculateNormals",
+      "evidence": "Source-purpose review: Computes face normals from triangle edge cross products and accumulates vertex normals for smooth shading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(IIIII)Lbj;",
+      "originalName": "a",
+      "to": "createModel",
+      "evidence": "Source-purpose review: Builds the renderable model from this source mesh and the supplied lighting parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(Lpf;Ljava/lang/String;Ljava/lang/String;)Lpa;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "Source-purpose review: Loads packed mesh data by group and file name from the resource archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a([B)V",
+      "originalName": "a",
+      "to": "decodeLegacyFormat",
+      "evidence": "Source-purpose review: Decodes the legacy packed mesh format using its 18-byte footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a([I)V",
+      "originalName": "a",
+      "to": "transformVertices",
+      "evidence": "Source-purpose review: Applies the supplied fixed-point affine transform to each vertex.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.b()V",
+      "originalName": "b",
+      "to": "buildSkinGroups",
+      "evidence": "Source-purpose review: Counts and indexes vertices and faces by their skin labels for animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.b([B)V",
+      "originalName": "b",
+      "to": "decodeExtendedFormat",
+      "evidence": "Source-purpose review: Decodes the extended packed mesh format using its 23-byte footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.c()V",
+      "originalName": "c",
+      "to": "clearGeometryCaches",
+      "evidence": "Source-purpose review: Releases the derived normal arrays so geometry changes can regenerate them.",
       "confidence": "reviewed"
     },
     {
@@ -6877,6 +7129,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rg.a(Ljava/lang/String;II)V",
+      "originalName": "a",
+      "to": "setHotspotTooltip",
+      "evidence": "Source-purpose review: Stores tooltip text for the hotspot index, growing the per-hotspot array when needed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rg.b(IBII)V",
+      "originalName": "b",
+      "to": "setTextBounds",
+      "evidence": "Source-purpose review: Sets the widget position and width and derives its height from its text renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rg.b(III)Lja;",
       "originalName": "b",
       "to": "findHotspotAt",
@@ -7353,6 +7619,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:stellarshard.a(BI)I",
+      "originalName": "a",
+      "to": "getTextureAlphaMode",
+      "evidence": "Source-purpose review: Returns the texture alpha mode used to select opaque or transparent span drawing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:stellarshard.a(I)V",
       "originalName": "a",
       "to": "updateClient",
@@ -7360,10 +7633,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:stellarshard.a(IB)Z",
+      "originalName": "a",
+      "to": "hasTexture",
+      "evidence": "Source-purpose review: Reports whether a model may use the texture identifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:stellarshard.a(II)I",
+      "originalName": "a",
+      "to": "getAverageTextureColor",
+      "evidence": "Source-purpose review: Returns the representative HSL colour used when the rasterizer cannot fetch texture pixels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:stellarshard.a(Z)V",
       "originalName": "a",
       "to": "initializeClient",
       "evidence": "Source-purpose review: Initializes the client before the applet starts its main update and render loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:stellarshard.a(ZIF)[I",
+      "originalName": "a",
+      "to": "getTexturePixels",
+      "evidence": "Source-purpose review: Returns the texture pixels at the requested brightness, or reports unavailability with a null result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:stellarshard.b(II)Z",
+      "originalName": "b",
+      "to": "isTextureSize64",
+      "evidence": "Source-purpose review: Reports whether to use the 64 by 64 texture sampling path.",
       "confidence": "reviewed"
     },
     {
@@ -8137,6 +8438,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vk.a(Ljava/lang/String;ZII)I",
+      "originalName": "a",
+      "to": "computeJustificationStep",
+      "evidence": "Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vk.a(Z)I",
       "originalName": "a",
       "to": "getMaxLineRightX",
@@ -8342,7 +8650,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "922f9fcea761dfd5175fc86b2adb95e08d01454c3855c4136a9a7d94b1d262e5",
+      "stellarshard-names.json": "8dfe7890958d67d74a3a5e47886d619ad574ec4337a604faf80f687a76c349f2",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

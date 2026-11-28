@@ -106,7 +106,8 @@
     ["q","VorbisMapping","Reads the submap selector and the floor and residue indices for each Vorbis submap."],
     ["pl","SoundCache","Caches decoded PCM and resumes decoding in-progress Vorbis samples from a separate music archive."],
     ["kj","SynthesizerVoice","Decodes one instrument voice and generates samples from its oscillators, envelopes and filter."],
-    ["sd","SoundEnvelope","Decodes timed amplitude segments and interpolates the current value as synthesis advances."]
+    ["sd","SoundEnvelope","Decodes timed amplitude segments and interpolates the current value as synthesis advances."],
+    ["g","ValidationStatusIcon","Renders a validation status sprite beside a form field and exposes its message as a hover tooltip."]
   ],
   "methods": [
     ["ag","a","(I)I","pollWheelRotation","Abstract/concrete wheel polling contract reviewed: return accumulated rotation and clear it; preserve invalid-guard assignments and original synchronization."],
@@ -1222,7 +1223,28 @@
     ["sd","a","(Lwl;)V","decodeSegments","Source-purpose review: Reads the envelope point times and values from the packet."],
     ["sd","a","()V","reset","Source-purpose review: Resets the envelope segment cursor and interpolation state."],
     ["sd","a","(I)I","step","Source-purpose review: Advances the envelope interpolation by one sample and returns the next value."],
-    ["pl","a","(Ljava/lang/String;Ljava/lang/String;ZLjava/net/URL;I)Ljava/net/URL;","rewriteClientUrlParameters","Source-purpose review: Replaces the locale, preferences and session parameters embedded in a client URL path."]
+    ["pl","a","(Ljava/lang/String;Ljava/lang/String;ZLjava/net/URL;I)Ljava/net/URL;","rewriteClientUrlParameters","Source-purpose review: Replaces the locale, preferences and session parameters embedded in a client URL path."],
+    ["a","a","(IIIILce;ZII)V","drawText","Source-purpose review: Clips text drawing to the widget and renders its single line or wrapped paragraph with the supplied style."],
+    ["a","a","(ILa;)V","copyStyleTo","Source-purpose review: Copies this renderer’s font, colours, alignment, wrapping and padding settings to another renderer."],
+    ["a","a","(ILce;BI)V","drawTextWithDefaultStyle","Source-purpose review: Uses the renderer’s default colour and shadow when drawing the widget text."],
+    ["a","a","(Lce;III)I","getUnalignedTextOriginY","Source-purpose review: Returns the top text origin from the widget and parent positions, text offset and padding before alignment."],
+    ["a","b","(Lce;B)Ljava/lang/String;","resolveDisplayText","Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."],
+    ["a","b","(Lce;III)I","getUnalignedTextOriginX","Source-purpose review: Returns the left text origin from the widget and parent positions, text offset and padding before alignment."],
+    ["a","c","(Lce;B)I","getTextAreaHeight","Source-purpose review: Returns the widget height available for text after subtracting its vertical padding."],
+    ["a","c","(Lce;I)V","rebuildTextLayout","Source-purpose review: Creates or refreshes the widget’s text layout using its current content, font, alignment and wrapping."],
+    ["gm","b","(Lce;B)Ljava/lang/String;","resolveDisplayText","Source-purpose review: Resolves the content string that the layout and drawing routines display for the widget."],
+    ["tf","a","(ILce;ILjava/lang/String;I)I","addLabeledField","Source-purpose review: Adds an input in a label-and-widget container and returns its row height."],
+    ["tf","a","(Ljava/lang/String;BLce;II)I","addLabeledFieldWithValidationIcon","Source-purpose review: Adds the labeled field and positions a validation icon beside it, then returns the field height."],
+    ["tf","a","(Lce;Ljava/lang/String;IBIILjava/lang/String;)I","addLabeledFieldWithValidationMessage","Source-purpose review: Adds the labeled field and a validator message beneath it, then returns their combined height."],
+    ["tf","a","(ILce;ILjava/lang/String;Ljava/lang/String;I)I","addLabeledFieldWithDefaultValidationMessage","Source-purpose review: Adds a labeled field and validator message with the form’s default message height."],
+    ["tf","g","(B)Ljava/lang/String;","getLinkOpenMarkup","Source-purpose review: Returns the opening color and underline tags used for links in the registration instructions."],
+    ["tf","h","(B)Ljava/lang/String;","getLinkCloseMarkup","Source-purpose review: Returns the closing color and underline tags used for links in the registration instructions."],
+    ["qi","a","(Ljava/lang/String;II)V","setHotspotTooltip","Source-purpose review: Stores tooltip text for the hotspot index, growing the per-hotspot array when needed."],
+    ["qi","c","(IIII)V","setTextBounds","Source-purpose review: Sets the widget position and width and derives its height from its text renderer."],
+    ["cf","a","(BILjava/lang/String;I)I","computeJustificationStep","Source-purpose review: Counts spaces outside markup tags and divides the extra line width between those spaces in eight-bit fixed point."],
+    ["he","a","(I)V","clearCredentials","Source-purpose review: Clears both editable credential fields in the login form."],
+    ["he","a","(Ljava/lang/String;I)V","setAccountAndClearPassword","Source-purpose review: Fills the account identifier field with the supplied text and clears the password field."],
+    ["he","j","(I)Ljava/lang/String;","getAccountIdentifier","Source-purpose review: Reads the account identifier text from the login form, returning an empty string when the text is absent."]
   ],
   "fields": [
     ["fn","field_h","Ljava/nio/ByteBuffer;","buffer","Sole instance ByteBuffer allocated directly and read/written by bytes operations; preserve nullable/guard states."]
