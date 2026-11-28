@@ -577,6 +577,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fb",
+      "originalName": "fb",
+      "to": "SocialListEntry",
+      "evidence": "Stores display names and insertion order for the entries populated from the friends and ignore lists.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fc",
       "originalName": "fc",
       "to": "WidgetRenderer",
@@ -588,6 +595,13 @@
       "originalName": "fe",
       "to": "WidgetTheme",
       "evidence": "Initializes shared widget renderers and fonts, and paints single-line and wrapped tooltip backgrounds and text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ff",
+      "originalName": "ff",
+      "to": "ToggleButton",
+      "evidence": "Extends the basic button with a selected flag that flips before dispatching activation.",
       "confidence": "reviewed"
     },
     {
@@ -707,6 +721,13 @@
       "originalName": "hg",
       "to": "AgeValidator",
       "evidence": "Checks that the age input parses as an integer in the supported range and supplies feedback for invalid input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hh",
+      "originalName": "hh",
+      "to": "ReflectionCheck",
+      "evidence": "Holds the count, command ID, serialized arguments, and pending field and method lookups for a reflection check.",
       "confidence": "reviewed"
     },
     {
@@ -4084,6 +4105,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fb.a(BLjava/lang/String;Ljava/lang/String;Lgk;Ljava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatArchiveLoadingMessage",
+      "evidence": "Source-purpose review: Returns the initial loading status or appends a percentage for the named group once the archive is ready.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fb.a(Ljava/awt/Component;B)V",
       "originalName": "a",
       "to": "attachMouseListeners",
@@ -4091,10 +4119,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fb.d(I)V",
+      "originalName": "d",
+      "to": "clearSocialListSharedReferences",
+      "evidence": "Source-purpose review: Clears the class-owned references to the downloaded data, progress tracker, and render helper during teardown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.e(B)Z",
+      "originalName": "e",
+      "to": "hasReadyReflectionCheck",
+      "evidence": "Source-purpose review: Tests the first queued check and returns false while any of its field or method lookups is pending.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fc.a(ILlk;BZI)V",
       "originalName": "a",
       "to": "paintWidget",
       "evidence": "Source-purpose review: Paints the supplied widget at its origin. The base widget chooses when to call the painter and supplies the render flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.a(Lgk;I)V",
+      "originalName": "a",
+      "to": "preloadLogoAudio",
+      "evidence": "Source-purpose review: Loads the shared Vorbis headers and preloads the compressed audio track used for the client logo.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.a(Z)V",
+      "originalName": "a",
+      "to": "clearAudioAndLoginSharedReferences",
+      "evidence": "Source-purpose review: Releases the three class-owned static resources on shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.c(B)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "getPrefilledLoginName",
+      "evidence": "Source-purpose review: Returns the current login form name or its saved fallback for the login dialog.",
       "confidence": "reviewed"
     },
     {
@@ -4147,10 +4210,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ff.a(I)V",
+      "originalName": "a",
+      "to": "clearToggleButtonSharedReferences",
+      "evidence": "Source-purpose review: Clears the toggle button class’s shared reference during teardown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ff.a(IIBI)V",
       "originalName": "a",
       "to": "activateFromInput",
       "evidence": "Source-purpose review: Dispatches activation for the received input. Overrides invoke the base dispatch and can also process subtype behavior such as a selected text link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ff.a(Ljava/lang/String;Lgk;BLjava/lang/String;)[Lwe;",
+      "originalName": "a",
+      "to": "loadIndexedSpritesByName",
+      "evidence": "Source-purpose review: Resolves archive group and file names before loading the indexed sprite array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ff.a(ZIII)I",
+      "originalName": "a",
+      "to": "pollAccountScreenAction",
+      "evidence": "Source-purpose review: Returns the selected action from the account screen poller.",
       "confidence": "reviewed"
     },
     {
@@ -5022,10 +5106,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hh.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "setLoginDisplayName",
+      "evidence": "Source-purpose review: Stores the submitted display name for optional serialization into the login packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.a(Lve;Lve;B)I",
+      "originalName": "a",
+      "to": "pollLoginCredentials",
+      "evidence": "Source-purpose review: Delegates the name and password to the shared account poller without a registration email and returns the login status.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hh.a(Z)V",
       "originalName": "a",
       "to": "resetStaticState",
       "evidence": "Source-purpose review: Resets declared static state through 7 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.b(B)V",
+      "originalName": "b",
+      "to": "closeClientCacheResources",
+      "evidence": "Source-purpose review: Closes the client cache metadata and each archive index file during shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.b(IIIII)V",
+      "originalName": "b",
+      "to": "setSceneViewportBounds",
+      "evidence": "Source-purpose review: Stores the near and far bounds of both viewport axes using the origin and span computed by callers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.c(B)V",
+      "originalName": "c",
+      "to": "requestQuitToWebsite",
+      "evidence": "Source-purpose review: Queues the menu action selected by the login dialog’s Quit to website button.",
       "confidence": "reviewed"
     },
     {
@@ -11674,7 +11793,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "a3eb215a7c504fff7173915da02082e4ec7a1c2bcef7e7980d6d51f07a5ea3c3",
+      "bouncedown-names.json": "b28d8bcf6a1ab2c2948dc7a78f919cb61644fa4765ce3c5c532532bf67838250",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
